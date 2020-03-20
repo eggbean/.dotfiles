@@ -1,0 +1,612 @@
+#
+# Jason's custom keybindings for ne
+# v2 24/10/19
+# v3 17/12/19
+
+#
+# Cursor/editing keys
+#
+
+# TODO: Add Ctrl-Alt-Arrow keys, probably for fast navigation.  See what is going on in KiTTY first
+
+# Alt-F11
+SEQ	"\x1b[23;3~"	A0
+KEY	A0	NOP
+
+# Alt-F12
+SEQ	"\x1b[24;3~"	A1
+KEY	A1	NOP
+
+# Ctrl-Up
+SEQ	"\x1b[1;5A"	A2
+KEY	A2	LineUp 10
+
+# Ctrl-Down
+SEQ	"\x1b[1;5B"	A3
+KEY	A3	LineDown 10
+
+# Ctrl-Right
+SEQ	"\x1b[1;5C"	A4
+KEY	A4	NextWord
+
+# Ctrl-Left
+SEQ	"\x1b[1;5D"	A5
+KEY	A5	PrevWord
+
+# Alt-Up
+SEQ	"\x1b[1;3A"	A6
+KEY	A6	AdjustView T
+
+# Alt-Down
+SEQ	"\x1b[1;3B"	A7
+KEY	A7	AdjustView B
+
+# Alt-Right
+SEQ	"\x1b[1;3C"	A8
+KEY	A8	AdjustView R
+
+# Alt-Left
+SEQ	"\x1b[1;3D"	A9
+KEY	A9	AdjustView L
+
+# Ctrl-Alt-Up
+SEQ	"\x1b[1;7D"	AA
+KEY	AA	NOP
+
+# Ctrl-Alt-Down
+SEQ	"\x1b[1;7D"	AB
+KEY	AB	NOP
+
+# Ctrl-Alt-Right
+SEQ	"\x1b[1;7D"	AC
+KEY	AC	NOP
+
+# Ctrl-Alt-Left
+SEQ	"\x1b[1;7D"	AD
+KEY	AD	NOP
+
+# Cursor up
+
+KEY	101	LineUp
+
+# Cursor down
+
+KEY	102	LineDown
+
+# Cursor left
+
+KEY	103	MoveLeft
+
+# Cursor right
+
+KEY	104	MoveRight
+
+# Cursor home
+
+KEY	105	MoveIncUp
+
+# Cursor end
+
+KEY	106	MoveIncDown
+
+# Cursor next page
+
+KEY	107	NextPage
+
+# Cursor prev page
+
+KEY	108	PrevPage
+
+# Scroll forward
+
+KEY	109	LineDown
+
+# Scroll backward
+
+KEY	10A	LineUp
+
+# Clear to end of line
+
+KEY	110	DeleteEOL
+
+# Clear to end of screen
+
+KEY	111	NOP
+
+# Backspace
+
+KEY	112	BackSpace
+
+# Delete line
+
+KEY	113	DeleteLine
+
+# Insert line
+
+KEY	114	InsertLine
+
+# Delete char
+
+KEY	115	DeleteChar
+
+# Insert char
+
+KEY	116	Insert
+
+# Exit insert mode
+
+KEY	117	NOP
+
+# Clear
+
+KEY	118	Clear
+
+# Keypad A1
+
+KEY	120	MoveSOF
+
+# Keypad A3
+
+KEY	121	PrevPage
+
+# Keypad B2
+
+KEY	122	ToggleSEOL
+
+# Keypad C1
+
+KEY	123	MoveEOF
+
+# Keypad C3
+
+KEY	124	NextPage
+
+#
+
+KEY	125	Exec
+
+# Clear all tabs
+
+KEY	128	NOP
+
+# Clear tab
+
+KEY	129	NOP
+
+# Set tab
+
+KEY	12A	NOP
+
+
+
+#
+# Function keys
+#
+
+# F0
+
+KEY	140	Escape
+
+# F1
+
+KEY	141	Escape
+
+# F2
+
+KEY	142	PrevDoc
+
+# F3
+
+KEY	143	NextDoc
+
+# F4
+
+KEY	144	SelectDoc
+
+# F5
+
+KEY	145	MoveLineUp
+
+# F6
+
+KEY	146	MoveLineDown
+
+# F7
+
+KEY	147	aspell
+
+# F8
+
+KEY	148	Through
+
+# F9
+
+KEY	149	Record
+
+# F10
+
+KEY	14A	Help
+
+# F11
+
+KEY	14B	Shift <
+
+# F12
+
+KEY	14C	Shift
+
+KEY	15F	DeletePrevWord
+
+KEY	160	DeleteNextWord
+
+#
+# CONTROL-letter shortcuts
+#
+
+
+# CONTROL-@
+
+KEY	0	MarkVert
+
+# CONTROL-a
+
+KEY	1	MoveSOL
+
+# CONTROL-b
+
+KEY	2	Mark
+
+# CONTROL-c
+
+KEY	3	Copy
+
+# CONTROL-d
+
+KEY	4	DeleteLine
+
+# CONTROL-e
+
+KEY	5	MoveEOL
+
+# CONTROL-f
+
+KEY	6	Find
+
+# CONTROL-g
+
+KEY	7	RepeatLast
+
+# CONTROL-h
+
+KEY	8	BackSpace
+
+# CONTROL-i cannot be redefined (it's TAB)
+
+# CONTROL-j 
+
+KEY	A	GotoLine
+
+# CONTROL-k
+
+KEY	B	KillEOL
+
+# CONTROL-l
+
+KEY	C	Refresh
+
+# CONTROL-m cannot be redefined (it's RETURN)
+
+# CONTROL-n
+
+KEY	E	NewDoc
+
+# CONTROL-o
+
+KEY	F	Open
+
+# CONTROL-p
+
+KEY	10	FindRegExp
+
+# CONTROL-q
+
+KEY	11	CloseDoc
+
+# CONTROL-r
+
+KEY	12	Replace
+
+# CONTROL-s
+
+KEY	13	Save
+
+# CONTROL-t
+
+KEY	14	SwapLast2Letters
+
+# CONTROL-u
+
+KEY	15	DeleteSOL
+
+# CONTROL-v
+
+KEY	16	Paste
+
+# CONTROL-w
+
+KEY	17	PasteVert
+
+# CONTROL-x
+
+KEY	18	Cut
+
+# CONTROL-y 
+
+KEY	19	Paste
+
+# CONTROL-z
+
+KEY	1A	Suspend
+
+# CONTROL-[ cannot be redefined (it's Escape)
+
+# CONTROL-\ cannot be redefined (it's the interrupt character)
+
+# CONTROL-]
+
+KEY	1D	MatchBracket
+
+# CONTROL-^
+
+KEY	1E	AdjustView
+
+# CONTROL-_
+
+KEY	1F	Undo
+
+# Delete
+
+KEY	7F	DeleteChar
+
+KEY	1cf	OpenClip
+KEY	1d0	Paragraph
+KEY	1d1	Quit
+KEY	1d2	Redo
+KEY	1d3	SaveClip
+KEY	1d4	SwapLast2Words
+KEY	1d5	Undo
+KEY	1d6	ToUpper
+KEY	1d7	WordWrap
+KEY	1d8	Exit
+KEY	1d9	DeleteEOL
+KEY	1da	CRLF
+
+#
+# The following bindings set up the same actions for a number of correlated
+#codes. This guarantees that the user is able to use the '~' bindings with
+# CTRL-META, META or just a prefixed ESC.
+#
+
+
+# CONTROL-META-a, META-a, ESC A and ESC a
+
+KEY	81	MoveSOF
+KEY	181	MoveSOF
+KEY	1C1	MoveSOF
+KEY	1E1	MoveSOF
+
+# CONTROL-META-b, META-b, ESC B and ESC b
+
+KEY	82	PrevWord
+KEY	182	GotoMark
+KEY	1C2	PrevWord
+KEY	1E2	PrevWord
+
+# CONTROL-META-c, META-c, ESC C and ESC c
+
+KEY	83	AdjustView C
+KEY	183	AdjustView C
+KEY	1C3	CS
+KEY	1E3	Capitalize
+
+# CONTROL-META-d, META-d, ESC D and ESC d
+
+KEY	84	DeleteNextWord
+KEY	184	UndelLine
+KEY	1C4	DeleteNextWord
+KEY	1E4	DeleteNextWord
+
+# CONTROL-META-e, META-e, ESC E and ESC e
+
+KEY	85	MoveEOF
+KEY	185	MoveEOF
+KEY	1C5	MoveEOF
+KEY	1E5	MoveEOF
+
+# CONTROL-META-f, META-f, ESC F and ESC f
+
+KEY	86	NextWord
+KEY	186	NextWord
+KEY	1C6	NextWord
+KEY	1E6	NextWord
+
+# CONTROL-META-g, META-g, ESC G and ESC g
+
+KEY	87	GotoBookMark
+KEY	187	GotoBookMark
+KEY	1C7	GOTOBOOKMARK
+KEY	1E7	GotoBookMark
+
+# CONTROL-META-i, META-i, ESC I and ESC i
+
+KEY	89	AutoComplete
+KEY	189	AutoComplete
+KEY	1C9	AutoComplete
+KEY	1E9	AutoComplete
+
+# CONTROL-META-j, META-j, ESC J and ESC j
+
+KEY	8A	GotoColumn
+KEY	18A	GotoColumn
+KEY	1CA	GotoColumn
+KEY	1EA	GotoColumn
+
+# CONTROL-META-k, META-k, ESC K and ESC k
+
+KEY	8B	KeyCode
+KEY	18B	KeyCode
+KEY	1CB	KeyCode
+KEY	1EB	KeyCode
+
+# CONTROL-META-l, META-l, ESC L and ESC l
+
+KEY	8C	ToLower
+KEY	18C	ToLower
+KEY	1CC	ToLower
+KEY	1EC	ToLower
+
+# CONTROL-META-m, META-m, ESC M and ESC m
+
+KEY	8D	Play 1
+KEY	18D	Record
+KEY	1CD	Play 1
+KEY	1ED	Play 1
+
+# CONTROL-META-n, META-n, ESC N and ESC n
+
+KEY	8E	OpenNew
+KEY	18E	OpenNew
+KEY	1CE	OpenNew
+KEY	1EE	OpenNew
+
+# CONTROL-META-o, META-o, ESC O and ESC o
+
+KEY	8F	SetBookmark
+KEY	18F	SetBookmark
+KEY	1CF	SetBookmark
+KEY	1EF	SetBookmark
+
+# CONTROL-META-p, META-p, ESC P and ESC p
+
+KEY	90	Paragraph
+KEY	190	Paragraph
+KEY	1D0	Paragraph
+KEY	1F0	Paragraph
+
+# CONTROL-META-q, META-q, ESC Q and ESC q
+
+KEY	91	Quit
+KEY	191	Quit
+KEY	1D1	Quit
+KEY	1F1	Quit
+
+# CONTROL-META-r, META-r, ESC R and ESC r
+
+KEY	92	Record
+KEY	192	Redo
+KEY	1D2	Record
+KEY	1F2	Redo
+
+# CONTROL-META-s, META-s, ESC S and ESC s
+
+KEY	93	SaveAs
+KEY	193	SaveAs
+KEY	1D3	SaveAs
+KEY	1F3	SaveAs
+
+# CONTROL-META-t, META-t, ESC T and ESC t
+
+KEY	94	Through
+KEY	194	SwapLast2Words
+KEY	1D4	Through
+KEY	1F4	SwapLast2Words
+
+# CONTROL-META-u, META-u, ESC U and ESC u
+
+KEY	95	Undo
+KEY	195	ToUpper
+KEY	1D5	Undo
+KEY	1F5	ToUpper
+
+# CONTROL-META-v, META-v, ESC V and ESC v
+
+KEY	96	Paste
+KEY	196	KeyCode
+KEY	1D6	Paste
+KEY	1F6	KeyCode
+
+# CONTROL-META-w, META-w, ESC W and ESC w
+
+KEY	97	WordWrap
+KEY	197	WordWrap
+KEY	1D7	WordWrap
+KEY	1F7	WordWrap
+
+# CONTROL-META-x, META-x, ESC X and ESC x
+
+KEY	98	Exec
+KEY	198	Exec
+KEY	1D8	Exec
+KEY	1F8	Exec
+
+# CONTROL-META-y, META-y, ESC Y and ESC y
+
+KEY	99	Paste
+KEY	199	DeleteEOL
+KEY	1D9	Paste
+KEY	1F9	DeleteEOL
+
+# CONTROL-META-z, META-z, ESC Z and ESC z
+
+KEY	9A	Undo
+KEY	19A	Undo
+KEY	1DA	Redo
+KEY	1FA	Undo
+
+# META-BackSpace
+
+KEY     1FF     DeletePrevWord
+
+# META 1
+
+KEY	1B1	Through sed 's/^/# /'
+
+# META 2
+
+KEY	1B2	Through sed 's/^# //'
+
+# META 3
+
+KEY	1B3	NOP
+
+# META 4
+
+KEY	1B4	NOP
+
+# META 5
+
+KEY	1B5	NOP
+
+# META 6
+
+KEY	1B6	NOP
+
+# META 7
+
+KEY	1B7	NOP	
+
+# META 8
+
+KEY	1B8	NOP
+
+# META 9
+
+KEY	1B9	NOP
+
+# META 0
+
+KEY	1B0	NOP
+
+# META-SPACE
+
+KEY	1A0	Mark

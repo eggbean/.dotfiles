@@ -1,0 +1,130 @@
+#
+# Jason's custom menus for ne
+# v2 24/10/19, 16/11/19
+# v3 24/01/20 - Added WhiteSpace Cleanup, Tabs2Spaces and Spaces2Tabs
+
+MENU "File"
+ITEM "Open...     ^O" Open
+ITEM "Open New... [N" OpenNew
+ITEM "Save        ^S" Save
+ITEM "Save As...  [S" SaveAs
+ITEM "Quit Now    [Q" Quit
+ITEM "Save&Exit     " Exit
+ITEM "About         " About
+
+MENU "Documents"
+ITEM "New       ^N" NewDoc
+ITEM "Clear       " Clear
+ITEM "Close     ^Q" CloseDoc
+ITEM "Prev      f2" PrevDoc
+ITEM "Next      f3" NextDoc
+ITEM "Select... f4" SelectDoc
+
+MENU "Edit"
+ITEM "Mark  ^B/[SPACE" Mark
+ITEM "Cut          ^X" Cut
+ITEM "Copy         ^C" Copy
+ITEM "Paste     ^Y/^V" Paste
+ITEM "Mark Vert    ^@" MarkVert
+ITEM "Paste Vert   ^W" PasteVert
+ITEM "Erase          " Erase
+ITEM "Kill to SOL  ^U" KillSOL
+ITEM "Kill to EOL  ^K" KillEOL
+ITEM "Delete EOL   [Y" DeleteEOL
+ITEM "Delete Line  ^D" DeleteLine
+ITEM "Undel Line  ^[D" UndelLine
+ITEM "DelPrevWord  [<" DeletePrevWord
+ITEM "DelNextWord  [D" DeleteNextWord
+ITEM "MoveLineUp   f5" MoveLineUp
+ITEM "MoveLineDown f6" MoveLineDown
+ITEM "Spell Check  f7" aspell
+ITEM "Through      f8" Through
+ITEM "Shift Left  f11" Shift <
+ITEM "Shift Right f12" Shift
+ITEM "Comment      [1" Through sed 's/^/# /'
+ITEM "UnComment    [2" Through sed 's/^# //'
+ITEM "Spaces2Tabs    " Through unexpand --tabs=4 | awk '{sub(/[ \t]+$/,""); print}' | sed -Ez '$ s/\n+$//' | sed '$a\'
+ITEM "Tabs2Spaces    " Through expand --tabs=4 | awk '{sub(/[ \t]+$/,""); print}' | sed -Ez '$ s/\n+$//' | sed '$a\'
+ITEM "Cleanup WSpace " Through awk '{sub(/[ \t]+$/,""); print}' | sed -Ez '$ s/\n+$//' | sed '$a\'
+
+MENU "Search"
+ITEM "Find...        ^F" Find
+ITEM "Find RegExp... ^P" FindRegExp
+ITEM "Replace...     ^R" Replace
+ITEM "Replace Once...  " ReplaceOnce
+ITEM "Replace All...   " ReplaceAll
+ITEM "Repeat Last    ^G" RepeatLast
+ITEM "Goto Line...   ^J" GotoLine
+ITEM "Goto Col...    [J" GotoColumn
+ITEM "Goto Mark     ^[B" GotoMark
+ITEM "Match Bracket  ^]" MatchBracket
+ITEM "Set Bookmark   [O" SetBookmark
+ITEM "Goto Bookmark  [G" GotoBookmark
+
+MENU "Macros"
+ITEM "Start/Stop Rec  f9" Record
+ITEM "Play Once       [M" Play 1
+ITEM "Play Many...      " Play
+ITEM "Play Macro...     " Macro
+ITEM "Open Macro...     " OpenMacro
+ITEM "Save Macro...     " SaveMacro
+
+MENU "Extras"
+ITEM "Exec...      [X" Exec
+ITEM "KeyCode      [K" KeyCode
+ITEM "Suspend      ^Z" Suspend
+ITEM "Help...     f10" Help
+ITEM "Refresh      ^L" Refresh
+ITEM "Undo      [Z/^_" Undo
+ITEM "Redo     ^[Z/[R" Redo
+ITEM "Centre         " Center
+ITEM "Paragraph    [P" Paragraph
+ITEM "Adjust View  ^^" AdjustView T
+ITEM "Middle View  [&" AdjustView M
+ITEM "Centre View  [*" AdjustView C
+ITEM "Open Clip      " OpenClip
+ITEM "Save Clip      " SaveClip
+ITEM "ToUpper      [U" ToUpper
+ITEM "ToLower      [L" ToLower
+ITEM "Capitalise   [C" Capitalize
+ITEM "AutoComplete [I" AutoComplete
+ITEM "UTF-8          " UTF8
+
+MENU "Navigation"
+ITEM "Move Left       " MoveLeft
+ITEM "Move Right      " MoveRight
+ITEM "Line Up         " LineUp
+ITEM "Line Down       " LineDown
+ITEM "Page Up         " PageUp
+ITEM "Page Down       " PageDown
+ITEM "Start Of File [A" MoveSOF
+ITEM "End Of File   [E" MoveEOF
+ITEM "Start Of Line ^A" MoveSOL
+ITEM "End Of Line   ^E" MoveEOL
+ITEM "Top Of Screen   " MoveTOS
+ITEM "Bottom Of Screen" MoveBOS
+ITEM "Incr Up     Home" MoveIncUp 
+ITEM "Incr Down    End" MoveIncDown
+ITEM "Prev Word  [(/[B" PrevWord
+ITEM "Next Word  [)/[F" NextWord
+
+MENU "Prefs"
+ITEM "Tab Size...     " TabSize
+ITEM "Tabs/Spaces     " Tabs
+ITEM "Shift Tabs      " ShiftTabs
+ITEM "Insert/Over  Ins" Insert
+ITEM "Free Form       " FreeForm
+ITEM "Status Bar      " StatusBar
+ITEM "Hex Code        " HexCode
+ITEM "Fast GUI        " FastGUI
+ITEM "Word Wrap     [W" WordWrap
+ITEM "Right Margin    " RightMargin
+ITEM "Auto Indent     " AutoIndent
+ITEM "Request Order   " RequestOrder
+ITEM "Preserve CR     " PreserveCR
+ITEM "Save CR/LF      " CRLF
+ITEM "Load Prefs...   " LoadPrefs
+ITEM "Save Prefs...   " SavePrefs
+ITEM "Load Auto Prefs " LoadAutoPrefs
+ITEM "Save Auto Prefs " SaveAutoPrefs
+ITEM "Save Def Prefs  " SaveDefPrefs
