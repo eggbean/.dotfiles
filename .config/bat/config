@@ -1,0 +1,3 @@
+--theme="TwoDark"
+--wrap=never
+--pager "less -R"

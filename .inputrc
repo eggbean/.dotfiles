@@ -1,0 +1,45 @@
+$include /etc/inputrc
+set bell-style					none
+set colored-stats				on
+set completion-ignore-case		off
+set show-all-if-ambiguous		on
+set show-all-if-unmodified		on
+set visible-stats				off
+set bind-tty-special-chars		on
+set mark-symlinked-directories	on
+
+# Use Up/Down for partial history search
+"\e[B": history-search-forward
+"\e[A": history-search-backward
+
+# M-F11 to null for nested tmux config
+"\033[23;3~": ""
+# M-F12 to null for nested tmux config
+"\033[24;3~": ""
+
+# Ctrl-PgUp to null
+"\033[5;5~": ""
+# Ctrl-PgDown to null
+"\033[6;5~": ""
+
+# M-PgUp to null
+"\033[5;3~": ""
+# M-PgDown to null
+"\033[6;3~": ""
+
+# Shift-PgUp to null
+"\033[5;2~": ""
+# Shift-PgDown to null
+"\033[6;2~": ""
+
+# M-Up to null
+"\033[1;3A": ""
+# M-Down to null
+"\033[1;3B": ""
+# M-Right to null
+"\033[1;3C": ""
+# M-Left to null
+"\033[1;3D": ""
+
+# Ctrl-Backspace to Undo - not working/needed? Possibly part of wsltty
+# "\033[3;5~": "undo"
