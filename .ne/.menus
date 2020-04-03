@@ -52,8 +52,6 @@ ITEM "Shift Left  f11" Shift <
 ITEM "Shift Right f12" Shift
 ITEM "Comment      [1" Through sed 's/^/# /'
 ITEM "UnComment    [2" Through sed 's/^# //'
-ITEM "Spaces2Tabs    " Through unexpand --tabs=4 | awk '{sub(/[ \t]+$/,""); print}' | sed -Ez '$ s/\n+$//' | sed '$a\'
-ITEM "Tabs2Spaces    " Through expand --tabs=4 | awk '{sub(/[ \t]+$/,""); print}' | sed -Ez '$ s/\n+$//' | sed '$a\'
 ITEM "Cleanup WSpace " Through awk '{sub(/[ \t]+$/,""); print}' | sed -Ez '$ s/\n+$//' | sed '$a\'
 ITEM "Open Clip      " OpenClip
 ITEM "Save Clip      " SaveClip
@@ -100,6 +98,9 @@ ITEM "Play Many...      " Play
 ITEM "Play Macro...     " Macro
 ITEM "Open Macro...     " OpenMacro
 ITEM "Save Macro...     " SaveMacro
+ITEM "------------------" NOP
+ITEM "Spaces2Tabs       " Spaces2Tabs
+ITEM "Tabs2Spaces       " Tabs2Spaces
 
 MENU "Extras"
 ITEM "Exec...      [X" Exec
