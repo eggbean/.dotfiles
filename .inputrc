@@ -32,6 +32,15 @@ set mark-symlinked-directories	on
 # Shift-PgDown to null
 "\033[6;2~": ""
 
+# S-Up to null
+"\033[1;2A": ""
+# S-Down to null
+"\033[1;2B": ""
+# S-Right to null
+"\033[1;2C": ""
+# S-Left to null
+"\033[1;2D": ""
+
 # M-Up to null
 "\033[1;3A": ""
 # M-Down to null
