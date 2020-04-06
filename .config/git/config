@@ -3,6 +3,9 @@
 	email = 815311+eggbean@users.noreply.github.com
 [core]
 	editor = ne
-	pager = less -r
+	pager = less -FRS
 [color]
 	ui = true
+[pager]
+	log = less -+$LESS +g -R
+	diff = less -+$LESS +g -R
