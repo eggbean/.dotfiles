@@ -12,14 +12,17 @@ set mark-symlinked-directories	on
 "\e[B": history-search-forward
 "\e[A": history-search-backward
 
-# M-F11 to null for nested tmux config
+# Ctrl-Backspace to Undo - not working/needed? Possibly part of wsltty
+# "\033[3;5~": "undo"
+
+# M-F11 to null (nested tmux config)
 "\033[23;3~": ""
-# M-F12 to null for nested tmux config
+# M-F12 to null (nested tmux config)
 "\033[24;3~": ""
 
-# Ctrl-PgUp to null
+# C-PgUp to null
 "\033[5;5~": ""
-# Ctrl-PgDown to null
+# C-PgDown to null
 "\033[6;5~": ""
 
 # M-PgUp to null
@@ -27,19 +30,10 @@ set mark-symlinked-directories	on
 # M-PgDown to null
 "\033[6;3~": ""
 
-# Shift-PgUp to null
+# S-PgUp to null
 "\033[5;2~": ""
-# Shift-PgDown to null
+# S-PgDown to null
 "\033[6;2~": ""
-
-# S-Up to null
-"\033[1;2A": ""
-# S-Down to null
-"\033[1;2B": ""
-# S-Right to null
-"\033[1;2C": ""
-# S-Left to null
-"\033[1;2D": ""
 
 # M-Up to null
 "\033[1;3A": ""
@@ -50,5 +44,34 @@ set mark-symlinked-directories	on
 # M-Left to null
 "\033[1;3D": ""
 
-# Ctrl-Backspace to Undo - not working/needed? Possibly part of wsltty
-# "\033[3;5~": "undo"
+# S-Up to null
+"\033[1;2A": ""
+# S-Down to null
+"\033[1;2B": ""
+# S-Right to null
+"\033[1;2C": ""
+# S-Left to null
+"\033[1;2D": ""
+
+# C-S-Up to null
+"\033[1;6A": ""
+# C-S-Down to null
+"\033[1;6B": ""
+
+# C-M-Up to null
+"\033[1;7A": ""
+# C-M-Down to null
+"\033[1;7B": ""
+# C-M-Right to null
+"\033[1;7C": ""
+# C-M-Left to null
+"\033[1;7D": ""
+
+# M-S-Up to null
+"\033[1;4A": ""
+# M-S-Down to null
+"\033[1;4B": ""
+# M-S-Right to null
+"\033[1;4C": ""
+# M-S-Left to null
+"\033[1;4D": ""
