@@ -12,7 +12,7 @@ set mark-symlinked-directories	on
 "\e[B": history-search-forward
 "\e[A": history-search-backward
 
-# Ctrl-Backspace to Undo - not working/needed? Possibly part of wsltty
+# C-Backspace to Undo - not working/needed? Possibly part of wsltty
 # "\033[3;5~": "undo"
 
 # M-F11 to null (nested tmux config)
@@ -25,38 +25,35 @@ set mark-symlinked-directories	on
 # C-PgDown to null
 "\033[6;5~": ""
 
+# C-M-PgUp to null
+"\033[5;7~": ""
+# C-M-PgDown to null
+"\033[6;7~": ""
+
+# C-M-S-PgUp to null
+"\033[5;8~": ""
+# C-M-S-PgDown to null
+"\033[6;8~": ""
+
+# C-S-PgUp to null
+"\033[5;6~": ""
+# C-S-PgDown to null
+"\033[6;6~": ""
+
 # M-PgUp to null
 "\033[5;3~": ""
 # M-PgDown to null
 "\033[6;3~": ""
 
+# M-S-PgUp to null
+"\033[5;4~": ""
+# M-S-PgDown to null
+"\033[6;4~": ""
+
 # S-PgUp to null
 "\033[5;2~": ""
 # S-PgDown to null
 "\033[6;2~": ""
-
-# M-Up to null
-"\033[1;3A": ""
-# M-Down to null
-"\033[1;3B": ""
-# M-Right to null
-"\033[1;3C": ""
-# M-Left to null
-"\033[1;3D": ""
-
-# S-Up to null
-"\033[1;2A": ""
-# S-Down to null
-"\033[1;2B": ""
-# S-Right to null
-"\033[1;2C": ""
-# S-Left to null
-"\033[1;2D": ""
-
-# C-S-Up to null
-"\033[1;6A": ""
-# C-S-Down to null
-"\033[1;6B": ""
 
 # C-M-Up to null
 "\033[1;7A": ""
@@ -67,6 +64,29 @@ set mark-symlinked-directories	on
 # C-M-Left to null
 "\033[1;7D": ""
 
+# C-M-S-Up to null
+"\033[1;8A": ""
+# C-M-S-Down to null
+"\033[1;8B": ""
+# C-M-S-Right to null
+"\033[1;8C": ""
+# C-M-S-Left to null
+"\033[1;8D": ""
+
+# C-S-Up to null
+"\033[1;6A": ""
+# C-S-Down to null
+"\033[1;6B": ""
+
+# M-Up to null
+"\033[1;3A": ""
+# M-Down to null
+"\033[1;3B": ""
+# M-Right to null
+"\033[1;3C": ""
+# M-Left to null
+"\033[1;3D": ""
+
 # M-S-Up to null
 "\033[1;4A": ""
 # M-S-Down to null
@@ -75,3 +95,12 @@ set mark-symlinked-directories	on
 "\033[1;4C": ""
 # M-S-Left to null
 "\033[1;4D": ""
+
+# S-Up to null
+"\033[1;2A": ""
+# S-Down to null
+"\033[1;2B": ""
+# S-Right to null
+"\033[1;2C": ""
+# S-Left to null
+"\033[1;2D": ""
