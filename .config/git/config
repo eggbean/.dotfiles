@@ -9,3 +9,4 @@
 [pager]
 	log = less -+$LESS +g -R
 	diff = less -+$LESS +g -R
+	stash = less -FRS\n
