@@ -8,6 +8,9 @@
 
 * Include option for fancy prompt, as below
 
+* Not sure where 'LS_OPTIONS=-hv --color=always' is coming from. May need to add it to
+  ~/.bash_aliases if it disappears.
+
 ==== FROM OLD OSIRIS ====
 
 # linuxlogo -f -L debian -F "$(lsb_release -ds)\nKernel Version #V\nCompiled #C\n#N #M #X #T Processor#S,
