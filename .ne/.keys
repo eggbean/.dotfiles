@@ -560,8 +560,8 @@ KEY	1F9	DeleteEOL
 
 KEY	9A	Suspend
 KEY	19A	Undo
-KEY	1DA	Redo
-KEY	1FA	Undo
+KEY	1DA	Suspend
+KEY	1FA	Suspend
 
 # META-BackSpace
 
