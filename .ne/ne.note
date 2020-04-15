@@ -48,3 +48,10 @@ Esc  + t   Swap the last two words before the cursor.
 ---
 Make shortcut for DoUndo (DU), to clear Undo buffer.
 Do something about Ctrl-Alt arrow key bindings
+
+Free up Ctrl-Z and Ctrl-Y to be Undo and Redo	# DONE
+Make Meta-Shift-Z Suspend						# DONE
+Ctrl-Y not needed as I have Ctrl-V for Paste
+	but make sure that ClipJump can ignore terminal apps in Windows first
+
+NOW Alt-R and Alt-Z are free

@@ -342,11 +342,11 @@ KEY	18	Cut
 
 # CONTROL-y 
 
-KEY	19	Paste
+KEY	19	Redo
 
 # CONTROL-z
 
-KEY	1A	Suspend
+KEY	1A	Undo
 
 # CONTROL-[ cannot be redefined (it's Escape)
 
@@ -391,7 +391,7 @@ KEY	1da	CRLF
 # CONTROL-META-a, META-a, ESC A and ESC a
 
 KEY	81	MoveSOF
-KEY	181	MoveSOF
+KEY	181	MarkAll
 KEY	1C1	MoveSOF
 KEY	1E1	MoveSOF
 
@@ -558,7 +558,7 @@ KEY	1F9	DeleteEOL
 
 # CONTROL-META-z, META-z, ESC Z and ESC z
 
-KEY	9A	Undo
+KEY	9A	Suspend
 KEY	19A	Undo
 KEY	1DA	Redo
 KEY	1FA	Undo

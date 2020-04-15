@@ -35,14 +35,15 @@ ITEM "ToLower      [L" ToLower
 ITEM "Capitalise   [C" Capitalize
 ITEM "Centre         " Center
 ITEM "Paragraph    [P" Paragraph
-ITEM "Undo      [Z/^_" Undo
+ITEM "Undo      ^Z/^_" Undo
 ITEM "Redo     ^[Z/[R" Redo
 
 MENU "Block"
 ITEM "Mark  ^B/[SPACE" Mark
+ITEM "Mark All    ^[A" MarkAll
 ITEM "Cut          ^X" Cut
 ITEM "Copy         ^C" Copy
-ITEM "Paste     ^Y/^V" Paste
+ITEM "Paste        ^V" Paste
 ITEM "Mark Vert    ^@" MarkVert
 ITEM "Paste Vert   ^W" PasteVert
 ITEM "Erase          " Erase
