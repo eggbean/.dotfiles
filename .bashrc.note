@@ -1,0 +1,31 @@
+## Notes for .bashrc and .profile
+
+* Figure out how .bashrc (nonlogin) and .profile (login) are different for my usage
+
+* Move as much as I can from .bashrc to .profile, to make .profile good for Debian and CentOS
+
+* Eventually use the same .bashrc for Debian and CentOS
+
+* Include option for fancy prompt, as below
+
+==== FROM OLD OSIRIS ====
+
+# linuxlogo -f -L debian -F "$(lsb_release -ds)\nKernel Version #V\nCompiled #C\n#N #M #X #T Processor#S,
+
+### PROMPT
+
+# git status
+#function formattedGitBranch {
+#    _branch="$(git branch 2>/dev/null | sed -e "/^\s/d" -e "s/^\*\s//")"
+#    test -n "$_branch" && echo -e " \e[1;34m@$_branch"
+#}
+
+#PROMPT_COMMAND='hasjobs=$(jobs -p)'
+#PS1='${hasjobs:+\j }\\# '
+
+#if [ ${UID} -eq 0 ]; then
+#    PS1='\[\e]0;\w\a\]\n\[\e[0;31m\] \u@\h:\[\e[0;33m\]\w\[\e[m\]$(formattedGitBranch) \[\e[m\]\n\[\e[0;3
+#else
+#    PS1='\[\e]0;\w\a\]\n\[\e[0;32m\] \u@\h:\[\e[0;33m\]\w\[\e[m\]$(formattedGitBranch) \[\e[m\]\n\[\e[0;3
+#  # PS1='\[\e]0;\w\a\]\n\[\e[0;32m\] \u@\h:\[\e[0;33m\]\w\[\e[0m\]\n${hasjobs:+\j }\$ '
+#fi
