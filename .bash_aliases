@@ -19,7 +19,7 @@ alias rm='rm -I'
 
 # Command replacements
 if [ -x /usr/bin/colordiff ]; then
-	alias diff='cdiff'
+	alias diff='colordiff'
 fi
 
 if command -v xstat >/dev/null; then
