@@ -1,1 +1,8 @@
-md#ap
+Syntax conf
+RightMargin 100
+WordWrap 1
+AutoIndent 1
+Tabs 0
+DelTabs 1
+AutoMatchBracket 1
+UTF8Auto 1

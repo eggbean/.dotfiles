@@ -342,7 +342,7 @@ KEY	18	Cut
 
 # CONTROL-y 
 
-KEY	19	Redo
+KEY	19	Paste
 
 # CONTROL-z
 
@@ -558,7 +558,7 @@ KEY	1F9	DeleteEOL
 
 # CONTROL-META-z, META-z, ESC Z and ESC z
 
-KEY	9A	Suspend
+KEY	9A	Redo
 KEY	19A	Undo
 KEY	1DA	Suspend
 KEY	1FA	Suspend
