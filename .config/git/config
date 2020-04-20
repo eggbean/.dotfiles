@@ -3,10 +3,12 @@
 	email = 815311+eggbean@users.noreply.github.com
 [core]
 	editor = ne
-	pager = less -FRS
+	pager = LESS= less -FRXq
 [color]
 	ui = true
 [pager]
-	log = less -+$LESS +g -R
-	diff = less -+$LESS +g -R
-	stash = less -FRS\n
+	diff = LESS= less -RSq+g
+	log = LESS= less -Rq+g
+	stash = LESS= less -FRXq
+[color "status"]
+	untracked = blue

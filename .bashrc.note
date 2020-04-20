@@ -4,12 +4,19 @@
 
 * Move as much as I can from .bashrc to .profile, to make .profile good for Debian and CentOS
 
+* Seperations between .bashrc and .profile could be defined by:
+    * Distro (can use tests and if/else statements instead)
+    * User / Root
+    * Preferences for my own main hosts vs core preferences for minor/other hosts 		
+
 * Eventually use the same .bashrc for Debian and CentOS
 
-* Include option for fancy prompt, as below
+* Include option for fancy prompt, as below. Use git rev-parse --show-toplevel
 
 * Not sure where 'LS_OPTIONS=-hv --color=always' is coming from. May need to add it to
-  ~/.bash_aliases if it disappears.
+  .bash_aliases if it disappears.
+
+* Use $EXA_COLORS for only exa specific colours and use $LS_COLORS for file/directory colours
 
 ==== FROM OLD OSIRIS ====
 

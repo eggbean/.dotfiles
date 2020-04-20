@@ -1,7 +1,7 @@
 # Bash Aliases
 
 alias tree='tree -C'
-alias diff='diff --color=auto'
+alias diff='diff --color=auto --tabsize=4'
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'

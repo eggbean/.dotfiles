@@ -1,5 +1,4 @@
 $include /etc/inputrc
-set bell-style                  none
 set colored-stats               on
 set completion-ignore-case      off
 set show-all-if-ambiguous       on
@@ -7,6 +6,8 @@ set show-all-if-unmodified      on
 set visible-stats               off
 set bind-tty-special-chars      on
 set mark-symlinked-directories  on
+set bell-style                  none
+set prefer-visible-bell
 
 # Use Up/Down for partial history search
 "\e[B": history-search-forward

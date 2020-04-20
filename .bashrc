@@ -113,16 +113,15 @@ if ! shopt -oq posix; then
 fi
 
 # Shared history between tmux panes
-shopt -s histreedit
-shopt -s histverify
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 # Environmental variables
 export XDG_CONFIG_HOME=~/.config
+export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 export TERM=xterm-24bit
 export MOSH_TITLE_NOPREFIX=
-export LESS='-Rqx4+g'
-export BAT_PAGER='less -R'
-export EXA_COLORS="lc=38;5;124:lm=38;5;196:uu=38;5;178:gu=38;5;178:un=38;5;141:gn=38;5;141:*.orig=35;1"
+export LESS='-MRiqx4'
+export MANPAGER='less -Ri+Gg'
+export BAT_PAGER='less -MRiqx4+g'
+export EXA_COLORS="lc=38;5;124:lm=38;5;196:uu=38;5;178:gu=38;5;178:un=38;5;141:gn=38;5;141"
 export PASTEL_COLOR_MODE=24bit
-export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
