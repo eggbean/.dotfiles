@@ -44,12 +44,12 @@ ssh() {
 	fi
 }
 
-# Prevent accidental git stashing
+# Prevent accidental git stashing and alias git to hub
 git() {
 	if [[ "$#" -eq 1 ]] && [[ "$1" = "stash" ]]; then
 		echo 'WARNING: run "git stash push" instead.'
 	else
-		command git "$@"
+		command hub "$@"
 	fi
 }
 
