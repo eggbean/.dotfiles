@@ -46,7 +46,7 @@ ssh() {
 
 # Prevent accidental git stashing
 git() {
-	if [[ "$#" -eq 1 ]] && [[ "$1" = "stash" ]];then
+	if [[ "$#" -eq 1 ]] && [[ "$1" = "stash" ]]; then
 		echo 'WARNING: run "git stash push" instead.'
 	else
 		command git "$@"
@@ -54,15 +54,16 @@ git() {
 }
 
 # Make directory and change directory into it
-mkdircd () { mkdir "$@" && cd "$@"; }
+mkdircd() { mkdir "$@" && cd "$@"; }
 
 # Minimalist terminal pastebin
-sprunge() {
-curl -F 'sprunge=<-' http://sprunge.us
-}
+sprunge() { curl -F 'sprunge=<-' http://sprunge.us; }
 
 # Use a private mock hosts(5) file for completion
 export HOSTFILE='$HOME/.hosts'
+
+# Shared history between tmux panes
+PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 # Colorise man pages
 export LESS_TERMCAP_mb=$'\E[1;31m'	   # begin bold
@@ -73,7 +74,14 @@ export LESS_TERMCAP_se=$'\E[0m'		   # reset reverse video
 export LESS_TERMCAP_us=$'\E[1;32m'	   # begin underline
 export LESS_TERMCAP_ue=$'\E[0m'		   # reset underline
 
-# More environmental variables
+# Environmental variables
+export TERM=xterm-24bit
+export MOSH_TITLE_NOPREFIX=
+export LESS='-MRiqx4'
+export LESSCHARSET='utf-8'
+export MANPAGER='less -Ri+Gg'
+export BAT_PAGER='less -MRiqx4+g'
+export EXA_COLORS="lc=38;5;124:lm=38;5;196:uu=38;5;178:gu=38;5;178:un=38;5;141:gn=38;5;141"
+export PASTEL_COLOR_MODE=24bit
 export EDITOR='ne'
 export VISUAL='vim'
-export LESSCHARSET='utf-8'
