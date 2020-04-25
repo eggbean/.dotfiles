@@ -77,7 +77,7 @@ export LESS_TERMCAP_ue=$'\E[0m'		   # reset underline
 # Environmental variables
 export TERM=xterm-24bit
 export MOSH_TITLE_NOPREFIX=
-export LESS='-MRiqx4'
+export LESS='-MRiqx4FX'
 export LESSCHARSET='utf-8'
 export MANPAGER='less -Ri+Gg'
 export BAT_PAGER='less -MRiqx4+g'
