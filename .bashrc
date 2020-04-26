@@ -111,7 +111,3 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-
-# Environmental variables
-export XDG_CONFIG_HOME=~/.config
-export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker

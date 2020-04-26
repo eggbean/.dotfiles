@@ -13,9 +13,9 @@ alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'
 alias pihole='docker exec pihole pihole'
 
 # Aliases to avoid making mistakes:
-alias cp='cp -i'
-alias mv='mv -i'
-alias rm='rm -I'
+alias cp='cp -iv'
+alias mv='mv -iv'
+alias rm='rm -Iv'
 
 # Command replacements
 if [ -x /usr/bin/colordiff ]; then
