@@ -10,15 +10,15 @@
 # TODO: Add Ctrl-Alt-Arrow keys, probably for fast navigation.  See what is going on in KiTTY first
 
 # Alt-F11
-SEQ	"\x1b[23;3~"	A0
+SEQ	"\x1b[23;3~" A0
 KEY	A0	NOP
 
 # Alt-F12
-SEQ	"\x1b[24;3~"	A1
+SEQ	"\x1b[24;3~" A1
 KEY	A1	NOP
 
 # Ctrl-Up
-SEQ	"\x1b[1;5A"	A2
+SEQ	"\x1b[1;5A" A2
 KEY	A2	LineUp 10
 
 # Ctrl-Down
@@ -64,6 +64,30 @@ KEY	AC	NOP
 # Ctrl-Alt-Left
 SEQ	"\x1b[1;7D"	AD
 KEY	AD	NOP
+
+# Ctrl-PgUp
+SEQ	"\x1b[5;5~" AE
+KEY	AE	NOP
+
+# Ctrl-PgDn
+SEQ	"\x1b[6;5~" AF
+KEY	AF	NOP
+
+# Alt-PgUp
+SEQ	"\x1b[5;3~" B0
+KEY	B0	NOP
+
+# Alt-PgDn
+SEQ	"\x1b[6;3~" B1
+KEY	B1	NOP
+
+# Shift-PgUp
+SEQ	"\x1b[5;2~" B2
+KEY	B2	NOP
+
+# Shift-PgDn
+SEQ	"\x1b[6;2~" B3
+KEY	B3	NOP
 
 # Cursor up
 
