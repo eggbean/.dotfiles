@@ -7,7 +7,7 @@
 [color]
 	ui = true
 [pager]
-	diff = LESS= less -RSq+g
+	diff = LESS= less -RSqx4+g
 	log = LESS= less -Rq+g
 	stash = LESS= less -FRXq
 [color "status"]

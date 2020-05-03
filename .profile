@@ -53,8 +53,17 @@ git() {
 	fi
 }
 
+# Use cat to display web page source
+cat() {
+	if [[ $1 == *://* ]]; then
+		curl -LsfS "$1"
+	else
+		command cat "$@"
+	fi
+}
+
 # Make directory and change directory into it
-mkdircd() { mkdir "$@" && cd "$@"; }
+mkdircd() { mkdir -p "$@" && cd "$@"; }
 
 # Minimalist terminal pastebin
 sprunge() { curl -F 'sprunge=<-' http://sprunge.us; }
@@ -65,28 +74,38 @@ export HOSTFILE='$HOME/.hosts'
 # Shared history between tmux panes
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
+# broot function
+source ~/.config/broot/launcher/bash/br
+
 # Colorise man pages
-export LESS_TERMCAP_mb=$'\E[1;31m'	   # begin bold
-export LESS_TERMCAP_md=$'\E[1;36m'	   # begin blink
-export LESS_TERMCAP_me=$'\E[0m'		   # reset bold/blink
-export LESS_TERMCAP_so=$'\E[01;44;33m' # begin reverse video
-export LESS_TERMCAP_se=$'\E[0m'		   # reset reverse video
-export LESS_TERMCAP_us=$'\E[1;32m'	   # begin underline
-export LESS_TERMCAP_ue=$'\E[0m'		   # reset underline
+export LESS_TERMCAP_mb=$'\E[1;31m'		# begin bold
+export LESS_TERMCAP_md=$'\E[1;36m'		# begin blink
+export LESS_TERMCAP_me=$'\E[0m'			# reset bold/blink
+export LESS_TERMCAP_so=$'\E[01;44;30m'	# begin reverse video
+export LESS_TERMCAP_se=$'\E[0m'			# reset reverse video
+export LESS_TERMCAP_us=$'\E[1;32m'		# begin underline
+export LESS_TERMCAP_ue=$'\E[0m'			# reset underline
+export LESS_TERMCAP_mr=$(tput rev)
+export LESS_TERMCAP_mh=$(tput dim)
+export LESS_TERMCAP_ZN=$(tput ssubm)
+export LESS_TERMCAP_ZV=$(tput rsubm)
+export LESS_TERMCAP_ZO=$(tput ssupm)
+export LESS_TERMCAP_ZW=$(tput rsupm)
 
 # Environmental variables
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
-export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
+export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
-export TERM=xterm-24bit
+export TERM=xterm-'24bit'
 export MOSH_TITLE_NOPREFIX=
-export LESS='-MRiqx4FX'
+export PAGER='less'
+export LESS='-MRqx4FX#10'
 export LESSCHARSET='utf-8'
 export LESSHISTFILE="$XDG_CACHE_HOME/.lesshst"
 export MANPAGER='less -+MFX'
-export BAT_PAGER='less -+MFX'
+export BAT_PAGER='less -+MFX -S'
 export EXA_COLORS="lc=38;5;124:lm=38;5;196:uu=38;5;178:gu=38;5;178:un=38;5;141:gn=38;5;141"
 export PASTEL_COLOR_MODE=24bit
 export ANSIBLE_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/ansible/ansible.cfg"

@@ -1,10 +1,11 @@
 # Bash Aliases
 
+alias sudo='sudo '
 alias tree='tree -C'
 alias diff='diff --color=auto --tabsize=4'
-alias grep='grep --color=auto'
-alias egrep='egrep --color=auto'
-alias fgrep='fgrep --color=auto'
+alias grep='grep --color=always'
+alias egrep='egrep --color=always'
+alias fgrep='fgrep --color=always'
 alias ack='ack --color-match=magenta'
 alias tmux='tmux -2u'
 alias timg='timg -g50x50'
