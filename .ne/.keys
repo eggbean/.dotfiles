@@ -477,7 +477,7 @@ KEY	1EA	GotoColumn
 
 # CONTROL-META-k, META-k, ESC K and ESC k
 
-KEY	8B	KeyCode
+KEY	8B	CutnYank
 KEY	18B	KeyCode
 KEY	1CB	KeyCode
 KEY	1EB	KeyCode
@@ -526,7 +526,7 @@ KEY	1F1	Quit
 
 # CONTROL-META-r, META-r, ESC R and ESC r
 
-KEY	92	Record
+KEY	92	KillnReplace
 KEY	192	Redo
 KEY	1D2	Record
 KEY	1F2	Redo

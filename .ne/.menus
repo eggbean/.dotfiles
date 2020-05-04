@@ -21,8 +21,10 @@ ITEM "Next      f3" NextDoc
 ITEM "Select... f4" SelectDoc
 
 MENU "Edit"
-ITEM "Kill to SOL  ^U" KillSOL
-ITEM "Kill to EOL  ^K" KillEOL
+ITEM "Cut to SOL   ^U" KillSOL
+ITEM "Cut to EOL   ^K" KillEOL
+ITEM "Cut & Paste s^K" CutnYank
+ITEM "Del&Replace s^R" KillnReplace
 ITEM "Delete EOL   [Y" DeleteEOL
 ITEM "Delete Line  ^D" DeleteLine
 ITEM "Undel Line  ^[D" UndelLine
