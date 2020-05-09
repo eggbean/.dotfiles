@@ -12,3 +12,5 @@
 	stash = LESS= less -FRXq
 [color "status"]
 	untracked = blue
+[alias]
+	wdiff =  diff --color-words

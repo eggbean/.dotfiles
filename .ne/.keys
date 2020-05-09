@@ -1,13 +1,10 @@
 #
 # Jason's custom keybindings for ne
-# v2 24/10/19
-# v3 17/12/19
+#
 
 #
 # Cursor/editing keys
 #
-
-# TODO: Add Ctrl-Alt-Arrow keys, probably for fast navigation.  See what is going on in KiTTY first
 
 # Alt-F11
 SEQ	"\x1b[23;3~" A0
@@ -50,15 +47,15 @@ SEQ	"\x1b[1;3D"	A9
 KEY	A9	AdjustView L
 
 # Ctrl-Alt-Up
-SEQ	"\x1b[1;7D"	AA
+SEQ	"\x1b[1;7A"	AA
 KEY	AA	NOP
 
 # Ctrl-Alt-Down
-SEQ	"\x1b[1;7D"	AB
+SEQ	"\x1b[1;7B"	AB
 KEY	AB	NOP
 
 # Ctrl-Alt-Right
-SEQ	"\x1b[1;7D"	AC
+SEQ	"\x1b[1;7C"	AC
 KEY	AC	NOP
 
 # Ctrl-Alt-Left
@@ -88,6 +85,46 @@ KEY	B2	NOP
 # Shift-PgDn
 SEQ	"\x1b[6;2~" B3
 KEY	B3	NOP
+
+# Ctrl-Home
+SEQ	"\x1b[1;5H" B4
+KEY	B4	NOP
+
+# Ctrl-End
+SEQ	"\x1b[1;5F" B5
+KEY	B5	NOP
+
+# Ctrl-Delete
+SEQ	"\x1b[3;5~" B6
+KEY	B6	NOP
+
+# Alt-Home
+SEQ	"\x1b[1;3H" B7
+KEY	B7	NOP
+
+# Alt-End
+SEQ	"\x1b[1;3F" B8
+KEY	B8	NOP
+
+# Alt-Insert
+SEQ	"\x1b[2;3~" B9
+KEY	B9	NOP
+
+# Alt-Delete
+SEQ	"\x1b[3;3~" BA
+KEY	BA	NOP
+
+# Shift-Home
+SEQ	"\x1b[1;2H" BB
+KEY	BB	NOP
+
+# Shift-End
+SEQ	"\x1b[1;2F" BC
+KEY	BC	NOP
+
+# Shift-Delete
+SEQ	"\x1b[3;2~" BD
+KEY	BD	NOP
 
 # Cursor up
 

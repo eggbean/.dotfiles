@@ -93,6 +93,7 @@ export LESS_TERMCAP_ZO=$(tput ssupm)
 export LESS_TERMCAP_ZW=$(tput rsupm)
 
 # Environmental variables
+export LANG='en_GB.utf8'
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
@@ -104,7 +105,7 @@ export PAGER='less'
 export LESS='-MRqx4FX#10'
 export LESSCHARSET='utf-8'
 export LESSHISTFILE="$XDG_CACHE_HOME/.lesshst"
-export MANPAGER='less -+MFX'
+export MANPAGER='less -+MFX +g'
 export BAT_PAGER='less -+MFX -S'
 export EXA_COLORS="lc=38;5;124:lm=38;5;196:uu=38;5;178:gu=38;5;178:un=38;5;141:gn=38;5;141"
 export PASTEL_COLOR_MODE=24bit

@@ -28,7 +28,7 @@ if command -v xstat >/dev/null; then
 fi
 
 if command -v exa >/dev/null; then
-	alias ls='exa-wrapper'
+	alias ls='exa-wrapper.sh'
 else
 	alias ls='/bin/ls $LS_OPTIONS'
 	alias dir='/bin/ls $LS_OPTIONS --format=vertical'
