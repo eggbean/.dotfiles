@@ -126,6 +126,55 @@ KEY	BC	NOP
 SEQ	"\x1b[3;2~" BD
 KEY	BD	NOP
 
+# Ctrl-Shift-Up
+SEQ	"\x1b[1;6A"	BE
+KEY	BE	NOP
+
+# Ctrl-Shift-Down
+SEQ	"\x1b[1;6B"	BF
+KEY	BF	NOP
+
+# Ctrl-Shift-Right
+SEQ	"\x1b[1;6C"	C0
+KEY	C0	NOP
+
+# Ctrl-Shift-Left
+SEQ	"\x1b[1;6D"	C1
+KEY	C1	NOP
+
+# Alt-Shift-Up
+SEQ	"\x1b[1;4A"	C2
+KEY	C2	NOP
+
+# Alt-Shift-Down
+SEQ	"\x1b[1;4B"	C3
+KEY	C3	NOP
+
+# Alt-Shift-Right
+SEQ	"\x1b[1;4C"	C4
+KEY	C4	NOP
+
+# Alt-Shift-Left
+SEQ	"\x1b[1;4D"	C5
+KEY	C5	NOP
+
+# Alt-Shift-PgUp
+SEQ	"\x1b[5;4~" C6
+KEY	C6	NOP
+
+# Alt-Shift-PgDn
+SEQ	"\x1b[6;4~" C7
+KEY	C7	NOP
+
+# Shift-Right
+SEQ	"\x1b[1;2C" C8
+KEY	C8	NOP
+
+# Shift-Left
+SEQ	"\x1b[1;2D" C9
+KEY	C9	NOP
+
+
 # Cursor up
 
 KEY	101	LineUp
@@ -160,11 +209,11 @@ KEY	108	PrevPage
 
 # Scroll forward
 
-KEY	109	LineDown
+KEY	109	NOP
 
 # Scroll backward
 
-KEY	10A	LineUp
+KEY	10A	NOP
 
 # Clear to end of line
 
