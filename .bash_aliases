@@ -1,7 +1,7 @@
 # Bash Aliases
 alias sudo='sudo '
 alias tree='tree -C'
-alias diff='diff --color=auto --tabsize=4'
+alias diff='diff --color=always --tabsize=4'
 alias grep='grep --color=always'
 alias egrep='egrep --color=always'
 alias fgrep='fgrep --color=always'
@@ -24,6 +24,11 @@ if command -v exa >/dev/null; then
 	alias ls='exa-wrapper.sh'
 else
 	alias ls='/bin/ls $LS_OPTIONS'
+fi
+
+# Command replacements
+if command -v lolcat >/dev/null; then
+	alias cat='lolcat'
 fi
 
 # Extras
