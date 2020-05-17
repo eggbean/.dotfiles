@@ -62,6 +62,13 @@ cat() {
 	fi
 }
 
+mansearch() { 
+	local q=\'
+	local q_pattern="'${1//$q/$q\\$q$q}'"
+	MANPAGER="less -+MFX -p $q_pattern"
+	man "$2"
+}
+
 # Make directory and change directory into it
 mkdircd() { mkdir -p "$@" && cd "$@"; }
 
@@ -103,7 +110,7 @@ export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
 export TERM=xterm-'24bit'
 export MOSH_TITLE_NOPREFIX=
 export PAGER='less'
-export LESS='-MRqx4FX#10'
+export LESS='-MRQx4FX#10'
 export LESSCHARSET='utf-8'
 export LESSHISTFILE="$XDG_CACHE_HOME/.lesshst"
 export MANPAGER='less -+MFX +g'

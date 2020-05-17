@@ -7,7 +7,7 @@
 * Seperations between .bashrc and .profile could be defined by:
     * Distro (can use tests and if/else statements instead)
     * User / Root
-    * Preferences for my own main hosts vs core preferences for minor/other hosts 		
+    * Preferences for my own main hosts vs core preferences for minor/other hosts
 
 * Eventually use the same .bashrc for Debian and CentOS
 
@@ -39,3 +39,50 @@
 #    PS1='\[\e]0;\w\a\]\n\[\e[0;32m\] \u@\h:\[\e[0;33m\]\w\[\e[m\]$(formattedGitBranch) \[\e[m\]\n\[\e[0;3
 #  # PS1='\[\e]0;\w\a\]\n\[\e[0;32m\] \u@\h:\[\e[0;33m\]\w\[\e[0m\]\n${hasjobs:+\j }\$ '
 #fi
+
+     eggbean │ Could somebody explain what this is doing exactly?   '${1//$q/$q\\$q$q}'
+       phogg │ eggbean: nothing, it's inside single quotes
+       mknod │ eggbean, escape single quotes
+     eggbean │ ic. thanks
+   earnestly │ Well
+   earnestly │ It depends on what $q is defined to be
+       mknod │ '
+   earnestly │ I know where it comes from, but who knows lol
+     eggbean │ earnestly: q=\
+   jetchisel │ looks like escaping an *sql query
+       phogg │ looks like asking for trouble
+       mknod │ lol
+   jetchisel │ it's a bird...
+   earnestly │ double, double
+     eggbean │ mansearch() { local q=\'; local q_pattern="'${1//$q/$q\\$q$q}'"; MANPAGER="less -p $q_pattern" man "$2"; }
+       phogg │ eggbean: q is not \ it's ' as mknod said
+       phogg │ makes much more sense
+     eggbean │ oh ywah
+   jetchisel │ it would not get you anywhere if the assignment is just q=\
+       phogg │ poor man's printf %q?
+       phogg │ jetchisel: I assumed he meant q='\'
+   jetchisel │ yep
+       mknod │ jetchisel, it would get to the next line
+   jetchisel │ maybe ^^
+   earnestly │ phogg: Yeah, this is pre %q
+   earnestly │ printf %s "$1" | sed "s/'/'\\\\''/g; 1s/^/'/; \$s/\$/'/" # is another one, although I quite like: jq -Rr '@sh"\(.)"'
+   jetchisel │ "${q_pattern@Q}" maybe?
+   earnestly │ jetchisel: "less -p ${...@Q}" yeah
+   jetchisel │ cool
+       phogg │ eggbean: mansearch() { local q_pattern; printf -v q_pattern '%q' "$1" ; MANPAGER="less -p $q_pattern" man "$2"; }
+   earnestly │ I'm glad bash added such a thing
+       phogg │ eggbean: if you have %q things are much nicer
+   earnestly │ But iirc @Q is much newer than %q
+     eggbean │ phogg: Whey is this better?
+     eggbean │ why
+       phogg │ eggbean: use set -x and compare the generated strings.
+     eggbean │ ok, I'll have a look. thanks
+       mknod │ eggbean, it's not better, it's different
+     eggbean │ ok
+   earnestly │ Also given that %q is a dedicated means by which to shell escape strings I would hope it was better
+       phogg │ eggbean: but there's an even better way that will make you sad: mansearch() { LESS="+/$1" man "$2" ; }
+       phogg │ presuming MANPAGER=less already, of course. Otherwise you have to set that, too.
+     eggbean │ I have it set
+   earnestly │ phogg: (Even shorter would be excluding the quotes from LESS=+/$1)
+       phogg │ earnestly: sure. I'm not golfing it, just showing the technique
+   earnestly │ phogg: Yes, I appreciate that, it was an aside.  The selective quoting might give the wrong impression

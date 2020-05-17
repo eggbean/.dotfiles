@@ -26,11 +26,6 @@ else
 	alias ls='/bin/ls $LS_OPTIONS'
 fi
 
-# Command replacements
-if command -v lolcat >/dev/null; then
-	alias cat='lolcat'
-fi
-
 # Extras
 alias decomment='egrep -v "(^#.*|^$)"'
 alias termcolours='/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/gawin/bash-colors-256/master/colors)"'

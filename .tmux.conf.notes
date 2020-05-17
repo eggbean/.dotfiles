@@ -1,0 +1,24 @@
+
+   eggbean │ Is it possible to get visible bell alerts from other sessions?  I'm hoping to find a way to make the session name (left end of status line) to
+           │ change colour.
+      nicm │ nickjj: what does C-r do?
+      nicm │ eggbean: you can write a script and get them with lsp/lsw/ls and formats
+   eggbean │ nicm: I thought it would have something to do with hooks?  What are lsp/lsw/ls ?
+   eggbean │ never heard of anything like that
+   eggbean │ okay found them in the man
+   eggbean │ not sure how I would use lsp/lsw/ls for this
+      nicm │ well write a script like: tmux ls -F'#{session_id} #{session_alerts}'|grep -v ^$1
+      nicm │ then run it with '#(myscript #{session_id})'
+      nicm │ and it will show all the sessions that have alerts that aren't your current session
+      nicm │ if you do
+      nicm │ something like: tmux ls -F'#{session_id} #{session_alerts}'|grep -v ^$1|awk '/[^ ]$/ {print}'|wc -l
+      nicm │ it'll show 0 if there are none and >0 otherwise
+      nicm │ and you could use that to print either '#[bg=red]' or whatever you want
+      nicm │ probably the grep and awk and wc can be combined into 1 actually
+   eggbean │ Ok thanks. Is there any other information I need, or is that all I need to go on?
+   eggbean │ What is the setting to style the session name?
+      nicm │ status-left?
+      nicm │ try writing a script that does: echo '#[bg=red]'
+      nicm │ then set -g status-left '#(sh /path/to/script)#{session_name}'
+      nicm │ thne you can go from there
+   eggbean │ ok, thanks
