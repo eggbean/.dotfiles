@@ -22,3 +22,21 @@
       nicm │ then set -g status-left '#(sh /path/to/script)#{session_name}'
       nicm │ thne you can go from there
    eggbean │ ok, thanks
+
+
+   eggbean │ If I have a line like this:
+   eggbean │ set -g window-status-format "#{?window_zoomed_flag,#[bg=#{@zoomed}],}#{?window_bell_flag,#[fg=#{@bell}#,bg=#{@black}],} #I:#W "
+   eggbean │ I t does not wotk if I try to amend just the first part, like this:
+   eggbean │ set -ga window-status-format "#{?window_zoomed_flag,#[bg=#{@inactive}],}"
+   eggbean │ I though that would work, but it doesn't seem to
+   eggbean │ thoought
+   eggbean │ Same with changing:
+   eggbean │ set -g status-right "#[fg=#{@white}]#(hostname -f) "
+   eggbean │ with..
+   eggbean │  set -ga status-right "#[fg=#{@black}]"
+
+
+PROBLEMS
+	* When using Ctrl-Alt-t for new window, the bell flag on another window tab is cleared, when it
+	  is to the right on the current tab, with the new tab between
+	* Two of the three nested commands cannot be shortened, as thoough append does not work, as explained above
