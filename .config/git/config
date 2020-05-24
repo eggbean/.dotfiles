@@ -9,7 +9,7 @@
 [pager]
 	diff = LESS= less -RSqx4+g
 	log = LESS= less -Rq+g
-	stash = LESS= less -FRXq
+	stash = LESS= less -FRXSqx4
 [color "status"]
 	untracked = blue
 [alias]

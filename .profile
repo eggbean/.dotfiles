@@ -119,4 +119,4 @@ export EXA_COLORS="lc=38;5;124:lm=38;5;196:uu=38;5;178:gu=38;5;178:un=38;5;141:g
 export PASTEL_COLOR_MODE=24bit
 export ANSIBLE_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/ansible/ansible.cfg"
 export EDITOR='ne'
-export VISUAL='vim'
+export VISUAL='ne'
