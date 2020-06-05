@@ -62,11 +62,19 @@ cat() {
 	fi
 }
 
+# Search man page for string
 mansearch() { 
 	local q=\'
 	local q_pattern="'${1//$q/$q\\$q$q}'"
 	MANPAGER="less -+MFX -p $q_pattern"
 	man "$2"
+}
+
+# Download github release
+dlgr() {
+	URL=$(curl -s https://api.github.com/repos/"${@}"/releases/latest \
+	| grep "browser_download_url" | cut -d '"' -f 4 | fzf)
+	curl -LO ${URL}
 }
 
 # Make directory and change directory into it
@@ -83,6 +91,9 @@ PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 # broot function
 source ~/.config/broot/launcher/bash/br
+
+# fzf autocomplete
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # Colorise man pages
 export LESS_TERMCAP_mb=$'\E[1;31m'		# begin bold
