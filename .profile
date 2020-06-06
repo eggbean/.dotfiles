@@ -73,7 +73,7 @@ mansearch() {
 # Download github release
 dlgr() {
 	URL=$(curl -s https://api.github.com/repos/"${@}"/releases/latest \
-	| grep "browser_download_url" | cut -d '"' -f 4 | fzf)
+	| jq -r '.assets[].browser_download_url' | fzf)
 	curl -LO ${URL}
 }
 
