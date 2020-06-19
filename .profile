@@ -126,6 +126,7 @@ export LESS_TERMCAP_ZW=$(tput rsupm)
 
 # Environmental variables
 export LANG='en_GB.utf8'
+export LANGUAGE='en_GB:en'
 export LS_OPTIONS='-hv --color=always'
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
