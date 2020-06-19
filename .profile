@@ -33,6 +33,13 @@ if ! [ -n "$TMUX" ]; then
 	motd.tcl;
 fi
 
+# Terminal colour mode
+if [[ -f "$HOME"/.terminfo/x/xterm-24bit || -f /etc/terminfo/x/xterm-24bit ]]; then
+	export TERM='xterm-24bit'
+else
+	export TERM='xterm-256color'
+fi
+
 # Rename tmux windows automatically to hostname
 ssh() {
 	if [[ $TMUX ]]; then
@@ -72,8 +79,8 @@ mansearch() {
 
 # Download github release
 dlgr() {
-	URL=$(curl -s https://api.github.com/repos/"${@}"/releases/latest \
-	| jq -r '.assets[].browser_download_url' | fzf)
+	URL=$(curl -s https://api.github.com/repos/"${@}"/releases/latest | \
+	jq -r '.assets[].browser_download_url' | fzf)
 	curl -LO ${URL}
 }
 
@@ -94,6 +101,13 @@ source ~/.config/broot/launcher/bash/br
 
 # fzf autocomplete
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+# Pastel colour mode
+if [ "$TERM" = 'xterm-24bit' ]; then
+	export PASTEL_COLOR_MODE='24bit'
+else
+	export PASTEL_COLOR_MODE='8bit'
+fi
 
 # Colorise man pages
 export LESS_TERMCAP_mb=$'\E[1;31m'		# begin bold
@@ -118,7 +132,6 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
-export TERM=xterm-'24bit'
 export MOSH_TITLE_NOPREFIX=
 export PAGER='less'
 export LESS='-MRQx4FX#10'
@@ -127,7 +140,6 @@ export LESSHISTFILE="$XDG_CACHE_HOME/.lesshst"
 export MANPAGER='less -+MFX +g'
 export BAT_PAGER='less -+MFX -S'
 export EXA_COLORS="lc=38;5;124:lm=38;5;196:uu=38;5;178:gu=38;5;178:un=38;5;141:gn=38;5;141"
-export PASTEL_COLOR_MODE=24bit
 export ANSIBLE_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/ansible/ansible.cfg"
 export EDITOR='ne'
 export VISUAL='ne'
