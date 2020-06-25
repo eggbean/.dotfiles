@@ -102,7 +102,7 @@ source ~/.config/broot/launcher/bash/br
 # fzf autocomplete
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-# Pastel colour mode
+# pastel colour mode
 if [ "$TERM" = 'xterm-24bit' ]; then
 	export PASTEL_COLOR_MODE='24bit'
 else

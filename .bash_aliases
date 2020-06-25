@@ -26,6 +26,10 @@ else
 	alias ls='/bin/ls $LS_OPTIONS'
 fi
 
+if command -v whoisrb >/dev/null; then
+	alias whois='whoisrb'
+fi
+
 # Extras
 alias decomment='egrep -v "(^#.*|^$)"'
 alias termcolours='/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/gawin/bash-colors-256/master/colors)"'
