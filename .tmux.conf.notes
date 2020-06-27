@@ -40,6 +40,4 @@ PROBLEMS
 	* When using Ctrl-Alt-t for new window, the bell flag on another window tab is cleared, when it
 	  is to the right on the current tab, with the new tab between
 	* Two of the three nested commands cannot be shortened, as thoough append does not work, as explained above
-
-TODO
-	* Use functions to set and unset key bindings in the nested configuration
+	* IP address hostnames in status line window name is not cut correctly
