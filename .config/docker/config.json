@@ -7,5 +7,5 @@
 	"HttpHeaders": {
 		"User-Agent": "Docker-Client/19.03.5 (linux)"
 	},
-	"psFormat": "table {{.Image}}\t{{.Command}}\t{{.RunningFor}}\t{{.Status}}\t{{.Ports}}\t{{.Names}}"
+	"psFormat": "table {{.Image}}\t{{.RunningFor}}\t{{.Status}}\t{{.Ports}}\t{{.Names}}"
 }
