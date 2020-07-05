@@ -38,9 +38,13 @@ alias timg='timg -g50x50'
 alias pihole='docker exec pihole pihole'
 
 # Changing directory quickly
-alias cd..="cd .."
-alias cd...="cd ../.."
-alias cd....="cd ../../.."
-alias cd.....="cd ../../../.."
-alias cd......="cd ../../../../.."
-alias cd.......="cd ../../../../../.."
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ......="cd ../../../../.."
+alias .......="cd ../../../../../.."
+
+# Directory shortcuts
+alias projects="pushd ~/Documents/projects"
+alias docker-stuff="pushd /srv/docker"
