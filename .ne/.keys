@@ -190,6 +190,12 @@ KEY	CC	NOP
 SEQ	"\x1b[6;7~" CD
 KEY	CD	NOP
 
+# Ctrl-Shift-Delete
+SEQ	"\x1b[3;6~" CE
+KEY	CE	Erase2EOL
+
+# Ctrl-Shift-BackSpace
+KEY	9F	Erase2SOL
 
 # Cursor up
 
