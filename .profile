@@ -28,9 +28,17 @@ fi
 
 # Linuxlogo
 if ! [ -n "$TMUX" ]; then
-	uname -s -n -r -v -m;
-	linuxlogo -f -L debian -F "Debian GNU/Linux 6.0 Squeeze\nKernel Version #V\nCompiled #C\n#N #M #X #T Processor#S, #R RAM\n#B Bogomips Total\n#U\n#L\n#H.jinkosystems.co.uk\n#E";
-	motd.tcl;
+	linuxlogo -f -L debian -F "$(sed '/^PRETTY_NAME="\(.*\)"$/!d; s//\1/; q;' /etc/os-release)\nKernel Version #V\nCompiled #C\n#N #M #X #T Processor#S, #R RAM\n#B Bogomips Total\n#U\n#L\nLocation - $(sed '/^LOCATION="\(.*\)"$/!d; s//\1/; q;' /etc/machine-info)\n"$(hostname -f)"\n#E"
+	motd.tcl
+fi
+
+# Show available tmux sessions
+if [ -z $TMUX ]; then
+	sessions=$(tmux list-sessions -F#S 2> /dev/null | xargs echo)
+	if [ ! -z $sessions ]; then
+		echo "  Available tmux sessions: $sessions"
+	fi
+	unset sessions
 fi
 
 # Terminal colour mode
@@ -43,7 +51,7 @@ fi
 # Rename tmux windows automatically to hostname
 ssh() {
 	if [[ $TMUX ]]; then
-		tmux rename-window "$(echo $* | rev | cut -d ' ' -f1 | rev | cut -d . -f 1)"
+		tmux rename-window "$(echo $* | rev | cut -d '@' -f1 | rev)"
 		command ssh "$@"
 		tmux set-window-option automatic-rename "on" 1>/dev/null
 	else
@@ -108,6 +116,11 @@ if [ "$TERM" = 'xterm-24bit' ]; then
 else
 	export PASTEL_COLOR_MODE='8bit'
 fi
+
+# Age of files
+agem() { echo $((($(date +%s) - $(date +%s -r "$1")) / 60)) minutes; }
+ageh() { echo $((($(date +%s) - $(date +%s -r "$1")) / 3600)) hours; }
+aged() { echo $((($(date +%s) - $(date +%s -r "$1")) / 86400)) days; }
 
 # Colorise man pages
 export LESS_TERMCAP_mb=$'\E[1;31m'		# begin bold

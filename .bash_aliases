@@ -9,6 +9,7 @@ alias ack='ack --color-match=magenta'
 alias tmux='tmux -2u'
 alias mc='. /usr/share/mc/bin/mc-wrapper.sh'
 alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'
+alias shellcheck='shellcheck --color=always'
 
 # Aliases to avoid making mistakes:
 alias cp='cp -iv'

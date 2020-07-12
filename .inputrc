@@ -108,3 +108,15 @@ set prefer-visible-bell             on
 "\033[1;2C": ""
 # S-Left to null
 "\033[1;2D": ""
+
+# C-Del to null
+"\033[3;5~": ""
+# M-Del to null
+"\033[3;3~": ""
+# S-Del to null
+"\033[3;2~": ""
+
+# M-Ins to null
+"\033[2;3~": ""
+# S-Ins to null
+"\033[200~": ""
