@@ -92,6 +92,11 @@ dlgr() {
 	curl -LO ${URL}
 }
 
+# gcloud docker container as executable
+gcloud() {
+	docker run --rm --volumes-from gcloud-config google/cloud-sdk:alpine gcloud "$@"
+}
+
 # Make directory and change directory into it
 mkdircd() { mkdir -p "$@" && cd "$@"; }
 
