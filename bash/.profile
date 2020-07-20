@@ -28,7 +28,7 @@ fi
 
 # Linuxlogo
 if ! [ -n "$TMUX" ]; then
-	linuxlogo -f -L debian -F "$(sed '/^PRETTY_NAME="\(.*\)"$/!d; s//\1/; q;' /etc/os-release)\nKernel Version #V\nCompiled #C\n#N #M #X #T Processor#S, #R RAM\n#B Bogomips Total\n#U\n#L\nLocation - $(sed '/^LOCATION="\(.*\)"$/!d; s//\1/; q;' /etc/machine-info)\n"$(hostname -f)"\n#E"
+	linuxlogo -f -F "$(sed '/^PRETTY_NAME="\(.*\)"$/!d; s//\1/; q;' /etc/os-release)\nCompiled #C\n#N #M #X #T Processor#S, #R RAM\n#U\n#L\nLocation - $(sed '/^LOCATION="\(.*\)"$/!d; s//\1/; q;' /etc/machine-info)\n"$(hostname -f)"\n#E"
 	motd.tcl
 fi
 
