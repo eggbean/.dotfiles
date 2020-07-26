@@ -115,7 +115,7 @@ export HOSTFILE='$HOME/.hosts'
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 # broot function
-source ~/.config/broot/launcher/bash/br
+[ -f ~/.config/broot/launcher/bash/br ] && source ~/.config/broot/launcher/bash/br
 
 # fzf autocomplete
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
