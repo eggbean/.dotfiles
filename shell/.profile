@@ -66,7 +66,10 @@ git() {
 	if [[ "$#" -eq 1 ]] && [[ "$1" = "stash" ]]; then
 		echo 'WARNING: run "git stash push" instead.'
 	else
-		command hub "$@"
+		if command -v hub >/dev/null; then command hub "$@"
+		else
+		command git "$@"
+		fi
 	fi
 }
 
