@@ -28,8 +28,10 @@ fi
 
 # Linuxlogo
 if ! [ -n "$TMUX" ]; then
-	linuxlogo -f -F "$(sed '/^PRETTY_NAME="\(.*\)"$/!d; s//\1/; q;' /etc/os-release)\nCompiled #C\n#N #M #X #T Processor#S, #R RAM\n#U\n#L\nLocation - $(sed '/^LOCATION="\(.*\)"$/!d; s//\1/; q;' /etc/machine-info)\n"$(hostname -f)"\n#E"
-	motd.tcl
+	if command -v linuxlogo >/dev/null; then
+		linuxlogo -f -F "$(sed '/^PRETTY_NAME="\(.*\)"$/!d; s//\1/; q;' /etc/os-release)\nCompiled #C\n#N #M #X #T Processor#S, #R RAM\n#U\n#L\nLocation - $(sed '/^LOCATION="\(.*\)"$/!d; s//\1/; q;' /etc/machine-info)\n"$(hostname -f)"\n#E"
+		motd.tcl
+	fi
 fi
 
 # Show available tmux sessions
@@ -81,7 +83,7 @@ cat() {
 mansearch() { 
 	local q=\'
 	local q_pattern="'${1//$q/$q\\$q$q}'"
-	MANPAGER="less -+MFX -p $q_pattern"
+	local MANPAGER="less -+MFX -p $q_pattern"
 	man "$2"
 }
 
