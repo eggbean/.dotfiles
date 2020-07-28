@@ -41,3 +41,10 @@ PROBLEMS
 	  is to the right on the current tab, with the new tab between
 	* Two of the three nested commands cannot be shortened, as thoough append does not work, as explained above
 	* IP address hostnames in status line window name is not cut correctly
+
+# bind x set -F @x                    '#{?#{==:#{@x},1},2,1}'
+#bind A set -F @sidebar-tree-command '#{?#{==:#{@sidebar-tree-command},tree -Ca},tree -C,tree -Ca}'
+#bind A set -F @sidebar-tree-command '#{?@sidebar-tree-command,tree -Ca,tree -C}' \; display-message "Hidden files in sidebar is #{?@sidebar-tree-command,on,off}"
+#bind A set -F @var '#{?@var,tree -Ca,tree -C}' \; display-message "Hidden files are #{?@var,on,off}"
+                                     #{?@foo,0,1}
+# bind-key a set-window-option synchronize-panes\; display-message "synchronize-panes is now #{?pane_synchronized,on,off}"
