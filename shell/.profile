@@ -97,10 +97,16 @@ dlgr() {
 	curl -LO ${URL}
 }
 
-# gcloud docker container as executable
-gcloud() {
-	docker run --rm --volumes-from gcloud-config google/cloud-sdk:alpine gcloud "$@"
-}
+# Update PATH for the Google Cloud SDK
+if [ -f '/home/pi/google-cloud-sdk/path.bash.inc' ]; then . '/home/pi/google-cloud-sdk/path.bash.inc'; fi
+
+# Enable shell command completion for gcloud
+if [ -f '/home/pi/google-cloud-sdk/completion.bash.inc' ]; then . '/home/pi/google-cloud-sdk/completion.bash.inc'; fi
+
+# Or gcloud docker container as executable
+if ! [ -f '/home/pi/google-cloud-sdk/path.bash.inc' ]; then
+	gcloud() { docker run --rm --volumes-from gcloud-config google/cloud-sdk:alpine gcloud "$@" }
+fi
 
 # Make directory and change directory into it
 mkdircd() { mkdir -p "$@" && cd "$@"; }
