@@ -61,6 +61,16 @@ ssh() {
 	fi
 }
 
+mosh() {
+	if [[ $TMUX ]]; then
+		tmux rename-window "$(echo $* | rev | cut -d '@' -f1 | rev)"
+		command mosh "$@"
+		tmux set-window-option automatic-rename "on" 1>/dev/null
+	else
+		command mosh "$@"
+	fi
+}
+
 # Prevent accidental git stashing and alias git to hub
 git() {
 	if [[ "$#" -eq 1 ]] && [[ "$1" = "stash" ]]; then
