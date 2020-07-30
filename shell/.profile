@@ -71,6 +71,17 @@ mosh() {
 	fi
 }
 
+# Update PATH for the Google Cloud SDK
+if [ -f "$HOME/google-cloud-sdk/path.bash.inc" ]; then . "$HOME/google-cloud-sdk/path.bash.inc"; fi
+
+# Enable shell command completion for gcloud
+if [ -f "$HOME/google-cloud-sdk/completion.bash.inc" ]; then . "$HOME/google-cloud-sdk/completion.bash.inc"; fi
+
+# Or gcloud docker container as executable
+if ! type gcloud >/dev/null 2>&1; then
+	gcloud() { docker run --rm --volumes-from gcloud-config google/cloud-sdk:alpine gcloud "$@"; }
+fi
+
 # Prevent accidental git stashing and alias git to hub
 git() {
 	if [[ "$#" -eq 1 ]] && [[ "$1" = "stash" ]]; then
@@ -106,17 +117,6 @@ dlgr() {
 	jq -r '.assets[].browser_download_url' | fzf)
 	curl -LO ${URL}
 }
-
-# Update PATH for the Google Cloud SDK
-if [ -f '/home/pi/google-cloud-sdk/path.bash.inc' ]; then . '/home/pi/google-cloud-sdk/path.bash.inc'; fi
-
-# Enable shell command completion for gcloud
-if [ -f '/home/pi/google-cloud-sdk/completion.bash.inc' ]; then . '/home/pi/google-cloud-sdk/completion.bash.inc'; fi
-
-# Or gcloud docker container as executable
-if ! type gcloud >/dev/null 2>&1; then
-	gcloud() { docker run --rm --volumes-from gcloud-config google/cloud-sdk:alpine gcloud "$@"; }
-fi
 
 # Make directory and change directory into it
 mkdircd() { mkdir -p "$@" && cd "$@"; }
