@@ -11,6 +11,7 @@ set mark-symlinked-directories      on
 set blink-matching-paren            on
 set bell-style                      none
 set prefer-visible-bell             on
+set match-hidden-files				off
 
 # Use Up/Down for partial history search
 "\e[B": history-search-forward
