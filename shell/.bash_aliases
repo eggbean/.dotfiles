@@ -36,7 +36,6 @@ alias decomment='egrep -v "(^#.*|^$)"'
 alias termcolours='/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/gawin/bash-colors-256/master/colors)"'
 alias sshx="TERM=xterm-256color ssh"
 alias timg='timg -g50x50'
-alias pihole='docker exec pihole pihole'
 
 # Changing directory quickly
 alias ..="builtin cd .."

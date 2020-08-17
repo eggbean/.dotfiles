@@ -72,11 +72,11 @@ KEY	AF	NOP
 
 # Alt-PgUp
 SEQ	"\x1b[5;3~" B0
-KEY	B0	NOP
+KEY	B0	LineUp 25
 
 # Alt-PgDn
 SEQ	"\x1b[6;3~" B1
-KEY	B1	NOP
+KEY	B1	LineDown 25
 
 # Shift-PgUp
 SEQ	"\x1b[5;2~" B2

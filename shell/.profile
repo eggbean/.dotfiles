@@ -37,8 +37,8 @@ fi
 # Show available tmux sessions
 if [ -z $TMUX ]; then
 	sessions=$(tmux list-sessions -F#S 2> /dev/null | xargs echo)
-	if [ ! -z $sessions ]; then
-		echo "  Available tmux sessions: $sessions"
+	if [ ! -z "$sessions" ]; then
+		echo "  Available tmux sessions: "$sessions""
 	fi
 	unset sessions
 fi
@@ -117,6 +117,22 @@ dlgr() {
 	jq -r '.assets[].browser_download_url' | fzf)
 	curl -LO ${URL}
 }
+
+# Check firewall
+check-firewall() {
+	gcloud compute firewall-rules describe allow-privoxy --format json | jq -r '.sourceRanges | .[]' | sort -u
+	printf "\nchurch: $(dig A church2.jinkosystems.co.uk +short | tail -n1)"
+	printf "\nrover: $(dig A rover.jinkosystems.co.uk +short | tail -n1)\n"
+}
+
+# Pihole may be in docker container
+# if ! type pihole >/dev/null 2>&1; then
+# 	pihole() { docker exec pihole pihole "$@"; }
+# fi
+
+if ! type pihole >/dev/null 2>&1; then
+	gcloud() { docker exec pihole pihole "$@"; }
+fi
 
 # Make directory and change directory into it
 mkdircd() { mkdir -p "$@" && cd "$@"; }
