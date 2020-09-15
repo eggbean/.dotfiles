@@ -121,7 +121,8 @@ dlgr() {
 # Check firewall
 check-firewall() {
 	gcloud compute firewall-rules describe allow-privoxy --format json | jq -r '.sourceRanges | .[]' | sort -u
-	printf "\nchurch: $(dig A church2.jinkosystems.co.uk +short | tail -n1)"
+	printf "\nchurch: $(dig A church.jinkosystems.co.uk +short | tail -n1)"
+	printf "\ncourtlands: $(dig A courtlands.jinkosystems.co.uk +short | tail -n1)"
 	printf "\nrover: $(dig A rover.jinkosystems.co.uk +short | tail -n1)\n"
 }
 
