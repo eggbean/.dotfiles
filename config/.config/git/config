@@ -13,4 +13,5 @@
 [color "status"]
 	untracked = blue
 [alias]
-	wdiff =  diff --color-words
+	wdiff = diff --color-words
+	mdiff = ! "f () { git diff --color \"$@\" | grep --color=never $(printf '\\033\\[3[12]'); }; f"
