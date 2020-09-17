@@ -10,6 +10,7 @@ alias tmux='tmux -2u'
 alias mc='. /usr/share/mc/bin/mc-wrapper.sh'
 alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'
 alias shellcheck='shellcheck --color=always'
+alias batlog='bat --paging=never -l log'
 
 # Aliases to avoid making mistakes:
 alias cp='cp -iv'
@@ -36,6 +37,7 @@ alias decomment='egrep -v "(^#.*|^$)"'
 alias termcolours='/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/gawin/bash-colors-256/master/colors)"'
 alias sshx="TERM=xterm-256color ssh"
 alias timg='timg -g50x50'
+alias nocolour="sed 's/\x1b\[[0-9;]*m//g'"
 
 # Changing directory quickly
 alias ..="builtin cd .."
