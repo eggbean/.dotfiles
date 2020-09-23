@@ -94,12 +94,12 @@ git() {
 	fi
 }
 
-# Use cat to display web page source
+# Use cat to display web page source and change tabs to 4 spaces
 cat() {
 	if [[ $1 == *://* ]]; then
 		curl -LsfS "$1"
 	else
-		command cat "$@"
+		command cat "$@" | expand -t4
 	fi
 }
 
