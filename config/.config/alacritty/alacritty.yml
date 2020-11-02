@@ -1,0 +1,28 @@
+# Configuration for Alacritty, the GPU enhanced terminal emulator.
+
+key_bindings:
+  - { key: Return,   mods: Alt,           action: ToggleFullscreen }
+
+# Font configuration
+font:
+  # Normal (roman) font face
+  normal:
+    family: Hack
+    style: Regular
+
+  # Bold font face
+  bold:
+    style: Bold
+
+  # Italic font face
+  italic:
+    style: Italic
+
+  # Bold italic font face
+  bold_italic:
+    style: Bold Italic
+
+  # Point size
+  size: 13.0
+
+draw_bold_text_with_bright_colors: true
