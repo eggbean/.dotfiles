@@ -32,6 +32,10 @@ if command -v whoisrb >/dev/null; then
 	alias whois='whoisrb'
 fi
 
+if command -v batcat >/dev/null; then
+	alias bat='batcat'
+fi
+
 # Extras
 alias decomment='egrep -v "(^#.*|^$)"'
 alias termcolours='/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/gawin/bash-colors-256/master/colors)"'
