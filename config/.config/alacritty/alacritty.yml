@@ -1,10 +1,14 @@
 # Configuration for Alacritty, the GPU enhanced terminal emulator.
 
+window:
+  # Spread additional padding evenly around the terminal content.
+  dynamic_padding: true
+
+# Key bindings
 key_bindings:
-  - { key: Return,   mods: Alt,           action: ToggleFullscreen }
+  - { key: Return, mods: Alt, action: ToggleFullscreen }
 
 # Font configuration
-# Fonts
 font:
   # Normal (roman) font face
   normal:
@@ -31,3 +35,32 @@ draw_bold_text_with_bright_colors: true
 # Mouse selection
 selection:
   save_to_clipboard: true
+
+# Theme
+colors:
+  name: Monokai (dark)
+  author: Chris Kempson
+  primary:
+    background: "#272822"
+    foreground: "#f8f8f2"
+  cursor:
+    text: "#272822"
+    cursor: "#f8f8f2"
+  normal:
+    black: "#272822"
+    red: "#f92672"
+    green: "#a6e22e"
+    yellow: "#f4bf75"
+    blue: "#66d9ef"
+    magenta: "#ae81ff"
+    cyan: "#a1efe4"
+    white: "#f8f8f2"
+  bright:
+    black: "#75715e"
+    red: "#f92672"
+    green: "#a6e22e"
+    yellow: "#f4bf75"
+    blue: "#66d9ef"
+    magenta: "#ae81ff"
+    cyan: "#a1efe4"
+    white: "#f9f8f5"
