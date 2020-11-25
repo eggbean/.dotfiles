@@ -15,3 +15,4 @@
 [alias]
 	wdiff = diff --color-words
 	mdiff = ! "f () { git diff --color \"$@\" | grep --color=never $(printf '\\033\\[3[12]'); }; f"
+	bdiff = ! "f () { git diff --name-only --diff-filter=d | xargs bat --diff; }; f"
