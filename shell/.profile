@@ -28,8 +28,8 @@ fi
 
 # Linuxlogo
 if ! [ -n "$TMUX" ]; then
-	if command -v linuxlogo >/dev/null; then
-		linuxlogo -f -F "$(sed '/^PRETTY_NAME="\(.*\)"$/!d; s//\1/; q;' /etc/os-release)\nCompiled #C\n#N #M #X #T Processor#S, #R RAM\n#U\n#L\nLocation - $(sed '/^LOCATION="\(.*\)"$/!d; s//\1/; q;' /etc/machine-info)\n"$(hostname -f)"\n#E"
+	if command -v linux_logo >/dev/null; then
+		linux_logo -f -F "$(sed '/^PRETTY_NAME="\(.*\)"$/!d; s//\1/; q;' /etc/os-release)\nCompiled #C\n#N #M #X #T Processor#S, #R RAM\n#U\n#L\n"$(hostname -f)"\n$(sed '/^LOCATION="\(.*\)"$/!d; s//\1/; q;' /etc/machine-info)\n#E"
 		motd.tcl
 	fi
 fi
