@@ -90,3 +90,13 @@ colors:
     magenta: '#A578EA'
     cyan: '#73FBF1'
     white: '#FEFEF8'
+
+# Bell
+bell:
+  animation: EaseOutExpo
+  duration: 10
+  color: '#ffffff'
+
+  command:
+    program: notify-send
+    args: ["Alert"]
