@@ -96,7 +96,3 @@ bell:
   animation: EaseOutExpo
   duration: 10
   color: '#ffffff'
-
-  command:
-    program: notify-send
-    args: ["Alert"]

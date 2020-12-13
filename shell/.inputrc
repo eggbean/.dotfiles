@@ -17,9 +17,6 @@ set match-hidden-files				off
 "\e[B": history-search-forward
 "\e[A": history-search-backward
 
-# C-Backspace to Undo - not working/needed? Possibly part of wsltty
-# "\033[3;5~": "undo"
-
 # M-F11 to null (nested tmux config)
 "\033[23;3~": ""
 # M-F12 to null (nested tmux config)
