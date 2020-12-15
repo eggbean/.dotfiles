@@ -1,0 +1,18 @@
+{
+  "accounts": {
+    "jason404i@kindle.com": [
+      "AZW, MOBI, TPZ, PRC, AZW1",
+      true,
+      true
+    ]
+  },
+  "aliases": {},
+  "encryption": "TLS",
+  "from_": "jason.gomez@outlook.com",
+  "relay_host": "proxima.jinkosystems.co.uk",
+  "relay_password": "",
+  "relay_port": 25,
+  "relay_username": null,
+  "subjects": {},
+  "tags": {}
+}
