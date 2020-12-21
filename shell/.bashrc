@@ -152,6 +152,11 @@ if ! type gcloud >/dev/null 2>&1; then
 	gcloud() { docker run --rm --volumes-from gcloud-config google/cloud-sdk:alpine gcloud "$@"; }
 fi
 
+# Use aws-cli in an executable docker container if not installed
+if ! type aws >/dev/null 2>&1; then
+	aws() { docker run --rm -it -v ~/.aws:/root/.aws amazon/aws-cli "$@"; }
+fi
+
 # Prevent accidental git stashing and alias git to hub
 git() {
 	if [[ "$#" -eq 1 ]] && [[ "$1" = "stash" ]]; then
