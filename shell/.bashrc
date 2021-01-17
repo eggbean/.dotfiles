@@ -16,8 +16,8 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTSIZE=2000
+HISTFILESIZE=3000
 HISTTIMEFORMAT="%d/%m/%y %T "
 
 # check the window size after each command and, if necessary,
@@ -157,6 +157,9 @@ if ! type aws >/dev/null 2>&1; then
 	aws() { docker run --rm -it -v ~/.aws:/root/.aws amazon/aws-cli "$@"; }
 fi
 
+# aws command completion
+complete -C '/usr/local/bin/aws_completer' aws
+
 # Prevent accidental git stashing and alias git to hub
 git() {
 	if [[ "$#" -eq 1 ]] && [[ "$1" = "stash" ]]; then
@@ -206,7 +209,7 @@ check-firewall() {
 # 	pihole() { docker exec pihole pihole "$@"; }
 # fi
 
-if ! type pihole >/dev/null 2>&1; then
+if ! type gcloud >/dev/null 2>&1; then
 	gcloud() { docker exec pihole pihole "$@"; }
 fi
 

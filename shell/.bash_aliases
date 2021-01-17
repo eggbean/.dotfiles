@@ -1,4 +1,8 @@
 # Bash Aliases
+alias l='ls'
+alias la='ls -A'
+alias ll='ls -l'
+alias lla='ls -Al'
 alias sudo='sudo '
 alias tree='tree -C'
 alias diff='diff --color=always --tabsize=4'
