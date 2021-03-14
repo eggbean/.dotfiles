@@ -4,6 +4,7 @@
 [core]
 	editor = ne
 	pager = LESS= less -FRXq
+	sshCommand = ssh -i /home/jason/.ssh/id_ecdsa -o IdentitiesOnly=yes
 [color]
 	ui = true
 [pager]

@@ -213,6 +213,13 @@ if ! type gcloud >/dev/null 2>&1; then
 	gcloud() { docker exec pihole pihole "$@"; }
 fi
 
+# CD Deluxe
+if [[ -x /usr/local/bin/_cdd ]]
+then
+	function cdd { while read x; do eval $x >/dev/null; done < <(dirs -l -p | /usr/local/bin/_cdd "$@"); }
+	alias cd=cdd
+fi
+
 # Make directory and change directory into it
 mkdircd() { mkdir -p "$@" && cd "$@"; }
 
