@@ -458,7 +458,7 @@ KEY	14	SwapLast2Letters
 
 # CONTROL-u
 
-KEY	15	DeleteSOL
+KEY	15	KillSOL
 
 # CONTROL-v
 
