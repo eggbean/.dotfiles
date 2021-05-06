@@ -15,16 +15,17 @@ alias mc='. /usr/share/mc/bin/mc-wrapper.sh'
 alias wget='wget --hsts-file="$XDG_CACHE_HOME"/wget-hsts'
 alias shellcheck='shellcheck --color=always'
 alias batlog='bat --paging=never -l log'
+alias crontab='crontab -i'
 
 # Aliases to avoid making mistakes:
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias rm='rm -Iv'
 
-# Command replacements
-if command -v xstat >/dev/null; then
-	alias stat='xstat'
-fi
+# # Command replacements
+# if command -v xstat >/dev/null; then
+# 	alias stat='xstat'
+# fi
 
 if command -v exa >/dev/null; then
 	alias ls='exa-wrapper.sh'
