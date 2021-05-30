@@ -5,6 +5,7 @@
 	editor = ne
 	pager = LESS= less -FRXq
 	sshCommand = ssh -i /home/jason/.ssh/id_ecdsa -o IdentitiesOnly=yes
+	excludesfile = ~/.dotfiles/config/.config/git/gitignore-system
 [color]
 	ui = true
 [pager]
