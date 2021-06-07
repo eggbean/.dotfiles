@@ -41,3 +41,6 @@ if [ -z $TMUX ]; then
 	fi
 	unset sessions
 fi
+
+# Golang
+export PATH=$PATH:/usr/local/go/bin
