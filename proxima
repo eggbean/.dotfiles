@@ -1,0 +1,6 @@
+## Host specific functions for proxima
+
+# Pihole may be in docker container
+if ! type pihole >/dev/null 2>&1; then
+	pihole() { docker exec pihole pihole "$@"; }
+fi

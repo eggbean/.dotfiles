@@ -204,11 +204,6 @@ check-firewall() {
 	printf "\nrover: $(dig A rover.jinkosystems.co.uk +short | tail -n1)\n"
 }
 
-# Pihole may be in docker container
-if ! type pihole >/dev/null 2>&1; then
-	pihole() { docker exec pihole pihole "$@"; }
-fi
-
 # CD Deluxe
 if [[ -x /usr/local/bin/_cdd ]]
 then
