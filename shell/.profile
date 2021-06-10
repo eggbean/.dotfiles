@@ -16,6 +16,9 @@ if [ -n "$BASH_VERSION" ]; then
 	fi
 fi
 
+# Source host specific functions
+[ -f ~/.dotfiles/$(hostname -s) ] && source ~/.dotfiles/$(hostname -s)
+
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
 	PATH="$HOME/bin:$PATH"
