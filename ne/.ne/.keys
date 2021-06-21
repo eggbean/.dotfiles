@@ -586,8 +586,8 @@ KEY	1EA	GotoColumn
 # CONTROL-META-k, META-k, ESC K and ESC k
 
 KEY	8B	CutnYank
-KEY	18B	KeyCode
-KEY	1CB	KeyCode
+KEY	18B	Erase2EOL
+KEY	1CB	CutnYank
 KEY	1EB	KeyCode
 
 # CONTROL-META-l, META-l, ESC L and ESC l

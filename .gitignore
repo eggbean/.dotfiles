@@ -1,3 +1,4 @@
 # Ignore:
+*.bak
 /ne/.ne/.history
 /config/.config/gcloud/*
