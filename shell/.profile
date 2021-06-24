@@ -12,25 +12,27 @@
 if [ -n "$BASH_VERSION" ]; then
 	# include .bashrc if it exists
 	if [ -f "$HOME/.bashrc" ]; then
-	. "$HOME/.bashrc"
+		. "$HOME/.bashrc"
 	fi
 fi
 
 # Source host specific functions
-[ -f ~/.dotfiles/$(hostname -s) ] && source ~/.dotfiles/$(hostname -s)
+for file in ~/.dotfiles/hosts/"$(hostname -s){,.env}"; do
+	. $file 2>/dev/null
+done
 
 # set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
+if [ -d "$HOME/bin" ]; then
 	PATH="$HOME/bin:$PATH"
 fi
 
 # set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/.local/bin" ] ; then
+if [ -d "$HOME/.local/bin" ]; then
 	PATH="$HOME/.local/bin:$PATH"
 fi
 
 # Linuxlogo
-if ! [ -n "$TMUX" ]; then
+if [ -z "$TMUX" ]; then
 	if command -v linux_logo >/dev/null; then
 		linux_logo -f -F "$(sed '/^PRETTY_NAME="\(.*\)"$/!d; s//\1/; q;' /etc/os-release)\nCompiled #C\n#N #M #X #T Processor#S, #R RAM\n#U\n#L\n"$(hostname -f)"\n$(sed '/^LOCATION="\(.*\)"$/!d; s//\1/; q;' /etc/machine-info)\n#E"
 	fi
@@ -38,9 +40,9 @@ fi
 
 # Show available tmux sessions
 if [ -z $TMUX ]; then
-	sessions=$(tmux list-sessions -F#S 2> /dev/null | xargs echo)
+	sessions=$(tmux list-sessions -F#S 2>/dev/null | xargs echo)
 	if [ ! -z "$sessions" ]; then
-		echo "  Available tmux sessions: "$sessions""
+		echo "	Available tmux sessions: "$sessions""
 	fi
 	unset sessions
 fi

@@ -23,10 +23,6 @@ alias mv='mv -iv'
 alias rm='rm -Iv'
 
 # # Command replacements
-# if command -v xstat >/dev/null; then
-# 	alias stat='xstat'
-# fi
-
 if command -v exa >/dev/null; then
 	alias ls='exa-wrapper.sh'
 else
