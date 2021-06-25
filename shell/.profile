@@ -17,9 +17,7 @@ if [ -n "$BASH_VERSION" ]; then
 fi
 
 # Source host specific functions
-for file in ~/.dotfiles/hosts/"$(hostname -s){,.env}"; do
-	. "$file" 2>/dev/null
-done
+[ -f ~/.dotfiles/hosts/"$(hostname -s)" ] && . ~/.dotfiles/hosts/"$(hostname -s)"
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ]; then

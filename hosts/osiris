@@ -7,7 +7,7 @@ fi
 
 # Start ssh-agent if necessary
 if ! [ -S "$SSH_AUTH_SOCK" ]; then
-	eval $(ssh-agent -s) > /dev/null
+	eval "$(ssh-agent -s)" > /dev/null
 	ssh-add
-	ln -sf $SSH_AUTH_SOCK ~/.ssh/ssh_auth_sock
+	ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
 fi
