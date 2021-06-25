@@ -221,6 +221,9 @@ PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 # fzf autocomplete
 [ -f ~/.fzf.bash ] && . ~/.fzf.bash
 
+# fzf open multiple files
+fzfr() { fzf -m -x | xargs -d'\n' -r "$@" ; }
+
 # pastel colour mode
 if [ "$TERM" = 'xterm-24bit' ]; then
 	export PASTEL_COLOR_MODE='24bit'
