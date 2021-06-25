@@ -123,7 +123,7 @@ fi
 # Rename tmux windows automatically to hostname
 ssh() {
 	if [[ $TMUX ]]; then
-		tmux rename-window "$(echo $* | rev | cut -d '@' -f1 | rev)"
+		tmux rename-window "$(echo "$@" | rev | cut -d '@' -f1 | rev)"
 		command ssh "$@"
 		tmux set-window-option automatic-rename "on" 1>/dev/null
 	else
@@ -133,7 +133,7 @@ ssh() {
 
 mosh() {
 	if [[ $TMUX ]]; then
-		tmux rename-window "$(echo $* | rev | cut -d '@' -f1 | rev)"
+		tmux rename-window "$(echo "$@" | rev | cut -d '@' -f1 | rev)"
 		command mosh "$@"
 		tmux set-window-option automatic-rename "on" 1>/dev/null
 	else
@@ -192,25 +192,25 @@ mansearch() {
 
 # Download github release
 dlgr() {
-	URL=$(curl -s https://api.github.com/repos/"${@}"/releases/latest | \
+	URL=$(curl -s https://api.github.com/repos/"${*}"/releases/latest | \
 	jq -r '.assets[].browser_download_url' | fzf)
-	curl -LO ${URL}
+	curl -LO "${URL}"
 }
 
 # CD Deluxe
 if [[ -x /usr/local/bin/_cdd ]]; then
-	function cdd { while read x; do eval $x >/dev/null; done < <(dirs -l -p | /usr/local/bin/_cdd "$@"); }
+	function cdd { while read -r x; do eval "$x" >/dev/null; done < <(dirs -l -p | /usr/local/bin/_cdd "$@"); }
 	alias cd=cdd
 fi
 
 # Make directory and change directory into it
-mkdircd() { mkdir -p "$@" && cd "$@"; }
+mkdircd() { mkdir -p "$@" && cd "$@" || return; }
 
 # Minimalist terminal pastebin
 sprunge() { curl -F 'sprunge=<-' http://sprunge.us; }
 
 # Use a private mock hosts(5) file for completion
-export HOSTFILE='$HOME/.hosts'
+export HOSTFILE="$HOME/.hosts"
 
 # Shared history between tmux panes
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"

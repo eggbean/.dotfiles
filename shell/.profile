@@ -18,7 +18,7 @@ fi
 
 # Source host specific functions
 for file in ~/.dotfiles/hosts/"$(hostname -s){,.env}"; do
-	. $file 2>/dev/null
+	. "$file" 2>/dev/null
 done
 
 # set PATH so it includes user's private bin if it exists
@@ -39,10 +39,10 @@ if [ -z "$TMUX" ]; then
 fi
 
 # Show available tmux sessions
-if [ -z $TMUX ]; then
+if [ -z "$TMUX" ]; then
 	sessions=$(tmux list-sessions -F#S 2>/dev/null | xargs echo)
-	if [ ! -z "$sessions" ]; then
-		echo "	Available tmux sessions: "$sessions""
+	if [ -n "$sessions" ]; then
+		echo "	Available tmux sessions: ""$sessions"""
 	fi
 	unset sessions
 fi
