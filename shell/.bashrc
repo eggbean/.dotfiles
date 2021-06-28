@@ -212,6 +212,9 @@ PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 # fzf open multiple files
 fzfr() { fzf -m -x | xargs -d'\n' -r "$@" ; }
 
+# Return disk that directory is on
+whichdisk() { realpath $(df "${1:-.}" | command grep '^/' | cut -d' ' -f1) ; }
+
 # pastel colour mode
 if [ "$TERM" = 'xterm-24bit' ]; then
 	export PASTEL_COLOR_MODE='24bit'

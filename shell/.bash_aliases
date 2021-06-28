@@ -43,6 +43,7 @@ alias termcolours='/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.
 alias sshx="TERM=xterm-256color ssh"
 alias timg='timg -g50x50'
 alias nocolour="sed 's/\x1b\[[0-9;]*m//g'"
+alias fzfp='fzf --preview "bat --color=always --style=numbers --line-range=:500 {}"'
 
 # Changing directory quickly
 alias ..="builtin cd .."
