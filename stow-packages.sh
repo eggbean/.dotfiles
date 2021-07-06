@@ -21,7 +21,7 @@ while :; do
 					[ -e ~/"$j" ] && mv ~/"$j" ~/default-shell-files && echo "Existing ~/$j moved to ~/default-shell-files"
 				done
 				stow -Svt ~ shell || (echo "Error stowing shell package" >&2 && exit 1)
-				[ $? == 0 ] && echo "DONE:  shell package stowed"
+				[ $? == 0 ] && echo "DONE: shell package stowed"
 				;;
 		config) [ ! -d ~/.config ] && mkdir ~/.config
 				[ ! -d ~/.local ] && mkdir ~/.local
@@ -34,7 +34,7 @@ while :; do
 					[ -e ~/.config/"$i" ] && rm -rf ~/.config/"$i" && echo "Existing ~/.config/$i deleted"
 				done
 				stow -Rvt ~ config || (echo "Error stowing config package" >&2 && exit 1)
-				[ $? == 0 ] && echo "DONE:  config package stowed"
+				[ $? == 0 ] && echo "DONE: config package stowed"
 				;;
 		ssh)	pushd ssh > /dev/null
 				sshd=(*)
@@ -43,7 +43,7 @@ while :; do
 					[ -e ~/.ssh/"$s" ] && rm ~/.ssh/"$s" && echo "Existing ~/.ssh/$s deleted"
 				done
 				stow --no-folding -Rvt ~ ssh || (echo "Error stowing ssh package" >&2 && exit 1)
-				[ $? == 0 ] && echo "DONE:  ssh package stowed"
+				[ $? == 0 ] && echo "DONE: ssh package stowed"
 				;;
 		?*)		pushd "$1"/ > /dev/null || (echo "Error finding $1 package" >&2 && exit 1)
 				packaged=(*)
@@ -55,13 +55,13 @@ while :; do
 						case $yn in
 							[Yy]* )	rm -rf ~/"$k" && echo "Existing ~/$k directory deleted"
 									stow -Svt ~ "$1" || (echo "Error stowing $k" >&2 && exit 1)
-									[ $? == 0 ] && echo "DONE:  $1 package stowed"
+									[ $? == 0 ] && echo "DONE: $1 package stowed"
 									break
 									;;
 							[Nn]* )	read -rp "Do you want to stow this package unfolded? (y/n)  " yn
 									case $yn in
 										[Yy]* )	stow --no-folding -Svt ~ "$1" || (echo "Error stowing $k" >&2 && exit 1)
-												[ $? == 0 ] && echo "DONE:  $1 package stowed"
+												[ $? == 0 ] && echo "DONE: $1 package stowed"
 												break
 												;;
 										[Nn]* )	echo "SKIPPED:  $1 package not stowed"; break
@@ -75,7 +75,7 @@ while :; do
 						esac
 					elif [ ! -e ~/"$k" ]; then
 						stow -Svt ~ "$1" || (echo "Error stowing $1 package" >&2 && exit 1)
-						[ $? == 0 ] && echo "DONE:  $1 package stowed"
+						[ $? == 0 ] && echo "DONE: $1 package stowed"
 						break
 					fi
 				done
