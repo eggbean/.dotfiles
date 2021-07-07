@@ -111,7 +111,7 @@ fi
 # Rename tmux windows automatically to hostname
 ssh() {
 	if [[ $TMUX ]]; then
-		tmux rename-window "$(echo "$@" | rev | cut -d '@' -f1 | rev)"
+		tmux rename-window "$(echo "${@: -1}" | rev | cut -d '@' -f1 | rev)"
 		command ssh "$@"
 		tmux set-window-option automatic-rename "on" 1>/dev/null
 	else
@@ -121,7 +121,7 @@ ssh() {
 
 mosh() {
 	if [[ $TMUX ]]; then
-		tmux rename-window "$(echo "$@" | rev | cut -d '@' -f1 | rev)"
+		tmux rename-window "$(echo "${@: -1}" | rev | cut -d '@' -f1 | rev)"
 		command mosh "$@"
 		tmux set-window-option automatic-rename "on" 1>/dev/null
 	else
