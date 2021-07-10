@@ -1,4 +1,4 @@
-# Bash Aliases
+# Command defaults and aliases
 alias l='ls'
 alias la='ls -A'
 alias ll='ls -l'
@@ -14,7 +14,6 @@ alias tmux='tmux -2u'
 alias mc='. /usr/share/mc/bin/mc-wrapper.sh'
 alias wget='wget --hsts-file="$XDG_CACHE_HOME"/wget-hsts'
 alias shellcheck='shellcheck --color=always'
-alias batlog='bat --paging=never -l log'
 alias crontab='crontab -i'
 
 # Aliases to avoid making mistakes:
@@ -22,7 +21,7 @@ alias cp='cp -iv'
 alias mv='mv -iv'
 alias rm='rm -Iv'
 
-# # Command replacements
+# Command replacements
 if command -v exa >/dev/null; then
 	alias ls='exa-wrapper.sh'
 else
@@ -33,10 +32,6 @@ if command -v whoisrb >/dev/null; then
 	alias whois='whoisrb'
 fi
 
-if command -v batcat >/dev/null; then
-	alias bat='batcat'
-fi
-
 # Extras
 alias decomment='egrep -v "(^#.*|^$)"'
 alias termcolours='/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/gawin/bash-colors-256/master/colors)"'
@@ -44,6 +39,8 @@ alias sshx="TERM=xterm-256color ssh"
 alias timg='timg -g50x50'
 alias nocolour="sed 's/\x1b\[[0-9;]*m//g'"
 alias fzfp='fzf --preview "bat --color=always --style=numbers --line-range=:500 {}"'
+alias batlog='bat --paging=never -l log'
+alias driveinfo='df -HTx tmpfs -x overlay -x devtmpfs'
 
 # Changing directory quickly
 alias ..="builtin cd .."
@@ -52,7 +49,3 @@ alias ....="builtin cd ../../.."
 alias .....="builtin cd ../../../.."
 alias ......="builtin cd ../../../../.."
 alias .......="builtin cd ../../../../../.."
-
-# Directory shortcuts
-alias projects="pushd ~/Documents/projects"
-alias docker-stuff="pushd /srv/docker"

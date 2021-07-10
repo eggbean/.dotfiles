@@ -189,6 +189,8 @@ dlgr() {
 if [[ -x /usr/local/bin/_cdd ]]; then
 	cdd() { while read -r x; do eval "$x" >/dev/null; done < <(dirs -l -p | /usr/local/bin/_cdd "$@"); }
 	alias cd=cdd
+else
+	unalias cd
 fi
 
 # Make directory and change directory into it
