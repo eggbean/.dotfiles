@@ -1,0 +1,6 @@
+# Dotfile notes
+
+* Don't really need sipcalc, hub or knockd, as they are available in the debian repository
+
+* Check to see what the situation is on centos replacement before removing them, as I spent a lot of time adding hub for ARM :(
+
