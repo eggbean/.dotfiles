@@ -29,3 +29,4 @@
 --color=always
 --tabs=4
 --map-syntax tmux.conf:Tmux
+--map-syntax *.notes:Markdown

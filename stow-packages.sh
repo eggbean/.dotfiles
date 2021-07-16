@@ -5,7 +5,7 @@
 ## This script can easily break with new package elements (eg. config/.local)
 ## ?* section cannot currently handle more than one element in a package
 
-set -e
+set -eo pipefail
 
 shopt -s dotglob nullglob
 
@@ -19,14 +19,18 @@ pushd ~/.dotfiles > /dev/null
 
 while :; do
 	case $1 in
-		shell)	[ ! -e ~/default-shell-files ] && mkdir ~/default-shell-files
-				pushd shell > /dev/null
+		shell)	pushd shell > /dev/null
 				shelld=(*)
+				remove=(.stow-local-ignore "$(cat .stow-local-ignore)")
+				for del in "${remove[@]}"; do shelld=(${shelld[@]/*${del}*/}); done
 				popd > /dev/null
+				is_file() { local f; for f; do [[ -e ~/"$f" && ! -L ~/"$f" ]] && return; done; return 1; }
+				if is_file "${shelld[@]}"; then [ ! -d ~/default-shell-files ] && mkdir ~/default-shell-files && echo "~/default-shell-files directory created"; fi
 				for j in "${shelld[@]}"; do
-					[ -e ~/"$j" ] && mv ~/"$j" ~/default-shell-files && echo "Existing ~/$j moved to ~/default-shell-files"
+					[[ -e ~/"$j" && ! -L ~/"$j" ]] && mv ~/"$j" ~/default-shell-files && echo "Existing ~/$j file moved to ~/default-shell-files"
+					[[ -e ~/"$j" && -L ~/"$j" ]] && rm ~/"$j" && echo "Existing ~/$j symlink deleted"
 				done
-				stow -Svt ~ shell && echo "DONE: shell package stowed" || (echo "ERROR stowing shell package" >&2 && exit 1)
+				stow -Rvt ~ shell && echo "DONE: shell package stowed" || (echo "ERROR stowing shell package" >&2 && exit 1)
 				;;
 		config) [ ! -d ~/.config ] && mkdir ~/.config
 				[ ! -d ~/.local ] && mkdir ~/.local
@@ -57,12 +61,12 @@ while :; do
 						read -rp "Do you want to delete ~/$k and replace it with a stow symlink? (y/n)	" yn
 						case $yn in
 							[Yy]* )	rm -rf ~/"$k" && echo "Existing ~/$k directory deleted"
-									stow -Svt ~ "$1" && echo "DONE: $1 package stowed" || (echo "ERROR stowing $k" >&2 && exit 1)
+									stow -Rvt ~ "$1" && echo "DONE: $1 package stowed" || (echo "ERROR stowing $k" >&2 && exit 1)
 									break
 									;;
 							[Nn]* )	read -rp "Do you want to stow this package unfolded? (y/n)	" yn
 									case $yn in
-										[Yy]* )	stow --no-folding -Svt ~ "$1" && echo "DONE: $1 package stowed" || (echo "ERROR stowing $k" >&2 && exit 1)
+										[Yy]* )	stow --no-folding -Rvt ~ "$1" && echo "DONE: $1 package stowed" || (echo "ERROR stowing $k" >&2 && exit 1)
 												break
 												;;
 										[Nn]* )	echo "SKIPPED:	$1 package not stowed"; break
@@ -75,7 +79,7 @@ while :; do
 									;;
 						esac
 					elif [ ! -e ~/"$k" ]; then
-						stow -Svt ~ "$1" && echo "DONE: $1 package stowed" || (echo "ERROR stowing $1 package" >&2 && exit 1)
+						stow -Rvt ~ "$1" && echo "DONE: $1 package stowed" || (echo "ERROR stowing $1 package" >&2 && exit 1)
 						break
 					fi
 				done

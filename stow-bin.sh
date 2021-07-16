@@ -2,7 +2,7 @@
 
 ## Usage: sudo ./stow-bin.sh
 
-set -e
+set -eo pipefail
 
 pushd /home/"$(logname)"/.dotfiles >/dev/null
 
@@ -11,7 +11,7 @@ pushd /home/"$(logname)"/.dotfiles >/dev/null
 [[ "$(uname -m)" == "x86_64" ]] && arch='x86_64'
 [[ -z "${arch}" ]] && (echo "CPU Architecture unknown" >&2 && exit 1)
 
-pushd /home/"$(logname)"/.dotfiles/.bin >/dev/null
+pushd .bin >/dev/null
 bind=("${arch}"/*)
 for b in "${bind[@]}"; do
 	[ -e /usr/local/bin/"$(basename "$b")" ] && (rm /usr/local/bin/"$(basename "$b")" && echo "Existing /usr/local/bin/$(basename "$b") deleted")
@@ -19,7 +19,7 @@ done
 stow -Rvt /usr/local/bin bin"${arch}" && echo "DONE: bin package stowed" || (echo "ERROR stowing bin package" >&2 && exit 1)
 popd >/dev/null
 
-pushd /home/"$(logname)"/.dotfiles/.man >/dev/null
+pushd .man >/dev/null
 mand=(*)
 for m in "${mand[@]}"; do
 	stow -Rvt /usr/share/man/"$m" "$m"

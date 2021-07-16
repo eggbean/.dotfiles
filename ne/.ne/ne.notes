@@ -58,3 +58,7 @@ Ctrl-Y not needed as I have Ctrl-V for Paste
 	but make sure that ClipJump can ignore terminal apps in Windows first
 
 NOW Alt-R and Alt-Z are free
+
+* See how to make Ctrl-Shift-Z Redo
+
+* Find another key for PasteVert and use Ctrl-W to Delete Previous Word, like in bash

@@ -85,4 +85,4 @@ _bat() {
 	_filedir
 	((cword == 1)) && COMPREPLY+=($(compgen -W cache -- "$cur"))
 
-} && complete -F _bat {{PROJECT_EXECUTABLE}}
+} && complete -F _bat bat

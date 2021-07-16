@@ -1,1 +1,3 @@
-.bashrc.notes
+\.git
+\.gitignore
+.*\.(bak|tmp|notes)
