@@ -1,4 +1,4 @@
-## Host specific functions for hydra
+## Host specific functions, aliases and environment variables for hydra
 
 # Turn SD card reader on and off
 sdreader() {
@@ -10,3 +10,5 @@ sdreader() {
 		echo 'No change'
 	fi
 }
+
+alias battery='sudo tlp-stat -b'

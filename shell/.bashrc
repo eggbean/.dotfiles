@@ -8,17 +8,18 @@ case $- in
 	  *) return;;
 esac
 
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
+# history file setting
 HISTCONTROL=ignoreboth
+HISTSIZE=2000
+HISTFILESIZE=3000
+HISTTIMEFORMAT="%d/%m/%y %T "
+HISTIGNORE=ls:ll:la:l:cd:pwd:df:tmux:htop:git:hue:fg
 
 # append to the history file, don't overwrite it
 shopt -s histappend
 
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=2000
-HISTFILESIZE=3000
-HISTTIMEFORMAT="%d/%m/%y %T "
+# Shared history between tmux panes
+PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -111,7 +112,7 @@ fi
 # Rename tmux windows automatically to hostname
 ssh() {
 	if [[ $TMUX ]]; then
-		tmux rename-window "$(echo "${@: -1}" | rev | cut -d '@' -f1 | rev)"
+		tmux rename-window "$(echo "${@: -1}" | rev | cut -d '@' -f1 | rev | sed -E 's/\.([a-z0-9\-]+)\.compute\.amazonaws\.com$//' )"
 		command ssh "$@"
 		tmux set-window-option automatic-rename "on" 1>/dev/null
 	else
@@ -121,7 +122,7 @@ ssh() {
 
 mosh() {
 	if [[ $TMUX ]]; then
-		tmux rename-window "$(echo "${@: -1}" | rev | cut -d '@' -f1 | rev)"
+		tmux rename-window "$(echo "${@: -1}" | rev | cut -d '@' -f1 | rev | sed -E 's/\.([a-z0-9\-]+)\.compute\.amazonaws\.com$//' )"
 		command mosh "$@"
 		tmux set-window-option automatic-rename "on" 1>/dev/null
 	else
@@ -190,20 +191,17 @@ if [[ -x /usr/local/bin/_cdd ]]; then
 	cdd() { while read -r x; do eval "$x" >/dev/null; done < <(dirs -l -p | /usr/local/bin/_cdd "$@"); }
 	alias cd=cdd
 else
-	unalias cd
+	unalias cd 2>/dev/null
 fi
 
 # Make directory and change directory into it
-mkdircd() { mkdir -p "$@" && cd "$@" || return; }
+mkdircd() { mkdir -p "$@" && eval pushd "\"\$$#\"" || return; }
 
 # Minimalist terminal pastebin
 sprunge() { curl -F 'sprunge=<-' http://sprunge.us; }
 
 # Use a private mock hosts(5) file for completion
 export HOSTFILE="$HOME/.hosts"
-
-# Shared history between tmux panes
-PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 # broot function
 [ -f ~/.config/broot/launcher/bash/br ] && . ~/.config/broot/launcher/bash/br
@@ -213,6 +211,11 @@ PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 # fzf open multiple files
 fzfr() { fzf -m -x | xargs -d'\n' -r "$@" ; }
+
+# git diff with bat
+batdiff() {
+	git diff --name-only --diff-filter=d | xargs bat --diff
+}
 
 # Return disk that directory is on
 whichdisk() { realpath $(df "${1:-.}" | command grep '^/' | cut -d' ' -f1) ; }

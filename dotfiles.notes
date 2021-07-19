@@ -4,3 +4,15 @@
 
 * Check to see what the situation is on centos replacement before removing them, as I spent a lot of time adding hub for ARM :(
 
+# Other useful software:
+
+ne
+git
+stow
+htop
+tree
+mdless
+ripgrep
+colordiff ?
+alacritty-themes
+extundelete
