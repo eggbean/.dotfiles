@@ -46,4 +46,9 @@ if [ -z "$TMUX" ]; then
 fi
 
 # Golang
-export PATH=$PATH:/usr/local/go/bin
+if [ -d "/usr/local/go/bin" ]; then
+	PATH=$PATH:/usr/local/go/bin
+fi
+
+# End
+export PATH
