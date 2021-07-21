@@ -8,6 +8,7 @@
 
 ne
 git
+tmux
 stow
 htop
 tree
