@@ -16,9 +16,6 @@ if [ -n "$BASH_VERSION" ]; then
 	fi
 fi
 
-# Source host specific functions
-[ -f ~/.dotfiles/.hosts/"$(hostname -s)" ] && . ~/.dotfiles/.hosts/"$(hostname -s)"
-
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ]; then
 	PATH="$HOME/bin:$PATH"
@@ -34,7 +31,7 @@ if [ -z "$TMUX" ]; then
 	if command -v linux_logo >/dev/null; then
 		eval "$(source /etc/os-release >/dev/null && typeset -p ID PRETTY_NAME)"
 		eval "$(source /etc/machine-info >/dev/null && typeset -p LOCATION)"
-		linux_logo -L "$ID" -f -F "${PRETTY_NAME}\nCompiled #C\n#N #M #X #T Processor#S, #R RAM\n#U\n#L\n"$(hostname -f)"\n${LOCATION}\n#E"
+		linux_logo -L "$ID" -f -F "${PRETTY_NAME}\nCompiled #C\n#N #M #X #T Processor#S, #R RAM\n#U\n#L\n"$(hostname -f)"\n${LOCATION}\n#E" 2>/dev/null
 		unset ID PRETTY_NAME LOCATION
 	fi
 fi
