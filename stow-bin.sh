@@ -2,7 +2,9 @@
 
 ## Usage: sudo ./stow-bin.sh
 
-set -eo pipefail
+# shellcheck disable=SC2015
+
+set -euo pipefail
 
 pushd /home/"$(logname)"/.dotfiles >/dev/null
 

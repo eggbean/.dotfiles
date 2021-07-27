@@ -12,6 +12,7 @@ tmux
 stow
 htop
 tree
+ack
 mdless
 ripgrep
 colordiff ?

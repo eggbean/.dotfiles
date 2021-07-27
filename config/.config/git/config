@@ -4,13 +4,13 @@
 [core]
 	editor = ne
 	pager = LESS= less -FRXq
-	sshCommand = ssh -i /home/jason/.ssh/id_ecdsa -o IdentitiesOnly=yes
 	excludesfile = ~/.dotfiles/config/.config/git/gitignore-system
 [color]
 	ui = true
 [pager]
 	diff = LESS= less -RSqx4+g
 	log = LESS= less -Rq+g
+	whatchanged = LESS= less -Rq+g
 	stash = LESS= less -FRXSqx4
 [color "status"]
 	untracked = blue
