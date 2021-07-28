@@ -76,7 +76,7 @@ esac
 
 # enable color support of ls
 if [ -x /usr/bin/dircolors ]; then
-	test -r ~/bin/dir_colors && eval "$(dircolors -b ~/bin/dir_colors)" || eval "$(dircolors -b)"
+	test -r ~/.dotfiles/.bin/scripts/dir_colors && eval "$(dircolors -b ~/.dotfiles/.bin/scripts/dir_colors)" || eval "$(dircolors -b)"
 fi
 
 # colored GCC warnings and errors
@@ -244,8 +244,6 @@ export LESS_TERMCAP_ZO=$(tput ssupm)
 export LESS_TERMCAP_ZW=$(tput rsupm)
 
 # Environment variables
-export LANG='en_GB.utf8'
-export LANGUAGE='en_GB:en'
 export LS_OPTIONS='-hv --color=always'
 export XDG_CONFIG_HOME="$HOME"/.config
 export XDG_DATA_HOME="$HOME"/.local/share

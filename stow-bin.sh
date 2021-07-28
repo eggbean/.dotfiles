@@ -20,6 +20,7 @@ for b in "${bind[@]}"; do
 	[ -e /usr/local/bin/"$(basename "$b")" ] && (rm /usr/local/bin/"$(basename "$b")" && echo "Existing /usr/local/bin/$(basename "$b") deleted")
 done
 stow -Rvt /usr/local/bin "${arch}" 2>&1 | grep -v "BUG in find_stowed_path" && echo "DONE: bin package stowed" || (echo "ERROR stowing bin package" >&2 && exit 1)
+stow -Rvt /usr/local/bin scripts 2>&1 | grep -v "BUG in find_stowed_path" && echo "DONE: scripts package stowed" || (echo "ERROR stowing scripts package" >&2 && exit 1)
 popd >/dev/null
 
 pushd .man >/dev/null
