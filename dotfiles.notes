@@ -13,8 +13,21 @@ stow
 htop
 tree
 ack
-mdless
 ripgrep
-colordiff ?
-alacritty-themes
 extundelete
+colordiff ?
+
+alacritty-themes
+mdless
+fzf
+
+broot
+mcfly
+funky
+smartcd
+direnv
+
+cd deluxe alternatives:
+autojump
+z / zoxide
+fasd
