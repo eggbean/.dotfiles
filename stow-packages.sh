@@ -32,7 +32,7 @@ while :; do
 					[[ -e ~/"$j" && ! -L ~/"$j" ]] && mv ~/"$j" ~/default-shell-files && echo "Existing ~/$j file moved to ~/default-shell-files"
 					[[ -e ~/"$j" && -L ~/"$j" ]] && rm ~/"$j" && echo "Existing ~/$j symlink deleted"
 				done
-				stow -Rvt ~ shell && echo "DONE: shell package stowed" || (echo "ERROR stowing shell package" >&2 && exit 1)
+				stow -Rvt ~ shell && echo "DONE: shell package stowed" || (echo "ERROR stowing shell package" >&2; exit 1)
 				;;
 		config) [ ! -d ~/.config ] && mkdir ~/.config
 				[ ! -d ~/.local ] && mkdir ~/.local
@@ -44,7 +44,7 @@ while :; do
 				for i in "${configd[@]}"; do
 					[ -e ~/.config/"$i" ] && rm -rf ~/.config/"$i" && echo "Existing ~/.config/$i deleted"
 				done
-				stow -Rvt ~ config && echo "DONE: config package stowed" || (echo "ERROR stowing config package" >&2 && exit 1)
+				stow -Rvt ~ config && echo "DONE: config package stowed" || (echo "ERROR stowing config package" >&2; exit 1)
 				;;
 		ssh)	pushd ssh > /dev/null
 				sshd=(*)
@@ -52,23 +52,23 @@ while :; do
 				for s in "${sshd[@]}"; do
 					[ -e ~/.ssh/"$s" ] && rm ~/.ssh/"$s" && echo "Existing ~/.ssh/$s deleted"
 				done
-				stow --no-folding -Rvt ~ ssh && echo "DONE: ssh package stowed" || (echo "ERROR stowing ssh package" >&2 && exit 1)
+				stow --no-folding -Rvt ~ ssh && echo "DONE: ssh package stowed" || (echo "ERROR stowing ssh package" >&2; exit 1)
 				;;
-		?*)		pushd "$1"/ > /dev/null || (echo "ERROR finding $1 package" >&2 && exit 1)
+		?*)		pushd "$1"/ > /dev/null || (echo "ERROR finding $1 package" >&2; exit 1)
 				packaged=(*)
 				popd > /dev/null
-				[ ${#packaged[@]} -gt 1 ] && (echo "WARNING: This does not currently work well for packages that contain more than one directory (folded)." >&2 && exit 1)
+				[ ${#packaged[@]} -gt 1 ] && (echo "WARNING: This does not currently work well for packages that contain more than one directory (folded)." >&2; exit 1)
 				for k in "${packaged[@]}"; do
 					if [ -e ~/"$k" ]; then
 						read -rp "Do you want to delete ~/$k and replace it with a stow symlink? (y/n)	" yn
 						case $yn in
 							[Yy]* )	rm -rf ~/"$k" && echo "Existing ~/$k directory deleted"
-									stow -Rvt ~ "$1" && echo "DONE: $1 package stowed" || (echo "ERROR stowing $k" >&2 && exit 1)
+									stow -Rvt ~ "$1" && echo "DONE: $1 package stowed" || (echo "ERROR stowing $k" >&2; exit 1)
 									break
 									;;
 							[Nn]* )	read -rp "Do you want to stow this package unfolded? (y/n)	" yn
 									case $yn in
-										[Yy]* )	stow --no-folding -Rvt ~ "$1" && echo "DONE: $1 package stowed" || (echo "ERROR stowing $k" >&2 && exit 1)
+										[Yy]* )	stow --no-folding -Rvt ~ "$1" && echo "DONE: $1 package stowed" || (echo "ERROR stowing $k" >&2; exit 1)
 												break
 												;;
 										[Nn]* )	echo "SKIPPED:	$1 package not stowed"; break
@@ -81,7 +81,7 @@ while :; do
 									;;
 						esac
 					elif [ ! -e ~/"$k" ]; then
-						stow -Rvt ~ "$1" && echo "DONE: $1 package stowed" || (echo "ERROR stowing $1 package" >&2 && exit 1)
+						stow -Rvt ~ "$1" && echo "DONE: $1 package stowed" || (echo "ERROR stowing $1 package" >&2; exit 1)
 						break
 					fi
 				done
