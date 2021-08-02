@@ -1,0 +1,6 @@
+AtomicUndo +
+Mark
+LineDown
+MoveSOL
+Through xargs -n 1 | sort | xargs
+AtomicUndo -

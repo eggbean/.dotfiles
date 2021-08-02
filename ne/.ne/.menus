@@ -104,6 +104,7 @@ ITEM "Save Macro...     " SaveMacro
 ITEM "------------------" NOP
 ITEM "Spaces2Tabs       " Spaces2Tabs
 ITEM "Tabs2Spaces       " Tabs2Spaces
+ITEM "Sort2EOL          " Sort2EOL
 
 MENU "Extras"
 ITEM "Exec...      [X" Exec
