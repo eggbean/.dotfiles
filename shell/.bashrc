@@ -223,6 +223,9 @@ else
 	export PASTEL_COLOR_MODE='8bit'
 fi
 
+# Terraform autocomplete
+[ -x /usr/bin/terraform ] && complete -C /usr/bin/terraform terraform
+
 # Age of files
 agem() { echo $((($(date +%s) - $(date +%s -r "$1")) / 60)) minutes; }
 ageh() { echo $((($(date +%s) - $(date +%s -r "$1")) / 3600)) hours; }
@@ -268,4 +271,4 @@ export EDITOR='ne'
 export VISUAL='ne'
 
 # Source host specific functions
-[ -f ~/.dotfiles/.hosts/"$(hostname -s)" ] && . ~/.dotfiles/.hosts/"$(hostname -s)"
+[ -f ~/.dotfiles/shell/.hostspecific/"$(hostname -s)" ] && . ~/.dotfiles/shell/.hostspecific/"$(hostname -s)"
