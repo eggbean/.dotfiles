@@ -202,7 +202,7 @@ export HOSTFILE="$HOME/.hosts"
 # broot function
 [ -f ~/.config/broot/launcher/bash/br ] && . ~/.config/broot/launcher/bash/br
 
-# fzf autocomplete
+# fzf bash completion
 [ -f ~/.fzf.bash ] && . ~/.fzf.bash
 
 # fzf open multiple files
@@ -223,7 +223,12 @@ else
 	export PASTEL_COLOR_MODE='8bit'
 fi
 
-# Terraform autocomplete
+# GitHub CLI bash completion
+if command -v gh >/dev/null; then
+	eval "$(gh completion -s bash)"
+fi
+
+# Terraform bash completion
 [ -x /usr/bin/terraform ] && complete -C /usr/bin/terraform terraform
 
 # Age of files
