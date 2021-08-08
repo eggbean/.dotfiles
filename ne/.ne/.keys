@@ -32,19 +32,19 @@ KEY	A5	PrevWord
 
 # Alt-Up
 SEQ	"\x1b[1;3A"	A6
-KEY	A6	AdjustView B
+KEY	A6	AdjustView T
 
 # Alt-Down
 SEQ	"\x1b[1;3B"	A7
-KEY	A7	AdjustView T
+KEY	A7	AdjustView B
 
 # Alt-Right
 SEQ	"\x1b[1;3C"	A8
-KEY	A8	AdjustView L
+KEY	A8	AdjustView R
 
 # Alt-Left
 SEQ	"\x1b[1;3D"	A9
-KEY	A9	AdjustView R
+KEY	A9	AdjustView L
 
 # Ctrl-Alt-Up
 SEQ	"\x1b[1;7A"	AA
@@ -112,7 +112,7 @@ KEY	B9	NOP
 
 # Alt-Delete
 SEQ	"\x1b[3;3~" BA
-KEY	BA	NOP
+KEY	BA	DeleteNextWord
 
 # Shift-Home
 SEQ	"\x1b[1;2H" BB

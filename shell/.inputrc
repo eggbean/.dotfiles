@@ -109,8 +109,8 @@ set match-hidden-files              off
 
 # C-Del to null
 "\033[3;5~": ""
-# M-Del to null
-"\033[3;3~": ""
+# M-Del to Delete Next Word Forward
+"\033[3;3~": shell-kill-word
 # S-Del to null
 "\033[3;2~": ""
 
