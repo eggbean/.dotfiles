@@ -5,7 +5,7 @@ alias ll='ls -l'
 alias lla='ls -Al'
 alias sudo='sudo '
 alias tree='tree -C'
-alias diff='diff --color=always --tabsize=4'
+alias diff='diff -s --color=always --tabsize=4'
 alias grep='grep --color=always'
 alias egrep='egrep --color=always'
 alias fgrep='fgrep --color=always'
@@ -15,6 +15,7 @@ alias mc='. /usr/share/mc/bin/mc-wrapper.sh'
 alias wget='wget --hsts-file="$XDG_CACHE_HOME"/wget-hsts'
 alias shellcheck='shellcheck --color=always'
 alias crontab='crontab -i'
+alias ncdu='ncdu --exclude-kernfs --color dark'
 
 # Aliases to avoid making mistakes:
 alias cp='cp -iv'
@@ -43,9 +44,9 @@ alias batlog='bat --paging=never -l log'
 alias driveinfo='df -HTx tmpfs -x overlay -x devtmpfs'
 
 # Changing directory quickly
-alias ..="builtin cd .."
-alias ...="builtin cd ../.."
-alias ....="builtin cd ../../.."
-alias .....="builtin cd ../../../.."
-alias ......="builtin cd ../../../../.."
-alias .......="builtin cd ../../../../../.."
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ......="cd ../../../../.."
+alias .......="cd ../../../../../.."

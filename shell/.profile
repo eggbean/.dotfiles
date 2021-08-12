@@ -29,9 +29,9 @@ fi
 # Linuxlogo
 if [ -z "$TMUX" ]; then
 	if command -v linux_logo >/dev/null; then
-		eval "$(source /etc/os-release >/dev/null && typeset -p ID PRETTY_NAME)"
-		eval "$(source /etc/machine-info >/dev/null && typeset -p LOCATION)"
-		linux_logo -L "$ID" -f -F "${PRETTY_NAME}\nCompiled #C\n#N #M #X #T Processor#S, #R RAM\n#U\n#L\n"$(hostname -f)"\n${LOCATION}\n#E" 2>/dev/null
+		eval "$(source /etc/os-release && typeset -p ID PRETTY_NAME)"
+		[ -f /etc/machine-info ] && eval "$(source /etc/machine-info && typeset -p LOCATION)"
+		linux_logo -L "$ID" -f -F "${PRETTY_NAME}\nCompiled #C\n#N #M #X #T Processor#S, #R RAM\n#U\n#L\n$(hostname -f)\n${LOCATION}\n#E" 2>/dev/null
 		unset ID PRETTY_NAME LOCATION
 	fi
 fi
