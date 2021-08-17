@@ -23,8 +23,6 @@ while :; do
 	case ${1-} in
 		shell)	pushd shell > /dev/null
 				shelld=(*)
-				remove=(.stow-local-ignore "$(cat .stow-local-ignore)")
-				for del in "${remove[@]}"; do shelld=("${shelld[@]/*${del}*/}"); done
 				popd > /dev/null
 				is_file() { local f; for f; do [[ -e ~/"$f" && ! -L ~/"$f" ]] && return; done; return 1; }
 				if is_file "${shelld[@]}"; then [ ! -d ~/default-shell-files ] && mkdir ~/default-shell-files && echo "~/default-shell-files directory created"; fi
