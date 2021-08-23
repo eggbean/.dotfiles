@@ -36,6 +36,7 @@ while :; do
 				[ ! -d ~/.local ] && mkdir ~/.local
 				[ ! -d ~/.local/share ] && mkdir ~/.local/share
 				[ -d ~/.local/share/mc ] && rm -rf ~/.local/share/mc && echo "Existing ~/.local/share/mc deleted"
+				[ -d ~/.local/share/nvim ] && rm -rf ~/.local/share/nvim && echo "Existing ~/.local/share/nvim deleted"
 				pushd config/.config > /dev/null
 				configd=(*)
 				popd > /dev/null
