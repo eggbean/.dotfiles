@@ -272,8 +272,8 @@ export MANPAGER='less -+MFX +g'
 export BAT_PAGER='less -+MFX -S'
 export EXA_COLORS='lc=38;5;124:lm=38;5;196:uu=38;5;178:gu=38;5;178:un=38;5;141:gn=38;5;141'
 export ANSIBLE_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"/ansible/ansible.cfg
-export EDITOR='ne'
-export VISUAL='ne'
+export EDITOR='vi'
+export VISUAL='vi'
 
 # Source host specific functions
 [ -f ~/.dotfiles/shell/.hostspecific/"$(hostname -s)" ] && . ~/.dotfiles/shell/.hostspecific/"$(hostname -s)"

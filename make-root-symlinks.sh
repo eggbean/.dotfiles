@@ -16,3 +16,5 @@ pushd .config/ >/dev/null || ( echo "ERROR" >&2; exit 1 )
 rm -rf git/ 2>/dev/null
 ln -s /home/"$(logname)"/.dotfiles/config/.config/git git
 echo "DONE"
+
+[ -x /usr/bin/nvim ] && update-alternatives --set editor /usr/bin/nvim || update-alternatives --set editor /usr/bin/vi
