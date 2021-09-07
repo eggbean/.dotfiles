@@ -2,7 +2,6 @@
 
 ## Usage: ./stow-packages.sh [PACKAGE] [PACKAGE] [PACKAGE]
 ##
-## This script can easily break with new package elements (eg. config/.local)
 ## ?* section cannot currently handle more than one element in a package
 
 # shellcheck disable=SC2015
@@ -32,11 +31,14 @@ while :; do
 				done
 				stow -Rvt ~ shell && echo "DONE: shell package stowed" || (echo "ERROR stowing shell package" >&2; exit 1)
 				;;
-		config) [ ! -d ~/.config ] && mkdir ~/.config
-				[ ! -d ~/.local ] && mkdir ~/.local
-				[ ! -d ~/.local/share ] && mkdir ~/.local/share
-				[ -d ~/.local/share/mc ] && rm -rf ~/.local/share/mc && echo "Existing ~/.local/share/mc deleted"
-				[ -d ~/.local/share/nvim ] && rm -rf ~/.local/share/nvim && echo "Existing ~/.local/share/nvim deleted"
+		config) [ ! -d ~/.local/share ] && mkdir -p ~/.local/share
+				pushd config/.local/share > /dev/null
+				locald=(*)
+				for m in "${locald[@]}"; do
+					[ -e ~/.local/share/"$m" ] && rm -rf ~/.local/share/"$m" && echo "Existing ~/.local/share/$m deleted"
+				done
+				popd > /dev/null
+				[ ! -d ~/.config ] && mkdir ~/.config
 				pushd config/.config > /dev/null
 				configd=(*)
 				popd > /dev/null
