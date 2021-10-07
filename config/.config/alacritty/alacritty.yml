@@ -35,7 +35,7 @@ key_bindings:
   - { key: NumpadSubtract, mods: Control,                 action: DecreaseFontSize }
 
   # (Windows only)
-  - { key: Return,   mods: Alt,           action: ToggleFullscreen }
+  - { key: Return,         mods: Alt,                     action: ToggleFullscreen }
 
 # Font configuration
 font:
@@ -74,7 +74,7 @@ colors:
 
   # Cursor colors
   cursor:
-    text: '#FF261E'
+    text: '#0d0d0d'
     cursor: '#FF261E'
 
   # Normal colors
