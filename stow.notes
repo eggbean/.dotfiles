@@ -1,0 +1,8 @@
+# TO DO:
+* In bin script, remove Existing.. deleted and replace with yes/no
+* Rearrange bin packages into bin directory
+* Use $STOWDIR variable instead of pushd and popd
+* Maybe rename package script to refect its use with dotfiles and config. Stow-dotfiles?
+* In package script add --adopt switch to move existing config into .dotfiles repository
+* Consider using the --dotfiles switch on the package script
+* Add help
