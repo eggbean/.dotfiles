@@ -2,6 +2,8 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+# shellcheck disable=SC1090,SC2164,SC2148,SC2155
+
 # If not running interactively, don't do anything
 case $- in
 	*i*) ;;
@@ -168,8 +170,8 @@ cat() {
 }
 
 # Search man page for string
-mansearch() { 
-	local q=\'
+mans() { 
+	local q="\'"
 	local q_pattern="'${1//$q/$q\\$q$q}'"
 	local MANPAGER="less -+MFX -p $q_pattern"
 	man "$2"
@@ -183,11 +185,28 @@ dlgr() {
 }
 
 # CD Deluxe
-if [[ -x /usr/local/bin/_cdd ]]; then
+if  [[ -x /usr/local/bin/_cdd ]]; then
 	cdd() { while read -r x; do eval "$x" >/dev/null; done < <(dirs -l -p | /usr/local/bin/_cdd "$@"); }
 	alias cd=cdd
-else
-	unalias cd 2>/dev/null
+elif
+	[[ -x "$HOME"/.local/bin/_cdd ]]; then
+	cdd() { while read -r x; do eval "$x" >/dev/null; done < <(dirs -l -p | "$HOME"/.local/bin/_cdd "$@"); }
+	alias cd=cdd
+fi
+
+# Directory bookmarks
+if [ -d "$HOME/.bookmarks" ]; then
+	goto() {
+		pushd -n "$PWD" >/dev/null
+		local CDPATH="$HOME/.bookmarks"
+		command cd -P "$@" >/dev/null
+	}
+	complete -W "$(command cd ~/.bookmarks && printf '%s\n' -- *)" goto
+	bookmark() {
+		pushd "$HOME/.bookmarks" >/dev/null
+		ln -s "$OLDPWD" "$@"
+		popd >/dev/null
+	}
 fi
 
 # Make directory and change directory into it
@@ -203,7 +222,7 @@ export HOSTFILE="$HOME/.hosts"
 [ -f ~/.config/broot/launcher/bash/br ] && . ~/.config/broot/launcher/bash/br
 
 # fzf bash completion
-[ -f ~/.fzf.bash ] && . ~/.fzf.bash
+[ -f "${XDG_CONFIG_HOME}"/fzf/fzf.bash ] && . "${XDG_CONFIG_HOME}"/fzf/fzf.bash
 
 # fzf open multiple files
 fzfr() { fzf -m -x | xargs -d'\n' -r "$@" ; }
@@ -214,10 +233,10 @@ batdiff() {
 }
 
 # Return disk that directory is on
-whichdisk() { realpath $(df "${1:-.}" | command grep '^/' | cut -d' ' -f1) ; }
+whichdisk() { realpath "$(df "${1:-.}" | command grep '^/' | cut -d' ' -f1)" ; }
 
 # pastel colour mode
-if [ "$TERM" = 'xterm-24bit' ]; then
+if [[ $COLORTERM =~ ^(truecolor|24bit)$ ]]; then
 	export PASTEL_COLOR_MODE='24bit'
 else
 	export PASTEL_COLOR_MODE='8bit'
@@ -271,7 +290,8 @@ export LESSHISTFILE="$XDG_CACHE_HOME"/.lesshst
 export MANPAGER='less -+MFX +g'
 export BAT_PAGER='less -+MFX -S'
 export EXA_COLORS='lc=38;5;124:lm=38;5;196:uu=38;5;178:gu=38;5;178:un=38;5;141:gn=38;5;141'
-export ANSIBLE_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"/ansible/ansible.cfg
+export ANSIBLE_CONFIG="$XDG_CONFIG_HOME"/ansible/ansible.cfg
+export RANGER_LOAD_DEFAULT_RC=FALSE
 export EDITOR='vi'
 export VISUAL='vi'
 
