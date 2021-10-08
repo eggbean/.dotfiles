@@ -2,6 +2,8 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+# shellcheck disable=SC1090,SC2164,SC2148,SC2155
+
 # If not running interactively, don't do anything
 case $- in
 	*i*) ;;
@@ -110,7 +112,7 @@ ssh() {
 	if [[ $TMUX ]]; then
 		tmux rename-window "$(echo "${@: -1}" | rev | cut -d '@' -f1 | rev | sed -E 's/\.([a-z0-9\-]+)\.compute\.amazonaws\.com$//' )"
 		command ssh "$@"
-		tmux set-window-option automatic-rename "on" 1>/dev/null
+		tmux set automatic-rename "on" >/dev/null
 	else
 		command ssh "$@"
 	fi
@@ -120,7 +122,7 @@ mosh() {
 	if [[ $TMUX ]]; then
 		tmux rename-window "$(echo "${@: -1}" | rev | cut -d '@' -f1 | rev | sed -E 's/\.([a-z0-9\-]+)\.compute\.amazonaws\.com$//' )"
 		command mosh "$@"
-		tmux set-window-option automatic-rename "on" 1>/dev/null
+		tmux set automatic-rename "on" >/dev/null
 	else
 		command mosh "$@"
 	fi
@@ -142,12 +144,23 @@ if ! type aws >/dev/null 2>&1; then
 	aws() { docker run --rm -it -v ~/.aws:/root/.aws amazon/aws-cli "$@"; }
 fi
 
+# Rename tmux windows when attaching to docker containers
+docker() {
+	if [[ $TMUX ]] && [[ "$1" == "attach" ]]; then
+		tmux rename-window "$2"
+		command docker "$@"
+		tmux set automatic-rename "on" >/dev/null
+	else
+		command docker "$@"
+	fi
+}
+
 # AWS command completion
 complete -C '/usr/local/bin/aws_completer' aws
 
 # Prevent accidental git stashing and alias git to hub
 git() {
-	if [[ "$#" -eq 1 ]] && [[ "$1" = "stash" ]]; then
+	if [[ "$#" -eq 1 ]] && [[ "$1" == "stash" ]]; then
 		echo 'WARNING: run "git stash push" instead.'
 	else
 		if command -v hub >/dev/null; then
@@ -168,8 +181,8 @@ cat() {
 }
 
 # Search man page for string
-mansearch() { 
-	local q=\'
+mans() { 
+	local q="\'"
 	local q_pattern="'${1//$q/$q\\$q$q}'"
 	local MANPAGER="less -+MFX -p $q_pattern"
 	man "$2"
@@ -183,15 +196,32 @@ dlgr() {
 }
 
 # CD Deluxe
-if [[ -x /usr/local/bin/_cdd ]]; then
+if  [[ -x /usr/local/bin/_cdd ]]; then
 	cdd() { while read -r x; do eval "$x" >/dev/null; done < <(dirs -l -p | /usr/local/bin/_cdd "$@"); }
 	alias cd=cdd
-else
-	unalias cd 2>/dev/null
+elif
+	[[ -x "$HOME"/.local/bin/_cdd ]]; then
+	cdd() { while read -r x; do eval "$x" >/dev/null; done < <(dirs -l -p | "$HOME"/.local/bin/_cdd "$@"); }
+	alias cd=cdd
+fi
+
+# Directory bookmarks
+if [ -d "$HOME/.bookmarks" ]; then
+	goto() {
+		pushd -n "$PWD" >/dev/null
+		local CDPATH="$HOME/.bookmarks"
+		command cd -P "$@" >/dev/null
+	}
+	complete -W "$(command cd ~/.bookmarks && printf '%s\n' -- *)" goto
+	bookmark() {
+		pushd "$HOME/.bookmarks" >/dev/null
+		ln -s "$OLDPWD" "$@"
+		popd >/dev/null
+	}
 fi
 
 # Make directory and change directory into it
-mkdircd() { mkdir -p "$@" && eval pushd "\"\$$#\"" || return; }
+mkdircd() { mkdir -p "$@" && eval pushd "\"\$$#\"" >/dev/null || return; }
 
 # Minimalist terminal pastebin
 sprunge() { curl -F 'sprunge=<-' http://sprunge.us; }
@@ -203,7 +233,7 @@ export HOSTFILE="$HOME/.hosts"
 [ -f ~/.config/broot/launcher/bash/br ] && . ~/.config/broot/launcher/bash/br
 
 # fzf bash completion
-[ -f ~/.fzf.bash ] && . ~/.fzf.bash
+[ -f "${XDG_CONFIG_HOME}"/fzf/fzf.bash ] && . "${XDG_CONFIG_HOME}"/fzf/fzf.bash
 
 # fzf open multiple files
 fzfr() { fzf -m -x | xargs -d'\n' -r "$@" ; }
@@ -214,10 +244,10 @@ batdiff() {
 }
 
 # Return disk that directory is on
-whichdisk() { realpath $(df "${1:-.}" | command grep '^/' | cut -d' ' -f1) ; }
+whichdisk() { realpath "$(df "${1:-.}" | command grep '^/' | cut -d' ' -f1)" ; }
 
 # pastel colour mode
-if [ "$TERM" = 'xterm-24bit' ]; then
+if [[ $COLORTERM =~ ^(truecolor|24bit)$ ]]; then
 	export PASTEL_COLOR_MODE='24bit'
 else
 	export PASTEL_COLOR_MODE='8bit'
@@ -256,6 +286,7 @@ export LS_OPTIONS='-hv --color=always'
 export XDG_CONFIG_HOME="$HOME"/.config
 export XDG_DATA_HOME="$HOME"/.local/share
 export XDG_CACHE_HOME="$HOME"/.cache
+export XDG_STATE_HOME="$HOME"/.local/state
 export VSCODE_PORTABLE="$XDG_DATA_HOME"/vscode
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 export WGETRC="$XDG_CONFIG_HOME"/wget/wgetrc
@@ -267,13 +298,16 @@ export MOSH_TITLE_NOPREFIX=
 export PAGER='less'
 export LESS='-MRQx4FX#10'
 export LESSCHARSET='utf-8'
-export LESSHISTFILE="$XDG_CACHE_HOME"/.lesshst
+export LESSHISTFILE="$XDG_DATA_HOME"/.lesshst
 export MANPAGER='less -+MFX +g'
 export BAT_PAGER='less -+MFX -S'
 export EXA_COLORS='lc=38;5;124:lm=38;5;196:uu=38;5;178:gu=38;5;178:un=38;5;141:gn=38;5;141'
-export ANSIBLE_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"/ansible/ansible.cfg
+export ANSIBLE_CONFIG="$XDG_CONFIG_HOME"/ansible/ansible.cfg
+export RANGER_LOAD_DEFAULT_RC=FALSE
 export EDITOR='vi'
 export VISUAL='vi'
+export VIMINIT='let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$XDG_CONFIG_HOME/nvim/init.vim" | so $MYVIMRC'
+export TMUX_PLUGIN_MANAGER_PATH="$XDG_DATA_HOME"/tmux/plugins
 
 # Source host specific functions
 [ -f ~/.dotfiles/shell/.hostspecific/"$(hostname -s)" ] && . ~/.dotfiles/shell/.hostspecific/"$(hostname -s)"

@@ -11,3 +11,6 @@ if ! [ -S "$SSH_AUTH_SOCK" ]; then
 	ssh-add
 	ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
 fi
+
+# Aliases
+alias vi='nvim --appimage-extract-and-run'
