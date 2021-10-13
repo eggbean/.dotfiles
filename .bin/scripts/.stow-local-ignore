@@ -1,2 +1,4 @@
 dir_colors
 src
+.*\.env
+
