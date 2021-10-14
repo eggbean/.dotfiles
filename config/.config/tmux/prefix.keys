@@ -1,0 +1,125 @@
+    M-C-h     Select the pane to the left of the active pane
+    M-C-j     Select the pane below the active pane
+    M-C-k     Select the pane above the active pane
+    M-C-l     Select the pane to the right of the active pane
+    M-C-t     Create a new window at the current directory
+    C-NPage   Switch to the window on the right
+    C-PPage   Switch to the window on the left
+    C-M-;     Move to the previously active pane
+    C-M-NPage Go down to exit nested instance
+    C-M-PPage Go up to enter nested instance
+    C-M-Up    Select the pane above the active pane
+    C-M-Down  Select the pane below the active pane
+    C-M-Left  Select the pane to the left of the active pane
+    C-M-Right Select the pane to the right of the active pane
+    C-S-NPage Move window to the right
+    C-S-PPage Move window to the left
+C-\ C-l       Clear history
+C-\ C-o       Rotate through the panes
+C-\ C-x       Kill the current session
+C-\ C-y       Yank pane to new pane
+C-\ C-z       Suspend the current client
+C-\ C-\       Select the previously current window
+C-\ Space     Select next layout
+C-\ !         Break pane to a new window
+C-\ "         Split window vertically
+C-\ #         List all paste buffers
+C-\ $         Rename current session
+C-\ %         Split window horizontally
+C-\ &         Kill current window
+C-\ '         Prompt for window index to select
+C-\ (         Switch to previous client
+C-\ )         Switch to next client
+C-\ *         Synchronise panes
+C-\ +         Delete the most recent paste buffer
+C-\ ,         Rename current window
+C-\ -         Split pane vertically
+C-\ .         Move the current window
+C-\ /         Describe key binding
+C-\ 0         Select window 10
+C-\ 1         Select window 1
+C-\ 2         Select window 2
+C-\ 3         Select window 3
+C-\ 4         Select window 4
+C-\ 5         Select window 5
+C-\ 6         Select window 6
+C-\ 7         Select window 7
+C-\ 8         Select window 8
+C-\ 9         Select window 9
+C-\ :         Prompt for a command
+C-\ ;         Move to the previously active pane
+C-\ <         Send pane to:
+C-\ =         Choose a paste buffer from a list
+C-\ >         Join pane from:
+C-\ ?         List key bindings
+C-\ @         Join pane
+C-\ C         Customize options
+C-\ D         Choose a client from a list
+C-\ E         Spread panes out evenly
+C-\ L         Switch to the last client
+C-\ M         Clear the marked pane
+C-\ P         Paste the most recent paste buffer
+C-\ R         Reload configuration
+C-\ S         Create a new session
+C-\ X         Kill the current window
+C-\ [         Enter copy mode
+C-\ \         Split window horizontally
+C-\ ]         Paste the most recent paste buffer
+C-\ _         Split window vertically
+C-\ `         Toggle pane input
+C-\ c         Create a new window
+C-\ d         Detach the current client
+C-\ f         Search for a pane
+C-\ i         Display window information
+C-\ l         Select the previously current window
+C-\ m         Toggle the marked pane
+C-\ n         Select the next window
+C-\ o         Select the next pane
+C-\ p         Select the previous window
+C-\ q         Display pane numbers
+C-\ r         Redraw the current client
+C-\ s         Choose a session from a list
+C-\ t         Show a clock
+C-\ w         Choose a window from a list
+C-\ x         Kill the active pane
+C-\ z         Zoom the active pane
+C-\ {         Swap the active pane with the pane above
+C-\ |         Split pane horizontally
+C-\ }         Swap the active pane with the pane below
+C-\ ~         Show messages
+C-\ DC        Reset so the visible part of the window follows the cursor
+C-\ PPage     Enter copy mode and scroll up
+C-\ Up        Select the pane above the active pane
+C-\ Down      Select the pane below the active pane
+C-\ Left      Select the pane to the left of the active pane
+C-\ Right     Select the pane to the right of the active pane
+C-\ M-0       Select window 20
+C-\ M-1       Select window 11
+C-\ M-2       Select window 12
+C-\ M-3       Select window 13
+C-\ M-4       Select window 14
+C-\ M-5       Select window 15
+C-\ M-6       Select window 16
+C-\ M-7       Select window 17
+C-\ M-8       Select window 18
+C-\ M-9       Select window 19
+C-\ M-<       Resume automatic window renaming
+C-\ M-h       Resize the pane left by 3
+C-\ M-j       Resize the pane down by 3
+C-\ M-k       Resize the pane up by 3
+C-\ M-l       Resize the pane right by 3
+C-\ M-n       Select the next window with an alert
+C-\ M-o       Rotate through the panes in reverse
+C-\ M-p       Select the previous window with an alert
+C-\ M-Up      Resize the pane up by 5
+C-\ M-Down    Resize the pane down by 5
+C-\ M-Left    Resize the pane left by 5
+C-\ M-Right   Resize the pane right by 5
+C-\ C-Up      Resize the pane up
+C-\ C-Down    Resize the pane down
+C-\ C-Left    Resize the pane left
+C-\ C-Right   Resize the pane right
+C-\ S-Up      Move the visible part of the window up
+C-\ S-Down    Move the visible part of the window down
+C-\ S-Left    Move the visible part of the window left
+C-\ S-Right   Move the visible part of the window right
