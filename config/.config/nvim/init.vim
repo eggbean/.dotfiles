@@ -10,12 +10,12 @@ call plug#begin('$XDG_DATA_HOME/nvim/plugged')
 	Plug 'jeffkreeftmeijer/vim-numbertoggle'
 	Plug 'arp242/jumpy.vim'
 	Plug 'ntpeters/vim-better-whitespace'
-	Plug 'christoomey/vim-tmux-navigator'
+	Plug 'eggbean/vim-tmux-navigator-no-wrapping'
 "   Plug 'folke/which-key.nvim'
 call plug#end()
 
 " Indentation
-set tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab autoindent
+set tabstop=4 shiftwidth=4 softtabstop=4 autoindent noexpandtab list
 
 set encoding=utf-8
 scriptencoding utf-8
@@ -27,6 +27,14 @@ colorscheme gruvbox
 set title
 set listchars=tab:▸-
 set mouse=a
+
+" XDG Environment
+set runtimepath^=$XDG_CONFIG_HOME/nvim
+set runtimepath+=$XDG_DATA_HOME/nvim
+set runtimepath+=$XDG_CONFIG_HOME/nvim/after
+set directory=$XDG_CACHE_HOME/nvim/swap   | call mkdir(&directory, 'p')
+set backupdir=$XDG_CACHE_HOME/nvim/backup | call mkdir(&backupdir, 'p')
+set undodir=$XDG_CACHE_HOME/nvim/undo     | call mkdir(&undodir,   'p')
 
 " " Persistent undo
 " set undodir=~/.config/nvim/.undo//
@@ -68,10 +76,11 @@ autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
 
 " Plugin configuration
 	" netrw
-	let g:netrw_home=$XDG_CACHE_HOME.'/vim'
+	let g:netrw_home = $XDG_DATA_HOME.'/nvim'
 	" vim-better-whitespace
 	let g:show_spaces_that_precede_tabs=1
 	" vim-tmux-navigator
+	let g:tmux_navigator_no_wrap = 1
 	let g:tmux_navigator_disable_when_zoomed = 1
 	let g:tmux_navigator_no_mappings = 1
 	nnoremap <silent> <C-M-h> :TmuxNavigateLeft<cr>
@@ -79,3 +88,6 @@ autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
 	nnoremap <silent> <C-M-k> :TmuxNavigateUp<cr>
 	nnoremap <silent> <C-M-l> :TmuxNavigateRight<cr>
 	nnoremap <silent> <C-M-;> :TmuxNavigatePrevious<cr>
+	" molokai colour theme
+	let g:molokai_original = 1
+	let g:rehash256 = 1
