@@ -365,7 +365,8 @@ echo "------------------"
 LOG_FILE="tmux-${TMUX_VERSION}.log"
 
 cd ${TMUX_STATIC_HOME}/src || exit 1
-if [ ! -f ${TMUX_ARCHIVE} ]; then
+if [ -f ${TMUX_ARCHIVE} ]; then
+	rm ${TMUX_ARCHIVE}
     printf "Downloading..."
     [ -d tmux ] && rm -rf tmux
     git clone ${TMUX_URL} > ${LOG_DIR}/${LOG_FILE} 2>&1
