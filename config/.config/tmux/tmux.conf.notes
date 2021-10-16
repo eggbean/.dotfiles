@@ -1,50 +1,18 @@
 
-   eggbean │ Is it possible to get visible bell alerts from other sessions?  I'm hoping to find a way to make the session name (left end of status line) to
-           │ change colour.
-      nicm │ nickjj: what does C-r do?
-      nicm │ eggbean: you can write a script and get them with lsp/lsw/ls and formats
-   eggbean │ nicm: I thought it would have something to do with hooks?  What are lsp/lsw/ls ?
-   eggbean │ never heard of anything like that
-   eggbean │ okay found them in the man
-   eggbean │ not sure how I would use lsp/lsw/ls for this
-      nicm │ well write a script like: tmux ls -F'#{session_id} #{session_alerts}'|grep -v ^$1
-      nicm │ then run it with '#(myscript #{session_id})'
-      nicm │ and it will show all the sessions that have alerts that aren't your current session
-      nicm │ if you do
-      nicm │ something like: tmux ls -F'#{session_id} #{session_alerts}'|grep -v ^$1|awk '/[^ ]$/ {print}'|wc -l
-      nicm │ it'll show 0 if there are none and >0 otherwise
-      nicm │ and you could use that to print either '#[bg=red]' or whatever you want
-      nicm │ probably the grep and awk and wc can be combined into 1 actually
-   eggbean │ Ok thanks. Is there any other information I need, or is that all I need to go on?
-   eggbean │ What is the setting to style the session name?
-      nicm │ status-left?
-      nicm │ try writing a script that does: echo '#[bg=red]'
-      nicm │ then set -g status-left '#(sh /path/to/script)#{session_name}'
-      nicm │ thne you can go from there
-   eggbean │ ok, thanks
-
-
-   eggbean │ If I have a line like this:
-   eggbean │ set -g window-status-format "#{?window_zoomed_flag,#[bg=#{@zoomed}],}#{?window_bell_flag,#[fg=#{@bell}#,bg=#{@black}],} #I:#W "
-   eggbean │ I t does not wotk if I try to amend just the first part, like this:
-   eggbean │ set -ga window-status-format "#{?window_zoomed_flag,#[bg=#{@inactive}],}"
-   eggbean │ I though that would work, but it doesn't seem to
-   eggbean │ thoought
-   eggbean │ Same with changing:
-   eggbean │ set -g status-right "#[fg=#{@white}]#(hostname -f) "
-   eggbean │ with..
-   eggbean │  set -ga status-right "#[fg=#{@black}]"
-
-
-PROBLEMS
-	* When using Ctrl-Alt-t for new window, the bell flag on another window tab is cleared, when it
-	  is to the right on the current tab, with the new tab between
-	* Two of the three nested commands cannot be shortened, as thoough append does not work, as explained above
-	* IP address hostnames in status line window name is not cut correctly
-
 # bind x set -F @x                    '#{?#{==:#{@x},1},2,1}'
-#bind A set -F @sidebar-tree-command '#{?#{==:#{@sidebar-tree-command},tree -Ca},tree -C,tree -Ca}'
-#bind A set -F @sidebar-tree-command '#{?@sidebar-tree-command,tree -Ca,tree -C}' \; display-message "Hidden files in sidebar is #{?@sidebar-tree-command,on,off}"
-#bind A set -F @var '#{?@var,tree -Ca,tree -C}' \; display-message "Hidden files are #{?@var,on,off}"
+#bind BTab set -F @sidebar-tree-command '#{?#{==:#{@sidebar-tree-command},tree -Ca},tree -C,tree -Ca}'
+#bind BTab set -F @sidebar-tree-command '#{?@sidebar-tree-command,tree -Ca,tree -C}' \; display-message "Hidden files in sidebar is #{?@sidebar-tree-command,on,off}"
+#bind BTab set -F @var '#{?@var,tree -Ca,tree -C}' \; display-message "Hidden files are #{?@var,on,off}"
                                      #{?@foo,0,1}
-# bind-key a set-window-option synchronize-panes\; display-message "synchronize-panes is now #{?pane_synchronized,on,off}"
+
+In prefix-C, you can make notes but where do these notes go?
+How to move a window to a location that is already being used and have the windows to the right automatically renumber?
+What should $TERM be?
+Add visual bell alert keybindings to inactive key-table for when trying to use keys while statusbar is disabled
+Is it possible to if-shell within and if-shell?
+Multiply @active: colour26 in Session Options prefix-C
+When updating plugins it enters copy-mode and makes it impossible to type "all". Also I get a statusline message beforehand which did not happen before.
+
+@Quasímodo I have been trying to look into tmux user-keys from your earlier comment that you deleted, but confused about why you mentioned "\e[88;5u", as isn't that ctrl+shift+x? How would I find the code for ctrl-alt-;?
+
+Sorry, I thought it was wrong but it wasn't (I made a mistake when putting it in .tmux.conf). Anyway, in the linked question you find how to find the code for ctrl-alt-; — not that it matters, because, if you bind ctrl-alt-; to \e[88;5u the terminal emulator will respect your order none the wiser. Should you need help, feel free call me to a chat room.
