@@ -40,6 +40,7 @@ alias nocolour="sed 's/\x1b\[[0-9;]*m//g'"
 alias fzfp='fzf --preview "bat --color=always --style=numbers --line-range=:500 {}"'
 alias batlog='bat --paging=never -l log'
 alias driveinfo='df -HTx tmpfs -x overlay -x devtmpfs'
+alias cm='cmatrix -u 2'
 
 # Changing directory quickly
 alias ..="cd .."

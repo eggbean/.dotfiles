@@ -10,7 +10,7 @@ set echo-control-characters         off
 set editing-mode                    emacs
 set enable-bracketed-paste          on
 set expand-tilde                    off
-set mark-directories                on
+set mark-directories                off
 set mark-modified-lines             off
 set mark-symlinked-directories      on
 set match-hidden-files              off
