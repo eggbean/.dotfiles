@@ -67,7 +67,7 @@ vnoremap <Right> :<C-u>echo "No right for you!"<CR>
 " Zoom in and out of splits
 " https://medium.com/@vinodkri/zooming-vim-window-splits-like-a-pro-d7a9317d40
 noremap Zz <c-w>_ \| <c-w>\|
-noremap Zo <c-w>= 
+noremap Zo <c-w>=
 
 " https://stackoverflow.com/a/29693196/140872
 autocmd BufEnter * call system("tmux rename-window " . expand("%:t"))
