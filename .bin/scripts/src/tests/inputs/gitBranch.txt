@@ -1,5 +1,0 @@
-  fix3
-  gh-pages
-* master
-  testAllInput
-  trunk

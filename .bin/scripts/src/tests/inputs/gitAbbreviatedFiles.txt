@@ -1,3 +1,0 @@
-.../fpp                            |  6 ++--
-.../src/__tests__/__init__.py      |  0
-.../src/__tests__/cursesForTest.py | 45 ++++++++++++++++++++++++++++
