@@ -5,6 +5,9 @@
 	editor = vi
 	pager = LESS= less -FRXq
 	excludesfile = ~/.dotfiles/config/.config/git/gitignore-system
+	hooksPath = .githooks/
+[pull]
+	ff = only
 [color]
 	ui = true
 [pager]
@@ -20,6 +23,6 @@
 	wdiff = ! "f () { git diff --color-words \"$@\" | grep --color=never $(printf '\\033\\[3[12]'); }; f"
 	mdiff = ! "f () { git diff --color \"$@\" | grep --color=never $(printf '\\033\\[3[12]'); }; f"
 	bdiff = ! "f () { git diff --name-only --diff-filter=d \"$@\" | xargs bat --diff; }; f"
+	vdiff = ! "f () { git difftool --tool=nvimdiff -- \"$@\"; }; f"
 [init]
 	defaultBranch = master
-
