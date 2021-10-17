@@ -51,6 +51,7 @@ while :; do
 				;;
 		ssh)	pushd ssh > /dev/null
 				sshd=(*)
+				find .ssh/ -name 'id_*' ! -name 'id_*.pub' -exec chmod 400 {} \;
 				popd > /dev/null
 				for s in "${sshd[@]}"; do
 					[ -e ~/.ssh/"$s" ] && rm ~/.ssh/"$s" && echo "Existing ~/.ssh/$s deleted"
