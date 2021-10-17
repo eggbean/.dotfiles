@@ -6,6 +6,8 @@
 	pager = LESS= less -FRXq
 	excludesfile = ~/.dotfiles/config/.config/git/gitignore-system
 	hooksPath = .githooks/
+[pull]
+	ff = only
 [color]
 	ui = true
 [pager]
@@ -24,4 +26,3 @@
 	vdiff = ! "f () { git difftool --tool=nvimdiff -- \"$@\"; }; f"
 [init]
 	defaultBranch = master
-
