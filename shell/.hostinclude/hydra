@@ -10,6 +10,3 @@ sdreader() {
 }
 
 alias battery='date; sudo tlp-stat -b'
-
-# Aliases
-alias vi='nvim'

@@ -22,6 +22,16 @@ alias cp='cp -iv'
 alias mv='mv -iv'
 alias rm='rm -Iv'
 
+# Use nvim appimage if available
+if [ -x ~/.local/bin/nvim ] || [ -x /usr/local/bin/nvim ]; then
+	alias vi='nvim'
+fi
+
+# Use nvim for vimdiff
+if command -v nvim >/dev/null; then
+	alias vimdiff='nvim -d'
+fi
+
 # Command replacements
 if command -v exa >/dev/null; then
 	alias ls='exa-wrapper.sh'
@@ -40,7 +50,7 @@ alias nocolour="sed 's/\x1b\[[0-9;]*m//g'"
 alias fzfp='fzf --preview "bat --color=always --style=numbers --line-range=:500 {}"'
 alias batlog='bat --paging=never -l log'
 alias driveinfo='df -HTx tmpfs -x overlay -x devtmpfs'
-alias cm='cmatrix -u 2'
+alias cm='cmatrix -au 2'
 
 # Changing directory quickly
 alias ..="cd .."

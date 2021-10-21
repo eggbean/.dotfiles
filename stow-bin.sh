@@ -21,17 +21,17 @@ else
 	stowing='stowing'
 fi
 
-# Set variables for target locations
+# Set variables for target locations and make directories if necessary
 if [[ "$*" =~ "--user" ]]; then
 	targetdir="$HOME/.local/bin"
 	mandir="$HOME/.local/share/man"
-	compdir="$HOME/.local/share/bash-completion"
+	compdir="$HOME/.local/share/bash-completion/completions"
 	fontdir="$HOME/.local/share/fonts"
 	if [[ ! "$*" =~ "--remove" ]]; then
 		for d in "$targetdir" "$mandir" "$compdir" "$fontdir"; do
 			if [ ! -d "$d" ]; then mkdir -p "$d"; fi
 		done
-		pushd "$HOME/.dotfiles/.man" >/dev/null
+		pushd "$HOME/.dotfiles/bin/man" >/dev/null
 		mansubs=(*) && popd >/dev/null
 		for s in "${mansubs[@]}"; do
 			if [ ! -d "${mandir}"/"$s" ]; then mkdir -p "${mandir}"/"$s"; fi
@@ -51,49 +51,44 @@ fi
 [[ "$(arch)" == "x86_64" ]] && arch='x86_64'
 [[ -z "${arch}" ]] && { echo "CPU architecture unknown" >&2; exit 1; }
 
-pushd /home/"$(logname)"/.dotfiles >/dev/null # done this way in case running as root
+STOW_DIR="/home/$(logname)/.dotfiles/bin" # done this way in case running as root
+pushd "${STOW_DIR}" >/dev/null
 
 # Stow/unstow binaries
-pushd .bin >/dev/null
-bind=("${arch}"/*)
-for b in "${bind[@]}"; do
-	[ -e "${targetdir}"/"$(basename "$b")" ] && { rm "${targetdir}"/"$(basename "$b")" \
-		&& echo "Existing ${targetdir}/$(basename "$b") deleted"; }
-done
 stow $stowcom -vt "${targetdir}" "${arch}" 2>&1 \
 	&& echo "DONE: bin package $stowed" || { echo "ERROR $stowing bin package" >&2; exit 1; }
 
 # Stow/unstow scripts
 stow $stowcom -vt "${targetdir}" scripts 2>&1 \
 	&& echo "DONE: scripts package $stowed" || { echo "ERROR $stowing scripts package" >&2; exit 1; }
-popd >/dev/null
 
 # Stow/unstow man files
-pushd .man >/dev/null
-mand=(*)
-for m in "${mand[@]}"; do
+pushd "${STOW_DIR}/man" >/dev/null
+mandirs=(*)
+for m in "${mandirs[@]}"; do
 	stow $stowcom -vt "${mandir}"/"$m" "$m" 2>&1 \
-		&& echo "DONE: $m package $stowed" || { echo "ERROR $stowing man package" >&2; exit 1; }
+		&& echo "DONE: $m package $stowed" || { echo "ERROR $stowing $m package - possible conflict with existing file" >&2; exit 1; }
 done
 popd >/dev/null
 
 # Stow/unstow bash completion files
-stow $stowcom -vt "${compdir}" .completions 2>&1 \
+stow $stowcom -vt "${compdir}" completions 2>&1 \
 	&& echo "DONE: bash completions package $stowed" || { echo "ERROR $stowing bash completions package" >&2; exit 1; }
 
 # Stow/unstow fonts
-stow $stowcom -vt "${fontdir}" fonts 2>&1 && fc-cache -f -v \
+stow $stowcom -vt "${fontdir}" fonts 2>&1 \
 	&& echo "DONE: fonts package $stowed" || { echo "ERROR $stowing fonts package" >&2; exit 1; }
+fc-cache -f && echo "DONE: font cache updated"
 
 # Clean up any empty directories in ~/.local if using --user and --remove switches
 if [[ "$*" =~ "--user " ]] && [[ "$*" =~ "--remove" ]]; then
-	pushd .man >/dev/null
+	pushd man >/dev/null
 	mansubs=(*) && popd >/dev/null
 		for r in "${mansubs[@]}"; do
 			if [ -d "${mandir}"/"$r" ]; then rmdir --ignore-fail-on-non-empty "${mandir}"/"$r"; fi
 		done
-	for e in "$targetdir" "$mandir" "$compdir"; do
-		if [ -d "$e" ]; then rmdir --ignore-fail-on-non-empty "$e"; fi
+	for e in "$targetdir" "$mandir" "$compdir" "$fontdir"; do
+		if [ -d "$e" ]; then rmdir -p --ignore-fail-on-non-empty "$e"; fi
 	done
 fi
 

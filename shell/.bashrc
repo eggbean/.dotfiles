@@ -31,6 +31,13 @@ shopt -s checkwinsize
 # match all files and zero or more directories and subdirectories.
 shopt -s globstar
 
+# Don't attempt to search the PATH for possible completions when completion
+# is attempted on an empty line
+shopt -s no_empty_cmd_completion
+
+# Perform hostname completion when a word containing a @ is being completed
+shopt -s hostcomplete
+
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
@@ -76,10 +83,10 @@ case "$TERM" in
 		;;
 esac
 
-# enable color support of ls
-if [ -x /usr/bin/dircolors ]; then
-	test -r ~/.dotfiles/.bin/scripts/dir_colors && eval "$(dircolors -b ~/.dotfiles/.bin/scripts/dir_colors)" || eval "$(dircolors -b)"
-fi
+# # enable color support of ls
+# if [ -x /usr/bin/dircolors ]; then
+# 	test -r ~/.dotfiles/bin/scripts/dir_colors && eval "$(dircolors -b ~/.dotfiles/bin/scripts/dir_colors)" || eval "$(dircolors -b)"
+# fi
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
@@ -310,4 +317,4 @@ export VIMINIT='let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$X
 export TMUX_PLUGIN_MANAGER_PATH="$XDG_DATA_HOME"/tmux/plugins
 
 # Source host specific functions
-[ -f ~/.dotfiles/shell/.hostspecific/"$(hostname -s)" ] && . ~/.dotfiles/shell/.hostspecific/"$(hostname -s)"
+[ -f ~/.dotfiles/shell/.hostinclude/"$(hostname -s)" ] && . ~/.dotfiles/shell/.hostinclude/"$(hostname -s)"

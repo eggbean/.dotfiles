@@ -2,8 +2,8 @@
 *.env filter=git-crypt diff=git-crypt
 *.key filter=git-crypt diff=git-crypt
 aws/.aws/credentials filter=git-crypt diff=git-crypt
-./hosts/proxima/.hue.json filter=git-crypt diff=git-crypt
-./hosts/osiris/.hue.json filter=git-crypt diff=git-crypt
+hosts/proxima/.hue.json filter=git-crypt diff=git-crypt
+hosts/osiris/.hue.json filter=git-crypt diff=git-crypt
 config/.config/gh/hosts.yml filter=git-crypt diff=git-crypt
 config/.config/hub filter=git-crypt diff=git-crypt
 config/.config/docker/config.json filter=git-crypt diff=git-crypt
