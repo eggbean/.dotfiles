@@ -21,9 +21,10 @@ norm=$(tput sgr0)
 cat << EOF
 
 $bold=== Config adopt script ===$norm
-This script will go through your shell dotfiles and application configuration
-directories in \$XDG_CONFIG_HOME and ask you if you want to move them into it.
-It's probably best to start with just a handful of configuration directories at
+This script will create a dotfiles repository if it does not already exist and
+then go through your shell dotfiles and application configuration directories
+in \$XDG_CONFIG_HOME and ask you if you want to move them into it. It's
+probably best to start with just a handful of configuration directories at
 first, as it will be easier for you to manage.
 
 EOF

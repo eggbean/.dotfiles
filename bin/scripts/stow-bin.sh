@@ -38,7 +38,7 @@ if [[ "$*" =~ "--user" ]]; then
 		done
 	fi
 else
-	[[ "$(id -u)" != "0" ]] && { echo "This script must be run as root to install in /usr, or use the --user option to stow in ~/.local." >&2; exit 1; }
+	[[ "$(id -u)" != "0" ]] && { echo "This script must be run as root to install in /usr, or use the --user option to stow in ~/.local." | fmt >&2; exit 1; }
 	targetdir='/usr/local/bin'
 	mandir='/usr/share/man'
 	compdir='/etc/bash_completion.d'
@@ -75,10 +75,12 @@ popd >/dev/null
 stow $stowcom -vt "${compdir}" completions 2>&1 \
 	&& echo "DONE: bash completions package $stowed" || { echo "ERROR $stowing bash completions package" >&2; exit 1; }
 
-# Stow/unstow fonts
-stow $stowcom -vt "${fontdir}" fonts 2>&1 \
-	&& echo "DONE: fonts package $stowed" || { echo "ERROR $stowing fonts package" >&2; exit 1; }
-fc-cache -f && echo "DONE: font cache updated"
+# Stow/unstow fonts if local desktop system
+if [ -x /bin/xdg-open ]; then
+	stow $stowcom -vt "${fontdir}" fonts 2>&1 \
+		&& echo "DONE: fonts package $stowed" || { echo "ERROR $stowing fonts package" >&2; exit 1; }
+	fc-cache -f && echo "DONE: font cache updated"
+fi
 
 # Clean up any empty directories in ~/.local if using --user and --remove switches
 if [[ "$*" =~ "--user " ]] && [[ "$*" =~ "--remove" ]]; then
