@@ -83,10 +83,10 @@ case "$TERM" in
 		;;
 esac
 
-# # enable color support of ls
-# if [ -x /usr/bin/dircolors ]; then
-# 	test -r ~/.dotfiles/bin/scripts/dir_colors && eval "$(dircolors -b ~/.dotfiles/bin/scripts/dir_colors)" || eval "$(dircolors -b)"
-# fi
+# enable color support of ls
+if [ -x /usr/bin/dircolors ]; then
+	test -r ~/.dotfiles/bin/scripts/dir_colors && eval "$(dircolors -b ~/.dotfiles/bin/scripts/dir_colors)" || eval "$(dircolors -b)"
+fi
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
