@@ -1,0 +1,1 @@
+source <(starship completions bash)

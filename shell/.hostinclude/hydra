@@ -1,0 +1,12 @@
+## Host specific functions, aliases and environment variables for hydra
+
+# Turn SD card reader on and off
+sdreader() {
+	if [[ $1 == on ]]; then
+		echo "2-3" | sudo tee /sys/bus/usb/drivers/usb/bind &>/dev/null && echo 'SD card reader on' || echo 'No change'
+	elif [[ $1 == off ]]; then
+		echo "2-3" | sudo tee /sys/bus/usb/drivers/usb/unbind &>/dev/null && echo 'SD card reader off' || echo 'No change'
+	fi
+}
+
+alias battery='date; sudo tlp-stat -b'

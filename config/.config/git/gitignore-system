@@ -1,3 +1,6 @@
 *.env
 *.key
 *.pyc
+*.bak
+*.bak?
+*.notes

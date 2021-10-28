@@ -1,0 +1,67 @@
+<touchégg>
+  <settings>
+    <property name="animation_delay">150</property>
+    <property name="action_execute_threshold">20</property>
+    <property name="color">auto</property>
+    <property name="borderColor">auto</property>
+  </settings>
+  <application name="All">
+    <gesture type="SWIPE" fingers="3" direction="DOWN">
+      <action type="RUN_COMMAND">
+        <repeat>false</repeat>
+        <command>dbus-send --session --dest=com.System76.PopShell --type=method_call /com/System76/PopShell com.System76.PopShell.FocusDown</command>
+        <on>begin</on>
+      </action>
+    </gesture>
+    <gesture type="SWIPE" fingers="3" direction="LEFT">
+      <action type="RUN_COMMAND">
+        <repeat>false</repeat>
+        <command>dbus-send --session --dest=com.System76.PopShell --type=method_call /com/System76/PopShell com.System76.PopShell.FocusLeft</command>
+        <on>begin</on>
+      </action>
+    </gesture>
+    <gesture type="SWIPE" fingers="3" direction="RIGHT">
+      <action type="RUN_COMMAND">
+        <repeat>false</repeat>
+        <command>dbus-send --session --dest=com.System76.PopShell --type=method_call /com/System76/PopShell com.System76.PopShell.FocusRight</command>
+        <on>begin</on>
+      </action>
+    </gesture>
+    <gesture type="SWIPE" fingers="4" direction="UP">
+      <action type="RUN_COMMAND">
+        <repeat>false</repeat>
+        <command>dbus-send --session --dest=org.gnome.Shell --type=method_call /org/gnome/Shell org.gnome.Shell.Eval string:'let pop_cosmic = Main.extensionManager.lookup("pop-cosmic@system76.com"); if (pop_cosmic) { pop_cosmic.stateObj.gesture(pop_cosmic.stateObj.GESTURE_UP); }'</command>
+        <on>begin</on>
+      </action>
+    </gesture>
+    <gesture type="SWIPE" fingers="4" direction="DOWN">
+      <action type="RUN_COMMAND">
+        <repeat>false</repeat>
+        <command>dbus-send --session --dest=org.gnome.Shell --type=method_call /org/gnome/Shell org.gnome.Shell.Eval string:'let pop_cosmic = Main.extensionManager.lookup("pop-cosmic@system76.com"); if (pop_cosmic) { pop_cosmic.stateObj.gesture(pop_cosmic.stateObj.GESTURE_DOWN); }'</command>
+        <on>begin</on>
+      </action>
+    </gesture>
+    <gesture type="SWIPE" fingers="4" direction="LEFT">
+      <action type="RUN_COMMAND">
+        <repeat>false</repeat>
+        <command>dbus-send --session --dest=org.gnome.Shell --type=method_call /org/gnome/Shell org.gnome.Shell.Eval string:'let pop_cosmic = Main.extensionManager.lookup("pop-cosmic@system76.com"); if (pop_cosmic) { pop_cosmic.stateObj.gesture(pop_cosmic.stateObj.GESTURE_LEFT); }'</command>
+        <on>begin</on>
+      </action>
+    </gesture>
+    <gesture type="SWIPE" fingers="4" direction="RIGHT">
+      <action type="RUN_COMMAND">
+        <repeat>false</repeat>
+        <command>dbus-send --session --dest=org.gnome.Shell --type=method_call /org/gnome/Shell org.gnome.Shell.Eval string:'let pop_cosmic = Main.extensionManager.lookup("pop-cosmic@system76.com"); if (pop_cosmic) { pop_cosmic.stateObj.gesture(pop_cosmic.stateObj.GESTURE_RIGHT); }'</command>
+        <on>begin</on>
+      </action>
+    </gesture>
+    <gesture type="SWIPE" fingers="3" direction="UP">
+      <action type="RUN_COMMAND">
+        <command>dbus-send --session --dest=com.System76.PopShell --type=method_call /com/System76/PopShell com.System76.PopShell.FocusUp</command>
+        <repeat>false</repeat>
+        <animation>NONE</animation>
+        <on>begin</on>
+      </action>
+    </gesture>
+  </application>
+</touchégg>

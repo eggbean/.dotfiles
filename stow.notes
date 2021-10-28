@@ -6,3 +6,18 @@
 * In package script add --adopt switch to move existing config into .dotfiles repository
 * Consider using the --dotfiles switch on the package script
 * Add help
+* When --user --remove the script will exit once it removes the stow binary, but you can run it again to complete the removal if stow has been installed through apt.
+* Convert to using the dot-dir format
+* More robust, easier to manage and much easier to remove once done
+
+# function for simplifying
+confirm() {
+    local ans IFS=;
+    while read -rp "$1" -n1 ans; do
+        printf '\n'
+        case $ans in
+            [Yy]* ) return 0 ;;
+            [Nn]* ) return 1 ;;
+        esac
+    done
+}; ## Usage: if confirm "Are you sure? "; then

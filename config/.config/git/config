@@ -6,17 +6,24 @@
 	pager = LESS= less -FRXq
 	excludesfile = ~/.dotfiles/config/.config/git/gitignore-system
 	hooksPath = .githooks/
+[init]
+	defaultBranch = master
 [pull]
 	ff = only
+	rebase = true
 [color]
 	ui = true
+[color "status"]
+	untracked = blue
+[diff]
+	tool = nvimdiff
+[difftool]
+	prompt = false
 [pager]
 	diff = LESS= less -RSqx4+g
 	log = LESS= less -Rq+g
 	whatchanged = LESS= less -Rq+g
-	stash = LESS= less -FRXSqx4
-[color "status"]
-	untracked = blue
+	stash = false
 [alias]
 	hist = "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"
 	blog = "log --oneline --graph --decorate --all"
@@ -24,5 +31,3 @@
 	mdiff = ! "f () { git diff --color \"$@\" | grep --color=never $(printf '\\033\\[3[12]'); }; f"
 	bdiff = ! "f () { git diff --name-only --diff-filter=d \"$@\" | xargs bat --diff; }; f"
 	vdiff = ! "f () { git difftool --tool=nvimdiff -- \"$@\"; }; f"
-[init]
-	defaultBranch = master
