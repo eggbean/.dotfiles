@@ -1,3 +1,2 @@
-dir_colors
-src
-.*\.env
+.*\.bak?
+.*\.orig

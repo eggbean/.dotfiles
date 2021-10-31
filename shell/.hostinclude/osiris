@@ -14,3 +14,4 @@ fi
 
 # Aliases
 alias vi='nvim --appimage-extract-and-run'
+alias vimdiff='nvim -d --appimage-extract-and-run'

@@ -67,8 +67,13 @@ noremap Zo <c-w>=
 
 " Rename tmux windows with filename
 " https://stackoverflow.com/a/29693196/140872
-autocmd BufEnter * call system("tmux rename-window " . expand("%:t"))
-autocmd VimLeave * call system("tmux set automatic-rename")
+augroup tmux | au!
+autocmd BufEnter * call system(printf('tmux rename-window %s\;
+	\ set -a window-status-current-style "fg=#{@vimfile}"',
+	\ empty(@%) ? 'Noname' : fnamemodify(@%, ':t')))
+autocmd VimLeave * call system(printf('tmux set automatic-rename on\;
+	\ set -a window-status-current-style "fg=#{@white}"'))
+augroup end
 autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
 
 " Persistent undo
@@ -102,6 +107,7 @@ set undodir=$XDG_CACHE_HOME/nvim/undo     | call mkdir(&undodir,   'p')
 	let g:rehash256 = 1
 	" vim-bookmarks
 	let g:bookmark_sign = '🔖'
+	let g:bookmark_save_per_working_dir = 0
 	let g:bookmark_manage_per_buffer = 1
 	let g:bookmark_auto_save_file = '$XDG_DATA_HOME/nvim/bookmarks'
 	let g:bookmark_display_annotation = 1

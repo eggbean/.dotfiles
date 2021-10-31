@@ -41,7 +41,7 @@ key_bindings:
 font:
   # Normal (roman) font face
   normal:
-    family: Hack
+    family: "Hack Nerd Font"
     style: Regular
 
   # Bold font face
