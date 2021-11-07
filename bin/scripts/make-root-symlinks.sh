@@ -1,32 +1,42 @@
 #!/bin/bash
 
-# run as sudo from main user account, after stowing
-
-[[ "$(id -u)" != "0" ]] && ( echo "This script must be run as root" >&2; exit 1 )
+# Run as sudo from main user account, after stowing
+if [[ "$(id -u)" != "0" ]]; then { echo "This script must be run as root" >&2; exit 1; }; fi
 
 # ne
-while true; do
-	read -p "Do you want to make a symlink for ne?  " yn
+while read -rp "Do you want to make a symlink for ne?  " yn; do
 	case $yn in
-		[Yy]* )	pushd /root/ >/dev/null || ( echo "ERROR" >&2; exit 1 )
-				rm -rf .ne/ 2>/dev/null
-				ln -s /home/"$(logname)"/.ne .ne
-				popd >/dev/null || ( echo "ERROR" >&2; exit 1 )
+		[Yy]* )	pushd /root >/dev/null
+				if [ -d .ne ]; then rm -rf .ne; fi
+				if [ ! -L .ne ]; then ln -s /home/"$(logname)"/.ne .ne; fi
+				popd >/dev/null || { echo "ERROR" >&2; exit 1; }
+				break ;;
+		[Nn]* )	break ;;
+	esac
+done
+
+# GnuPG
+while read -rp "Do you want to make a symlink for GnuPG?  " yn; do
+	case $yn in
+		[Yy]* )	pushd /root >/dev/null
+				if [ -d .gnupg ]; then rm -rf .gnupg; fi
+				if [ ! -L .gnupg ]; then ln -s /home/"$(logname)"/.gnupg .gnupg; fi
+				popd >/dev/null || { echo "ERROR" >&2; exit 1; }
 				break ;;
 		[Nn]* )	break ;;
 	esac
 done
 
 # git
-while true; do
-	read -p "Do you want to make a symlink for git?  " yn
+while read -rp "Do you want to make a symlink for git?  " yn; do
 	case $yn in
-		[Yy]* )	pushd /root/ >/dev/null || ( echo "ERROR" >&2; exit 1 )
-				rm .gitconfig 2>/dev/null
-				[ ! -d .config/ ] && mkdir .config
-				pushd .config/ >/dev/null || ( echo "ERROR" >&2; exit 1 )
-				rm -rf git/ 2>/dev/null
-				ln -s /home/"$(logname)"/.dotfiles/config/.config/git git
+		[Yy]* )	pushd /root/ >/dev/null
+				if [ -e .gitconfig ]; then rm .gitconfig; fi
+				if [ ! -d .config ]; then mkdir .config; fi
+				pushd .config >/dev/null || { echo "ERROR" >&2; exit 1; }
+				if [ -d git ]; then rm -rf git; fi
+				if [ ! -L git ]; then ln -s /home/"$(logname)"/.dotfiles/config/.config/git git; fi
+				if [ ! -L hub ]; then ln -s /home/"$(logname)"/.dotfiles/config/.config/hub hub; fi
 				echo "DONE"
 				break ;;
 		[Nn]* )	break ;;
@@ -34,10 +44,9 @@ while true; do
 done
 
 # nvim/vi
-while true; do
-	read -p "Do you want to set the default editor to vi, or nvim if it's installed?  " yn
+while read -rp "Do you want to set the default editor to vi, or nvim if it's installed?  " yn; do
 	case $yn in
-		[Yy]* )	[ -x /usr/bin/nvim ] && update-alternatives --set editor /usr/bin/nvim || update-alternatives --set editor /usr/bin/vi
+		[Yy]* )	if [ -x /usr/bin/nvim ]; then update-alternatives --set editor /usr/bin/nvim; else update-alternatives --set editor /usr/bin/vi; fi
 				break ;;
 		[Nn]* )	break ;;
 	esac

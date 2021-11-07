@@ -1,8 +1,10 @@
 #!/bin/bash
 
-##	Usage: ./stow-packages.sh [PACKAGE] [PACKAGE] [PACKAGE]
+##	Usage: stow-packages.sh [PACKAGE] [PACKAGE] [PACKAGE]
 ##
 ##	?* section cannot currently handle more than one element in a package
+##
+##	This script deletes or moves existing files
 
 # shellcheck disable=SC2015,SC2088
 
@@ -28,24 +30,23 @@ while :; do
 				is_file() { local f; for f; do [[ -e ~/"$f" && ! -L ~/"$f" ]] && return; done; return 1; }
 				if is_file "${shelld[@]}"; then [ ! -d ~/default-shell-files ] && mkdir ~/default-shell-files && echo "~/default-shell-files directory created"; fi
 				for j in "${shelld[@]}"; do
-					[[ -e ~/"$j" && ! -L ~/"$j" ]] && mv ~/"$j" ~/default-shell-files && echo "Existing ~/$j file moved to ~/default-shell-files"
-					[[ -e ~/"$j" && -L ~/"$j" ]] && rm ~/"$j" && echo "Existing ~/$j symlink deleted"
+					if [[ -e ~/"$j" && ! -L ~/"$j" ]]; then mv ~/"$j" ~/default-shell-files && echo "Existing ~/$j file moved to ~/default-shell-files"; fi
 				done
 				stow -Rvt ~ shell && echo "DONE: shell package stowed" || { echo "ERROR stowing shell package" >&2; exit 1; }
 				;;
-		config) [ ! -d ~/.local/share ] && mkdir -p ~/.local/share
+		config) if [ ! -d ~/.local/share ]; then mkdir -p ~/.local/share; fi
 				pushd config/.local/share > /dev/null
 				locald=(*)
 				for m in "${locald[@]}"; do
-					[ -e ~/.local/share/"$m" ] && rm -rf ~/.local/share/"$m" && echo "Existing ~/.local/share/$m deleted"
+					if [ -e ~/.local/share/"$m" ] && [ ! -L ~/.local/share/"$m" ]; then rm -rf ~/.local/share/"$m" && echo "Existing ~/.local/share/$m deleted"; fi
 				done
 				popd > /dev/null
-				[ ! -d ~/.config ] && mkdir ~/.config
+				if [ ! -d ~/.config ]; then mkdir ~/.config; fi
 				pushd config/.config > /dev/null
 				configd=(*)
 				popd > /dev/null
 				for i in "${configd[@]}"; do
-					[ -e ~/.config/"$i" ] && rm -rf ~/.config/"$i" && echo "Existing ~/.config/$i deleted"
+					if [ -e ~/.config/"$i" ] && [ ! -L ~/.config/"$i" ]; then rm -rf ~/.config/"$i" && echo "Existing ~/.config/$i deleted"; fi
 				done
 				stow -Rvt ~ config && echo "DONE: config package stowed" || { echo "ERROR stowing config package" >&2; exit 1; }
 				;;
@@ -54,16 +55,16 @@ while :; do
 				find .ssh/ -name 'id_*' ! -name 'id_*.pub' -exec chmod 400 {} \;
 				popd > /dev/null
 				for s in "${sshd[@]}"; do
-					[ -e ~/.ssh/"$s" ] && rm ~/.ssh/"$s" && echo "Existing ~/.ssh/$s deleted"
+					if [ -e ~/.ssh/"$s" ] && [ ! -L ~/.ssh/"$s" ]; then rm ~/.ssh/"$s" && echo "Existing ~/.ssh/$s deleted"; fi
 				done
 				stow --no-folding -Rvt ~ ssh && echo "DONE: ssh package stowed" || { echo "ERROR stowing ssh package" >&2; exit 1; }
 				;;
-		fonts)	[ ! -d ~/.local/share/fonts ] && mkdir -p ~/.local/share/fonts
+		fonts)	if [ ! -d ~/.local/share/fonts ]; then mkdir -p ~/.local/share/fonts; fi
 				pushd fonts > /dev/null
 				fontsd=(*)
 				popd > /dev/null
 				for y in "${fontsd[@]}"; do
-					[ -e ~/.local/share/fonts/"$y" ] && rm ~/.local/share/fonts/"$y" && echo "Existing ~/.local/share/fonts/$y deleted"
+					if [ -e ~/.local/share/fonts/"$y" ] && [ ! -L ~/.local/share/fonts/"$y" ]; then rm ~/.local/share/fonts/"$y" && echo "Existing ~/.local/share/fonts/$y deleted"; fi
 				done
 				stow --no-folding -Rvt ~/.local/share/fonts fonts && echo "DONE: fonts package stowed" || { echo "ERROR stowing fonts package" >&2; exit 1; }
 				fc-cache -f && echo "DONE: fonts information cache files built" || { echo "ERROR building fonts information cache files" >&2; exit 1; }
@@ -71,36 +72,39 @@ while :; do
 		?*)		pushd "$1"/ > /dev/null || { echo "ERROR finding $1 package" >&2; exit 1; }
 				packaged=(*)
 				popd > /dev/null
-				[ ${#packaged[@]} -gt 1 ] && { echo "WARNING: This does not currently work well for packages that contain more than one directory (folded)." >&2; exit 1; }
+				if [ ${#packaged[@]} -gt 1 ]; then { echo "WARNING: This does not currently work well for packages that contain more than one directory (folded)." >&2; break; }; fi
 				for k in "${packaged[@]}"; do
-					if [ -e ~/"$k" ]; then
-						read -rp "Do you want to delete ~/$k and replace it with a stow symlink? (y/n)	" yn
-						case $yn in
-							[Yy]* )	rm -rf ~/"$k" && echo "Existing ~/$k directory deleted"
-									stow -Rvt ~ "$1" && echo "DONE: $1 package stowed" || { echo "ERROR stowing $k" >&2; exit 1; }
-									break
-									;;
-							[Nn]* )	read -rp "Do you want to stow this package unfolded? (y/n)	" yn
-									case $yn in
-										[Yy]* )	stow --no-folding -Rvt ~ "$1" && echo "DONE: $1 package stowed" || { echo "ERROR stowing $k" >&2; exit 1; }
-												break
-												;;
-										[Nn]* )	echo "SKIPPED:	$1 package not stowed"; break
-												;;
-										* )		echo "Please answer yes or no"
-												;;
-									esac
-									;;
-								* )	echo "Please answer yes or no"
-									;;
-						esac
-					elif [ ! -e ~/"$k" ]; then
+					if [ -e ~/"$k" ] && [ ! -L ~/"$k" ]; then
+						while read -rp "Do you want to delete ~/$k and replace it with a stow symlink? (y/n)   " yn; do
+							case $yn in
+								[Yy]* )	rm -rf ~/"$k" && echo "Existing ~/$k file/directory deleted"
+										stow -Svt ~ "$1" && echo "DONE: $1 package stowed" || { echo "ERROR stowing $1 package" >&2; exit 1; }
+										break
+										;;
+								[Nn]* )	while read -rp "Do you want to stow the $1 package unfolded? (y/n)   " yn; do
+											case $yn in
+												[Yy]* )	stow --no-folding -Svt ~ "$1" && echo "DONE: $1 package stowed" || { echo "ERROR stowing $1 package" >&2; exit 1; }
+														break
+														;;
+												[Nn]* )	echo "SKIPPED:	$1 package not stowed"
+														break
+														;;
+												* )		echo "Please answer yes or no"
+														;;
+											esac
+										done
+										;;
+									* )	echo "Please answer yes or no"
+										;;
+							esac
+						done
+					elif [ ! -e ~/"$k" ] || [ -L ~/"$k" ]; then
 						stow -Rvt ~ "$1" && echo "DONE: $1 package stowed" || { echo "ERROR stowing $1 package" >&2; exit 1; }
-						break
 					fi
 				done
 				;;
 		*)		break
+				;;
 	esac
 	shift
 done
