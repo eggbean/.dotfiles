@@ -10,20 +10,20 @@ case $- in
 	  *) return;;
 esac
 
-# history file setting
+# History file setting
 HISTCONTROL=ignoreboth
 HISTSIZE=2000
 HISTFILESIZE=3000
 HISTTIMEFORMAT="%d/%m/%y %T "
-HISTIGNORE=ls:ll:la:l:cd:pwd:df:tmux:htop:git:hue:fg
+HISTIGNORE=ls:ll:la:l:cd:cdd:pwd:df:tmux:htop:git:hue:fg:date
 
 # Shared history between tmux panes
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
-# append to the history file, don't overwrite it
+# Append to the history file, don't overwrite it
 shopt -s histappend
 
-# check the window size after each command and, if necessary,
+# Check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
@@ -38,41 +38,11 @@ shopt -s no_empty_cmd_completion
 # Perform hostname completion when a word containing a @ is being completed
 shopt -s hostcomplete
 
-# make less more friendly for non-text input files, see lesspipe(1)
+# Make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-	debian_chroot=$(cat /etc/debian_chroot)
-fi
-
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-	xterm-color|*-256color) color_prompt=yes;;
-esac
-
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
-force_color_prompt=yes
-
-if [ -n "$force_color_prompt" ]; then
-	if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-		color_prompt=yes
-	else
-		color_prompt=
-	fi
-fi
-
-if [ "$color_prompt" = yes ]; then
-	PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-else
-	PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-fi
-unset color_prompt force_color_prompt
+# Set Starship prompt
+eval "$(starship init bash)"
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
@@ -83,12 +53,12 @@ case "$TERM" in
 		;;
 esac
 
-# enable color support of ls
+# Enable color support of ls
 if [ -x /usr/bin/dircolors ]; then
 	test -r ~/.dotfiles/bin/scripts/dir_colors && eval "$(dircolors -b ~/.dotfiles/bin/scripts/dir_colors)" || eval "$(dircolors -b)"
 fi
 
-# colored GCC warnings and errors
+# Colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # Alias definitions.
@@ -96,7 +66,7 @@ if [ -f ~/.bash_aliases ]; then
 	. ~/.bash_aliases
 fi
 
-# enable programmable completion features (you don't need to enable
+# Enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
@@ -138,7 +108,7 @@ mosh() {
 # Update PATH for the Google Cloud SDK
 if [ -f "$HOME/google-cloud-sdk/path.bash.inc" ]; then . "$HOME/google-cloud-sdk/path.bash.inc"; fi
 
-# Enable shell command completion for gcloud
+# Enable shell command completion for gcloud cli
 if [ -f "$HOME/google-cloud-sdk/completion.bash.inc" ]; then . "$HOME/google-cloud-sdk/completion.bash.inc"; fi
 
 # Or gcloud docker container as executable
@@ -146,10 +116,13 @@ if ! type gcloud >/dev/null 2>&1; then
 	gcloud() { docker run --rm --volumes-from gcloud-config google/cloud-sdk:alpine gcloud "$@"; }
 fi
 
-# Use aws-cli in an executable docker container if not installed
+# Use AWS cli in an executable docker container if not installed
 if ! type aws >/dev/null 2>&1; then
 	aws() { docker run --rm -it -v ~/.aws:/root/.aws amazon/aws-cli "$@"; }
 fi
+
+# AWS command completion
+complete -C '/usr/local/bin/aws_completer' aws
 
 # Rename tmux windows when attaching to docker containers
 docker() {
@@ -161,9 +134,6 @@ docker() {
 		command docker "$@"
 	fi
 }
-
-# AWS command completion
-complete -C '/usr/local/bin/aws_completer' aws
 
 # Prevent accidental git stashing and alias git to hub
 git() {
@@ -313,8 +283,7 @@ export ANSIBLE_CONFIG="$XDG_CONFIG_HOME"/ansible/ansible.cfg
 export RANGER_LOAD_DEFAULT_RC=FALSE
 export EDITOR='vi'
 export VISUAL='vi'
-export VIMINIT='let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$XDG_CONFIG_HOME/nvim/init.vim" | so $MYVIMRC'
 export TMUX_PLUGIN_MANAGER_PATH="$XDG_DATA_HOME"/tmux/plugins
 
-# Source host specific functions
+# Source host specific environment
 [ -f ~/.dotfiles/shell/.hostinclude/"$(hostname -s)" ] && . ~/.dotfiles/shell/.hostinclude/"$(hostname -s)"
