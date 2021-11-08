@@ -1,0 +1,92 @@
+#!/usr/bin/perl
+
+=head1 NAME
+
+vipe - edit pipe
+
+=head1 SYNOPSIS
+
+command1 | vipe | command2
+
+=head1 DESCRIPTION
+
+vipe allows you to run your editor in the middle of a unix pipeline and
+edit the data that is being piped between programs. Your editor will
+have the full data being piped from command1 loaded into it, and when you
+close it, that data will be piped into command2.
+
+=head1 ARGUMENTS
+
+vipe takes an argument --suffix that can be used to provide a file
+extension to the temp file generated.  This enables editors to provide
+syntax highlighting and activate modes.  For example, you can call vipe
+like
+
+  vipe --suffix csv
+
+to create a tempfile with .csv extensions which makes Emacs (or your
+favorite editor) launch in CSV major mode.
+
+=head1 ENVIRONMENT VARIABLES
+
+=over 4
+
+=item EDITOR
+
+Editor to use.
+
+=item VISUAL
+
+Also supported to determine what editor to use.
+
+=back
+
+=head1 AUTHOR
+
+Copyright 2006 by Joey Hess <id@joeyh.name>
+
+Licensed under the GNU GPL.
+
+=cut
+
+use warnings;
+use strict;
+use File::Temp q{tempfile};
+use Getopt::Long;
+
+$/=undef;
+
+my $suffix = "";
+if (! GetOptions("suffix=s" => \$suffix)) {
+	die "Usage: $0 [--suffix=extension]\n";
+}
+$suffix = ".$suffix" if $suffix =~ m/^[^.]/;
+
+my ($fh, $tmp)=tempfile(UNLINK => 1, SUFFIX => $suffix);
+die "cannot create tempfile" unless $fh;
+print ($fh <STDIN>) || die "write temp: $!";
+close $fh;
+close STDIN;
+open(STDIN, "</dev/tty") || die "reopen stdin: $!";
+open(OUT, ">&STDOUT") || die "save stdout: $!";
+close STDOUT;
+open(STDOUT, ">/dev/tty") || die "reopen stdout: $!";
+
+my @editor="vi";
+if (-x "/usr/bin/editor") {
+	@editor="/usr/bin/editor";
+}
+if (exists $ENV{EDITOR}) {
+	@editor=split(' ', $ENV{EDITOR});
+}
+if (exists $ENV{VISUAL}) {
+	@editor=split(' ', $ENV{VISUAL});
+}
+my $ret=system(@editor, $tmp);
+if ($ret != 0) {
+	die "@editor exited nonzero, aborting\n";
+}
+
+open (IN, $tmp) || die "$0: cannot read $tmp: $!\n";
+print (OUT <IN>) || die "write failure: $!";
+close IN;
