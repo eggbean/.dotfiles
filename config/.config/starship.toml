@@ -19,15 +19,16 @@ show_always = true
 [hostname]
 ssh_only = false
 format =  "@[$hostname](bold green):"
-trim_at = ".jinkosystems.co.uk"
+trim_at = "."
 disabled = false
 
 [directory]
-truncation_length = 100
+truncation_length = 60
 truncate_to_repo = false
 style = "bold blue"
 format = "[$path]($style)[$read_only]($read_only_style)"
-read_only = ""
+read_only = "  "
+read_only_style = "yellow"
 home_symbol = "~"
 
 [git_state]
@@ -52,4 +53,7 @@ disabled = true
 disabled = true
 
 [git_status]
+disabled = true
+
+[nodejs]
 disabled = true
