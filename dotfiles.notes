@@ -6,21 +6,6 @@
 
 # Other useful software:
 
-ne
-git
-tmux
-stow
-htop
-tree
-ack
-ripgrep
-extundelete
-colordiff ?
-
-alacritty-themes
-mdless
-fzf
-
 broot
 mcfly
 funky
