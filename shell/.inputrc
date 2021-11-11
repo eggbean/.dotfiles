@@ -32,3 +32,9 @@ set visible-stats                   off
 
 # M-F12 to null (nested tmux config)
 "\033[24;3~": ""
+
+# C-M-PgUp to null (nested tmux config)
+"\033[5;7~": ""
+
+# C-M-PgDown to null (nested tmux config)
+"\033[6;7~": ""
