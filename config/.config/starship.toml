@@ -1,59 +1,62 @@
 # Inserts a blank line between shell prompts
 add_newline = false
 
+format = """
+$username\
+$hostname\
+$directory\
+$shlvl\
+$kubernetes\
+$git_commit\
+$git_state\
+$git_metrics\
+$docker_context\
+$cmake\
+$python\
+$terraform\
+$env_var\
+$cmd_duration\
+$jobs\
+$character"""
+
 [line_break]
 disabled = true
 
-# Replace the "❯" symbol in the prompt with "$"
-[character]
-success_symbol = "[\\$](white)"
-error_symbol = "[\\$](red)"
-
 [username]
-style_user = "green bold"
-style_root = "red bold"
+style_user = "bold green"
+style_root = "bold red"
 format = "[$user]($style)"
-disabled = false
 show_always = true
 
 [hostname]
 ssh_only = false
-format =  "@[$hostname](bold green):"
+style = "bold green"
+format = "@[$hostname]($style):"
 trim_at = "."
-disabled = false
 
 [directory]
 truncation_length = 60
 truncate_to_repo = false
 style = "bold blue"
 format = "[$path]($style)[$read_only]($read_only_style)"
-read_only = "  "
-read_only_style = "yellow"
+read_only = "🔒"
 home_symbol = "~"
 
-[git_state]
-format = '\([$state( $progress_current/$progress_total)]($style)\) '
+[terraform]
+format = " [$symbol$workspace]($style) "
 
-[jobs]
-symbol = " +"
-style = "bold green"
-format = "[$symbol$number]($style)"
+[git_state]
+format = ' \([$state( $progress_current/$progress_total)]($style)\) '
 
 [cmd_duration]
 min_time = 180_000
-format = " 🕙[$duration]($style)"
+format = "  [$duration]($style)"
 
-[aws]
-disabled = true
+[jobs]
+symbol = "+"
+style = "bold cyan"
+format = "[$symbol$number]($style)"
 
-[gcloud]
-disabled = true
-
-[git_branch]
-disabled = true
-
-[git_status]
-disabled = true
-
-[nodejs]
-disabled = true
+[character]
+success_symbol = "[\\$](white)"
+error_symbol = "[\\$](bold red)"
