@@ -31,3 +31,8 @@
 	mdiff = ! "f () { git diff --color \"$@\" | grep --color=never $(printf '\\033\\[3[12]'); }; f"
 	bdiff = ! "f () { git diff --name-only --diff-filter=d \"$@\" | xargs bat --diff; }; f"
 	vdiff = ! "f () { git difftool --tool=nvimdiff -- \"$@\"; }; f"
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
