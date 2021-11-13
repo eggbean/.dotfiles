@@ -9,6 +9,7 @@ call plug#begin('$XDG_DATA_HOME/nvim/plugged')
 	Plug 'tpope/vim-commentary'
 	Plug 'preservim/nerdtree', { 'on':  'NERDTreeToggle' }
 	Plug 'sheerun/vim-polyglot'
+	" Plug 'tmux-plugins/vim-tmux'
 	Plug 'junegunn/fzf'
 	Plug 'jeffkreeftmeijer/vim-numbertoggle'
 	Plug 'arp242/jumpy.vim'
@@ -38,8 +39,6 @@ scriptencoding utf-8
 set autoread
 set nowrapscan
 syntax enable
-set background=dark
-colorscheme gruvbox8
 set title
 set listchars=tab:▸-
 set mouse=a
@@ -83,10 +82,12 @@ noremap Zo <c-w>=
 " https://stackoverflow.com/a/29693196/140872
 augroup tmux | au!
 autocmd BufEnter * call system(printf('tmux rename-window %s\;
-	\ set -a window-status-current-style "fg=#{@vimfile},bg=#{@active}"',
+	\ set -a window-status-current-style "fg=#{@vimactive},bg=#{@active}"\;
+	\ set -a window-status-style "fg=#{@viminactive}"',
 	\ empty(@%) ? 'Noname' : fnamemodify(@%, ':t')))
 autocmd VimLeave * call system(printf('tmux set automatic-rename on\;
-	\ set -a window-status-current-style "fg=#{@white}"'))
+	\ set -a window-status-current-style "fg=#{@white}"\;
+	\ set -a window-status-style "fg=#{@black}"'))
 augroup end
 autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
 
@@ -105,8 +106,12 @@ set backupdir=$XDG_CACHE_HOME/nvim/backup | call mkdir(&backupdir, 'p')
 set undodir=$XDG_CACHE_HOME/nvim/undo     | call mkdir(&undodir,   'p')
 
 " Plugin configuration
+	" NERDTree
+	map <F4> :NERDTreeToggle<CR>
+	let NERDTreeShowHidden = 1
+	let NERDTreeQuitOnOpen = 0
 	" vim-better-whitespace
-	let g:show_spaces_that_precede_tabs= 1
+	let g:show_spaces_that_precede_tabs = 1
 	" vim-tmux-navigator
 	let g:tmux_navigator_no_wrap = 1
 	let g:tmux_navigator_disable_when_zoomed = 1
@@ -116,6 +121,11 @@ set undodir=$XDG_CACHE_HOME/nvim/undo     | call mkdir(&undodir,   'p')
 	nnoremap <silent> <C-M-k> :TmuxNavigateUp<cr>
 	nnoremap <silent> <C-M-l> :TmuxNavigateRight<cr>
 	nnoremap <silent> <C-M-;> :TmuxNavigatePrevious<cr>
+	" gruvbox8 colour scheme
+	let g:gruvbox_filetype_hi_groups = 1
+	let g:gruvbox_italics = 1
+	let g:gruvbox_italicize_strings = 0
+	let g:gruvbox_plugin_hi_groups = 1
 	" molokai colour scheme
 	let g:molokai_original = 1
 	let g:rehash256 = 1
@@ -129,6 +139,10 @@ set undodir=$XDG_CACHE_HOME/nvim/undo     | call mkdir(&undodir,   'p')
 	let g:rainbow_active = 0
 	" vim-toggle-bool
 	nnoremap <silent> <Leader>x :ToggleBool<CR>
+
+" Colour scheme
+set background=dark
+colorscheme gruvbox8_soft
 
 " PYTHON PROVIDERS {{{
 if has('macunix')
