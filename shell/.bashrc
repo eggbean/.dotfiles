@@ -1,6 +1,4 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
 
 # shellcheck disable=SC1090,SC2164,SC2148,SC2155
 
@@ -10,7 +8,7 @@ case $- in
 	  *) return;;
 esac
 
-# History file setting
+# History file settings
 HISTCONTROL=ignoreboth
 HISTSIZE=2000
 HISTFILESIZE=3000
@@ -20,22 +18,11 @@ HISTIGNORE=ls:ll:la:l:cd:cdd:pwd:df:tmux:htop:git:hue:fg:date
 # Shared history between tmux panes
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
-# Append to the history file, don't overwrite it
+# Shell options
 shopt -s histappend
-
-# Check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
 shopt -s checkwinsize
-
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
 shopt -s globstar
-
-# Don't attempt to search the PATH for possible completions when completion
-# is attempted on an empty line
 shopt -s no_empty_cmd_completion
-
-# Perform hostname completion when a word containing a @ is being completed
 shopt -s hostcomplete
 
 # Make less more friendly for non-text input files, see lesspipe(1)
@@ -43,15 +30,6 @@ shopt -s hostcomplete
 
 # Set Starship prompt
 eval "$(starship init bash)"
-
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-	xterm*|rxvt*)
-		PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-		;;
-	*)
-		;;
-esac
 
 # Enable color support of ls
 if [ -x /usr/bin/dircolors ]; then
@@ -105,7 +83,7 @@ mosh() {
 	fi
 }
 
-# Update PATH for the Google Cloud SDK
+# Update $PATH for the Google Cloud SDK
 if [ -f "$HOME/google-cloud-sdk/path.bash.inc" ]; then . "$HOME/google-cloud-sdk/path.bash.inc"; fi
 
 # Enable shell command completion for gcloud cli
@@ -116,12 +94,12 @@ if ! type gcloud >/dev/null 2>&1; then
 	gcloud() { docker run --rm --volumes-from gcloud-config google/cloud-sdk:alpine gcloud "$@"; }
 fi
 
-# Use AWS cli in an executable docker container if not installed
+# Use aws-cli in an executable docker container if not installed
 if ! type aws >/dev/null 2>&1; then
 	aws() { docker run --rm -it -v ~/.aws:/root/.aws amazon/aws-cli "$@"; }
 fi
 
-# AWS command completion
+# aws-cli command completion
 complete -C '/usr/local/bin/aws_completer' aws
 
 # Rename tmux windows when attaching to docker containers
@@ -158,7 +136,7 @@ cat() {
 }
 
 # Search man page for string
-mans() { 
+mans() {
 	local q="\'"
 	local q_pattern="'${1//$q/$q\\$q$q}'"
 	local MANPAGER="less -+MFX -p $q_pattern"
@@ -243,7 +221,7 @@ agem() { echo $((($(date +%s) - $(date +%s -r "$1")) / 60)) minutes; }
 ageh() { echo $((($(date +%s) - $(date +%s -r "$1")) / 3600)) hours; }
 aged() { echo $((($(date +%s) - $(date +%s -r "$1")) / 86400)) days; }
 
-# Colorise man pages
+# Colourise man pages
 export LESS_TERMCAP_mb=$'\E[1;31m'		# begin bold
 export LESS_TERMCAP_md=$'\E[1;36m'		# begin blink
 export LESS_TERMCAP_me=$'\E[0m'			# reset bold/blink
