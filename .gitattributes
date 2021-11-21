@@ -4,7 +4,9 @@ terraform filter=lfs diff=lfs merge=lfs -text
 *.key filter=git-crypt diff=git-crypt
 aws/.aws/credentials filter=git-crypt diff=git-crypt
 config/.hue.json filter=git-crypt diff=git-crypt
+config/.terraform.d/credentials.tfrc.json filter=git-crypt diff=git-crypt
 config/.config/gh/hosts.yml filter=git-crypt diff=git-crypt
 config/.config/hub filter=git-crypt diff=git-crypt
 config/.config/docker/config.json filter=git-crypt diff=git-crypt
 ssh/.ssh/id_* filter=git-crypt diff=git-crypt
+
