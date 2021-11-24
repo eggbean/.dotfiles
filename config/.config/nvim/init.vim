@@ -9,7 +9,7 @@ call plug#begin('$XDG_DATA_HOME/nvim/plugged')
 	Plug 'tpope/vim-commentary'
 	Plug 'preservim/nerdtree', { 'on':  'NERDTreeToggle' }
 	Plug 'sheerun/vim-polyglot'
-	" Plug 'tmux-plugins/vim-tmux'
+	Plug 'tmux-plugins/vim-tmux'
 	Plug 'junegunn/fzf'
 	Plug 'jeffkreeftmeijer/vim-numbertoggle'
 	Plug 'arp242/jumpy.vim'
@@ -22,23 +22,21 @@ call plug#begin('$XDG_DATA_HOME/nvim/plugged')
 	Plug 'ap/vim-css-color'
 	Plug 'frazrepo/vim-rainbow'
 	Plug 'ctrlpvim/ctrlp.vim'
-	Plug 'phaazon/hop.nvim'
 	Plug 'editorconfig/editorconfig-vim'
 	Plug 'mattn/emmet-vim'
 	Plug 'dense-analysis/ale'
 	Plug 'airblade/vim-gitgutter'
-	Plug 'tmux-plugins/vim-tmux'
 call plug#end()
 
 " Indentation
 set tabstop=4 shiftwidth=4 shiftround softtabstop=4 autoindent noexpandtab list
 
+set clipboard=unnamed
 set backspace=2
 set encoding=utf-8
 scriptencoding utf-8
 set autoread
 set nowrapscan
-syntax enable
 set title
 set listchars=tab:▸-
 set mouse=a
@@ -48,7 +46,7 @@ set hidden
 cmap w!! w !sudo tee % >/dev/null
 
 " Option for specific filetypes
-au BufRead,BufNewFile *.md setlocal textwidth=80
+au BufRead,BufNewFile *.md    setlocal textwidth=80
 au BufRead,BufNewFile *.notes setlocal textwidth=80
 
 " Move lines
@@ -74,12 +72,10 @@ vnoremap <Up> :<C-u>echo "No up for you!"<CR>
 vnoremap <Right> :<C-u>echo "No right for you!"<CR>
 
 " Zoom in and out of splits
-" https://medium.com/@vinodkri/zooming-vim-window-splits-like-a-pro-d7a9317d40
 noremap Zz <c-w>_ \| <c-w>\|
 noremap Zo <c-w>=
 
 " Rename tmux windows with filename
-" https://stackoverflow.com/a/29693196/140872
 augroup tmux | au!
 autocmd BufEnter * call system(printf('tmux rename-window %s\;
 	\ set -a window-status-current-style "fg=#{@vimactive},bg=#{@active}"\;
@@ -107,7 +103,7 @@ set undodir=$XDG_CACHE_HOME/nvim/undo     | call mkdir(&undodir,   'p')
 
 " Plugin configuration
 	" NERDTree
-	map <F4> :NERDTreeToggle<CR>
+	map <M-p> :NERDTreeToggle<CR>
 	let NERDTreeShowHidden = 1
 	let NERDTreeQuitOnOpen = 0
 	" vim-better-whitespace
@@ -141,19 +137,19 @@ set undodir=$XDG_CACHE_HOME/nvim/undo     | call mkdir(&undodir,   'p')
 	nnoremap <silent> <Leader>x :ToggleBool<CR>
 
 " Colour scheme
-set background=dark
+syntax enable
 colorscheme gruvbox8_soft
+set background=dark
 
-" PYTHON PROVIDERS {{{
+" Language Providers
 if has('macunix')
-let g:python3_host_prog = '/usr/local/bin/python3'
+	let g:python3_host_prog = '/usr/local/bin/python3'
 elseif has('unix')
-let g:python3_host_prog = '/usr/bin/python3'
+	let g:python3_host_prog = '/usr/bin/python3'
 elseif has('win32') || has('win64')
-" Windows
+	" Windows
 endif
 let g:loaded_python_provider = 0
 let g:loaded_ruby_provider = 0
 let g:loaded_perl_provider = 0
 let g:loaded_node_provider = 0
-" }}}
