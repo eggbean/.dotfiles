@@ -19,11 +19,12 @@ HISTIGNORE=ls:ll:la:l:cd:cdd:pwd:df:tmux:htop:git:hue:fg:date
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 # Shell options
-shopt -s histappend
 shopt -s checkwinsize
+shopt -s direxpand
 shopt -s globstar
-shopt -s no_empty_cmd_completion
+shopt -s histappend
 shopt -s hostcomplete
+shopt -s no_empty_cmd_completion
 
 # Make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -94,13 +95,8 @@ if ! type gcloud >/dev/null 2>&1; then
 	gcloud() { docker run --rm --volumes-from gcloud-config google/cloud-sdk:alpine gcloud "$@"; }
 fi
 
-# Use aws-cli in an executable docker container if not installed
-if ! type aws >/dev/null 2>&1; then
-	aws() { docker run --rm -it -v ~/.aws:/root/.aws amazon/aws-cli "$@"; }
-fi
-
 # aws-cli command completion
-complete -C '/usr/local/bin/aws_completer' aws
+[ -L /usr/local/bin/aws_completer ] && complete -C '/usr/local/bin/aws_completer' aws
 
 # Rename tmux windows when attaching to docker containers
 docker() {
@@ -141,13 +137,6 @@ mans() {
 	local q_pattern="'${1//$q/$q\\$q$q}'"
 	local MANPAGER="less -+MFX -p $q_pattern"
 	man "$2"
-}
-
-# Download github release
-dlgr() {
-	URL=$(curl -s https://api.github.com/repos/"${*}"/releases/latest | \
-	jq -r '.assets[].browser_download_url' | fzf)
-	curl -LO "${URL}"
 }
 
 # CD Deluxe
@@ -214,7 +203,7 @@ if command -v gh >/dev/null; then
 fi
 
 # Terraform bash completion
-[ -x /usr/bin/terraform ] && complete -C /usr/bin/terraform terraform
+[ -x /usr/local/bin/terraform ] && complete -C /usr/local/bin/terraform terraform
 
 # Age of files
 agem() { echo $((($(date +%s) - $(date +%s -r "$1")) / 60)) minutes; }
@@ -259,8 +248,8 @@ export BAT_PAGER='less -+MFX -S'
 export EXA_COLORS='lc=38;5;124:lm=38;5;196:uu=38;5;178:gu=38;5;178:un=38;5;141:gn=38;5;141'
 export ANSIBLE_CONFIG="$XDG_CONFIG_HOME"/ansible/ansible.cfg
 export RANGER_LOAD_DEFAULT_RC=FALSE
-export EDITOR='vi'
-export VISUAL='vi'
+export EDITOR='nvim'
+export VISUAL='nvim'
 export TMUX_PLUGIN_MANAGER_PATH="$XDG_DATA_HOME"/tmux/plugins
 
 # Source host specific environment
