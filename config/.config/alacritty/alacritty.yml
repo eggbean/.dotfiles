@@ -12,6 +12,9 @@ window:
   # Spread additional padding evenly around the terminal content.
   dynamic_padding: true
 
+  # Window title
+  title: Terminal
+
 # Key bindings
 key_bindings:
   - { key: Paste,                                action: Paste          }
