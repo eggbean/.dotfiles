@@ -23,7 +23,7 @@ alias mv='mv -iv'
 alias rm='rm -Iv'
 
 # Use nvim appimage if available
-if [ -x ~/.local/bin/nvim ] || [ -x /usr/local/bin/nvim ]; then
+if command -v nvim >/dev/null; then
 	alias vi='nvim'
 fi
 
