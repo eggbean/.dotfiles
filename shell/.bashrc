@@ -199,7 +199,7 @@ fi
 
 # GitHub CLI bash completion
 if command -v gh >/dev/null; then
-	eval "$(gh completion -s bash)"
+	eval "$(gh completion -s bash 2>/dev/null)"
 fi
 
 # Terraform bash completion
