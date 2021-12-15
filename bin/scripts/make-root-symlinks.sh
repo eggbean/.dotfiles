@@ -20,7 +20,7 @@ while read -rp "Do you want to make a symlink for github ssh key?  " yn; do
 	case $yn in
 		[Yy]* )	pushd /root >/dev/null
 				if [ ! -d .ssh ]; then mkdir .ssh; fi
-				if [ ! -L .ssh/id_ed25519 ]; then ln -s /home/"$(logname)"/.ssh/id_ed25519 .ssh/id_ed25519; fi
+				if [ ! -L .ssh/id_github ]; then ln -s /home/"$(logname)"/.ssh/id_github .ssh/id_github; fi
 				popd >/dev/null || { echo "ERROR" >&2; exit 1; }
 				break ;;
 		[Nn]* )	break ;;
