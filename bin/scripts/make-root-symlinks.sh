@@ -15,6 +15,18 @@ while read -rp "Do you want to make a symlink for ne?  " yn; do
 	esac
 done
 
+# ssh
+while read -rp "Do you want to make a symlink for github ssh key?  " yn; do
+	case $yn in
+		[Yy]* )	pushd /root >/dev/null
+				if [ ! -d .ssh ]; then mkdir .ssh; fi
+				if [ ! -L .ssh/id_ed25519 ]; then ln -s /home/"$(logname)"/.ssh/id_ed25519 .ssh/id_ed25519; fi
+				popd >/dev/null || { echo "ERROR" >&2; exit 1; }
+				break ;;
+		[Nn]* )	break ;;
+	esac
+done
+
 # GnuPG
 while read -rp "Do you want to make a symlink for GnuPG?  " yn; do
 	case $yn in
