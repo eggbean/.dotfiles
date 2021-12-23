@@ -26,13 +26,34 @@ call plug#begin('$XDG_DATA_HOME/nvim/plugged')
 	Plug 'mattn/emmet-vim'
 	Plug 'dense-analysis/ale'
 	Plug 'airblade/vim-gitgutter'
+	Plug 'machakann/vim-highlightedyank'
+	Plug 'pearofducks/ansible-vim'
 call plug#end()
 
 " Indentation
-set tabstop=4 shiftwidth=4 shiftround softtabstop=4 autoindent noexpandtab list
+set tabstop=4 shiftwidth=4 shiftround softtabstop=4 autoindent noexpandtab list smartindent
+set backspace=indent,eol,start
+set smarttab
+
+set nrformats-=octal
+set complete-=i
+set nonumber
+set numberwidth=4
+" set relativenumber
+" set signcolumn=auto
+set incsearch
+set hlsearch
+set noignorecase
+set nosmartcase
+set wrap
+set nosplitbelow
+set nosplitright
+set nosplitbelow
+set scrolloff=1
+set showmode
+set updatetime=4000
 
 set clipboard=unnamed
-set backspace=2
 set encoding=utf-8
 scriptencoding utf-8
 set autoread
@@ -42,12 +63,30 @@ set listchars=tab:▸-
 set mouse=a
 set hidden
 
+
 " Write when forgetting sudo
 cmap w!! w !sudo tee % >/dev/null
 
 " Option for specific filetypes
 au BufRead,BufNewFile *.md    setlocal textwidth=80
 au BufRead,BufNewFile *.notes setlocal textwidth=80
+au BufRead,BufNewFile *.tf    setlocal tabstop=2 shiftwidth=2 expandtab
+au BufRead,BufNewFile *.json  setlocal tabstop=2 shiftwidth=2 expandtab
+augroup filetype_yaml
+	autocmd!
+	autocmd BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
+	autocmd FileType yaml |
+		setlocal expandtab
+		setlocal shiftwidth=2 |
+		setlocal softtabstop=2 |
+		setlocal tabstop=2
+augroup END
+augroup skeleton
+    autocmd!
+    "adds bash shebang to .sh files
+    autocmd bufnewfile *.sh 0r $XDG_CONFIG_HOME/nvim/templates/skeleton.sh
+    autocmd bufnewfile *.py 0r $XDG_CONFIG_HOME/nvim/templates/skeleton.py
+augroup END
 
 " Move lines
 nnoremap <A-S-j> :m .+1<CR>==
@@ -56,20 +95,6 @@ inoremap <A-S-j> <Esc>:m .+1<CR>==gi
 inoremap <A-S-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-S-j> :m '>+1<CR>gv=gv
 vnoremap <A-S-k> :m '<-2<CR>gv=gv
-
-" Disable arrow keys
-nnoremap <Left> :echo "No left for you!"<CR>
-nnoremap <Down> :echo "No down for you!"<CR>
-nnoremap <Up> :echo "No up for you!"<CR>
-nnoremap <Right> :echo "No right for you!"<CR>
-inoremap <Left> <C-o>:echo "No left for you!"<CR>
-inoremap <Down> <C-o>:echo "No down for you!"<CR>
-inoremap <Up> <C-o>:echo "No up for you!"<CR>
-inoremap <Right> <C-o>:echo "No right for you!"<CR>
-vnoremap <Left> :<C-u>echo "No left for you!"<CR>
-vnoremap <Down> :<C-u>echo "No down for you!"<CR>
-vnoremap <Up> :<C-u>echo "No up for you!"<CR>
-vnoremap <Right> :<C-u>echo "No right for you!"<CR>
 
 " Zoom in and out of splits
 noremap Zz <c-w>_ \| <c-w>\|
@@ -132,11 +157,18 @@ set undodir=$XDG_CACHE_HOME/nvim/undo     | call mkdir(&undodir,   'p')
 	let g:bookmark_auto_save_file = '$XDG_DATA_HOME/nvim/bookmarks'
 	let g:bookmark_display_annotation = 1
 	" vim-rainbow
-	let g:rainbow_active = 0
+	let g:rainbow_active = 1
 	" vim-toggle-bool
-	nnoremap <silent> <Leader>x :ToggleBool<CR>
+	nnoremap <silent> <Leader>t :ToggleBool<CR>
+	" vim-highlightedyank
+	let g:highlightedyank_highlight_duration = 750
+	" pearofducks/ansible-vim
+	let g:ansible_unindent_after_newline = 1
 
 " Colour scheme
+if has('termguicolors')
+	set termguicolors
+endif
 syntax enable
 colorscheme gruvbox8_soft
 set background=dark
