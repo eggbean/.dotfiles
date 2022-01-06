@@ -244,6 +244,10 @@ class Config(object):
     # seconds or more, but in real life, undocumented, it closes https conns
     # after around 6s of inactivity.
     connection_max_age = 5
+    # Not an AWS standard
+    # allow the listing results to be returned in unsorted order.
+    # This may be faster when listing very large buckets.
+    list_allow_unordered = False
 
     ## Creating a singleton
     def __new__(self, configfile = None, access_key=None, secret_key=None, access_token=None):
@@ -318,7 +322,15 @@ class Config(object):
                     '%s=%s' % (k, s3_quote(v, unicode_output=True))
                     for k, v in params.items()
                 ])
-                conn = httplib.HTTPSConnection(host='sts.amazonaws.com',
+                sts_endpoint = "sts.amazonaws.com"
+                if os.environ.get("AWS_STS_REGIONAL_ENDPOINTS") == "regional":
+                    # Check if the AWS_REGION variable is available to use as a region.
+                    region = os.environ.get("AWS_REGION")
+                    if not region:
+                        # Otherwise use the bucket location
+                        region = self.bucket_location
+                    sts_endpoint = "sts.%s.amazonaws.com" % region
+                conn = httplib.HTTPSConnection(host=sts_endpoint,
                                                timeout=2)
                 conn.request('POST', '/?' + encoded_params)
                 resp = conn.getresponse()
@@ -346,15 +358,47 @@ class Config(object):
             else:
                 conn = httplib.HTTPConnection(host='169.254.169.254',
                                               timeout=2)
-                conn.request('GET', "/latest/meta-data/iam/security-credentials/")
+
+                # To use Instance Metadata Service (IMDSv2), we first need to obtain a token, then
+                # supply it with every IMDS HTTP call. More info:
+                #
+                #   https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html
+                #
+                # 60 seconds is arbitrary, but since we're just pulling small bits of data from the
+                # local instance, it should be plenty of time.
+                #
+                # There's a chance that there are "mostly AWS compatible" systems that might offer
+                # only IMDSv1 emulation, so we make this optional -- if we can't get the token, we
+                # just proceed without.
+                #
+                # More discussion at https://github.com/Hyperbase/hyperbase/pull/22259
+                #
+                imds_auth = {}
+                try:
+                    imds_ttl = {"X-aws-ec2-metadata-token-ttl-seconds": "60"}
+                    conn.request('PUT', "/latest/api/token", headers=imds_ttl)
+                    resp = conn.getresponse()
+                    resp_content = resp.read()
+                    if resp.status == 200:
+                        imds_token = base_unicodise(resp_content)
+                        imds_auth = {"X-aws-ec2-metadata-token": imds_token}
+                except Exception:
+                    # Ensure to close the connection in case of timeout or
+                    # anything. This will avoid CannotSendRequest errors for
+                    # the next request.
+                    conn.close()
+
+                conn.request('GET', "/latest/meta-data/iam/security-credentials/", headers=imds_auth)
                 resp = conn.getresponse()
                 files = resp.read()
                 if resp.status == 200 and len(files) > 1:
-                    conn.request('GET', "/latest/meta-data/iam/security-credentials/%s" % files.decode('utf-8'))
+                    conn.request('GET',
+                                 "/latest/meta-data/iam/security-credentials/%s" % files.decode('utf-8'),
+                                 headers=imds_auth)
                     resp=conn.getresponse()
                     if resp.status == 200:
                         resp_content = base_unicodise(resp.read())
-                        creds=json.loads(resp_content)
+                        creds = json.loads(resp_content)
                         Config().update_option('access_key', base_unicodise(creds['AccessKeyId']))
                         Config().update_option('secret_key', base_unicodise(creds['SecretAccessKey']))
                         Config().update_option('access_token', base_unicodise(creds['Token']))
@@ -367,7 +411,7 @@ class Config(object):
                         raise IOError
                 else:
                     raise IOError
-        except:
+        except Exception:
             raise
 
     def role_refresh(self):

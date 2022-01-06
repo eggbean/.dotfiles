@@ -401,6 +401,8 @@ class S3(object):
             uri_params['delimiter'] = "/"
         if max_keys != -1:
             uri_params['max-keys'] = str(max_keys)
+        if self.config.list_allow_unordered:
+            uri_params['allow-unordered'] = "true"
         request = self.create_request("BUCKET_LIST", bucket = bucket, uri_params = uri_params)
         response = self.send_request(request)
         #debug(response)
@@ -590,14 +592,16 @@ class S3(object):
         debug("put bucket lifecycle")
         body = '<LifecycleConfiguration>'
         body += '  <Rule>'
-        body += ('    <Prefix>%s</Prefix>' % self.config.expiry_prefix)
-        body += ('    <Status>Enabled</Status>')
-        body += ('    <Expiration>')
+        body += '    <Filter>'
+        body += '      <Prefix>%s</Prefix>' % self.config.expiry_prefix
+        body += '    </Filter>'
+        body += '    <Status>Enabled</Status>'
+        body += '    <Expiration>'
         if self.config.expiry_date:
-            body += ('    <Date>%s</Date>' % self.config.expiry_date)
+            body += '      <Date>%s</Date>' % self.config.expiry_date
         elif self.config.expiry_days:
-            body += ('    <Days>%s</Days>' % self.config.expiry_days)
-        body += ('    </Expiration>')
+            body += '      <Days>%s</Days>' % self.config.expiry_days
+        body += '    </Expiration>'
         body += '  </Rule>'
         body += '</LifecycleConfiguration>'
 
@@ -1025,7 +1029,17 @@ class S3(object):
 
     def object_info(self, uri):
         request = self.create_request("OBJECT_HEAD", uri=uri)
-        response = self.send_request(request)
+        try:
+            response = self.send_request(request)
+        except S3Error as exc:
+            # A HEAD request will not have body, even in the case of an error
+            # so we can't get the usual XML error content.
+            # Add fake similar content in such a case
+            if exc.status == 404 and not exc.code:
+                exc.code = 'NoSuchKey'
+                exc.message = 'The specified key does not exist.'
+                exc.resource = uri
+            raise exc
         return response
 
     def get_acl(self, uri):
@@ -1143,6 +1157,27 @@ class S3(object):
         debug(u"delete_lifecycle_policy(%s)" % uri)
         response = self.send_request(request)
         return response
+
+    def set_notification_policy(self, uri, policy):
+        request = self.create_request("BUCKET_CREATE", uri = uri,
+                                      body = policy,
+                                      uri_params = {'notification': None})
+        debug(u"set_notification_policy(%s): policy-xml: %s" % (uri, policy))
+        response = self.send_request(request)
+        return response
+
+    def get_notification_policy(self, uri):
+        request = self.create_request("BUCKET_LIST", bucket = uri.bucket(),
+                                      uri_params = {'notification': None})
+        debug(u"get_notification_policy(%s)" % uri)
+        response = self.send_request(request)
+
+        debug(u"%s: Got notification Policy" % response['status'])
+        return response
+
+    def delete_notification_policy(self, uri):
+        empty_config = '<NotificationConfiguration></NotificationConfiguration>'
+        return self.set_notification_policy(uri, empty_config)
 
     def get_multipart(self, uri, uri_params=None, limit=-1):
         upload_list = []

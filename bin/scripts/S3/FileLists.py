@@ -60,34 +60,39 @@ def handle_exclude_include_walk_dir(root, dirname):
     Should this root/dirname directory be excluded? (otherwise included by default)
     Exclude dir matches in the current directory
     This prevents us from recursing down trees we know we want to ignore
-    return True for including, and False for excluding
+    return True for excluding, and False for including
     '''
     cfg = Config()
+    # python versions end their patterns (from globs) differently, test for different styles; check python3.6+ styles first
+    directory_patterns = (u'/)$', u'/)\\Z', u'\\/$', u'\\/\\Z(?ms)')
+
     d = os.path.join(root, dirname, '')
-    debug(u"CHECK: %r" % d)
+    debug(u"CHECK: '%s'" % d)
     excluded = False
     for r in cfg.exclude:
-        # python versions end their patterns (from globs) differently, test for both styles.
-        if not (r.pattern.endswith(u'\\/$') or r.pattern.endswith(u'\\/\\Z(?ms)')): continue # we only check for directory patterns here
+        if not any(r.pattern.endswith(dp) for dp in directory_patterns):
+            # we only check for directory patterns here
+            continue
         if r.search(d):
             excluded = True
-            debug(u"EXCL-MATCH: '%s'" % (cfg.debug_exclude[r]))
+            debug(u"EXCL-MATCH: '%s'" % cfg.debug_exclude[r])
             break
     if excluded:
         ## No need to check for --include if not excluded
         for r in cfg.include:
-            # python versions end their patterns (from globs) differently, test for both styles.
-            if not (r.pattern.endswith(u'\\/$') or r.pattern.endswith(u'\\/\\Z(?ms)')): continue # we only check for directory patterns here
-            debug(u"INCL-TEST: %s ~ %s" % (d, r.pattern))
+            if not any(r.pattern.endswith(dp) for dp in directory_patterns):
+                # we only check for directory patterns here
+                continue
+            debug(u"INCL-TEST: '%s' ~ %s" % (d, r.pattern))
             if r.search(d):
                 excluded = False
                 debug(u"INCL-MATCH: '%s'" % (cfg.debug_include[r]))
                 break
     if excluded:
         ## Still excluded - ok, action it
-        debug(u"EXCLUDE: %r" % d)
+        debug(u"EXCLUDE: '%s'" % d)
     else:
-        debug(u"PASS: %r" % d)
+        debug(u"PASS: '%s'" % d)
     return excluded
 
 def _fswalk_follow_symlinks(path):
@@ -128,28 +133,28 @@ def filter_exclude_include(src_list):
     cfg = Config()
     exclude_list = FileDict(ignore_case = False)
     for file in src_list.keys():
-        debug(u"CHECK: %s" % file)
+        debug(u"CHECK: '%s'" % file)
         excluded = False
         for r in cfg.exclude:
             if r.search(file):
                 excluded = True
-                debug(u"EXCL-MATCH: '%s'" % (cfg.debug_exclude[r]))
+                debug(u"EXCL-MATCH: '%s'" % cfg.debug_exclude[r])
                 break
         if excluded:
             ## No need to check for --include if not excluded
             for r in cfg.include:
                 if r.search(file):
                     excluded = False
-                    debug(u"INCL-MATCH: '%s'" % (cfg.debug_include[r]))
+                    debug(u"INCL-MATCH: '%s'" % cfg.debug_include[r])
                     break
         if excluded:
             ## Still excluded - ok, action it
-            debug(u"EXCLUDE: %s" % file)
+            debug(u"EXCLUDE: '%s'" % file)
             exclude_list[file] = src_list[file]
             del(src_list[file])
             continue
         else:
-            debug(u"PASS: %r" % (file))
+            debug(u"PASS: '%s'" % file)
     return src_list, exclude_list
 
 
@@ -324,10 +329,10 @@ def fetch_local_list(args, is_src = False, recursive = None):
     cfg = Config()
 
     cache = HashCache()
-    if cfg.cache_file and os.path.exists(deunicodise_s(cfg.cache_file)):
+    if cfg.cache_file and os.path.isfile(deunicodise_s(cfg.cache_file)) and os.path.getsize(deunicodise_s(cfg.cache_file)) > 0:
         cache.load(cfg.cache_file)
     else:
-        info(u"No cache file found, creating it.")
+        info(u"Cache file not found or empty, creating/populating it.")
 
     local_uris = []
     local_list = FileDict(ignore_case = False)
@@ -569,12 +574,12 @@ def compare_filelists(src_list, dst_list, src_remote, dst_remote):
     debug("Comparing filelists (direction: %s -> %s)" % (__direction_str(src_remote), __direction_str(dst_remote)))
 
     for relative_file in src_list.keys():
-        debug(u"CHECK: %s" % (relative_file))
+        debug(u"CHECK: '%s'" % relative_file)
 
         if relative_file in dst_list:
             ## Was --skip-existing requested?
             if cfg.skip_existing:
-                debug(u"IGNR: %s (used --skip-existing)" % (relative_file))
+                debug(u"IGNR: '%s' (used --skip-existing)" % relative_file)
                 del(src_list[relative_file])
                 del(dst_list[relative_file])
                 continue
@@ -582,14 +587,14 @@ def compare_filelists(src_list, dst_list, src_remote, dst_remote):
             try:
                 same_file = _compare(src_list, dst_list, src_remote, dst_remote, relative_file)
             except (IOError,OSError):
-                debug(u"IGNR: %s (disappeared)" % (relative_file))
-                warning(u"%s: file disappeared, ignoring." % (relative_file))
+                debug(u"IGNR: '%s' (disappeared)" % relative_file)
+                warning(u"%s: file disappeared, ignoring." % relative_file)
                 del(src_list[relative_file])
                 del(dst_list[relative_file])
                 continue
 
             if same_file:
-                debug(u"IGNR: %s (transfer not needed)" % relative_file)
+                debug(u"IGNR: '%s' (transfer not needed)" % relative_file)
                 del(src_list[relative_file])
                 del(dst_list[relative_file])
 
@@ -602,7 +607,7 @@ def compare_filelists(src_list, dst_list, src_remote, dst_remote):
                 if md5 is not None and md5 in dst_list.by_md5:
                     # Found one, we want to copy
                     dst1 = dst_list.find_md5_one(md5)
-                    debug(u"DST COPY src: %s -> %s" % (dst1, relative_file))
+                    debug(u"DST COPY src: '%s' -> '%s'" % (dst1, relative_file))
                     copy_pairs.append((src_list[relative_file], dst1, relative_file, md5))
                     del(src_list[relative_file])
                     del(dst_list[relative_file])
@@ -624,7 +629,7 @@ def compare_filelists(src_list, dst_list, src_remote, dst_remote):
             dst1 = dst_list.find_md5_one(md5)
             if dst1 is not None:
                 # Found one, we want to copy
-                debug(u"DST COPY dst: %s -> %s" % (dst1, relative_file))
+                debug(u"DST COPY dst: '%s' -> '%s'" % (dst1, relative_file))
                 copy_pairs.append((src_list[relative_file], dst1,
                                    relative_file, md5))
                 del(src_list[relative_file])
