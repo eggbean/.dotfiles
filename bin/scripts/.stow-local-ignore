@@ -1,2 +1,5 @@
 .*\.bak?
 .*\.orig
+dir_colors
+src
+S3
