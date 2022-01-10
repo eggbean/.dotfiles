@@ -1,8 +1,8 @@
 #!/bin/bash
 
-## Change following to '0' for output to be like ls and '1' for exa defaults
+## Change following to '0' for output to be like ls and '1' for exa features
 # Don't list implied . and .. by default with -a
-dot=1
+dot=0
 # Show human readable file sizes by default
 hru=1
 # Don't show group column
@@ -11,6 +11,8 @@ fgp=0
 lnk=0
 # Group directories first in long listing by default
 gpd=0
+# Show file git status automatically (can cause a slight delay in large repo subdirectories)
+git=1
 
 help() {
     cat << EOF
@@ -39,8 +41,9 @@ help() {
    -T  tree *
    -L  level [DEPTH] *
    -s  file system blocks
-   -g  ignore .gitignore files *
-    
+   -g  don't show/show file git status *
+   -n  ignore .gitignore files *
+
     * not used in ls
 EOF
     exit
@@ -50,7 +53,7 @@ EOF
 
 exa_opts=()
 
-while getopts ':aAtuUSGI:rkhgsXL:N1lFRdDiTx' arg; do
+while getopts ':aAtuUSGI:rkhnsXL:Ng1lFRdDiTx' arg; do
   case $arg in
     a) (( dot == 1 )) && exa_opts+=(-a) || exa_opts+=(-a -a) ;;
     A) exa_opts+=(-a) ;;
@@ -63,11 +66,12 @@ while getopts ':aAtuUSGI:rkhgsXL:N1lFRdDiTx' arg; do
     r) ((++rev)) ;;
     k) ((--hru)) ;;
     h) ((++hru)) ;;
-    g) exa_opts+=(--git-ignore) ;;
+    n) exa_opts+=(--git-ignore) ;;
     s) exa_opts+=(-S) ;;
     X) exa_opts+=(-s extension) ;;
     L) exa_opts+=(--level="${OPTARG}") ;;
     N) ((++nco)) ;;
+	g) ((++git)) ;;
     1|l|F|R|d|D|i|T|x) exa_opts+=(-"$arg") ;;
     :) printf "%s: -%s switch requires a value\n" "${0##*/}" "${OPTARG}" >&2; exit 1
        ;;
@@ -82,9 +86,9 @@ shift "$((OPTIND - 1))"
 (( hru <= 0 )) && exa_opts+=(-B)
 (( fgp == 0 )) && exa_opts+=(-g)
 (( lnk == 0 )) && exa_opts+=(-H)
-(( nco == 1 )) && exa_opts+=(--color=never) || exa_opts+=(--color=auto)
+(( nco == 1 )) && exa_opts+=(--color=never) || exa_opts+=(--color=always)
 (( gpd == 1 )) && exa_opts+=(--group-directories-first)
-
-[[ $(git -C "${*:-.}" rev-parse --is-inside-work-tree) == true ]] 2>/dev/null && exa_opts+=(--git)
+(( git == 1 )) && \
+  [[ $(git -C "${*:-.}" rev-parse --is-inside-work-tree) == true ]] 2>/dev/null && exa_opts+=(--git)
 
 exa --color-scale "${exa_opts[@]}" "$@"
