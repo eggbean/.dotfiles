@@ -202,8 +202,10 @@ if command -v gh >/dev/null; then
 	eval "$(gh completion -s bash 2>/dev/null)"
 fi
 
-# Terraform bash completion
-[ -x /usr/local/bin/terraform ] && complete -C /usr/local/bin/terraform terraform
+# Hashicorp bash tab completion
+[ -x /usr/bin/terraform ] && complete -C /usr/bin/terraform terraform
+[ -x /usr/bin/packer ] && complete -C /usr/bin/packer packer
+[ -x /usr/bin/vagrant ] && . /opt/vagrant/embedded/gems/2.2.19/gems/vagrant-2.2.19/contrib/bash/completion.sh
 
 # Age of files
 agem() { echo $((($(date +%s) - $(date +%s -r "$1")) / 60)) minutes; }
