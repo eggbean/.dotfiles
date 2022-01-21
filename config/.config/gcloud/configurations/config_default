@@ -1,0 +1,6 @@
+[core]
+account = gomez404@gmail.com
+
+[survey]
+disable_prompts = True
+
