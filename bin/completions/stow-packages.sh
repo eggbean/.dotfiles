@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-complete -W "aws config ne shell ssh" stow-packages.sh
+complete -W "aws config shell ssh" stow-packages.sh

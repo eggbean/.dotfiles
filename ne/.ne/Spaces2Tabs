@@ -1,9 +1,0 @@
-AtomicUndo +
-MoveSOF
-Mark
-MoveEOF
-Through unexpand --tabs=4
-Through awk '{sub(/[ \t]+$/,""); print}'
-Through sed -Ez '$ s/\n+$//'
-Through sed -i -e '$a\'
-AtomicUndo -
