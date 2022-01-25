@@ -26,7 +26,7 @@ if [ -d "$HOME/.local/bin" ]; then
 	PATH="$HOME/.local/bin:$PATH"
 fi
 
-# Linuxlogo
+# Linuxlogo and tmux sessions
 if [ -z "$TMUX" ]; then
 	if command -v linux_logo >/dev/null; then
 		eval "$(source /etc/os-release && typeset -p ID PRETTY_NAME)"
@@ -34,10 +34,6 @@ if [ -z "$TMUX" ]; then
 		linux_logo -L "$ID" -f -F "${PRETTY_NAME}\nCompiled #C\n#N #M #X #T Processor#S, #R RAM\n#U\n#L\n$(hostname -f)\n${LOCATION}\n#E" 2>/dev/null
 		unset ID PRETTY_NAME LOCATION
 	fi
-fi
-
-# Show available tmux sessions
-if [ -z "$TMUX" ]; then
 	sessions=$(tmux list-sessions -F#S 2>/dev/null | xargs echo)
 	if [ -n "$sessions" ]; then
 		echo "	Available tmux sessions: ""$sessions"""
