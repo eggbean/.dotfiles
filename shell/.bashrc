@@ -253,6 +253,15 @@ export RANGER_LOAD_DEFAULT_RC=FALSE
 export EDITOR='nvim'
 export VISUAL='nvim'
 export TMUX_PLUGIN_MANAGER_PATH="$XDG_DATA_HOME"/tmux/plugins
+if [ -n "$DISPLAY" ]; then
+	export BROWSER=qutebrowser
+else
+	if ! type links >/dev/null 2>&1; then
+		export BROWSER=links
+	else
+		export BROWSER=lynx
+	fi
+fi
 
 # Source host specific environment
 [ -f ~/.dotfiles/shell/.hostinclude/"$(hostname -s)" ] && . ~/.dotfiles/shell/.hostinclude/"$(hostname -s)"
