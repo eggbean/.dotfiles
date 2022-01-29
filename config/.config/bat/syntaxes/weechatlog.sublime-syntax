@@ -1,0 +1,33 @@
+%YAML 1.2
+---
+# See http://www.sublimetext.com/docs/3/syntax.html
+file_extensions:
+  - weechatlog
+scope: text.weechatlog
+variables:
+  ipv4_part: (?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)
+contexts:
+  main:
+    - match: '^'
+      push: beginning-of-line
+
+    - include: scope:text.log#ip_addresses
+    - include: scope:text.log#numbers
+
+  beginning-of-line:
+    - include: scope:text.log#dates
+    - match: '--'
+      scope: punctuation.definition.comment.weechatlog
+      push: inside-line-comment
+    - match: (?=\S)
+      set: nickname
+
+  nickname:
+    - match: \S+
+      scope: source meta.nickname.weechatlog support.type.weechatlog
+      pop: true
+
+  inside-line-comment:
+    - meta_scope: comment.line.double-dash.weechatlog
+    - match: $\n?
+      pop: true
