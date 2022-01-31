@@ -28,10 +28,12 @@ call plug#begin('$XDG_DATA_HOME/nvim/plugged')
 	Plug 'airblade/vim-gitgutter'
 	Plug 'machakann/vim-highlightedyank'
 	Plug 'pearofducks/ansible-vim'
+	Plug 'EdenEast/nightfox.nvim'
+	Plug 'nvim-lualine/lualine.nvim'
 call plug#end()
 
 " Indentation
-set tabstop=4 shiftwidth=4 shiftround softtabstop=4 autoindent noexpandtab list smartindent
+set tabstop=4 shiftwidth=4 shiftround softtabstop=2 autoindent noexpandtab list smartindent
 set backspace=indent,eol,start
 set smarttab
 
@@ -47,8 +49,8 @@ set noignorecase
 set nosmartcase
 set wrap
 set nosplitbelow
-set nosplitright
-set nosplitbelow
+set splitright
+set splitbelow
 set scrolloff=1
 set showmode
 set updatetime=4000
@@ -63,15 +65,14 @@ set listchars=tab:▸-
 set mouse=a
 set hidden
 
-
 " Write when forgetting sudo
 cmap w!! w !sudo tee % >/dev/null
 
 " Option for specific filetypes
-au BufRead,BufNewFile *.md    setlocal textwidth=80
-au BufRead,BufNewFile *.notes setlocal textwidth=80
-au BufRead,BufNewFile *.tf    setlocal tabstop=2 shiftwidth=2 expandtab
-au BufRead,BufNewFile *.json  setlocal tabstop=2 shiftwidth=2 expandtab
+autocmd BufRead,BufNewFile *.md    setlocal textwidth=80
+autocmd BufRead,BufNewFile *.notes setlocal textwidth=80
+autocmd BufRead,BufNewFile *.tf    setlocal tabstop=2 shiftwidth=2 expandtab
+autocmd BufRead,BufNewFile *.json  setlocal tabstop=2 shiftwidth=2 expandtab
 augroup filetype_yaml
 	autocmd!
 	autocmd BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
@@ -100,8 +101,11 @@ vnoremap <A-S-k> :m '<-2<CR>gv=gv
 noremap Zz <c-w>_ \| <c-w>\|
 noremap Zo <c-w>=
 
+" Exit terminal mode with ESC
+tnoremap <Esc> <C-\><C-n>
+
 " Rename tmux windows with filename
-augroup tmux | au!
+augroup tmux | autocmd!
 autocmd BufEnter * call system(printf('tmux rename-window %s\;
 	\ set -a window-status-current-style "fg=#{@vimactive},bg=#{@active}"\;
 	\ set -a window-status-style "fg=#{@viminactive}"',
@@ -147,9 +151,6 @@ set undodir=$XDG_CACHE_HOME/nvim/undo     | call mkdir(&undodir,   'p')
 	let g:gruvbox_italics = 1
 	let g:gruvbox_italicize_strings = 0
 	let g:gruvbox_plugin_hi_groups = 1
-	" molokai colour scheme
-	let g:molokai_original = 1
-	let g:rehash256 = 1
 	" vim-bookmarks
 	let g:bookmark_sign = '🔖'
 	let g:bookmark_save_per_working_dir = 0
@@ -165,13 +166,45 @@ set undodir=$XDG_CACHE_HOME/nvim/undo     | call mkdir(&undodir,   'p')
 	" pearofducks/ansible-vim
 	let g:ansible_unindent_after_newline = 1
 
+	" nightfox colour scheme
+lua << EOF
+  local nightfox = require('nightfox')
+
+-- This function set the configuration of nightfox. If a value is not passed in the setup function
+-- it will be taken from the default configuration above
+nightfox.setup({
+  fox = "nordfox", -- change the colorscheme to use duskfox
+  transparent = false, -- Enable setting the background color
+  alt_nc = false, -- Non current window bg to alt color see `hl-NormalNC`
+  terminal_colors = false, -- Configure the colors used when opening :terminal
+  styles = {
+    comments = "italic", -- change style of comments to be italic
+    keywords = "bold", -- change style of keywords to be bold
+    functions = "italic,bold" -- styles can be a comma separated list
+  },
+  inverse = {
+    match_paren = false, -- inverse the highlighting of match_parens
+  },
+  colors = {
+    red = "#FF000", -- Override the red color for MAX POWER
+    bg_alt = "#000000",
+  },
+  hlgroups = {
+    TSPunctDelimiter = { fg = "${red}" }, -- Override a highlight group with the color red
+    LspCodeLens = { bg = "#000000", style = "italic" },
+  }
+})
+
+-- Load the configuration set above and apply the colorscheme
+nightfox.load()
+require('lualine').setup()
+EOF
+
 " Colour scheme
 if has('termguicolors')
 	set termguicolors
 endif
 syntax enable
-colorscheme gruvbox8_soft
-set background=dark
 
 " Language Providers
 if has('macunix')
