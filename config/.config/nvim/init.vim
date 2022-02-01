@@ -26,7 +26,6 @@ call plug#begin('$XDG_DATA_HOME/nvim/plugged')
 	Plug 'mattn/emmet-vim'
 	Plug 'dense-analysis/ale'
 	Plug 'airblade/vim-gitgutter'
-	Plug 'machakann/vim-highlightedyank'
 	Plug 'pearofducks/ansible-vim'
 	Plug 'EdenEast/nightfox.nvim'
 	Plug 'nvim-lualine/lualine.nvim'
@@ -54,6 +53,7 @@ set splitbelow
 set scrolloff=1
 set showmode
 set updatetime=4000
+set visualbell
 
 set clipboard=unnamed
 set encoding=utf-8
@@ -116,6 +116,10 @@ autocmd VimLeave * call system(printf('tmux set automatic-rename on\;
 augroup end
 autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
 
+" Highlighted yanking
+autocmd TextYankPost * silent! lua vim.highlight.on_yank()
+autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=750}
+
 " Persistent undo
 set undodir=~$XDG_CACHE_HOME/nvim/.undo//
 set backupdir=~$XDG_CACHE_HOME/nvim/.backup//
@@ -161,8 +165,6 @@ set undodir=$XDG_CACHE_HOME/nvim/undo     | call mkdir(&undodir,   'p')
 	let g:rainbow_active = 1
 	" vim-toggle-bool
 	nnoremap <silent> <Leader>t :ToggleBool<CR>
-	" vim-highlightedyank
-	let g:highlightedyank_highlight_duration = 750
 	" pearofducks/ansible-vim
 	let g:ansible_unindent_after_newline = 1
 
