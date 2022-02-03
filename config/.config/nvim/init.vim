@@ -47,13 +47,11 @@ set hlsearch
 set noignorecase
 set nosmartcase
 set wrap
-set nosplitbelow
 set splitright
 set splitbelow
 set scrolloff=1
 set showmode
 set updatetime=4000
-set visualbell
 
 set clipboard=unnamed
 set encoding=utf-8
@@ -96,6 +94,17 @@ inoremap <A-S-j> <Esc>:m .+1<CR>==gi
 inoremap <A-S-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-S-j> :m '>+1<CR>gv=gv
 vnoremap <A-S-k> :m '<-2<CR>gv=gv
+
+" Emacs-style editing on the command-line:
+cnoremap <C-D> <Del>
+cnoremap <C-A> <Home>
+cnoremap <C-E> <End>
+cnoremap <C-P> <Up>
+cnoremap <C-N> <Down>
+cnoremap <C-B> <Left>
+cnoremap <C-F> <Right>
+cnoremap <M-b> <S-Left>
+cnoremap <M-f> <S-Right>
 
 " Zoom in and out of splits
 noremap Zz <c-w>_ \| <c-w>\|
