@@ -1,70 +1,7 @@
 " NVIM CONFIGURATION
 
-" Plugins
-call plug#begin('$XDG_DATA_HOME/nvim/plugged')
-	Plug 'tpope/vim-sensible'
-	Plug 'tpope/vim-surround'
-	Plug 'tpope/vim-obsession'
-	Plug 'tpope/vim-fugitive'
-	Plug 'tpope/vim-commentary'
-	Plug 'preservim/nerdtree', { 'on':  'NERDTreeToggle' }
-	Plug 'sheerun/vim-polyglot'
-	Plug 'tmux-plugins/vim-tmux'
-	Plug 'junegunn/fzf'
-	Plug 'jeffkreeftmeijer/vim-numbertoggle'
-	Plug 'arp242/jumpy.vim'
-	Plug 'ntpeters/vim-better-whitespace'
-	Plug 'AndrewRadev/switch.vim'
-	Plug 'eggbean/vim-toggle-bool', { 'branch': 'new-bools' }
-	Plug 'eggbean/vim-tmux-navigator-no-wrapping'
-	Plug 'folke/which-key.nvim'
-	Plug 'MattesGroeger/vim-bookmarks'
-	Plug 'ap/vim-css-color'
-	Plug 'frazrepo/vim-rainbow'
-	Plug 'ctrlpvim/ctrlp.vim'
-	Plug 'editorconfig/editorconfig-vim'
-	Plug 'mattn/emmet-vim'
-	Plug 'dense-analysis/ale'
-	Plug 'airblade/vim-gitgutter'
-	Plug 'pearofducks/ansible-vim'
-	Plug 'EdenEast/nightfox.nvim'
-	Plug 'nvim-lualine/lualine.nvim'
-call plug#end()
-
-" Indentation
-set tabstop=4 shiftwidth=4 shiftround softtabstop=2 autoindent noexpandtab list smartindent
-set backspace=indent,eol,start
-set smarttab
-
-set nrformats-=octal
-set complete-=i
-set nonumber
-set numberwidth=4
-" set relativenumber
-" set signcolumn=auto
-set incsearch
-set hlsearch
-set noignorecase
-set nosmartcase
-set wrap
-set splitright
-set splitbelow
-set scrolloff=1
-set showmode
-set updatetime=4000
-
-set clipboard=unnamed
-set encoding=utf-8
-scriptencoding utf-8
-set autoread
-set nowrapscan
-set title
-set listchars=tab:▸-
-set mouse=a
-set hidden
-
-" Write when forgetting sudo
-cmap w!! w !sudo tee % >/dev/null
+source ~/.vim/plugins.vim
+source ~/.vim/common.vim
 
 " Option for specific filetypes
 autocmd BufRead,BufNewFile *.md    setlocal textwidth=80
@@ -86,32 +23,6 @@ augroup skeleton
     autocmd bufnewfile *.sh 0r $XDG_CONFIG_HOME/nvim/templates/skeleton.sh
     autocmd bufnewfile *.py 0r $XDG_CONFIG_HOME/nvim/templates/skeleton.py
 augroup END
-
-" Move lines
-nnoremap <A-S-j> :m .+1<CR>==
-nnoremap <A-S-k> :m .-2<CR>==
-inoremap <A-S-j> <Esc>:m .+1<CR>==gi
-inoremap <A-S-k> <Esc>:m .-2<CR>==gi
-vnoremap <A-S-j> :m '>+1<CR>gv=gv
-vnoremap <A-S-k> :m '<-2<CR>gv=gv
-
-" Emacs-style editing on the command-line:
-cnoremap <C-D> <Del>
-cnoremap <C-A> <Home>
-cnoremap <C-E> <End>
-cnoremap <C-P> <Up>
-cnoremap <C-N> <Down>
-cnoremap <C-B> <Left>
-cnoremap <C-F> <Right>
-cnoremap <M-b> <S-Left>
-cnoremap <M-f> <S-Right>
-
-" Zoom in and out of splits
-noremap Zz <c-w>_ \| <c-w>\|
-noremap Zo <c-w>=
-
-" Exit terminal mode with ESC
-tnoremap <Esc> <C-\><C-n>
 
 " Rename tmux windows with filename
 augroup tmux | autocmd!
@@ -142,40 +53,6 @@ set runtimepath+=$XDG_CONFIG_HOME/nvim/after
 set directory=$XDG_CACHE_HOME/nvim/swap   | call mkdir(&directory, 'p')
 set backupdir=$XDG_CACHE_HOME/nvim/backup | call mkdir(&backupdir, 'p')
 set undodir=$XDG_CACHE_HOME/nvim/undo     | call mkdir(&undodir,   'p')
-
-" Plugin configuration
-	" NERDTree
-	map <M-p> :NERDTreeToggle<CR>
-	let NERDTreeShowHidden = 1
-	let NERDTreeQuitOnOpen = 0
-	" vim-better-whitespace
-	let g:show_spaces_that_precede_tabs = 1
-	" vim-tmux-navigator
-	let g:tmux_navigator_no_wrap = 1
-	let g:tmux_navigator_disable_when_zoomed = 1
-	let g:tmux_navigator_no_mappings = 1
-	nnoremap <silent> <C-M-h> :TmuxNavigateLeft<cr>
-	nnoremap <silent> <C-M-j> :TmuxNavigateDown<cr>
-	nnoremap <silent> <C-M-k> :TmuxNavigateUp<cr>
-	nnoremap <silent> <C-M-l> :TmuxNavigateRight<cr>
-	nnoremap <silent> <C-M-;> :TmuxNavigatePrevious<cr>
-	" gruvbox8 colour scheme
-	let g:gruvbox_filetype_hi_groups = 1
-	let g:gruvbox_italics = 1
-	let g:gruvbox_italicize_strings = 0
-	let g:gruvbox_plugin_hi_groups = 1
-	" vim-bookmarks
-	let g:bookmark_sign = '🔖'
-	let g:bookmark_save_per_working_dir = 0
-	let g:bookmark_manage_per_buffer = 1
-	let g:bookmark_auto_save_file = '$XDG_DATA_HOME/nvim/bookmarks'
-	let g:bookmark_display_annotation = 1
-	" vim-rainbow
-	let g:rainbow_active = 1
-	" vim-toggle-bool
-	nnoremap <silent> <Leader>t :ToggleBool<CR>
-	" pearofducks/ansible-vim
-	let g:ansible_unindent_after_newline = 1
 
 	" nightfox colour scheme
 lua << EOF

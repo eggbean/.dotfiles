@@ -4,7 +4,12 @@ syntax on
 set t_Co=256
 color summerfruit256
 set guifont=Iosevka\ Term\ 14
+highlight Cursor guifg=white guibg=red
+highlight iCursor guifg=white guibg=steelblue
+set guicursor=n-v-c:block-Cursor
+set guicursor+=i:ver20-iCursor
 set lines=30 columns=80
+set guioptions -=L
 set guioptions -=r
 set guioptions -=m
 set guioptions -=T
