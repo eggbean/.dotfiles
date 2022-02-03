@@ -5,8 +5,6 @@ set t_Co=256
 color summerfruit256
 set guifont=Iosevka\ Term\ 14
 set lines=30 columns=80
-set splitright
-set splitbelow
 set guioptions -=r
 set guioptions -=m
 set guioptions -=T
@@ -28,19 +26,24 @@ function ToggleWindowMenu()
   endif
 endfunction
 
-" Move lines
-nnoremap <A-S-j> :m .+1<CR>==
-nnoremap <A-S-k> :m .-2<CR>==
-inoremap <A-S-j> <Esc>:m .+1<CR>==gi
-inoremap <A-S-k> <Esc>:m .-2<CR>==gi
-vnoremap <A-S-j> :m '>+1<CR>gv=gv
-vnoremap <A-S-k> :m '<-2<CR>gv=gv
-
 " Map Alt+[key] to normal terminal behaivior
 inoremap <M-:> <ESC>:
 inoremap <M-"> <ESC>"
 inoremap <M-$> <ESC>$
+inoremap <M-%> <ESC>%
 inoremap <M-^> <ESC>^
+inoremap <M-{> <ESC>{
+inoremap <M-}> <ESC>}
+inoremap <M-1> <ESC>1
+inoremap <M-2> <ESC>2
+inoremap <M-3> <ESC>3
+inoremap <M-4> <ESC>4
+inoremap <M-5> <ESC>5
+inoremap <M-6> <ESC>6
+inoremap <M-7> <ESC>7
+inoremap <M-8> <ESC>8
+inoremap <M-9> <ESC>9
+inoremap <M-0> <ESC>0
 inoremap <M-a> <ESC>a
 inoremap <M-b> <ESC>b
 inoremap <M-c> <ESC>c
