@@ -12,6 +12,10 @@ sdreader() {
 	done
 }
 
+# Alias to turn the screen off
+alias screenoff='sleep 1; xset dpms force off'
+
+# Alias for battery info
 alias battery='date; sudo tlp-stat -b'
 
 # >>> conda initialize >>>
