@@ -9,3 +9,4 @@ if !has("gui_running")
 endif
 
 source ~/.vim/common.vim
+source ~/.vim/autocmds.vim

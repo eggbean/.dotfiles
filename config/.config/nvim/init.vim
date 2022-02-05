@@ -1,41 +1,5 @@
 " NVIM CONFIGURATION
 
-source ~/.vim/plugins.vim
-source ~/.vim/common.vim
-
-" Option for specific filetypes
-autocmd BufRead,BufNewFile *.md    setlocal textwidth=80
-autocmd BufRead,BufNewFile *.notes setlocal textwidth=80
-autocmd BufRead,BufNewFile *.tf    setlocal tabstop=2 shiftwidth=2 expandtab
-autocmd BufRead,BufNewFile *.json  setlocal tabstop=2 shiftwidth=2 expandtab
-augroup filetype_yaml
-	autocmd!
-	autocmd BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
-	autocmd FileType yaml |
-		setlocal expandtab
-		setlocal shiftwidth=2 |
-		setlocal softtabstop=2 |
-		setlocal tabstop=2
-augroup END
-augroup skeleton
-    autocmd!
-    "adds bash shebang to .sh files
-    autocmd bufnewfile *.sh 0r $XDG_CONFIG_HOME/nvim/templates/skeleton.sh
-    autocmd bufnewfile *.py 0r $XDG_CONFIG_HOME/nvim/templates/skeleton.py
-augroup END
-
-" Rename tmux windows with filename
-augroup tmux | autocmd!
-autocmd BufEnter * call system(printf('tmux rename-window %s\;
-	\ set -a window-status-current-style "fg=#{@vimactive},bg=#{@active}"\;
-	\ set -a window-status-style "fg=#{@viminactive}"',
-	\ empty(@%) ? 'Noname' : fnamemodify(@%, ':t')))
-autocmd VimLeave * call system(printf('tmux set automatic-rename on\;
-	\ set -a window-status-current-style "fg=#{@white}"\;
-	\ set -a window-status-style "fg=#{@black}"'))
-augroup end
-autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
-
 " Highlighted yanking
 autocmd TextYankPost * silent! lua vim.highlight.on_yank()
 autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=750}
@@ -106,3 +70,7 @@ let g:loaded_python_provider = 0
 let g:loaded_ruby_provider = 0
 let g:loaded_perl_provider = 0
 let g:loaded_node_provider = 0
+
+source ~/.vim/plugins.vim
+source ~/.vim/common.vim
+source ~/.vim/autocmds.vim
