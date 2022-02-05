@@ -1,5 +1,10 @@
 " NVIM CONFIGURATION
 
+source ~/.vim/plugins.vim
+source ~/.vim/common.vim
+source ~/.vim/autocmds.vim
+source ~/.vim/pluginconfig.vim
+
 " Highlighted yanking
 autocmd TextYankPost * silent! lua vim.highlight.on_yank()
 autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=750}
@@ -70,7 +75,3 @@ let g:loaded_python_provider = 0
 let g:loaded_ruby_provider = 0
 let g:loaded_perl_provider = 0
 let g:loaded_node_provider = 0
-
-source ~/.vim/plugins.vim
-source ~/.vim/common.vim
-source ~/.vim/autocmds.vim

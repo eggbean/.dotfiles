@@ -7,6 +7,6 @@ set background=dark
 if !has("gui_running")
   source ~/.vim/plugins.vim
 endif
-
 source ~/.vim/common.vim
 source ~/.vim/autocmds.vim
+source ~/.vim/pluginconfig.vim

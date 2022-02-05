@@ -15,9 +15,10 @@ augroup filetype_yaml
 		setlocal softtabstop=2 |
 		setlocal tabstop=2
 augroup END
+
+" Skeleton templates
 augroup skeleton
     autocmd!
-    "adds bash shebang to .sh files
     autocmd bufnewfile *.sh 0r $XDG_CONFIG_HOME/nvim/templates/skeleton.sh
     autocmd bufnewfile *.py 0r $XDG_CONFIG_HOME/nvim/templates/skeleton.py
 augroup END

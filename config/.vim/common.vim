@@ -25,6 +25,7 @@ set updatetime=4000
 set clipboard=unnamed
 set encoding=utf-8
 scriptencoding utf-8
+set spellfile=~/.vim/spell/en.utf-8.add
 set autoread
 set nowrapscan
 set title
