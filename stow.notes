@@ -1,9 +1,7 @@
 # TO DO:
 * In bin script, remove Existing.. deleted and replace with yes/no
-* Maybe rename package script to refect its use with dotfiles and config. Stow-dotfiles?
-* Consider using the --dotfiles switch on the package script - no, there is currently a bug which stops it from working with directories.
 * Add help
-* stow-packages.sh currenly does a stow operation repeatedly for every item if more than one is present in a package
+* stow-packages.sh currently does a stow operation repeatedly for every item if more than one is present in a package
 
 # Notes for documentation:
 * When --user --remove the script will exit once it removes the stow binary, but you can run it again to complete the removal if stow has been installed through apt.
