@@ -8,6 +8,8 @@
 	hooksPath = .githooks/
 [init]
 	defaultBranch = master
+[branch]
+	autosetuprebase = always
 [pull]
 	ff = only
 	rebase = true
