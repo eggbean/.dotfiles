@@ -329,3 +329,21 @@ config.bind('<Ctrl+Shift+PgUp>', 'tab-move -')
 config.bind('<Ctrl+q>', 'nop')
 config.bind('<F12>', 'config-cycle window.hide_decoration false true')
 config.bind('gh', 'home')
+
+# Use Ctrl+c instead of Escape
+config.bind('<Ctrl+c>', 'mode-leave', mode='caret')
+config.bind('<Ctrl+c>', 'mode-leave', mode='hint')
+config.bind('<Ctrl+c>', 'mode-leave', mode='insert')
+config.bind('<Ctrl+c>', 'mode-leave', mode='prompt')
+config.bind('<Ctrl+c>', 'mode-leave', mode='register')
+config.bind('<Ctrl+c>', 'mode-leave', mode='yesno')
+
+# Use Alt+Shift+semicolon instead of Escape
+config.bind('<Alt+Shift+:>', 'mode-leave', mode='caret')
+config.bind('<Alt+Shift+:>', 'mode-leave', mode='command')
+config.bind('<Alt+Shift+:>', 'mode-leave', mode='hint')
+config.bind('<Alt+Shift+:>', 'mode-leave', mode='insert')
+config.bind('<Alt+Shift+:>', 'mode-leave', mode='passthrough')
+config.bind('<Alt+Shift+:>', 'mode-leave', mode='prompt')
+config.bind('<Alt+Shift+:>', 'mode-leave', mode='register')
+config.bind('<Alt+Shift+:>', 'mode-leave', mode='yesno')
