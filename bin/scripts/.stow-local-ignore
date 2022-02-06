@@ -1,5 +1,6 @@
 .*\.bak?
 .*\.orig
+.*\.notes
 dir_colors
 src
 S3
