@@ -13,7 +13,7 @@ window:
   dynamic_padding: true
 
   # Window title
-  title: Terminal
+  title: Alacritty
 
 # Key bindings
 key_bindings:
@@ -44,7 +44,7 @@ key_bindings:
 font:
   # Normal (roman) font face
   normal:
-    family: "Hack Nerd Font"
+    family: "Hack Nerd Font Mono"
     style: Regular
 
   # Bold font face
