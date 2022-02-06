@@ -6,10 +6,23 @@ autocmd BufRead,BufNewFile *.notes setlocal textwidth=80 spell spelllang=en_gb
 autocmd BufRead,BufNewFile *.txt   setlocal textwidth=80 spell spelllang=en_gb
 autocmd BufRead,BufNewFile *.tf    setlocal tabstop=2 shiftwidth=2 expandtab
 autocmd BufRead,BufNewFile *.json  setlocal tabstop=2 shiftwidth=2 expandtab
+
+" yaml
 augroup filetype_yaml
 	autocmd!
 	autocmd BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
 	autocmd FileType yaml |
+		setlocal expandtab
+		setlocal shiftwidth=2 |
+		setlocal softtabstop=2 |
+		setlocal tabstop=2
+augroup END
+
+" sh
+augroup filetype_sh
+	autocmd!
+	autocmd BufNewFile,BufReadPost *.sh set filetype=sh
+	autocmd FileType sh |
 		setlocal expandtab
 		setlocal shiftwidth=2 |
 		setlocal softtabstop=2 |
