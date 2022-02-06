@@ -13,19 +13,20 @@ set numberwidth=4
 " set signcolumn=auto
 set incsearch
 set hlsearch
-set noignorecase
-set nosmartcase
-set wrap
+set ignorecase
+set smartcase
+set autochdir
+set wildmenu wildmode=list:longest,full
 set splitright
 set splitbelow
-set scrolloff=1
+set scrolloff=2
 set showmode
 set updatetime=4000
+" set colorcolumn=80
 
 set clipboard=unnamed
 set encoding=utf-8
 scriptencoding utf-8
-set spellfile=~/.vim/spell/en.utf-8.add
 set autoread
 set nowrapscan
 set title

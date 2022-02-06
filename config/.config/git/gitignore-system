@@ -3,5 +3,6 @@
 *.pyc
 *.bak
 *.bak?
+*.swp
 *.notes
 .vim-bookmarks
