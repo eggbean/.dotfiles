@@ -1,0 +1,22 @@
+## Host specific functions, aliases and environment variables for local clients
+
+# Turn SD card reader on and off
+sdreader() {
+	while :; do
+		case $1 in
+			on	) echo "2-3" | sudo tee /sys/bus/usb/drivers/usb/bind &>/dev/null && echo 'SD card reader on' || echo 'No change' ;;
+			off	) echo "2-3" | sudo tee /sys/bus/usb/drivers/usb/unbind &>/dev/null && echo 'SD card reader off' || echo 'No change' ;;
+			*	) echo "Error" ;;
+		esac
+		return
+	done
+}
+
+# Alias to turn the screen off
+alias screenoff='sleep 1; xset dpms force off'
+
+# Alias for battery info
+alias battery='date; sudo tlp-stat -b'
+
+# Other aliases
+alias qb='qutebrowser'
