@@ -124,6 +124,52 @@ config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}; rv:90.0) Gecko
 # Type: FormatString
 config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99 Safari/537.36', 'https://*.slack.com/*')
 
+# Which method of blocking ads should be used.  Support for Adblock Plus
+# (ABP) syntax blocklists using Brave's Rust library requires the
+# `adblock` Python package to be installed, which is an optional
+# dependency of qutebrowser. It is required when either `adblock` or
+# `both` are selected.
+# Type: String
+# Valid values:
+#   - auto: Use Brave's ABP-style adblocker if available, host blocking otherwise
+#   - adblock: Use Brave's ABP-style adblocker
+#   - hosts: Use hosts blocking
+#   - both: Use both hosts blocking and Brave's ABP-style adblocker
+c.content.blocking.method = 'both'
+
+# List of URLs to ABP-style adblocking rulesets.  Only used when Brave's
+# ABP-style adblocker is used (see `content.blocking.method`).  You can
+# find an overview of available lists here:
+# https://adblockplus.org/en/subscriptions - note that the special
+# `subscribe.adblockplus.org` links aren't handled by qutebrowser, you
+# will instead need to find the link to the raw `.txt` file (e.g. by
+# extracting it from the `location` parameter of the subscribe URL and
+# URL-decoding it).
+# Type: List of Url
+c.content.blocking.adblock.lists = [
+        "https://easylist.to/easylist/easylist.txt",
+        "https://easylist.to/easylist/easyprivacy.txt",
+        "https://easylist.to/easylist/fanboy-social.txt",
+        "https://secure.fanboy.co.nz/fanboy-annoyance.txt",
+        "https://easylist-downloads.adblockplus.org/abp-filters-anti-cv.txt",
+        "https://pgl.yoyo.org/adservers/serverlist.php?showintro=0;hostformat=hosts",
+        "https://github.com/uBlockOrigin/uAssets/raw/master/filters/legacy.txt",
+        "https://github.com/uBlockOrigin/uAssets/raw/master/filters/filters.txt",
+        "https://github.com/uBlockOrigin/uAssets/raw/master/filters/filters-2020.txt",
+        "https://github.com/uBlockOrigin/uAssets/raw/master/filters/filters-2021.txt",
+        "https://github.com/uBlockOrigin/uAssets/raw/master/filters/badware.txt",
+        "https://github.com/uBlockOrigin/uAssets/raw/master/filters/privacy.txt",
+        "https://github.com/uBlockOrigin/uAssets/raw/master/filters/badlists.txt",
+        "https://github.com/uBlockOrigin/uAssets/raw/master/filters/annoyances.txt",
+        "https://github.com/uBlockOrigin/uAssets/raw/master/filters/resource-abuse.txt",
+        "https://www.i-dont-care-about-cookies.eu/abp/",
+        "https://secure.fanboy.co.nz/fanboy-cookiemonster.txt",
+        "https://github.com/uBlockOrigin/uAssets/raw/master/filters/unbreak.txt",
+        "https://raw.githubusercontent.com/Ewpratten/youtube_ad_blocklist/master/blocklist.txt",
+        "https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=1&mimetype=plaintext",
+        "https://gitlab.com/curben/urlhaus-filter/-/raw/master/urlhaus-filter-online.txt"
+        ]
+
 # Load images automatically in web pages.
 # Type: Bool
 config.set('content.images', True, 'chrome-devtools://*')
@@ -319,6 +365,9 @@ c.colors.tabs.selected.even.bg = '#005fff'
 # `bindings.commands`), the mapping is ignored.
 # Type: Dict
 c.bindings.key_mappings = {'<Ctrl+6>': '<Ctrl+^>', '<Ctrl+Enter>': '<Ctrl+Return>', '<Ctrl+i>': '<Tab>', '<Ctrl+j>': '<Return>', '<Ctrl+m>': '<Return>', '<Ctrl+[>': '<Escape>', '<Enter>': '<Return>', '<Shift+Enter>': '<Return>', '<Shift+Return>': '<Return>', '<Alt+Return>': '<F11>'}
+
+# Use Ctrl+[ to leave passthrough mode
+config.bind('<Ctrl+[>', 'mode-leave', mode='passthrough')
 
 # Bindings for normal mode
 config.bind('<Alt+Left>', 'back')
