@@ -324,7 +324,7 @@ c.url.default_page = 'https://www.google.com/'
 # the search engine name to the search term, e.g. `:open google
 # qutebrowser`.
 # Type: Dict
-c.url.searchengines = {'DEFAULT': 'https://google.com/?q={}', 'a': 'https://www.wolframalpha.com/input/?i={}', 'g': 'https://github.com/search?q={}', 'r': 'https://www.reddit.com/search/?q={}', 's': 'https://stackoverflow.com/search?q={}', 'y': 'https://www.youtube.com/results?search_query={}'}
+c.url.searchengines = {'DEFAULT': 'https://google.com/?q={}', 'wa': 'https://www.wolframalpha.com/input/?i={}', 'gh': 'https://github.com/search?q={}', 'reddit': 'https://www.reddit.com/search/?q={}', 'so': 'https://stackoverflow.com/search?q={}', 'yt': 'https://www.youtube.com/results?search_query={}'}
 
 # Page(s) to open at the start.
 # Type: List of FuzzyUrl, or FuzzyUrl
