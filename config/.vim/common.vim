@@ -28,11 +28,15 @@ set clipboard=unnamed
 set encoding=utf-8
 scriptencoding utf-8
 set autoread
+set wrap
 set nowrapscan
 set title
 set listchars=tab:▸-
 set mouse=a
 set hidden
+set nobackup
+set writebackup
+set noswapfile
 
 " Write when forgetting sudo
 cmap w!! w !sudo tee % >/dev/null
@@ -45,16 +49,21 @@ inoremap <A-S-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-S-j> :m '>+1<CR>gv=gv
 vnoremap <A-S-k> :m '<-2<CR>gv=gv
 
-" Emacs-style editing on the command-line:
-cnoremap <C-D> <Del>
-cnoremap <C-A> <Home>
-cnoremap <C-E> <End>
-cnoremap <C-P> <Up>
-cnoremap <C-N> <Down>
-cnoremap <C-B> <Left>
-cnoremap <C-F> <Right>
+" Emacs mappings in insert mode
+inoremap <A-d> <space><esc>ce
+inoremap <C-k> <C-o>d$
+
+" Emacs-style editing on the command-line
+cnoremap <C-d> <Del>
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
+cnoremap <C-p> <Up>
+cnoremap <C-n> <Down>
+cnoremap <C-b> <Left>
+cnoremap <C-f> <Right>
 cnoremap <M-b> <S-Left>
 cnoremap <M-f> <S-Right>
+cnoremap <M-d> <S-Right><C-w>
 cnoremap <C-k> <C-\>e(strpart(getcmdline(), 0, getcmdpos() - 1))<CR>
 
 " Zoom in and out of splits
