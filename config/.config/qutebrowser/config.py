@@ -382,7 +382,6 @@ config.bind('gh', 'home')
 # Use Ctrl+c instead of Escape
 config.bind('<Ctrl+c>', 'mode-leave', mode='caret')
 config.bind('<Ctrl+c>', 'mode-leave', mode='hint')
-config.bind('<Ctrl+c>', 'mode-leave', mode='insert')
 config.bind('<Ctrl+c>', 'mode-leave', mode='prompt')
 config.bind('<Ctrl+c>', 'mode-leave', mode='register')
 config.bind('<Ctrl+c>', 'mode-leave', mode='yesno')
