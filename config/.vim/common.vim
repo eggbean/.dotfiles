@@ -11,6 +11,7 @@ set nonumber
 set numberwidth=4
 " set relativenumber
 " set signcolumn=auto
+" set nu
 set incsearch
 set hlsearch
 set ignorecase
@@ -34,9 +35,15 @@ set title
 set listchars=tab:▸-
 set mouse=a
 set hidden
-set nobackup
+" set nobackup
 set writebackup
 set noswapfile
+
+" Persistent undo
+set undodir=~$XDG_CACHE_HOME/nvim/undo//
+set backupdir=~$XDG_CACHE_HOME/nvim/backup//
+set directory=~$XDG_CACHE_HOME/nvim/swp//
+set undofile
 
 " Write when forgetting sudo
 cmap w!! w !sudo tee % >/dev/null
@@ -64,6 +71,7 @@ cnoremap <C-f> <Right>
 cnoremap <M-b> <S-Left>
 cnoremap <M-f> <S-Right>
 cnoremap <M-d> <S-Right><C-w>
+cnoremap <M-BS> <C-w>
 cnoremap <C-k> <C-\>e(strpart(getcmdline(), 0, getcmdpos() - 1))<CR>
 
 " Zoom in and out of splits

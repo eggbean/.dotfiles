@@ -9,12 +9,6 @@ source ~/.vim/pluginconfig.vim
 autocmd TextYankPost * silent! lua vim.highlight.on_yank()
 autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=750}
 
-" Persistent undo
-set undodir=~$XDG_CACHE_HOME/nvim/.undo//
-set backupdir=~$XDG_CACHE_HOME/nvim/.backup//
-set directory=~$XDG_CACHE_HOME/nvim/.swp//
-set undofile
-
 " XDG Environment
 set runtimepath^=$XDG_CONFIG_HOME/nvim
 set runtimepath+=$XDG_DATA_HOME/nvim
