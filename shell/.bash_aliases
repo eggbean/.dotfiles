@@ -16,6 +16,7 @@ alias shellcheck='shellcheck --color=always'
 alias crontab='crontab -i'
 alias ncdu='ncdu --exclude-kernfs --color dark'
 alias xclip='xclip -r'
+alias sxiv='sxiv -abs f'
 
 # Aliases to avoid making mistakes:
 alias cp='cp -iv'
