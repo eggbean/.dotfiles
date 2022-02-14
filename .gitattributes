@@ -1,7 +1,7 @@
 .gitattributes !filter !diff
 *.env filter=git-crypt diff=git-crypt
 *.key filter=git-crypt diff=git-crypt
-aws/.aws/credentials filter=git-crypt diff=git-crypt
+config/.config/aws/credentials filter=git-crypt diff=git-crypt
 config/.hue.json filter=git-crypt diff=git-crypt
 config/.terraform.d/credentials.tfrc.json filter=git-crypt diff=git-crypt
 config/.config/gh/hosts.yml filter=git-crypt diff=git-crypt
