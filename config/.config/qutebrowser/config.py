@@ -23,6 +23,15 @@ c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save', 'wq': 'quit --save
 # Type: Bool
 c.search.wrap = False
 
+# Always restore open sites when qutebrowser is reopened. Without this
+# option set, `:wq` (`:quit --save`) needs to be used to save open tabs
+# (and restore them), while quitting qutebrowser in any other way will
+# not save/restore the session. By default, this will save to the
+# session which was last loaded. This behavior can be customized via the
+# `session.default_name` setting.
+# Type: Bool
+c.auto_save.session = True
+
 # Which cookies to accept. With QtWebEngine, this setting also controls
 # other features with tracking capabilities similar to those of cookies;
 # including IndexedDB, DOM storage, filesystem API, service workers, and
