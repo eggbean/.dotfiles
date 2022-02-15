@@ -17,6 +17,7 @@ alias crontab='crontab -i'
 alias ncdu='ncdu --exclude-kernfs --color dark'
 alias xclip='xclip -r'
 alias sxiv='sxiv -abs f'
+alias qb='qutebrowser'
 
 # Aliases to avoid making mistakes:
 alias cp='cp -iv'

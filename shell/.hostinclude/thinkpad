@@ -1,4 +1,4 @@
-## Host specific functions, aliases and environment variables for local clients
+## Host specific functions, aliases and environment variables for ThinkPad clients
 
 # Turn SD card reader on and off
 sdreader() {
@@ -17,6 +17,3 @@ alias screenoff='sleep 1; xset dpms force off'
 
 # Alias for battery info
 alias battery='date; sudo tlp-stat -b'
-
-# Other aliases
-alias qb='qutebrowser'
