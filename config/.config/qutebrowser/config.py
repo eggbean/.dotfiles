@@ -384,9 +384,10 @@ config.bind('<Alt+Right>', 'forward')
 config.bind('<Alt+Shift+d>', 'tab-clone')
 config.bind('<Ctrl+Shift+PgDown>', 'tab-move +')
 config.bind('<Ctrl+Shift+PgUp>', 'tab-move -')
-config.bind('<Ctrl+q>', 'nop')
 config.bind('<F12>', 'config-cycle window.hide_decoration false true')
 config.bind('gh', 'home')
+config.bind('<Ctrl+q>', 'tab-focus stack-prev')
+config.bind('<Ctrl+Shift+q>', 'tab-focus stack-next')
 
 # Use Ctrl+c instead of Escape
 config.bind('<Ctrl+c>', 'mode-leave', mode='caret')
