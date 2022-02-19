@@ -42,7 +42,7 @@ if [[ "$*" =~ "--user" ]]; then
 else
 	if [[ "$(id -u)" != "0" ]]; then { echo "This script must be run as root to stow in /usr, or use the --user option to stow in ~/.local." >&2; exit 1; }; fi
 	targetdir='/usr/local/bin'
-	mandir='/usr/share/man'
+	mandir='/usr/local/share/man'
 	compdir='/etc/bash_completion.d'
 	fontdir='/usr/local/share/fonts'
 fi
@@ -66,8 +66,9 @@ stow $stowcom -vt "${targetdir}" scripts 2>&1 \
 
 # Stow/unstow man files
 pushd "${STOW_DIR}/man" >/dev/null
-mandirs=(*)
-for m in "${mandirs[@]}"; do
+mansubs=(*)
+for m in "${mansubs[@]}"; do
+	if [ ! -d "${mandir}"/"$m" ]; then mkdir "${mandir}"/"$m"; fi
 	stow $stowcom -vt "${mandir}"/"$m" "$m" 2>&1 \
 		&& echo "DONE: $m package $stowed" || { echo "ERROR $stowing $m package - possible conflict with existing file(s)" >&2; exit 1; }
 done
