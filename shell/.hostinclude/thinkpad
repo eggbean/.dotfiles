@@ -17,3 +17,8 @@ alias screenoff='sleep 1; xset dpms force off'
 
 # Alias for battery info
 alias battery='date; sudo tlp-stat -b'
+
+# Set variables for Windows applications if running on Windows
+if grep -iq Microsoft /proc/version; then
+	export BROWSER='/mnt/c/Program\ Files/qutebrowser/qutebrowser.exe'
+fi
