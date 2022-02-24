@@ -3,7 +3,7 @@
 	email = 815311+eggbean@users.noreply.github.com
 [core]
 	editor = nvim
-	pager = LESS= less -FRXq
+	pager = delta
 	excludesfile = ~/.dotfiles/config/.config/git/gitignore-system
 	hooksPath = .githooks/
 [init]
@@ -22,10 +22,38 @@
 [difftool]
 	prompt = false
 [pager]
-	diff = LESS= less -RSqx4+g
-	log = LESS= less -Rq+g
-	whatchanged = LESS= less -Rq+g
+; 	log = LESS= less -Rq+g
+; 	whatchanged = LESS= less -Rq+g
+; 	diff = LESS= less -RSqx4+g
 	stash = false
+[interactive]
+	diffFilter = delta --color-only --features=interactive
+[delta]
+	features = decorations
+	line-numbers = true
+	syntax-theme = TwoDark
+	width = 1
+	minus-style = syntax "#450a15"
+	minus-emph-style = syntax "#600818"
+	plus-style = syntax "#0b4820"
+	plus-emph-style = syntax "#175c2e"
+	hunk-header-style = syntax bold
+	hunk-header-decoration-style = omit
+	file-style = yellow italic
+	file-decoration-style = yellow ul
+	line-numbers-zero-style = "#4b5263"
+	line-numbers-left-format = "{nm:^4} "
+	line-numbers-right-format = "{np:^4} "
+[delta "interactive"]
+	keep-plus-minus-markers = false
+[delta "decorations"]
+	commit-decoration-style = blue ol
+	commit-style = raw
+	file-style = omit
+	hunk-header-decoration-style = blue box
+	hunk-header-file-style = red
+	hunk-header-line-number-style = "#067a00"
+	hunk-header-style = file line-number syntax
 [alias]
 	hist = "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"
 	blog = "log --oneline --graph --decorate --all"
@@ -33,8 +61,3 @@
 	mdiff = ! "f () { git diff --color \"$@\" | grep --color=never $(printf '\\033\\[3[12]'); }; f"
 	bdiff = ! "f () { git diff --name-only --diff-filter=d \"$@\" | xargs bat --diff; }; f"
 	vdiff = ! "f () { git difftool --tool=nvimdiff -- \"$@\"; }; f"
-[filter "lfs"]
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
-	clean = git-lfs clean -- %f
