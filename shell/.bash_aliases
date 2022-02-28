@@ -18,6 +18,7 @@ alias ncdu='ncdu --exclude-kernfs --color dark'
 alias xclip='xclip -r'
 alias sxiv='sxiv -abs f'
 alias qb='qutebrowser'
+alias mklink=' . mklink.sh'
 
 # Aliases to avoid making mistakes:
 alias cp='cp -iv'
