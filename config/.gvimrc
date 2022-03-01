@@ -107,6 +107,12 @@ inoremap <M-Y> <ESC>Y
 inoremap <M-Z> <ESC>Z
 
 " Fullscreen with Alt-Enter
+function! ToggleFullScreen()
+  if has("gui_gtk2")
+    :call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")
+  elseif has("gui_win32")
+    :call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)
+  endif
+endfunction
 set <a-cr>=\<esc>\<cr>
-map <silent> <a-cr>
-\    :call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")<CR>
+map <silent> <a-cr> :call ToggleFullScreen()<CR>
