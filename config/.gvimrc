@@ -3,7 +3,11 @@
 syntax on
 set t_Co=256
 color summerfruit256
-set guifont=Iosevka\ Term\ 14
+if has("gui_gtk2")
+  set guifont=Iosevka\ Term\ 14
+elseif has("gui_win32")
+  set guifont=Iosevka_NF:h14
+endif
 highlight Cursor guifg=white guibg=red
 highlight iCursor guifg=white guibg=steelblue
 set guicursor=n-v-c:block-Cursor
