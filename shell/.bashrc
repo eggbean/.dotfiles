@@ -109,16 +109,14 @@ docker() {
 	fi
 }
 
-# Prevent accidental git stashing and alias git to hub
+# Prevent accidental git stashing, replace git browse and alias git to hub
 git() {
 	if [[ "$#" -eq 1 ]] && [[ "$1" == "stash" ]]; then
 		echo 'WARNING: run "git stash push" instead.'
+	elif [[ "$1" == "browse" ]]; then
+		gh browse "${@:2}"
 	else
-		if command -v hub >/dev/null; then
-			command hub "$@"
-		else
-			command git "$@"
-		fi
+		command hub "$@"
 	fi
 }
 
