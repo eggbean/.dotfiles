@@ -7,6 +7,7 @@ $hostname\
 $directory\
 $shlvl\
 $kubernetes\
+$git_branch\
 $git_commit\
 $git_state\
 $git_metrics\
@@ -44,6 +45,13 @@ home_symbol = "~"
 
 [terraform]
 format = " [$symbol$workspace]($style) "
+
+[git_branch]
+format = "[$symbol $branch]($style)"
+symbol = " "
+style = "bold purple"
+truncation_symbol = "…"
+only_attached = true
 
 [git_state]
 format = ' \([$state( $progress_current/$progress_total)]($style)\) '
