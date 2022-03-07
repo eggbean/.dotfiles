@@ -1,0 +1,66 @@
+# Configuration for Alacritty, the GPU enhanced terminal emulator.
+
+window:
+  # Window dimensions (changes require restart)
+  dimensions:
+    columns: 85
+    lines: 40
+
+  # Window padding (changes require restart)
+  padding:
+    x: 5
+    y: 0
+
+  # Spread additional padding evenly around the terminal content.
+  dynamic_padding: true
+
+# Font configuration
+draw_bold_text_with_bright_colors: true
+
+# Theme
+colors:
+  # Default colors
+  primary:
+    background: '#2E3440'
+    foreground: '#EBEBEB'
+
+  # Cursor colors
+  cursor:
+    text: '#0d0d0d'
+    cursor: '#FF261E'
+
+  # Normal colors
+  normal:
+    black: '#0d0d0d'
+    red: '#FF301B'
+    green: '#A0E521'
+    yellow: '#FFC620'
+    blue: '#1BA6FA'
+    magenta: '#8763B8'
+    cyan: '#21DEEF'
+    white: '#EBEBEB'
+
+  # Bright colors
+  bright:
+    black: '#6D7070'
+    red: '#FF4352'
+    green: '#B8E466'
+    yellow: '#FFD750'
+    blue: '#1BA6FA'
+    magenta: '#A578EA'
+    cyan: '#73FBF1'
+    white: '#FEFEF8'
+
+# Bell
+bell:
+  animation: EaseOutExpo
+  duration: 10
+  color: '#ffffff'
+
+# Mouse selection
+selection:
+  save_to_clipboard: true
+
+# Key bindings
+key_bindings:
+  - { key: Return,         mods: Alt,                     action: ToggleFullscreen }

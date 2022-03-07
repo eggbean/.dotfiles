@@ -2,13 +2,13 @@
 
 # Import additional configuration files
 import:
-  - ~/.dotfiles/config/.config/alacritty/alacritty.main.yml
+  - "C:\\Users\\jason\\AppData\\Roaming\\alacritty\\alacritty.main.yml"
 
 # Font configuration
 font:
   # Normal (roman) font face
   normal:
-    family: "Hack Nerd Font Mono"
+    family: "Hack NF"
     style: Regular
 
   # Bold font face
@@ -25,3 +25,9 @@ font:
 
   # Point size
   size: 13.0
+
+shell:
+  program: "C:\\Windows\\System32\\wsl.exe"
+  args:
+    - --cd ~
+
