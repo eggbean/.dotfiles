@@ -1,8 +1,8 @@
 " AUTOCMDS
 
 " Regenerate spl files on startup
-set spellfile=~/.vim/spell/en.utf-8.add
-for d in glob('~/.vim/spell/*.add', 1, 1)
+set spellfile=vimrc.d/spell/en.utf-8.add
+for d in glob('vimrc.d/spell/*.add', 1, 1)
   if filereadable(d) && (!filereadable(d . '.spl') || getftime(d) > getftime(d . '.spl'))
     exec 'mkspell! ' . fnameescape(d)
   endif
@@ -10,7 +10,6 @@ endfor
 
 " Option for specific filetypes
 autocmd BufRead,BufNewFile *.md    setlocal textwidth=80 spell spelllang=en_gb
-autocmd BufRead,BufNewFile *.notes setlocal textwidth=80 spell spelllang=en_gb
 autocmd BufRead,BufNewFile *.txt   setlocal textwidth=80 spell spelllang=en_gb
 autocmd BufRead,BufNewFile *.tf    setlocal tabstop=2 shiftwidth=2 expandtab
 autocmd BufRead,BufNewFile *.json  setlocal tabstop=2 shiftwidth=2 expandtab
@@ -40,8 +39,8 @@ augroup END
 " Skeleton templates
 augroup skeleton
     autocmd!
-    autocmd bufnewfile *.sh 0r ~/.vim/templates/skeleton.sh
-    autocmd bufnewfile *.py 0r ~/.vim/templates/skeleton.py
+    autocmd bufnewfile *.sh 0r templates/skeleton.sh
+    autocmd bufnewfile *.py 0r templates/skeleton.py
 augroup END
 
 " Rename tmux windows with filename

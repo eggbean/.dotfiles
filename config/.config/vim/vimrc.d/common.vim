@@ -1,7 +1,7 @@
 " COMMON CONFIGURATION
 
 " Indentation
-set tabstop=4 shiftwidth=4 shiftround softtabstop=2 autoindent noexpandtab list smartindent
+set tabstop=4 shiftwidth=4 shiftround softtabstop=2 autoindent expandtab list smartindent
 set backspace=indent,eol,start
 set smarttab
 
@@ -25,7 +25,7 @@ set showmode
 set updatetime=4000
 " set colorcolumn=80
 
-set clipboard=unnamed
+set clipboard+=unnamedplus
 set encoding=utf-8
 scriptencoding utf-8
 set autoread
@@ -35,14 +35,9 @@ set title
 set listchars=tab:▸-
 set mouse=a
 set hidden
-" set nobackup
+set backup
 set writebackup
-set noswapfile
-
-" Persistent undo
-set undodir=~$XDG_CACHE_HOME/nvim/undo//
-set backupdir=~$XDG_CACHE_HOME/nvim/backup//
-set directory=~$XDG_CACHE_HOME/nvim/swp//
+set swapfile
 set undofile
 
 " Write when forgetting sudo
@@ -55,6 +50,15 @@ inoremap <A-S-j> <Esc>:m .+1<CR>==gi
 inoremap <A-S-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-S-j> :m '>+1<CR>gv=gv
 vnoremap <A-S-k> :m '<-2<CR>gv=gv
+
+" Scroll splits together one line
+let g:scrollLock = 0
+command! ToggleScrollLock let g:scrollLock = !g:scrollLock
+nnoremap <silent> <F11> :ToggleScrollLock<CR>
+nnoremap <expr> <C-e> (g:scrollLock == 1) ? ':windo set scrollbind<CR><C-e>:windo set noscrollbind<CR>' : '<C-e>'
+nnoremap <expr> <C-y> (g:scrollLock == 1) ? ':windo set scrollbind<CR><C-y>:windo set noscrollbind<CR>' : '<C-y>'
+" nnoremap <C-S-E> :windo set scrollbind<CR><C-e>:windo set noscrollbind<CR>
+" nnoremap <C-S-Y> :windo set scrollbind<CR><C-y>:windo set noscrollbind<CR>
 
 " Emacs mappings in insert mode
 inoremap <A-d> <space><esc>ce

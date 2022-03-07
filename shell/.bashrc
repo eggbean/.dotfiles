@@ -255,6 +255,8 @@ export RANGER_LOAD_DEFAULT_RC=FALSE
 export EDITOR='nvim'
 export VISUAL='nvim'
 export TMUX_PLUGIN_MANAGER_PATH="$XDG_DATA_HOME"/tmux/plugins
+export GVIMINIT='let $MYGVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/gvimrc" : "$XDG_CONFIG_HOME/nvim/init.gvim" | so $MYGVIMRC'
+export VIMINIT='let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$XDG_CONFIG_HOME/nvim/init.vim" | so $MYVIMRC'
 if [ -n "$DISPLAY" ]; then
 	export BROWSER=qutebrowser
 else

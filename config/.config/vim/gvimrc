@@ -1,5 +1,16 @@
 " GVIM CONFIGURATION
 
+if has('unix') | call plug#begin('$XDG_DATA_HOME/vim/plugged') | elseif has('win32') | call plug#begin() | endif
+  Plug 'ntpeters/vim-better-whitespace'
+  Plug 'machakann/vim-highlightedyank'
+  " Plug 'ruedigerha/vim-fullscreen'
+call plug#end()
+
+" vim-highlightedyank
+  let g:highlightedyank_highlight_duration = 750" let g:vimfullscreen_default_keymap = 0
+" let g:vimfullscreen_default_keymap = 0
+" nmap <silent> <a-cr> <Plug>(fullscreen_toggle)
+
 syntax on
 set t_Co=256
 color summerfruit256
@@ -139,7 +150,7 @@ function! ToggleDistractionFreeMode()
     for key in ['NonText', 'VertSplit', 'StatusLine', 'StatusLineNC']
       execute 'hi ' . key . ' guifg=White guibg=White'
     endfor
-    set wrap | set linebreak | syntax off
+    set linebreak | syntax off
     if has("gui_gtk2")
       set guifont=Iosevka\ Term\ 14
     elseif has("gui_win32")
@@ -152,7 +163,7 @@ function! ToggleDistractionFreeMode()
     for key in keys(l:margins)
       execute "wincmd " . key . " | close "
     endfor
-    set nowrap | set nolinebreak | syntax on
+    set nolinebreak | syntax on
     if has("gui_gtk2")
       set guifont=Iosevka\ Term\ 14
     elseif has("gui_win32")
@@ -162,5 +173,4 @@ function! ToggleDistractionFreeMode()
     unmap k
   endif
 endfunction
-
 nmap <silent> <Leader>z :call ToggleDistractionFreeMode()<CR>

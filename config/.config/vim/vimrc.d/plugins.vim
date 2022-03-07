@@ -1,11 +1,11 @@
 " PLUGINS
 
-call plug#begin('$XDG_DATA_HOME/nvim/plugged')
+call plug#begin('$XDG_DATA_HOME/vim/plugged')
   Plug 'tpope/vim-sensible'
-  Plug 'tpope/vim-surround'
   Plug 'tpope/vim-obsession'
   Plug 'tpope/vim-fugitive'
   Plug 'tpope/vim-commentary'
+  Plug 'machakann/vim-sandwich'
   Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
   Plug 'sheerun/vim-polyglot'
   Plug 'tmux-plugins/vim-tmux'
