@@ -20,7 +20,9 @@ set autochdir
 set wildmenu wildmode=list:longest,full
 set splitright
 set splitbelow
-set scrolloff=2
+set lazyredraw
+set magic
+set scrolloff=3
 set showmode
 set updatetime=4000
 " set colorcolumn=80
@@ -31,6 +33,7 @@ scriptencoding utf-8
 set autoread
 set wrap
 set nowrapscan
+set history=500
 set title
 set listchars=tab:▸-
 set mouse=a
