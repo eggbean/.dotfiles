@@ -1,9 +1,10 @@
 #!/bin/bash
 
-##	Usage: [sudo] stow-bin.sh [--user] [--remove]
+##	Usage: [sudo] stow-bin.sh [--user] [--remove] [--logname LOGNAME]
 ##
-##	--user		Stow/restow/unstow in ~/.local for non-sudoer user
-##	--remove	Unstow
+##	--user				Stow/restow/unstow in ~/.local for non-sudoer user
+##	--remove			Unstow
+##	--logname LOGNAME	Add username as logname command is not available on WSL on Windows
 ##
 ##	This script does not delete any existing files
 
@@ -12,8 +13,37 @@
 
 set -eo pipefail
 
+options=$(getopt -o '' --long user --long remove --long logname: -- "$@")
+[ $? -eq 0 ] || {
+	echo "Incorrect options provided"
+	exit 1
+}
+eval set -- "$options"
+while true; do
+	case "$1" in
+	--user)
+		user=true
+		;;
+	--remove)
+		remove=true
+		;;
+	--logname)
+		shift;
+		logname=$1
+		;;
+	--)
+		shift
+		break
+		;;
+	esac
+	shift
+done
+
+[ -z "${logname}" ] && logname="$(logname)"
+STOW_DIR="/home/${logname}/.dotfiles/bin"
+
 # Set variables for (re)stowing or unstowing
-if [[ "$*" =~ "--remove" ]]; then
+if [ -n "${remove}" ]; then
 	stowcom='-D'
 	stowed='unstowed'
 	stowing='unstowing'
@@ -24,23 +54,23 @@ else
 fi
 
 # Set variables for target locations and make directories if necessary
-if [[ "$*" =~ "--user" ]]; then
-	targetdir="$HOME/.local/bin"
-	mandir="$HOME/.local/share/man"
-	compdir="$HOME/.local/share/bash-completion/completions"
-	fontdir="$HOME/.local/share/fonts"
-	if [[ ! "$*" =~ "--remove" ]]; then
+if [ -n "${user}" ]; then
+	targetdir="/home/${logname}/.local/bin"
+	mandir="/home/${logname}/.local/share/man"
+	compdir="/home/${logname}/.local/share/bash-completion/completions"
+	fontdir="/home/${logname}/.local/share/fonts"
+	if [ -z "${remove}" ]; then
 		for d in "$targetdir" "$mandir" "$compdir" "$fontdir"; do
 			if [ ! -d "$d" ]; then mkdir -p "$d"; fi
 		done
-		pushd "$HOME/.dotfiles/bin/man" >/dev/null
+		pushd "/home/${logname}/.dotfiles/bin/man" >/dev/null
 		mansubs=(*) && popd >/dev/null
 		for s in "${mansubs[@]}"; do
 			if [ ! -d "${mandir}"/"$s" ]; then mkdir -p "${mandir}"/"$s"; fi
 		done
 	fi
 else
-	if [[ "$(id -u)" != "0" ]]; then { echo "This script must be run as root to stow in /usr, or use the --user option to stow in ~/.local." >&2; exit 1; }; fi
+	if [ "$(id -u)" -ne "0" ]; then { echo "This script must be run as root to stow in /usr, or use the --user option to stow in ~/.local." >&2; exit 1; }; fi
 	targetdir='/usr/local/bin'
 	mandir='/usr/local/share/man'
 	compdir='/etc/bash_completion.d'
@@ -48,12 +78,11 @@ else
 fi
 
 # Use the correct binaries for the CPU architecture
-[[ "$(arch)" == "armv7l" ]] && arch='armv7l'
-[[ "$(arch)" == "aarch64" ]] && arch='aarch64'
-[[ "$(arch)" == "x86_64" ]] && arch='x86_64'
-[[ -z "${arch}" ]] && { echo "CPU architecture unknown" >&2; exit 1; }
+[ "$(arch)" = "armv7l" ] && arch='armv7l'
+[ "$(arch)" = "aarch64" ] && arch='aarch64'
+[ "$(arch)" = "x86_64" ] && arch='x86_64'
+[ -z "${arch}" ] && { echo "CPU architecture unknown" >&2; exit 1; }
 
-STOW_DIR="/home/$(logname)/.dotfiles/bin" # done this way in case running as root
 pushd "${STOW_DIR}" >/dev/null
 
 # Stow/unstow binaries
@@ -80,13 +109,14 @@ stow $stowcom -vt "${compdir}" completions 2>&1 \
 
 # Stow/unstow fonts if local desktop system
 if [ -n "${DISPLAY}" ]; then
+	if [ ! -d "${fontdir}" ]; then mkdir -p "${fontdir}"; fi
 	stow --no-folding $stowcom -vt "${fontdir}" fonts 2>&1 \
 		&& echo "DONE: fonts package $stowed" || { echo "ERROR $stowing fonts package" >&2; exit 1; }
 	fc-cache -f && echo "DONE: font cache updated"
 fi
 
 # Clean up any empty directories in ~/.local if using --user and --remove switches
-if [[ "$*" =~ "--user " ]] && [[ "$*" =~ "--remove" ]]; then
+if [ -n "${user}" ] && [ -n "${remove}" ]; then
 	pushd man >/dev/null
 	mansubs=(*) && popd >/dev/null
 		for r in "${mansubs[@]}"; do
