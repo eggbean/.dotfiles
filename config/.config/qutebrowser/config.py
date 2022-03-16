@@ -315,19 +315,19 @@ c.window.hide_decoration = True
 
 # Background color of unselected odd tabs.
 # Type: QtColor
-c.colors.tabs.odd.bg = '#2e3440'
+c.colors.tabs.odd.bg = '#444444'
 
 # Background color of unselected even tabs.
 # Type: QtColor
-c.colors.tabs.even.bg = '#2e3440'
+c.colors.tabs.even.bg = '#444444'
 
 # Background color of selected odd tabs.
 # Type: QtColor
-c.colors.tabs.selected.odd.bg = '#005fff'
+c.colors.tabs.selected.odd.bg = '#626262'
 
 # Background color of selected even tabs.
 # Type: QtColor
-c.colors.tabs.selected.even.bg = '#005fff'
+c.colors.tabs.selected.even.bg = '#626262'
 
 # Map keys to other keys, so that they are equivalent in all modes. When
 # the key used as dictionary-key is pressed, the binding for the key
