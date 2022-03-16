@@ -59,16 +59,6 @@ while :; do
 				done
 				stow --no-folding -Rvt ~ ssh && echo "DONE: ssh package stowed" || { echo "ERROR stowing ssh package" >&2; exit 1; }
 				;;
-		fonts)	if [ ! -d ~/.local/share/fonts ]; then mkdir -p ~/.local/share/fonts; fi
-				pushd fonts > /dev/null
-				fontsd=(*)
-				popd > /dev/null
-				for y in "${fontsd[@]}"; do
-					if [ -e ~/.local/share/fonts/"$y" ] && [ ! -L ~/.local/share/fonts/"$y" ]; then rm ~/.local/share/fonts/"$y" && echo "Existing ~/.local/share/fonts/$y deleted"; fi
-				done
-				stow --no-folding -Rvt ~/.local/share/fonts fonts && echo "DONE: fonts package stowed" || { echo "ERROR stowing fonts package" >&2; exit 1; }
-				fc-cache -f && echo "DONE: fonts information cache files built" || { echo "ERROR building fonts information cache files" >&2; exit 1; }
-				;;
 		?*)		pushd "$1"/ > /dev/null || { echo "ERROR finding $1 package" >&2; exit 1; }
 				packaged=(*)
 				popd > /dev/null
