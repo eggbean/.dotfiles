@@ -154,7 +154,7 @@ function! ToggleDistractionFreeMode()
     if has("gui_gtk2")
       set guifont=Iosevka\ Term\ 14
     elseif has("gui_win32")
-      set guifont=Cascadia_Code_PL:h14
+      set guifont=Iosevka_NF:h14:W500
     endif
     map j gj
     map k gk
