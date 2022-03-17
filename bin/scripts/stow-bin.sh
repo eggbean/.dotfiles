@@ -1,8 +1,8 @@
 #!/bin/bash
 
-##	Usage: [sudo] stow-bin.sh [--user] [--remove] [--logname LOGNAME]
+##	Usage: [sudo] stow-bin.sh [--nosudo] [--remove] [--logname LOGNAME]
 ##
-##	--user				Stow/restow/unstow in ~/.local for non-sudoer user
+##	--nosudo			Stow/restow/unstow in ~/.local for non-sudoer user
 ##	--remove			Unstow
 ##	--logname LOGNAME	Add username as logname command is not available on WSL on Windows
 ##
@@ -13,16 +13,13 @@
 
 set -eo pipefail
 
-options=$(getopt -o '' --long user --long remove --long logname: -- "$@")
-[ $? -eq 0 ] || {
-	echo "Incorrect options provided"
-	exit 1
-}
+options=$(getopt -o '' --long nosudo --long remove --long logname: -- "$@")
+
 eval set -- "$options"
 while true; do
 	case "$1" in
-	--user)
-		user=true
+	--nosudo)
+		nosudo=true
 		;;
 	--remove)
 		remove=true
@@ -54,7 +51,7 @@ else
 fi
 
 # Set variables for target locations and make directories if necessary
-if [ -n "${user}" ]; then
+if [ -n "${nosudo}" ]; then
 	targetdir="/home/${logname}/.local/bin"
 	mandir="/home/${logname}/.local/share/man"
 	compdir="/home/${logname}/.local/share/bash-completion/completions"
@@ -70,7 +67,7 @@ if [ -n "${user}" ]; then
 		done
 	fi
 else
-	if [ "$(id -u)" -ne "0" ]; then { echo "This script must be run as root to stow in /usr, or use the --user option to stow in ~/.local." >&2; exit 1; }; fi
+	if [ "$(id -u)" -ne "0" ]; then { echo "This script must be run as root to stow in /usr, or use the --nosudo option to stow in ~/.local." >&2; exit 1; }; fi
 	targetdir='/usr/local/bin'
 	mandir='/usr/local/share/man'
 	compdir='/etc/bash_completion.d'
@@ -115,8 +112,8 @@ if [ -n "${DISPLAY}" ]; then
 	fc-cache -f && echo "DONE: font cache updated"
 fi
 
-# Clean up any empty directories in ~/.local if using --user and --remove switches
-if [ -n "${user}" ] && [ -n "${remove}" ]; then
+# Clean up any empty directories in ~/.local if using --nosudo and --remove switches
+if [ -n "${nosudo}" ] && [ -n "${remove}" ]; then
 	pushd man >/dev/null
 	mansubs=(*) && popd >/dev/null
 		for r in "${mansubs[@]}"; do
