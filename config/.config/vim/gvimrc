@@ -30,6 +30,14 @@ set guioptions -=m
 set guioptions -=T
 set winaltkeys=no
 
+" Use WSL as terminal on Windows
+if has("win32")
+    set shell=C:\Windows\Sysnative\wsl.exe
+    set shellpipe=|
+    set shellredir=>
+    set shellcmdflag=
+endif
+
 " Macro to toggle window menu keys
 nnoremap <F9> :call ToggleWindowMenu()<CR>
 
