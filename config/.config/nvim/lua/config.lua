@@ -1,29 +1,34 @@
-local nightfox = require('nightfox')
-
-nightfox.setup({
-  fox = "nordfox", -- Change the colorscheme variant
-  transparent = false, -- Enable setting the background color
-  alt_nc = false, -- Non current window bg to alt color see `hl-NormalNC`
-  terminal_colors = false, -- Configure the colors used when opening :terminal
-  styles = {
-    comments = "italic",
-    functions = "italic,bold",
-    keywords = "bold",
-    strings = "NONE",
-    variables = "NONE",
-  },
-  inverse = {
-    match_paren = false, -- Enable/Disable inverse highlighting for match parens
-    visual = false, -- Enable/Disable inverse highlighting for visual selection
-    search = false, -- Enable/Disable inverse highlights for search highlights
-  },
-  colors = {},
-  hlgroups = {
-    Search = { fg = "${fg}", bg = "${fg_gutter}" },
-    IncSearch = { fg = "${bg}", bg = "${cyan}" },
-    Substitute = { fg = "${bg}", bg = "#bf616a" },
+-- Set nightfox options
+require('nightfox').setup({
+  options = {
+    transparent = false,     -- Disable setting background
+    terminal_colors = false, -- Set terminal colors (vim.g.terminal_color_*)
+    dim_inactive = true,     -- Non focused panes set to alternative background
+    styles = {               -- Style to be applied to different syntax groups
+      comments = "italic",
+      functions = "italic,bold",
+      keywords = "bold",
+      numbers = "NONE",
+      strings = "NONE",
+      types = "NONE",
+      variables = "NONE",
+    },
+    inverse = {             -- Inverse highlight for different types
+      match_paren = false,
+      visual = false,
+      search = false,
+    },
+    modules = {             -- List of various plugins and additional options
+      -- ...
+    },
   }
 })
 
-nightfox.load()
-require('lualine').setup()
+vim.cmd("colorscheme nordfox")
+
+-- Set lualine options
+require('lualine').setup({
+  options = {
+    section_separators = '', component_separators = '|',
+  },
+})

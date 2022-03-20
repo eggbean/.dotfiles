@@ -43,6 +43,10 @@ set writebackup
 set swapfile
 set undofile
 
+if has('termguicolors')
+  set termguicolors
+endif
+
 " Write when forgetting sudo
 cmap w!! w !sudo tee % >/dev/null
 

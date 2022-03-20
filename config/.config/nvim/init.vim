@@ -25,7 +25,3 @@ let g:loaded_node_provider = 0
 
 " Source lua configuration
 lua require('config')
-
-if has('termguicolors')
-  set termguicolors
-endif
