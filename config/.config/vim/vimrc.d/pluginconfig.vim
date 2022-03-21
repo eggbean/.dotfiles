@@ -36,3 +36,5 @@
   let g:ansible_unindent_after_newline = 1
 " vim-highlightedyank
   let g:highlightedyank_highlight_duration = 750
+" vim-gist
+  let g:gist_open_browser_after_post = 1

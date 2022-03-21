@@ -28,6 +28,7 @@ call plug#begin('$XDG_DATA_HOME/vim/plugged')
   Plug 'hashivim/vim-terraform'
   Plug 'vim-syntastic/syntastic'
   Plug 'juliosueiras/vim-terraform-completion'
+  Plug 'mattn/vim-gist'
   if has('nvim')
     Plug 'folke/which-key.nvim'
     Plug 'EdenEast/nightfox.nvim'
