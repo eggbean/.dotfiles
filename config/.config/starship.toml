@@ -51,10 +51,11 @@ format = "[$symbol $branch]($style)"
 symbol = " "
 style = "bold purple"
 truncation_symbol = "…"
-only_attached = true
+only_attached = false
+ignore_branches = ["master", "main"]
 
 [git_state]
-format = ' \([$state( $progress_current/$progress_total)]($style)\) '
+format = ' \([$state($progress_current/$progress_total)]($style)\) '
 
 [cmd_duration]
 min_time = 180_000
