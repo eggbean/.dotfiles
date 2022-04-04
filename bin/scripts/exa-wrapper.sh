@@ -2,7 +2,7 @@
 
 ## Change following to '0' for output to be like ls and '1' for exa features
 # Don't list implied . and .. by default with -a
-dot=0
+dot=1
 # Show human readable file sizes by default
 hru=1
 # Don't show group column
@@ -22,6 +22,7 @@ help() {
    -1  one file per line
    -x  list by lines, not columns
    -l  long listing format
+   -G  display entries as a grid *
    -k  bytes
    -h  human readable file sizes
    -F  classify
@@ -29,7 +30,7 @@ help() {
    -r  reverse
    -d  don't list directory contents
    -D  directories only *
-   -G  group directories first *
+   -M  group directories first *
    -I  ignore [GLOBS]
    -i  show inodes
    -N  no colour *
@@ -53,7 +54,7 @@ EOF
 
 exa_opts=()
 
-while getopts ':aAtuUSGI:rkhnsXL:Ng1lFRdDiTx' arg; do
+while getopts ':aAtuUSI:rkhnsXL:MNg1lFGRdDiTx' arg; do
   case $arg in
     a) (( dot == 1 )) && exa_opts+=(-a) || exa_opts+=(-a -a) ;;
     A) exa_opts+=(-a) ;;
@@ -61,7 +62,6 @@ while getopts ':aAtuUSGI:rkhnsXL:Ng1lFRdDiTx' arg; do
     u) exa_opts+=(-us accessed); ((++rev)) ;;
     U) exa_opts+=(-Us created); ((++rev)) ;;
     S) exa_opts+=(-s size); ((++rev)) ;;
-    G) exa_opts+=(--group-directories-first) ;;
     I) exa_opts+=(--ignore-glob="${OPTARG}") ;;
     r) ((++rev)) ;;
     k) ((--hru)) ;;
@@ -70,9 +70,10 @@ while getopts ':aAtuUSGI:rkhnsXL:Ng1lFRdDiTx' arg; do
     s) exa_opts+=(-S) ;;
     X) exa_opts+=(-s extension) ;;
     L) exa_opts+=(--level="${OPTARG}") ;;
+    M) ((++gpd)) ;;
     N) ((++nco)) ;;
-	g) ((++git)) ;;
-    1|l|F|R|d|D|i|T|x) exa_opts+=(-"$arg") ;;
+    g) ((++git)) ;;
+    1|l|F|G|R|d|D|i|T|x) exa_opts+=(-"$arg") ;;
     :) printf "%s: -%s switch requires a value\n" "${0##*/}" "${OPTARG}" >&2; exit 1
        ;;
     *) printf "Error: %s\n       --help for help\n" "${0##*/}" >&2; exit 1
@@ -87,7 +88,7 @@ shift "$((OPTIND - 1))"
 (( fgp == 0 )) && exa_opts+=(-g)
 (( lnk == 0 )) && exa_opts+=(-H)
 (( nco == 1 )) && exa_opts+=(--color=never) || exa_opts+=(--color=always)
-(( gpd == 1 )) && exa_opts+=(--group-directories-first)
+(( gpd >= 1 )) && exa_opts+=(--group-directories-first)
 (( git == 1 )) && \
   [[ $(git -C "${*:-.}" rev-parse --is-inside-work-tree) == true ]] 2>/dev/null && exa_opts+=(--git)
 
