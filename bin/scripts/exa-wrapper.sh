@@ -44,6 +44,7 @@ help() {
    -s  file system blocks
    -g  don't show/show file git status *
    -n  ignore .gitignore files *
+   -@  extended attributes and sizes *
 
     * not used in ls
 EOF
@@ -54,7 +55,7 @@ EOF
 
 exa_opts=()
 
-while getopts ':aAtuUSI:rkhnsXL:MNg1lFGRdDiTx' arg; do
+while getopts ':aAtuUSI:rkhnsXL:MNg1lFGRdDiTx@' arg; do
   case $arg in
     a) (( dot == 1 )) && exa_opts+=(-a) || exa_opts+=(-a -a) ;;
     A) exa_opts+=(-a) ;;
@@ -73,7 +74,7 @@ while getopts ':aAtuUSI:rkhnsXL:MNg1lFGRdDiTx' arg; do
     M) ((++gpd)) ;;
     N) ((++nco)) ;;
     g) ((++git)) ;;
-    1|l|F|G|R|d|D|i|T|x) exa_opts+=(-"$arg") ;;
+    1|l|F|G|R|d|D|i|T|x|@) exa_opts+=(-"$arg") ;;
     :) printf "%s: -%s switch requires a value\n" "${0##*/}" "${OPTARG}" >&2; exit 1
        ;;
     *) printf "Error: %s\n       --help for help\n" "${0##*/}" >&2; exit 1
