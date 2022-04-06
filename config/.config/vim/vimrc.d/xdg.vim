@@ -12,6 +12,10 @@ set viewdir=$XDG_DATA_HOME/vim/view | call mkdir(&viewdir, 'p')
 
 set backupdir=$XDG_CACHE_HOME/vim/backup | call mkdir(&backupdir, 'p')
 set directory=$XDG_CACHE_HOME/vim/swap   | call mkdir(&directory, 'p')
-set undodir=$XDG_CACHE_HOME/vim/undo     | call mkdir(&undodir,   'p')
 
-if !has('nvim') | set viminfofile=$XDG_STATE_HOME/vim/viminfo | endif
+if !has('nvim')
+	set undodir=$XDG_CACHE_HOME/vim/undo     | call mkdir(&undodir,   'p')
+	set viminfofile=$XDG_STATE_HOME/vim/viminfo
+else
+	set undodir=$XDG_CACHE_HOME/nvim/undo    | call mkdir(&undodir,   'p')
+endif

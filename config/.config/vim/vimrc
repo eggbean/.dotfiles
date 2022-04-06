@@ -22,5 +22,3 @@ elseif has('win32')
   source ~/vimfiles/vimrc.d/autocmds.vim
   source ~/vimfiles/vimrc.d/pluginconfig.vim
 endif
-
-if has('unix') | set noundofile | elseif has('win32') | set undofile | endif
