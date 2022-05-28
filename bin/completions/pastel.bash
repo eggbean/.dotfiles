@@ -9,10 +9,9 @@ _pastel() {
     for i in ${COMP_WORDS[@]}
     do
         case "${i}" in
-            pastel)
+            "$1")
                 cmd="pastel"
                 ;;
-            
             color)
                 cmd+="__color"
                 ;;
@@ -30,9 +29,6 @@ _pastel() {
                 ;;
             desaturate)
                 cmd+="__desaturate"
-                ;;
-            display)
-                cmd+="__display"
                 ;;
             distinct)
                 cmd+="__distinct"
@@ -76,17 +72,8 @@ _pastel() {
             set)
                 cmd+="__set"
                 ;;
-            show)
-                cmd+="__show"
-                ;;
-            sort)
-                cmd+="__sort"
-                ;;
             sort-by)
                 cmd+="__sort__by"
-                ;;
-            take)
-                cmd+="__take"
                 ;;
             textcolor)
                 cmd+="__textcolor"
@@ -101,23 +88,22 @@ _pastel() {
 
     case "${cmd}" in
         pastel)
-            opts=" -f -h -V -m  --force-color --help --version --color-mode --color-picker   color list random distinct sort-by pick format paint gradient mix colorblind set saturate desaturate lighten darken rotate complement gray to-gray textcolor colorcheck help  take show display  sort"
+            opts="-h -V -m -f --help --version --color-mode --force-color --color-picker color list random distinct sort-by pick format paint gradient mix colorblind set saturate desaturate lighten darken rotate complement gray to-gray textcolor colorcheck help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 1 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                
                 --color-mode)
                     COMPREPLY=($(compgen -W "24bit 8bit off auto" -- "${cur}"))
                     return 0
                     ;;
-                    -m)
+                -m)
                     COMPREPLY=($(compgen -W "24bit 8bit off auto" -- "${cur}"))
                     return 0
                     ;;
                 --color-picker)
-                    COMPREPLY=($(compgen -W "gpick xcolor grabc colorpicker chameleon kcolorchooser" -- "${cur}"))
+                    COMPREPLY=($(compgen -W "gpick xcolor wcolor grabc colorpicker chameleon kcolorchooser zenity yad gdbus" -- "${cur}"))
                     return 0
                     ;;
                 *)
@@ -127,15 +113,13 @@ _pastel() {
             COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
             return 0
             ;;
-        
         pastel__color)
-            opts=" -h -V  --help --version  <color>... "
+            opts="-h --help <color>..."
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                
                 *)
                     COMPREPLY=()
                     ;;
@@ -144,13 +128,12 @@ _pastel() {
             return 0
             ;;
         pastel__colorblind)
-            opts=" -h -V  --help --version  <type> <color>... "
+            opts="-h --help prot deuter trit <color>..."
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                
                 *)
                     COMPREPLY=()
                     ;;
@@ -159,13 +142,12 @@ _pastel() {
             return 0
             ;;
         pastel__colorcheck)
-            opts=" -h -V  --help --version  "
+            opts="-h --help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                
                 *)
                     COMPREPLY=()
                     ;;
@@ -174,13 +156,12 @@ _pastel() {
             return 0
             ;;
         pastel__complement)
-            opts=" -h -V  --help --version  <color>... "
+            opts="-h --help <color>..."
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                
                 *)
                     COMPREPLY=()
                     ;;
@@ -189,13 +170,12 @@ _pastel() {
             return 0
             ;;
         pastel__darken)
-            opts=" -h -V  --help --version  <amount> <color>... "
+            opts="-h --help <amount> <color>..."
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                
                 *)
                     COMPREPLY=()
                     ;;
@@ -204,28 +184,12 @@ _pastel() {
             return 0
             ;;
         pastel__desaturate)
-            opts=" -h -V  --help --version  <amount> <color>... "
+            opts="-h --help <amount> <color>..."
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                
-                *)
-                    COMPREPLY=()
-                    ;;
-            esac
-            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
-            return 0
-            ;;
-        pastel__display)
-            opts=" -h -V  --help --version  <color>... "
-            if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
-                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
-                return 0
-            fi
-            case "${prev}" in
-                
                 *)
                     COMPREPLY=()
                     ;;
@@ -234,18 +198,17 @@ _pastel() {
             return 0
             ;;
         pastel__distinct)
-            opts=" -v -h -V -m  --print-minimal-distance --verbose --help --version --metric  <count> <color>... "
+            opts="-m -v -h --metric --print-minimal-distance --verbose --help <count> <color>..."
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                
                 --metric)
                     COMPREPLY=($(compgen -W "CIEDE2000 CIE76" -- "${cur}"))
                     return 0
                     ;;
-                    -m)
+                -m)
                     COMPREPLY=($(compgen -W "CIEDE2000 CIE76" -- "${cur}"))
                     return 0
                     ;;
@@ -257,13 +220,12 @@ _pastel() {
             return 0
             ;;
         pastel__format)
-            opts=" -h -V  --help --version  <type> <color>... "
+            opts="-h --help rgb rgb-float hex hsl hsl-hue hsl-saturation hsl-lightness lch lch-lightness lch-chroma lch-hue lab lab-a lab-b luminance brightness ansi-8bit ansi-24bit ansi-8bit-escapecode ansi-24bit-escapecode cmyk name <color>..."
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                
                 *)
                     COMPREPLY=()
                     ;;
@@ -272,18 +234,17 @@ _pastel() {
             return 0
             ;;
         pastel__gradient)
-            opts=" -h -V -n -s  --help --version --number --colorspace  <color>... "
+            opts="-n -s -h --number --colorspace --help <color>..."
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                
                 --number)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
-                    -n)
+                -n)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
@@ -291,7 +252,7 @@ _pastel() {
                     COMPREPLY=($(compgen -W "Lab LCh RGB HSL" -- "${cur}"))
                     return 0
                     ;;
-                    -s)
+                -s)
                     COMPREPLY=($(compgen -W "Lab LCh RGB HSL" -- "${cur}"))
                     return 0
                     ;;
@@ -303,13 +264,12 @@ _pastel() {
             return 0
             ;;
         pastel__gray)
-            opts=" -h -V  --help --version  <lightness> "
+            opts="-h --help <lightness>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                
                 *)
                     COMPREPLY=()
                     ;;
@@ -318,13 +278,12 @@ _pastel() {
             return 0
             ;;
         pastel__help)
-            opts=" -h -V  --help --version  "
+            opts="<SUBCOMMAND>..."
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                
                 *)
                     COMPREPLY=()
                     ;;
@@ -333,13 +292,12 @@ _pastel() {
             return 0
             ;;
         pastel__lighten)
-            opts=" -h -V  --help --version  <amount> <color>... "
+            opts="-h --help <amount> <color>..."
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                
                 *)
                     COMPREPLY=()
                     ;;
@@ -348,18 +306,17 @@ _pastel() {
             return 0
             ;;
         pastel__list)
-            opts=" -h -V -s  --help --version --sort  "
+            opts="-s -h --sort --help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                
                 --sort)
                     COMPREPLY=($(compgen -W "brightness luminance hue chroma random" -- "${cur}"))
                     return 0
                     ;;
-                    -s)
+                -s)
                     COMPREPLY=($(compgen -W "brightness luminance hue chroma random" -- "${cur}"))
                     return 0
                     ;;
@@ -371,18 +328,17 @@ _pastel() {
             return 0
             ;;
         pastel__mix)
-            opts=" -h -V -s -f  --help --version --colorspace --fraction  <color> <color>... "
+            opts="-s -f -h --colorspace --fraction --help <color> <color>..."
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                
                 --colorspace)
                     COMPREPLY=($(compgen -W "Lab LCh RGB HSL" -- "${cur}"))
                     return 0
                     ;;
-                    -s)
+                -s)
                     COMPREPLY=($(compgen -W "Lab LCh RGB HSL" -- "${cur}"))
                     return 0
                     ;;
@@ -390,7 +346,7 @@ _pastel() {
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
-                    -f)
+                -f)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
@@ -402,18 +358,17 @@ _pastel() {
             return 0
             ;;
         pastel__paint)
-            opts=" -b -i -u -n -h -V -o  --bold --italic --underline --no-newline --help --version --on  <color> <text>... "
+            opts="-o -b -i -u -n -h --on --bold --italic --underline --no-newline --help <color> <text>..."
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                
                 --on)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
-                    -o)
+                -o)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
@@ -425,13 +380,12 @@ _pastel() {
             return 0
             ;;
         pastel__pick)
-            opts=" -h -V  --help --version  <count> "
+            opts="-h --help <count>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                
                 *)
                     COMPREPLY=()
                     ;;
@@ -440,18 +394,17 @@ _pastel() {
             return 0
             ;;
         pastel__random)
-            opts=" -h -V -s -n  --help --version --strategy --number  "
+            opts="-s -n -h --strategy --number --help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                
                 --strategy)
                     COMPREPLY=($(compgen -W "vivid rgb gray lch_hue" -- "${cur}"))
                     return 0
                     ;;
-                    -s)
+                -s)
                     COMPREPLY=($(compgen -W "vivid rgb gray lch_hue" -- "${cur}"))
                     return 0
                     ;;
@@ -459,7 +412,7 @@ _pastel() {
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
-                    -n)
+                -n)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
@@ -471,13 +424,12 @@ _pastel() {
             return 0
             ;;
         pastel__rotate)
-            opts=" -h -V  --help --version  <degrees> <color>... "
+            opts="-h --help <degrees> <color>..."
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                
                 *)
                     COMPREPLY=()
                     ;;
@@ -486,13 +438,12 @@ _pastel() {
             return 0
             ;;
         pastel__saturate)
-            opts=" -h -V  --help --version  <amount> <color>... "
+            opts="-h --help <amount> <color>..."
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                
                 *)
                     COMPREPLY=()
                     ;;
@@ -501,43 +452,12 @@ _pastel() {
             return 0
             ;;
         pastel__set)
-            opts=" -h -V  --help --version  <property> <value> <color>... "
+            opts="-h --help lightness hue chroma lab-a lab-b red green blue hsl-hue hsl-saturation hsl-lightness <value> <color>..."
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                
-                *)
-                    COMPREPLY=()
-                    ;;
-            esac
-            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
-            return 0
-            ;;
-        pastel__show)
-            opts=" -h -V  --help --version  <color>... "
-            if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
-                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
-                return 0
-            fi
-            case "${prev}" in
-                
-                *)
-                    COMPREPLY=()
-                    ;;
-            esac
-            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
-            return 0
-            ;;
-        pastel__sort)
-            opts=" -r -u -h -V  --reverse --unique --help --version  <sort-order> <color>... "
-            if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
-                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
-                return 0
-            fi
-            case "${prev}" in
-                
                 *)
                     COMPREPLY=()
                     ;;
@@ -546,28 +466,12 @@ _pastel() {
             return 0
             ;;
         pastel__sort__by)
-            opts=" -r -u -h -V  --reverse --unique --help --version  <sort-order> <color>... "
+            opts="-r -u -h --reverse --unique --help brightness luminance hue chroma random <color>..."
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                
-                *)
-                    COMPREPLY=()
-                    ;;
-            esac
-            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
-            return 0
-            ;;
-        pastel__take)
-            opts=" -h -V  --help --version  <color>... "
-            if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
-                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
-                return 0
-            fi
-            case "${prev}" in
-                
                 *)
                     COMPREPLY=()
                     ;;
@@ -576,13 +480,12 @@ _pastel() {
             return 0
             ;;
         pastel__textcolor)
-            opts=" -h -V  --help --version  <color>... "
+            opts="-h --help <color>..."
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                
                 *)
                     COMPREPLY=()
                     ;;
@@ -591,13 +494,12 @@ _pastel() {
             return 0
             ;;
         pastel__to__gray)
-            opts=" -h -V  --help --version  <color>... "
+            opts="-h --help <color>..."
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                
                 *)
                     COMPREPLY=()
                     ;;
