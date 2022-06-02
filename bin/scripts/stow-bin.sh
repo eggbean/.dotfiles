@@ -37,7 +37,8 @@ while true; do
 done
 
 [ -z "${logname}" ] && logname="$(logname)"
-STOW_DIR="/home/${logname}/.dotfiles/bin"
+[ "$(id -u)" = "0" ] && HOME="/home/${logname}"
+STOW_DIR="$HOME/.dotfiles/bin"
 
 # Set variables for (re)stowing or unstowing
 if [ -n "${remove}" ]; then
@@ -52,15 +53,15 @@ fi
 
 # Set variables for target locations and make directories if necessary
 if [ -n "${nosudo}" ]; then
-	targetdir="/home/${logname}/.local/bin"
-	mandir="/home/${logname}/.local/share/man"
-	compdir="/home/${logname}/.local/share/bash-completion/completions"
-	fontdir="/home/${logname}/.local/share/fonts"
+	targetdir="$HOME/.local/bin"
+	mandir="$HOME/.local/share/man"
+	compdir="$HOME/.local/share/bash-completion/completions"
+	fontdir="$HOME/.local/share/fonts"
 	if [ -z "${remove}" ]; then
 		for d in "$targetdir" "$mandir" "$compdir" "$fontdir"; do
 			if [ ! -d "$d" ]; then mkdir -p "$d"; fi
 		done
-		pushd "/home/${logname}/.dotfiles/bin/man" >/dev/null
+		pushd "$HOME/.dotfiles/bin/man" >/dev/null
 		mansubs=(*) && popd >/dev/null
 		for s in "${mansubs[@]}"; do
 			if [ ! -d "${mandir}"/"$s" ]; then mkdir -p "${mandir}"/"$s"; fi
@@ -75,9 +76,10 @@ else
 fi
 
 # Use the correct binaries for the CPU architecture
-[ "$(arch)" = "armv7l" ] && arch='armv7l'
-[ "$(arch)" = "aarch64" ] && arch='aarch64'
-[ "$(arch)" = "x86_64" ] && arch='x86_64'
+[ "$(dpkg --print-architecture)" = "armhf" ] && arch='armv7l'
+[ "$(dpkg --print-architecture)" = "arm64" ] && arch='aarch64'
+[ "$(dpkg --print-architecture)" = "aarch64" ] && arch='android'
+[ "$(dpkg --print-architecture)" = "amd64" ] && arch='x86_64'
 [ -z "${arch}" ] && { echo "CPU architecture unknown" >&2; exit 1; }
 
 pushd "${STOW_DIR}" >/dev/null
