@@ -33,6 +33,8 @@ if [ -z "$TMUX" ]; then
 		[ -f /etc/machine-info ] && eval "$(source /etc/machine-info && typeset -p LOCATION)"
 		linux_logo -L "$ID" -f -F "${PRETTY_NAME}\nCompiled #C\n#N #M #X #T Processor#S, #R RAM\n#U\n#L\n$(hostname -f)\n${LOCATION}\n#E" 2>/dev/null
 		unset ID PRETTY_NAME LOCATION
+	elif [ "$(uname -o)" = "Android" ]; then
+		clear && cat ~/.dotfiles/shell/.hostinclude/termux.ascii
 	fi
 	sessions=$(tmux list-sessions -F#S 2>/dev/null | xargs echo)
 	if [ -n "$sessions" ]; then
