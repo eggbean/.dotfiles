@@ -57,8 +57,7 @@ UPX_VERSION=3.96
 ####### END VERSION DEFINITION #######
 ######################################
 
-#TMUX_STATIC_HOME="${HOME}/tmux-static"
-TMUX_STATIC_HOME="/tmp/tmux-static"
+TMUX_STATIC_HOME="${TMPDIR}/tmux-static"
 
 LOG_DIR="${TMUX_STATIC_HOME}/log"
 
