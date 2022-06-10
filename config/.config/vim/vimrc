@@ -9,6 +9,10 @@ if !has("gui_running")
   set background=dark
   if has('unix')
     source ~/.dotfiles/config/.config/vim/vimrc.d/plugins.vim
+    " Change cursor depending on mode, like in nvim
+    let &t_SI = "\<Esc>[6 q"
+    let &t_SR = "\<Esc>[4 q"
+    let &t_EI = "\<Esc>[2 q"
   elseif has('win32')
     source ~/vimfiles/vimrc.d/plugins.vim
   endif
