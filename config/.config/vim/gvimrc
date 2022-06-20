@@ -7,7 +7,7 @@ if has('unix') | call plug#begin('$XDG_DATA_HOME/vim/plugged') | elseif has('win
 call plug#end()
 
 " vim-highlightedyank
-  let g:highlightedyank_highlight_duration = 750" let g:vimfullscreen_default_keymap = 0
+  let g:highlightedyank_highlight_duration = 750
 " let g:vimfullscreen_default_keymap = 0
 " nmap <silent> <a-cr> <Plug>(fullscreen_toggle)
 
@@ -29,14 +29,6 @@ set guioptions -=r
 set guioptions -=m
 set guioptions -=T
 set winaltkeys=no
-
-" Use WSL as terminal on Windows
-if has("win32")
-    set shell=C:\Windows\Sysnative\wsl.exe
-    set shellpipe=|
-    set shellredir=>
-    set shellcmdflag=
-endif
 
 " Macro to toggle window menu keys
 nnoremap <F9> :call ToggleWindowMenu()<CR>
