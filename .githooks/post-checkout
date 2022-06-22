@@ -1,0 +1,4 @@
+#!/bin/bash
+
+mapfile -t privatekeys < <(find ssh/.ssh -regextype egrep -regex '.*/id_[^.]+$')
+chmod 400 "${privatekeys[@]}"
