@@ -244,7 +244,7 @@ export MOSH_TITLE_NOPREFIX=
 export PAGER='less -r'
 export LESS='-MRQx4FX#10'
 export LESSCHARSET='utf-8'
-export LESSHISTFILE="$XDG_DATA_HOME"/.lesshst
+export LESSHISTFILE="$XDG_STATE_HOME"/less/history
 export MANPAGER='less -+MFX +g'
 export BAT_PAGER='less -+MFX -S'
 export EXA_COLORS='lc=38;5;124:lm=38;5;196:uu=38;5;178:gu=38;5;178:un=38;5;141:gn=38;5;141:bO=38;5;009'
