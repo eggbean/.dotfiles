@@ -13,6 +13,7 @@ yes | pkg install \
 	hyperfine \
 	inetutils \
 	iproute2 \
+	macchina \
 	man \
 	mosh \
 	ncurses-utils \
