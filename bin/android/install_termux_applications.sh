@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Install termux packages
 yes | pkg update && pkg upgrade && \
 yes | pkg install \
 	bat \
@@ -23,6 +24,7 @@ yes | pkg install \
 	openssh \
 	pastel \
 	pigz \
+	python \
 	ripgrep \
 	starship \
 	stow \
@@ -33,3 +35,13 @@ yes | pkg install \
 	tree \
 	wget \
 	whois
+
+# Install ansible
+yes | pkg upgrade && \
+yes | pkg install \
+	openssl python rust
+pip install --upgrade pip
+pip install wheel
+export CARGO_BUILD_TARGET=aarch64-linux-android
+pip install cryptography
+pip install ansible
