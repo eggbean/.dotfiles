@@ -9,6 +9,7 @@ yes | pkg install \
 	dust \
 	exa \
 	file \
+	gh \
 	git-crypt \
 	git-delta \
 	hyperfine \
