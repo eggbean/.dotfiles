@@ -1,0 +1,40 @@
+name: Upgrade starship
+on:
+  [workflow_dispatch]
+
+jobs:
+  upgrade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download and extract tarballs
+        run: |
+          name='starship-aarch64-unknown-linux-musl.tar.gz'
+          wget -q "$(curl -s https://api.github.com/repos/starship/starship/releases/latest | jq -r '.assets[] | select(.name == $name).browser_download_url' --arg name "${name}")"
+          tar xf "${name}" -C bin/aarch64
+          rm "${name}"
+
+          name='starship-arm-unknown-linux-musleabihf.tar.gz'
+          wget -q "$(curl -s https://api.github.com/repos/starship/starship/releases/latest | jq -r '.assets[] | select(.name == $name).browser_download_url' --arg name "${name}")"
+          tar xf "${name}" -C bin/armv7l
+          rm "${name}"
+
+          name='starship-x86_64-unknown-linux-gnu.tar.gz'
+          wget -q "$(curl -s https://api.github.com/repos/starship/starship/releases/latest | jq -r '.assets[] | select(.name == $name).browser_download_url' --arg name "${name}")"
+          tar xf "${name}" -C bin/x86_64
+          rm "${name}"
+
+          bin/x86_64/starship completions bash > bin/completions/starship.bash
+
+      - name: Commit and push to repository
+        run: |
+          git config --global user.name "eggbean"
+          git config --global user.email 815311+eggbean@users.noreply.github.com
+          git add --all
+          git status
+          tag="$(curl -s https://api.github.com/repos/starship/starship/releases/latest | jq -r '.tag_name')"
+          git commit -m "Upgrade starship to ${tag}"
+          git push
