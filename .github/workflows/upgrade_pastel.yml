@@ -1,0 +1,39 @@
+name: Upgrade pastel
+on:
+  [workflow_dispatch]
+
+jobs:
+  upgrade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download and extract tarballs
+        run: |
+          nameregex='^pastel-v\d[\d.]+?\d?-aarch64-unknown-linux-gnu\.tar\.gz$'
+          wget -q "$(curl -s https://api.github.com/repos/sharkdp/pastel/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
+          tar --wildcards --strip-components=1 -C bin/aarch64 -xvf pastel-v*-unknown-linux-gnu.tar.gz pastel-v*-unknown-linux-gnu/pastel
+          tar --wildcards --strip-components=2 -C bin/completions -xvf pastel-v*-unknown-linux-gnu.tar.gz pastel-v*-unknown-linux-gnu/autocomplete/pastel.bash
+          rm pastel-v*-unknown-linux-gnu.tar.gz
+
+          nameregex='^pastel-v\d[\d.]+?\d?-arm-unknown-linux-gnueabihf\.tar\.gz$'
+          wget -q "$(curl -s https://api.github.com/repos/sharkdp/pastel/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
+          tar --wildcards --strip-components=1 -C bin/armv7l -xvf pastel-v*-unknown-linux-gnueabihf.tar.gz pastel-v*-unknown-linux-gnueabihf/pastel
+          rm pastel-v*-unknown-linux-gnueabihf.tar.gz
+
+          nameregex='^pastel-v\d[\d.]+?\d?-x86_64-unknown-linux-gnu\.tar\.gz$'
+          wget -q "$(curl -s https://api.github.com/repos/sharkdp/pastel/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
+          tar --wildcards --strip-components=1 -C bin/x86_64 -xvf pastel-v*-unknown-linux-gnu.tar.gz pastel-v*-unknown-linux-gnu/pastel
+          rm pastel-v*-unknown-linux-gnu.tar.gz
+
+      - name: Commit and push to repository
+        run: |
+          git config --global user.name "eggbean"
+          git config --global user.email 815311+eggbean@users.noreply.github.com
+          git add --all
+          git status
+          tag="$(curl -s https://api.github.com/repos/sharkdp/pastel/releases/latest | jq -r '.tag_name')"
+          git commit -m "Upgrade pastel to ${tag}"
+          git push
