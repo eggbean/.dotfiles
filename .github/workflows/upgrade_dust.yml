@@ -1,0 +1,40 @@
+name: Upgrade dust
+on:
+  [workflow_dispatch]
+
+jobs:
+  upgrade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download and extract tarballs
+        run: |
+          nameregex='^dust-v\d[\d.]+?\d?([-.]alpha.?[1-9])?-aarch64-unknown-linux-gnu\.tar\.gz$'
+          wget -q "$(curl -s https://api.github.com/repos/bootandy/dust/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
+          tar --wildcards --strip-components=1 -C bin/aarch64 -xvf dust-v*-aarch64-unknown-linux-gnu.tar.gz dust-v*-aarch64-unknown-linux-gnu/dust
+          rm dust-v*-aarch64-unknown-linux-gnu.tar.gz
+
+          nameregex='^dust-v\d[\d.]+?\d?([-.]alpha.?[1-9])?-arm-unknown-linux-gnueabihf\.tar\.gz$'
+          wget -q "$(curl -s https://api.github.com/repos/bootandy/dust/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
+          tar --wildcards --strip-components=1 -C bin/armv7l -xvf dust-v*-arm-unknown-linux-gnueabihf.tar.gz dust-v*-arm-unknown-linux-gnueabihf/dust
+          rm dust-v*-arm-unknown-linux-gnueabihf.tar.gz
+
+          nameregex='^dust-v\d[\d.]+?\d?([-.]alpha.?[1-9])?-x86_64-unknown-linux-gnu\.tar\.gz$'
+          wget -q "$(curl -s https://api.github.com/repos/bootandy/dust/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
+          tar --wildcards --strip-components=1 -C bin/x86_64 -xvf dust-v*-x86_64-unknown-linux-gnu.tar.gz dust-v*-x86_64-unknown-linux-gnu/dust
+          rm dust-v*-x86_64-unknown-linux-gnu.tar.gz
+
+          wget -qO bin/completions/dust.bash https://raw.githubusercontent.com/bootandy/dust/master/completions/dust.bash
+
+      - name: Commit and push to repository
+        run: |
+          git config --global user.name "eggbean"
+          git config --global user.email 815311+eggbean@users.noreply.github.com
+          git add --all
+          git status
+          tag="$(curl -s https://api.github.com/repos/bootandy/dust/releases/latest | jq -r '.tag_name')"
+          git commit -m "Upgrade dust to ${tag}"
+          git push
