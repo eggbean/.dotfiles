@@ -1,3 +1,6 @@
 [submodule "terraform"]
 	path = terraform
 	url = git@github.com:eggbean/terraform.git
+[submodule "ansible-playbooks"]
+	path = ansible-playbooks
+	url = git@github.com:eggbean/ansible-playbooks.git
