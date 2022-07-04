@@ -1,0 +1,3 @@
+[submodule "terraform"]
+	path = terraform
+	url = git@github.com:eggbean/terraform.git
