@@ -116,7 +116,11 @@ git() {
 	elif [[ "$1" == "browse" ]]; then
 		gh browse "${@:2}"
 	else
-		command hub "$@"
+		if command -v hub >/dev/null; then
+			command hub "$@"
+    else
+      command git "$@"
+		fi
 	fi
 }
 
