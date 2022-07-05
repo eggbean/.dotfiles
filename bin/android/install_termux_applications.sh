@@ -9,9 +9,12 @@ yes | pkg install \
 	dust \
 	exa \
 	file \
+	fzf \
 	gh \
 	git-crypt \
 	git-delta \
+	glow \
+	hub \
 	hyperfine \
 	inetutils \
 	iproute2 \
@@ -26,6 +29,7 @@ yes | pkg install \
 	pastel \
 	pigz \
 	python \
+	rclone \
 	ripgrep \
 	starship \
 	stow \
