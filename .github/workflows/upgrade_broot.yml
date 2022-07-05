@@ -6,30 +6,32 @@ jobs:
   upgrade:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Download and extract tarball
-      run: |
-        url="$(curl -s https://api.github.com/repos/Canop/broot/releases/latest | jq -r '.assets[] | .browser_download_url')"
-        file="${url##*/}"
-        wget -q "${url}"
-        unzip "${file}" -x README.md
-        rm -rf "${file}" x86_64-unknown-linux-musl x86_64-unknown-linux-gnu x86_64-pc-windows-gnu version test resources install.md default-conf.hjson CHANGELOG.md
-        mv armv7-unknown-linux-gnueabihf/broot bin/armv7l
-        mv x86_64-linux/broot bin/x86_64
-        gzip broot.1
-        mv broot.1.gz bin/man/man1
-        mv completion/{br,broot}.bash bin/completions
-        rm -rf completion
+      - name: Download and extract tarball
+        run: |
+          url="$(curl -s https://api.github.com/repos/Canop/broot/releases/latest | jq -r '.assets[] | .browser_download_url')"
+          file="${url##*/}"
+          wget -q "${url}"
+          unzip "${file}" -x README.md
+          rm -rf "${file}" x86_64-unknown-linux-musl x86_64-unknown-linux-gnu x86_64-pc-windows-gnu version test resources install.md default-conf.hjson CHANGELOG.md
+          mv armv7-unknown-linux-gnueabihf/broot bin/armv7l
+          mv x86_64-linux/broot bin/x86_64
+          gzip broot.1
+          mv broot.1.gz bin/man/man1
+          mv completion/{br,broot}.bash bin/completions
+          mv default-conf/{conf.hjson,default-conf.hjson}
+          mv default-conf/* config/.config/broot
+          rm -rf completion
 
-    - name: Commit and push to repository
-      run: |
-        git config --global user.name "eggbean"
-        git config --global user.email 815311+eggbean@users.noreply.github.com
-        git add --all
-        git status
-        tag="$(curl -s https://api.github.com/repos/Canop/broot/releases/latest | jq -r '.tag_name')"
-        git commit -m "Upgrade broot to ${tag} for x86_64 and armv7l" -m "Currently there is no aarch64/Android build https://github.com/Canop/broot/issues/565"
-        git push
+      - name: Commit and push to repository
+        run: |
+          git config --global user.name "eggbean"
+          git config --global user.email 815311+eggbean@users.noreply.github.com
+          git add --all
+          git status
+          tag="$(curl -s https://api.github.com/repos/Canop/broot/releases/latest | jq -r '.tag_name')"
+          git commit -m "Upgrade broot to ${tag} for x86_64 and armv7l" -m "Currently there is no aarch64/Android build https://github.com/Canop/broot/issues/565"
+          git push
