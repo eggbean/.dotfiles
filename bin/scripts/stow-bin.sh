@@ -61,11 +61,13 @@ if [ -n "${nosudo}" ]; then
 		for d in "$targetdir" "$mandir" "$compdir" "$fontdir"; do
 			if [ ! -d "$d" ]; then mkdir -p "$d"; fi
 		done
-		pushd "$HOME/.dotfiles/bin/man" >/dev/null
-		mansubs=(*) && popd >/dev/null
-		for s in "${mansubs[@]}"; do
-			if [ ! -d "${mandir}"/"$s" ]; then mkdir -p "${mandir}"/"$s"; fi
-		done
+		if [ -d "$HOME/.dotfiles/bin/man" ]; then
+			pushd "$HOME/.dotfiles/bin/man" >/dev/null
+			mansubs=(*) && popd >/dev/null
+			for s in "${mansubs[@]}"; do
+				if [ ! -d "${mandir}"/"$s" ]; then mkdir -p "${mandir}"/"$s"; fi
+			done
+		fi
 	fi
 else
 	if [ "$(id -u)" -ne "0" ]; then { echo "This script must be run as root to stow in /usr, or use the --nosudo option to stow in ~/.local." >&2; exit 1; }; fi
