@@ -40,13 +40,3 @@ yes | pkg install \
 	tree \
 	wget \
 	whois
-
-# Install ansible
-yes | pkg upgrade && \
-yes | pkg install \
-	openssl python rust
-pip install --upgrade pip
-pip install wheel
-export CARGO_BUILD_TARGET=aarch64-linux-android
-pip install cryptography
-pip install ansible
