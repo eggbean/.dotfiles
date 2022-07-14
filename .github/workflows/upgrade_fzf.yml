@@ -6,33 +6,41 @@ jobs:
   upgrade:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Download and extract tarballs
-      run: |
-        nameregex='^fzf-\d[\d.]+?\d?-linux_amd64\.tar\.gz$'
-        wget -q "$(curl -s https://api.github.com/repos/junegunn/fzf/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
-        tar --wildcards -C bin/x86_64 -xf fzf-*-linux_amd64.tar.gz
-        rm fzf-*-linux_amd64.tar.gz
+      - name: Download and extract tarballs
+        run: |
+          nameregex='^fzf-\d[\d.]+?\d?-linux_amd64\.tar\.gz$'
+          wget -q "$(curl -s https://api.github.com/repos/junegunn/fzf/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
+          tar --wildcards -C bin/x86_64 -xf fzf-*-linux_amd64.tar.gz
+          rm fzf-*-linux_amd64.tar.gz
 
-        nameregex='^fzf-\d[\d.]+?\d?-linux_arm64\.tar\.gz$'
-        wget -q "$(curl -s https://api.github.com/repos/junegunn/fzf/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
-        tar --wildcards -C bin/aarch64 -xf fzf-*-linux_arm64.tar.gz
-        rm fzf-*-linux_arm64.tar.gz
+          nameregex='^fzf-\d[\d.]+?\d?-linux_arm64\.tar\.gz$'
+          wget -q "$(curl -s https://api.github.com/repos/junegunn/fzf/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
+          tar --wildcards -C bin/aarch64 -xf fzf-*-linux_arm64.tar.gz
+          rm fzf-*-linux_arm64.tar.gz
 
-        nameregex='^fzf-\d[\d.]+?\d?-linux_armv7\.tar\.gz$'
-        wget -q "$(curl -s https://api.github.com/repos/junegunn/fzf/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
-        tar --wildcards -C bin/armv7l -xf fzf-*-linux_armv7.tar.gz
-        rm fzf-*-linux_armv7.tar.gz
+          nameregex='^fzf-\d[\d.]+?\d?-linux_armv7\.tar\.gz$'
+          wget -q "$(curl -s https://api.github.com/repos/junegunn/fzf/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
+          tar --wildcards -C bin/armv7l -xf fzf-*-linux_armv7.tar.gz
+          rm fzf-*-linux_armv7.tar.gz
 
-    - name: Commit and push to repository
-      run: |
-        git config --global user.name "eggbean"
-        git config --global user.email 815311+eggbean@users.noreply.github.com
-        git add --all
-        git status
-        tag="$(curl -s https://api.github.com/repos/junegunn/fzf/releases/latest | jq -r '.tag_name')"
-        git commit -m "Upgrade fzf to ${tag}"
-        git push
+          wget https://github.com/junegunn/fzf/raw/master/man/man1/fzf.1 -O bin/man/man1/fzf.1
+          wget https://github.com/junegunn/fzf/raw/master/man/man1/fzf-tmux.1 -O bin/man/man1/fzf-tmux.1
+          gzip -f bin/man/man1/fzf{,-tmux}.1
+          wget https://github.com/junegunn/fzf/raw/master/bin/fzf-tmux -O bin/scripts/fzf-tmux
+          chmod +x bin/scripts/fzf-tmux
+          wget https://github.com/junegunn/fzf/raw/master/shell/completion.bash -O bin/completions/fzf-completions.bash
+          wget https://github.com/junegunn/fzf/raw/master/shell/key-bindings.bash -O bin/completions/fzf-keybindings.bash
+
+      - name: Commit and push to repository
+        run: |
+          git config --global user.name "eggbean"
+          git config --global user.email 815311+eggbean@users.noreply.github.com
+          git add --all
+          git status
+          tag="$(curl -s https://api.github.com/repos/junegunn/fzf/releases/latest | jq -r '.tag_name')"
+          git commit -m "Upgrade fzf to ${tag}"
+          git push
