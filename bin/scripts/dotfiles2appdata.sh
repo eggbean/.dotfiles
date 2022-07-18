@@ -7,13 +7,14 @@ cp -r ~/.dotfiles/config/.config/qutebrowser/* /mnt/c/Users/"$USER"/AppData/Roam
 # gvim (files made read-only to avoid me accidentally editing them in Windows)
 [ ! -d /mnt/c/Users/"$USER"/vimfiles/vimrc.d/ ] && mkdir -p /mnt/c/Users/"$USER"/vimfiles/vimrc.d/
 cd /mnt/c/Users/"$USER"/vimfiles/ || { echo "ERROR: /mnt/c/Users/$USER/vimfiles/ not found." >&2; exit 1; }
-attrib.exe -R vimrc
-attrib.exe -R gvimrc
-attrib.exe -R vimrc.d\\*
+files=('vimrc' 'gvimrc' 'vimrc.d\\*')
+for f in "${files[@]}"; do
+  attrib.exe -R "$f" 2>/dev/null
+done
 cp -r ~/.dotfiles/config/.config/vim/* .
-attrib.exe +R vimrc
-attrib.exe +R gvimrc
-attrib.exe +R vimrc.d\\*
+for f in "${files[@]}"; do
+  attrib.exe +R "$f"
+done
 
 # mpv
 [ ! -d /mnt/c/Users/"$USER"/AppData/Roaming/mpv/ ] && mkdir /mnt/c/Users/"$USER"/AppData/Roaming/mpv/
