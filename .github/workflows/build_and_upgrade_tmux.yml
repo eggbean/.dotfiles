@@ -1,0 +1,56 @@
+name: Build static tmux
+on:
+  [workflow_dispatch]
+
+jobs:
+  build_and_upgrade:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.github_token }}
+
+    - name: Upgrade buildscript
+      run: wget https://github.com/mjakob-gh/build-static-tmux/raw/master/build-static-tmux.sh -O bin/scripts/build-static-tmux.sh
+
+    - name: Build for armv7l
+      uses: pguyot/arm-runner-action@v2
+      with:
+        base_image: raspios_lite:latest
+        cpu: cortex-a7
+        copy_artifact_path: ../tmp/tmux-static/bin/tmux
+        copy_artifact_dest: bin/armv7l
+        image_additional_mb: 1024
+        commands: |
+            /bin/sh bin/scripts/build-static-tmux.sh
+            cp ../tmp/tmux-static/bin/tmux bin/armv7l
+
+    - name: Build for aarch64
+      uses: pguyot/arm-runner-action@v2
+      with:
+        base_image: raspios_lite_arm64:latest
+        cpu: cortex-a53
+        copy_artifact_path: ../tmp/tmux-static/bin/tmux
+        copy_artifact_dest: bin/aarch64
+        image_additional_mb: 1024
+        commands: |
+            /bin/sh bin/scripts/build-static-tmux.sh
+            cp ../tmp/tmux-static/bin/tmux bin/aarch64
+
+    - name: Build for x86_84
+      run: |
+        /bin/sh bin/scripts/build-static-tmux.sh
+        mv /tmp/tmux-static/bin/tmux bin/x86_64
+        mv /tmp/tmux-static/share/man/man1/tmux.1 bin/man/man1
+        gzip -f bin/man/man1/tmux.1
+
+    - name: Commit and push to repository
+      run: |
+        git config --global user.name "eggbean"
+        git config --global user.email 815311+eggbean@users.noreply.github.com
+        git add --all
+        git status
+        tag="$(curl -s https://api.github.com/repos/tmux/tmux/releases/latest | jq -r '.tag_name')"
+        git commit -m "Upgrade tmux to ${tag}"
+        git push
