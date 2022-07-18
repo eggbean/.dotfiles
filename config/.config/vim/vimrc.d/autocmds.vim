@@ -39,8 +39,8 @@ augroup END
 " Skeleton templates
 augroup skeleton
     autocmd!
-    autocmd bufnewfile *.sh 0r templates/skeleton.sh
-    autocmd bufnewfile *.py 0r templates/skeleton.py
+    autocmd bufnewfile *.sh 0r ~/.config/vim/templates/skeleton.sh
+    autocmd bufnewfile *.py 0r ~/.config/vim/templates/skeleton.py
 augroup END
 
 " Rename tmux windows with filename

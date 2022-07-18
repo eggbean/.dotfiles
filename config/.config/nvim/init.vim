@@ -1,10 +1,10 @@
 " NVIM CONFIGURATION
 
-source ~/.dotfiles/config/.config/vim/vimrc.d/xdg.vim
-source ~/.dotfiles/config/.config/vim/vimrc.d/plugins.vim
-source ~/.dotfiles/config/.config/vim/vimrc.d/common.vim
-source ~/.dotfiles/config/.config/vim/vimrc.d/autocmds.vim
-source ~/.dotfiles/config/.config/vim/vimrc.d/pluginconfig.vim
+source ~/.config/vim/vimrc.d/xdg.vim
+source ~/.config/vim/vimrc.d/plugins.vim
+source ~/.config/vim/vimrc.d/common.vim
+source ~/.config/vim/vimrc.d/autocmds.vim
+source ~/.config/vim/vimrc.d/pluginconfig.vim
 
 " Highlighted yanking
 autocmd TextYankPost * silent! lua vim.highlight.on_yank()
