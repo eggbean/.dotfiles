@@ -1,5 +1,13 @@
 " GVIM CONFIGURATION
 
+" Set directories on Windows
+if has("gui_win32")
+  set backupdir=~/vimfiles/backup | call mkdir(&backupdir, 'p')
+  set directory=~/vimfiles/swap   | call mkdir(&directory, 'p')
+  set undodir=~/vimfiles/undo     | call mkdir(&undodir,   'p')
+  set viminfofile=~/vimfiles/viminfo
+endif
+
 if has('unix') | call plug#begin('$XDG_DATA_HOME/vim/plugged') | elseif has('win32') | call plug#begin() | endif
   Plug 'ntpeters/vim-better-whitespace'
   Plug 'machakann/vim-highlightedyank'
@@ -29,6 +37,7 @@ set guioptions -=r
 set guioptions -=m
 set guioptions -=T
 set winaltkeys=no
+set belloff=
 
 " Macro to toggle window menu keys
 nnoremap <F9> :call ToggleWindowMenu()<CR>
@@ -176,11 +185,3 @@ function! ToggleDistractionFreeMode()
   endif
 endfunction
 nmap <silent> <Leader>z :call ToggleDistractionFreeMode()<CR>
-
-" Set directories on Windows
-if has("gui_win32")
-  set backupdir=~/vimfiles/backup | call mkdir(&backupdir, 'p')
-  set directory=~/vimfiles/swap   | call mkdir(&directory, 'p')
-  set undodir=~/vimfiles/undo     | call mkdir(&undodir,   'p')
-  set viminfofile=~/vimfiles/viminfo
-endif

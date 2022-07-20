@@ -1,9 +1,16 @@
 " COMMON CONFIGURATION
 
 " Indentation
-set tabstop=4 shiftwidth=4 shiftround softtabstop=2 autoindent expandtab list smartindent
-set backspace=indent,eol,start
+set tabstop=2
+set shiftwidth=2
+set shiftround
+set softtabstop=2
+set autoindent
+set expandtab
+set list
+set smartindent
 set smarttab
+set backspace=indent,eol,start
 
 set nrformats-=octal
 set complete-=i
@@ -11,7 +18,6 @@ set nonumber
 set numberwidth=4
 " set relativenumber
 " set signcolumn=auto
-" set nu
 set incsearch
 set hlsearch
 set ignorecase
@@ -23,19 +29,29 @@ set splitbelow
 set lazyredraw
 set magic
 set scrolloff=3
+set sidescrolloff=5
 set showmode
 set updatetime=4000
 " set colorcolumn=80
 
+set ttimeout
+set ttimeoutlen=100
+set laststatus=2
+set display+=lastline
 set clipboard+=unnamedplus
+set formatoptions+=j
+set sessionoptions-=options
+set viewoptions-=options
 set encoding=utf-8
 scriptencoding utf-8
 set autoread
 set wrap
 set nowrapscan
-set history=500
+set history=1000
+set belloff=all
+set tabpagemax=50
 set title
-set listchars=tab:▸-
+set listchars=tab:▸-,extends:>,precedes:<,nbsp:+
 set mouse=a
 set hidden
 set backup
@@ -43,6 +59,9 @@ set writebackup
 set swapfile
 set undofile
 set shortmess+=F
+if !empty(&viminfo)
+  set viminfo^=!
+endif
 
 if has('termguicolors')
   set termguicolors
@@ -87,16 +106,15 @@ cnoremap <M-d> <S-Right><C-w>
 cnoremap <M-BS> <C-w>
 cnoremap <C-k> <C-\>e(strpart(getcmdline(), 0, getcmdpos() - 1))<CR>
 
-" Zoom in and out of splits
-noremap Zz <c-w>_ \| <c-w>\|
-noremap Zo <c-w>=
+" Zoom toggle (plugin)
+noremap Zz <c-w>m
 
 " Exit terminal mode with ESC
 tnoremap <Esc> <C-\><C-n>
 
 " Open files using xdg-open
 nnoremap gX :silent :execute
-	\ "!xdg-open" expand('%:p:h') . "/" . expand("<cfile>") " &"<cr>
+  \ "!xdg-open" expand('%:p:h') . "/" . expand("<cfile>") " &"<cr>
 
 " Clear registers
 command! WipeReg for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor

@@ -23,7 +23,7 @@
   let g:gruvbox_italicize_strings = 0
   let g:gruvbox_plugin_hi_groups = 1
 " vim-bookmarks
-  let g:bookmark_sign = '🔖'
+  let g:bookmark_sign = '🟠'
   let g:bookmark_save_per_working_dir = 0
   let g:bookmark_manage_per_buffer = 1
   let g:bookmark_auto_save_file = '$XDG_DATA_HOME/vim/bookmarks'

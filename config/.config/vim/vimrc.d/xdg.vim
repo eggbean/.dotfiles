@@ -8,14 +8,14 @@ set packpath+=$XDG_CONFIG_HOME/vim/after,$XDG_DATA_HOME/vim/after
 
 let g:netrw_home = $XDG_DATA_HOME."/vim"
 call mkdir($XDG_DATA_HOME."/vim/spell", 'p')
-set viewdir=$XDG_DATA_HOME/vim/view       | call mkdir(&viewdir,   'p')
+set viewdir=$XDG_DATA_HOME/vim/view      | call mkdir(&viewdir,   'p')
 
-set backupdir=$XDG_CACHE_HOME/vim/backup  | call mkdir(&backupdir, 'p')
-set directory=$XDG_CACHE_HOME/vim/swap    | call mkdir(&directory, 'p')
+set backupdir=$XDG_CACHE_HOME/vim/backup | call mkdir(&backupdir, 'p')
+set directory=$XDG_CACHE_HOME/vim/swap   | call mkdir(&directory, 'p')
 
 if !has('nvim')
-	set undodir=$XDG_CACHE_HOME/vim/undo  | call mkdir(&undodir,   'p')
-	set viminfofile=$XDG_STATE_HOME/vim/viminfo
+  set undodir=$XDG_CACHE_HOME/vim/undo   | call mkdir(&undodir,   'p')
+  set viminfofile=$XDG_STATE_HOME/vim/viminfo
 else
-	set undodir=$XDG_CACHE_HOME/nvim/undo | call mkdir(&undodir,   'p')
+  set undodir=$XDG_CACHE_HOME/nvim/undo  | call mkdir(&undodir,   'p')
 endif
