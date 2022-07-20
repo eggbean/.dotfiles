@@ -42,6 +42,7 @@ set backup
 set writebackup
 set swapfile
 set undofile
+set shortmess+=F
 
 if has('termguicolors')
   set termguicolors
@@ -68,8 +69,9 @@ nnoremap <expr> <C-y> (g:scrollLock == 1) ? ':windo set scrollbind<CR><C-y>:wind
 " nnoremap <C-S-Y> :windo set scrollbind<CR><C-y>:windo set noscrollbind<CR>
 
 " Emacs mappings in insert mode
+inoremap <A-b> <C-Left>
+inoremap <A-f> <C-Right>
 inoremap <A-d> <space><esc>ce
-inoremap <C-k> <C-o>d$
 
 " Emacs-style editing on the command-line
 cnoremap <C-d> <Del>
@@ -91,3 +93,7 @@ noremap Zo <c-w>=
 
 " Exit terminal mode with ESC
 tnoremap <Esc> <C-\><C-n>
+
+" Open files using xdg-open
+nnoremap gX :silent :execute
+	\ "!xdg-open" expand('%:p:h') . "/" . expand("<cfile>") " &"<cr>
