@@ -1,4 +1,2 @@
 ## Host specific stuff for ephemeral AWS Gravition aarch64 instances
 
-# No recent version of nvmim currently available for Debian/aarch64
-unalias vi
