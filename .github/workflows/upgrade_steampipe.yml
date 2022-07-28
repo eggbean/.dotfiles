@@ -1,0 +1,36 @@
+name: Upgrade steampipe
+on:
+  [workflow_dispatch]
+
+jobs:
+  upgrade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download and extract tarballs
+        run: |
+          nameregex='^steampipe_linux_amd64.tar.gz$'
+          wget -q "$(curl -s https://api.github.com/repos/turbot/steampipe/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
+          tar -C bin/x86_64 -xvf steampipe_linux_amd64.tar.gz
+          rm steampipe_linux_amd64.tar.gz
+
+          nameregex='^steampipe_linux_arm64.tar.gz$'
+          wget -q "$(curl -s https://api.github.com/repos/turbot/steampipe/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
+          tar -C bin/aarch64 -xvf steampipe_linux_arm64.tar.gz
+          rm steampipe_linux_arm64.tar.gz
+
+      - name: Update bash tab completion
+        run: bin/x86_64/steampipe completion bash > bin/completions/steampipe.bash
+
+      - name: Commit and push to repository
+        run: |
+          git config --global user.name "eggbean"
+          git config --global user.email 815311+eggbean@users.noreply.github.com
+          git add --all
+          git status
+          tag="$(curl -s https://api.github.com/repos/turbot/steampipe/releases/latest | jq -r '.tag_name')"
+          git commit -m "Upgrade steampipe to ${tag} (x86_64 and aarch64)"
+          git push
