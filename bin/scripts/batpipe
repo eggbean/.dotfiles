@@ -39,57 +39,95 @@
 # shellcheck disable=SC1090 disable=SC2155
 SELF="$(cd "$(dirname "${BASH_SOURCE[0]}")" && cd "$(dirname "$(readlink "${BASH_SOURCE[0]}" || echo ".")")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
 # --- BEGIN LIBRARY FILE: dirs.sh ---
-config_dir(){
-if [[ -n ${XDG_CONFIG_HOME+x} ]];then
-echo "$XDG_CONFIG_HOME/$1"
-else
-echo "$HOME/.config/$1"
-fi
+
+# Gets a configuration directory for a command-line program.
+# Arguments:
+#    1   -- The program name.
+config_dir() {
+	if [[ -n "${XDG_CONFIG_HOME+x}" ]]; then
+		echo "${XDG_CONFIG_HOME}/$1"
+	else
+		echo "${HOME}/.config/$1"
+	fi
 }
 # --- END LIBRARY FILE ---
 # --- BEGIN LIBRARY FILE: str.sh ---
-tolower(){
-tr "[:upper:]" "[:lower:]" <<<"$1"
+
+# Converts a string to lower case.
+tolower() {
+	tr "[:upper:]" "[:lower:]" <<<"$1"
 }
-toupper(){
-tr "[:lower:]" "[:upper:]" <<<"$1"
+
+# Converts a string to upper case.
+toupper() {
+	tr "[:lower:]" "[:upper:]" <<<"$1"
 }
 # --- END LIBRARY FILE ---
 # --- BEGIN LIBRARY FILE: print.sh ---
-printc(){
-printf "$(sed "$_PRINTC_PATTERN" <<<"$1")" "${@:2}"
+
+# Printf, but with optional colors.
+# This uses the same syntax and arguments as printf.
+#
+# Example:
+#     printc "%{RED}This is red %s.%{CLEAR}\n" "text"
+#
+printc() {
+	printf "$(sed "$_PRINTC_PATTERN" <<<"$1")" "${@:2}"
 }
-printc_init(){
-case "$1" in
-true)_PRINTC_PATTERN="$_PRINTC_PATTERN_ANSI";;
-false)_PRINTC_PATTERN="$_PRINTC_PATTERN_PLAIN";;
-"[DEFINE]"){
-_PRINTC_PATTERN_ANSI=""
-_PRINTC_PATTERN_PLAIN=""
-local name
-local ansi
-while read -r name ansi;do
-if [[ -z $name && -z $ansi ]]||[[ ${name:0:1} == "#" ]];then
-continue
-fi
-ansi="${ansi/\\/\\\\}"
-_PRINTC_PATTERN_PLAIN="${_PRINTC_PATTERN_PLAIN}s/%{$name}//g;"
-_PRINTC_PATTERN_ANSI="${_PRINTC_PATTERN_ANSI}s/%{$name}/$ansi/g;"
-done
-if [[ -t 1 && -z ${NO_COLOR+x} ]];then
-_PRINTC_PATTERN="$_PRINTC_PATTERN_ANSI"
-else
-_PRINTC_PATTERN="$_PRINTC_PATTERN_PLAIN"
-fi
+
+# Initializes the color tags for printc.
+#
+# Arguments:
+#     true  -- Turns on color output.
+#     false -- Turns off color output.
+printc_init() {
+	case "$1" in
+	true)  _PRINTC_PATTERN="$_PRINTC_PATTERN_ANSI" ;;
+	false) _PRINTC_PATTERN="$_PRINTC_PATTERN_PLAIN" ;;
+
+	"[DEFINE]") {
+		_PRINTC_PATTERN_ANSI=""
+		_PRINTC_PATTERN_PLAIN=""
+
+		local name
+		local ansi
+		while read -r name ansi; do
+			if [[ -z "${name}" && -z "${ansi}" ]] || [[ "${name:0:1}" = "#" ]]; then
+				continue
+			fi
+
+			ansi="${ansi/\\/\\\\}"
+
+			_PRINTC_PATTERN_PLAIN="${_PRINTC_PATTERN_PLAIN}s/%{${name}}//g;"
+			_PRINTC_PATTERN_ANSI="${_PRINTC_PATTERN_ANSI}s/%{${name}}/${ansi}/g;"
+		done
+
+		if [[ -t 1 && -z "${NO_COLOR+x}" ]]; then
+			_PRINTC_PATTERN="$_PRINTC_PATTERN_ANSI"
+		else
+			_PRINTC_PATTERN="$_PRINTC_PATTERN_PLAIN"
+		fi
+	} ;;
+	esac
 }
-esac
+
+# Print a warning message to stderr.
+# Arguments:
+#     1   -- The printc formatting string.
+#     ... -- The printc formatting arguments.
+print_warning() {
+	printc "%{YELLOW}[%s warning]%{CLEAR}: $1%{CLEAR}\n" "batpipe" "${@:2}" 1>&2
 }
-print_warning(){
-printc "%{YELLOW}[%s warning]%{CLEAR}: $1%{CLEAR}\n" "batpipe" "${@:2}" 1>&2
+
+# Print an error message to stderr.
+# Arguments:
+#     1   -- The printc formatting string.
+#     ... -- The printc formatting arguments.
+print_error() {
+	printc "%{RED}[%s error]%{CLEAR}: $1%{CLEAR}\n" "batpipe" "${@:2}" 1>&2
 }
-print_error(){
-printc "%{RED}[%s error]%{CLEAR}: $1%{CLEAR}\n" "batpipe" "${@:2}" 1>&2
-}
+
+# Initialization:
 printc_init "[DEFINE]" <<END
 	CLEAR	\x1B[0m
 	RED		\x1B[31m
@@ -104,210 +142,369 @@ printc_init "[DEFINE]" <<END
 END
 # --- END LIBRARY FILE ---
 # --- BEGIN LIBRARY FILE: path.sh ---
-extname(){
-local file="$1"
-echo ".${file##*.}"
+
+# Gets the file extension from a file path.
+# Arguments:
+#     1   -- The file path.
+extname() {
+	local file="$1"
+	echo ".${file##*.}"
 }
-strip_trailing_slashes(){
-local file="$1"
-while [[ -n $file && ${file: -1} == "/" ]];do
-file="${file:0:$((${#file}-1))}"
-done
-echo "$file"
+
+# Strips trailing slashes from a file path.
+# Arguments:
+#     1   -- The file path.
+strip_trailing_slashes() {
+	local file="$1"
+	while [[ -n "$file" && "${file: -1}" = "/" ]]; do
+		file="${file:0:$((${#file}-1))}"
+	done
+	echo "$file"
 }
 # --- END LIBRARY FILE ---
 # --- BEGIN LIBRARY FILE: proc.sh ---
-parent_executable(){
-local target_pid="${1:-$PPID}"
-ps -f -p "$target_pid"|tail -n 1|awk '{for(i=8;i<=NF;i++) printf $i" "; printf "\n"}'
+
+# Gets the path to the parent executable file.
+# Arguments:
+#     1   -- The target pid. If not provided, the script's parent is used.
+parent_executable() {
+	local target_pid="${1:-$PPID}"
+	ps -f -p "$target_pid" | tail -n 1 | awk '{for(i=8;i<=NF;i++) printf $i" "; printf "\n"}'
 }
-parent_executable_pid(){
-local target_pid="${1:-$PPID}"
-ps -f -p "$target_pid"|tail -n 1|awk '{print $3}'
+
+# Gets the PID of the parent executable file.
+# Arguments:
+#     1   -- The target pid. If not provided, the script's parent is used.
+parent_executable_pid() {
+	local target_pid="${1:-$PPID}"
+	ps -f -p "$target_pid" | tail -n 1 | awk '{print $3}'
 }
-parent_shell(){
-local target_pid="${1:-$PPID}"
-local target_name
-while true;do
-{
-read -r target_pid
-read -r target_name
-if [[ ${target_name:0:1} == "-" ]];then
-target_name="$(cut -f1 -d' ' <<<"${target_name:1}")"
-break
-fi
-if [[ $target_name =~ sh\ .*-l ]];then
-target_name="$(cut -f1 -d' ' <<<"$target_name")"
-break
-fi
-if [[ $target_pid -eq 0 ]];then
-target_name="$SHELL"
-break
-fi
-} < <({
-ps -f -p "$target_pid"|tail -n 1|awk '{print $3; for(i=8;i<=NF;i++) printf $i" "; printf "\n"}'
-})
-done
-if [[ -f $target_name ]];then
-echo "$target_name"
-elif ! command -v "$target_name" 2>/dev/null;then
-echo "$target_name"
-fi
+
+# Gets the path to the parent login shell.
+# Arguments:
+#     1   -- The target pid. If not provided, the script's parent is used.
+parent_shell() {
+	local target_pid="${1:-$PPID}"
+	local target_name
+	while true; do
+		{
+			read -r target_pid
+			read -r target_name
+			
+			# If the parent process starts with a "-", it's a login shell.
+			if [[ "${target_name:0:1}" = "-" ]]; then
+				target_name="$(cut -f1 -d' ' <<< "${target_name:1}")"
+				break
+			fi
+			
+			# If the parent process has "*sh " followed by "-l", it's probably a login shell.
+			if [[ "$target_name" =~ sh\ .*-l ]]; then
+				target_name="$(cut -f1 -d' ' <<< "${target_name}")"
+				break
+			fi
+			
+			# If the parent process is pid 0 (init), then we haven't found a parent shell.
+			# At this point, it's best to assume the shell is whatever is defined in $SHELL.
+			if [[ "$target_pid" -eq 0 ]]; then
+				target_name="$SHELL"
+				break
+			fi
+		} < <({
+			ps -f -p "$target_pid" \
+				| tail -n 1 \
+				| awk '{print $3; for(i=8;i<=NF;i++) printf $i" "; printf "\n"}'
+		})
+	done
+	
+	# Ensure that the detected shell is an executable path.
+	if [[ -f "$target_name" ]]; then
+		echo "$target_name"
+	elif ! command -v "$target_name" 2>/dev/null; then
+		echo "$target_name" # It's not, but we have nothing else we can do here.
+	fi
 }
 # --- END LIBRARY FILE ---
 # --- BEGIN LIBRARY FILE: opt.sh ---
+
+# An array of functions to call before returning from `shiftopt`.
+#
+# If one of these functions returns a successful exit code, the
+# option will be transparently skipped instead of handled.
 SHIFTOPT_HOOKS=()
+
+# A setting to change how `shiftopt` will interpret short options that consist
+# of more than one character.
+#
+# Values:
+#
+#     SPLIT  -- Splits the option into multiple single-character short options.
+#               "-abc" -> ("-a" "-b" "-c")
+#     
+#     VALUE  -- Uses the remaining characters as the value for the short option.
+#               "-abc" -> ("-a=bc")
+#
+#     CONV   -- Converts the argument to a long option.
+#               "-abc" -> ("--abc")
+#
+#     PASS   -- Pass the argument along as-is.
+#               "-abc" -> ("-abc")
+#
 SHIFTOPT_SHORT_OPTIONS="VALUE"
-setargs(){
-_ARGV=("$@")
-_ARGV_LAST="$((${#_ARGV[@]}-1))"
-_ARGV_INDEX=0
-_ARGV_SUBINDEX=1
+
+# Sets the internal _ARGV, _ARGV_INDEX, and _ARGV_LAST variables used when
+# parsing options with the shiftopt and shiftval functions.
+#
+# Arguments:
+#     ... -- The program arguments.
+# 
+# Example:
+#     setargs "--long=3" "file.txt"
+setargs() {
+	_ARGV=("$@")
+	_ARGV_LAST="$((${#_ARGV[@]} - 1))"
+	_ARGV_INDEX=0
+	_ARGV_SUBINDEX=1
 }
-getargs(){
-if [[ $1 == "-a" || $1 == "--append" ]];then
-if [[ $_ARGV_INDEX -ne "$((_ARGV_LAST+1))" ]];then
-eval "$2=(\"\${$2[@]}\" $(printf '%q ' "${_ARGV[@]:_ARGV_INDEX}"))"
-fi
-else
-if [[ $_ARGV_INDEX -ne "$((_ARGV_LAST+1))" ]];then
-eval "$1=($(printf '%q ' "${_ARGV[@]:_ARGV_INDEX}"))"
-else
-eval "$1=()"
-fi
-fi
+
+# Gets all the remaining unparsed arguments and saves them to a variable.
+#
+# Arguments:
+#     "-a" -- Append the arguments to the variable instead of replacing it.
+#     $1   -- The variable to save the args to.
+# 
+# Example:
+#     getargs remaining_args
+getargs() {
+	if [[ "$1" = "-a" || "$1" = "--append" ]]; then
+		if [[ "${_ARGV_INDEX}" -ne "$((_ARGV_LAST+1))" ]]; then
+			eval "$2=(\"\${$2[@]}\" $(printf '%q ' "${_ARGV[@]:$_ARGV_INDEX}"))"
+		fi
+	else
+		if [[ "${_ARGV_INDEX}" -ne "$((_ARGV_LAST+1))" ]]; then
+			eval "$1=($(printf '%q ' "${_ARGV[@]:$_ARGV_INDEX}"))"
+		else
+			eval "$1=()"
+		fi
+	fi
 }
-resetargs(){
-setargs "${_ARGV_ORIGINAL[@]}"
+
+# Resets the internal _ARGV* variables to the original script arguments.
+# This is the equivalent of storing the top-level $@ and using setargs with it.
+resetargs() {
+	setargs "${_ARGV_ORIGINAL[@]}"
 }
-_shiftopt_next(){
-_ARGV_SUBINDEX=1
-((_ARGV_INDEX++))||true
+
+# INTERNAL.
+#
+# Increments the argv index pointer used by `shiftopt`.  
+_shiftopt_next() {
+	_ARGV_SUBINDEX=1
+	((_ARGV_INDEX++)) || true
 }
-shiftopt(){
-[[ $_ARGV_INDEX -gt $_ARGV_LAST ]]&&return 1
-OPT="${_ARGV[$_ARGV_INDEX]}"
-unset OPT_VAL
-if [[ $OPT =~ ^-[a-zA-Z0-9_-]+=.* ]];then
-OPT_VAL="${OPT#*=}"
-OPT="${OPT%%=*}"
-fi
-if [[ $OPT =~ ^-[^-]{2,} ]];then
-case "$SHIFTOPT_SHORT_OPTIONS" in
-PASS)_shiftopt_next;;
-CONV)\
-OPT="-$OPT"
-_shiftopt_next
-;;
-VALUE){
-OPT="${_ARGV[$_ARGV_INDEX]}"
-OPT_VAL="${OPT:2}"
-OPT="${OPT:0:2}"
-_shiftopt_next
-};;
-SPLIT){
-OPT="-${OPT:_ARGV_SUBINDEX:1}"
-((_ARGV_SUBINDEX++))||true
-if [[ $_ARGV_SUBINDEX -gt ${#OPT} ]];then
-_shiftopt_next
-fi
-};;
-*)printf "shiftopt: unknown SHIFTOPT_SHORT_OPTIONS mode '%s'" \
-"$SHIFTOPT_SHORT_OPTIONS" \
-1>&2
-_shiftopt_next
-esac
-else
-_shiftopt_next
-fi
-local hook
-for hook in "${SHIFTOPT_HOOKS[@]}";do
-if "$hook";then
-shiftopt
-return $?
-fi
-done
-return 0
+
+# Gets the next option passed to the script.
+#
+# Variables:
+#     OPT  -- The option name.
+#
+# Returns:
+#     0  -- An option was read.
+#     1  -- No more options were read.
+#
+# Example:
+#     while shiftopt; do
+#         shiftval
+#         echo "$OPT = $OPT_VAL"
+#     done
+shiftopt() {
+	# Read the top of _ARGV.
+	[[ "$_ARGV_INDEX" -gt "$_ARGV_LAST" ]] && return 1
+	OPT="${_ARGV[$_ARGV_INDEX]}"
+	unset OPT_VAL
+
+	if [[ "$OPT" =~ ^-[a-zA-Z0-9_-]+=.* ]]; then
+		OPT_VAL="${OPT#*=}"
+		OPT="${OPT%%=*}"
+	fi
+	
+	# Handle short options.
+	if [[ "$OPT" =~ ^-[^-]{2,} ]]; then
+		case "$SHIFTOPT_SHORT_OPTIONS" in
+		 	# PASS mode: "-abc=0" -> ("-abc=0")
+			PASS) _shiftopt_next ;;
+
+			# CONV mode: "-abc=0" -> ("--abc=0")
+			CONV) OPT="-${OPT}"; _shiftopt_next ;; 
+
+			# VALUE mode: "-abc=0" -> ("-a=bc=0")
+			VALUE) {
+				OPT="${_ARGV[$_ARGV_INDEX]}"
+				OPT_VAL="${OPT:2}"
+				OPT="${OPT:0:2}"
+				_shiftopt_next
+			} ;; 
+
+			# SPLIT mode: "-abc=0" -> ("-a=0" "-b=0" "-c=0")
+			SPLIT) {
+				OPT="-${OPT:$_ARGV_SUBINDEX:1}"
+				((_ARGV_SUBINDEX++)) || true
+				if [[ "$_ARGV_SUBINDEX" -gt "${#OPT}" ]]; then
+					_shiftopt_next
+				fi
+			} ;;
+
+			# ????? mode: Treat it as pass.
+			*)
+				printf "shiftopt: unknown SHIFTOPT_SHORT_OPTIONS mode '%s'" \
+					"$SHIFTOPT_SHORT_OPTIONS" 1>&2
+				_shiftopt_next
+				;;
+		esac
+	else
+		_shiftopt_next
+	fi
+
+	# Handle hooks.
+	local hook
+	for hook in "${SHIFTOPT_HOOKS[@]}"; do
+		if "$hook"; then
+			shiftopt
+			return $?
+		fi
+	done
+
+	return 0
 }
-shiftval(){
-if [[ -n ${OPT_VAL+x} ]];then
-return 0
-fi
-if [[ $_ARGV_SUBINDEX -gt 1 && $SHIFTOPT_SHORT_OPTIONS == "SPLIT" ]];then
-OPT_VAL="${_ARGV[$((_ARGV_INDEX+1))]}"
-else
-OPT_VAL="${_ARGV[$_ARGV_INDEX]}"
-_shiftopt_next
-fi
-if [[ $OPT_VAL =~ -.* ]];then
-printc "%{RED}%s: '%s' requires a value%{CLEAR}\n" "batpipe" "$ARG"
-exit 1
-fi
+
+# Gets the value for the current option.
+#
+# Variables:
+#     OPT_VAL  -- The option value.
+#
+# Returns:
+#     0       -- An option value was read.
+#     EXIT 1  -- No option value was available.
+shiftval() {
+	# Skip if a value was already provided.
+	if [[ -n "${OPT_VAL+x}" ]]; then
+		return 0
+	fi
+	
+	if [[ "$_ARGV_SUBINDEX" -gt 1 && "$SHIFTOPT_SHORT_OPTIONS" = "SPLIT" ]]; then
+		# If it's a short group argument in SPLIT mode, we grab the next argument.
+		OPT_VAL="${_ARGV[$((_ARGV_INDEX+1))]}"
+	else
+		# Otherwise, we can handle it normally.
+		OPT_VAL="${_ARGV[$_ARGV_INDEX]}"
+		_shiftopt_next
+	fi
+
+	# Error if no value is provided.
+	if [[ "$OPT_VAL" =~ -.* ]]; then
+		printc "%{RED}%s: '%s' requires a value%{CLEAR}\n" "batpipe" "$ARG"
+		exit 1
+	fi
 }
+
 setargs "$@"
 _ARGV_ORIGINAL=("$@")
 # --- END LIBRARY FILE ---
 # --- BEGIN LIBRARY FILE: version.sh ---
-bat_version(){
-if [[ -z $__BAT_VERSION ]];then
-__BAT_VERSION="$(command "/usr/local/bin/bat" --version|cut -d ' ' -f 2)"
-fi
-echo "$__BAT_VERSION"
+
+# Gets the current bat version.
+bat_version() {
+	if [[ -z "${__BAT_VERSION}" ]]; then
+		__BAT_VERSION="$(command "bat" --version | cut -d ' ' -f 2)"
+	fi
+	
+	echo "${__BAT_VERSION}"
 }
-version_compare(){
-local version="$1"
-local compare="$3"
-if ! [[ $version =~ \.$ ]];then
-version="$version."
-fi
-if ! [[ $compare =~ \.$ ]];then
-compare="$compare."
-fi
-version_compare__recurse "$version" "$2" "$compare"
-return $?
+
+# Compares two version strings.
+# Arguments:
+#    1  -- The version to compare.
+#    2  -- The comparison operator (same as []).
+#    3  -- The version to compare with.
+version_compare() {
+	local version="$1"
+	local compare="$3"
+
+	if ! [[ "$version" =~ \.$ ]]; then
+		version="${version}."
+	fi
+
+	if ! [[ "$compare" =~ \.$ ]]; then
+		compare="${compare}."
+	fi
+
+	version_compare__recurse "$version" "$2" "$compare"
+	return $?
 }
-version_compare__recurse(){
-local version="$1"
-local operator="$2"
-local compare="$3"
-local v_major="${version%%.*}"
-local c_major="${compare%%.*}"
-local v_minor="${version#*.}"
-local c_minor="${compare#*.}"
-if [[ -z $v_minor && -z $c_minor ]];then
-[ "$v_major" $operator "$c_major" ]
-return $?
-fi
-if [[ -z $v_minor ]];then
-v_minor="0."
-fi
-if [[ -z $c_minor ]];then
-c_minor="0."
-fi
-case "$operator" in
--eq)[[ $v_major -ne $c_major ]]&&return 1;;
--ne)[[ $v_major -ne $c_major ]]&&return 0;;
--ge|-gt)[[ $v_major -lt $c_major ]]&&return 1
-[[ $v_major -gt $c_major ]]&&return 0
-;;
--le|-lt)[[ $v_major -gt $c_major ]]&&return 1
-[[ $v_major -lt $c_major ]]&&return 0
-esac
-version_compare__recurse "$v_minor" "$operator" "$c_minor"
+
+version_compare__recurse() {
+	local version="$1"
+	local operator="$2"
+	local compare="$3"
+
+	# Extract the leading number.
+	local v_major="${version%%.*}"
+	local c_major="${compare%%.*}"
+
+	# Extract the remaining numbers.
+	local v_minor="${version#*.}"
+	local c_minor="${compare#*.}"
+
+	# Compare the versions specially if the final number has been reached.
+	if [[ -z "$v_minor" && -z "$c_minor" ]]; then
+		[ "$v_major" $operator "$c_major" ];
+		return $?
+	fi
+
+	# Insert zeroes where there are missing numbers.
+	if [[ -z "$v_minor" ]]; then
+		v_minor="0."
+	fi
+
+	if [[ -z "$c_minor" ]]; then
+		c_minor="0."
+	fi
+
+	# Compare the versions.
+	# This is an early escape case.
+	case "$operator" in
+	-eq)       [[ "$v_major" -ne "$c_major" ]] && return 1 ;;
+	-ne)       [[ "$v_major" -ne "$c_major" ]] && return 0 ;;
+	-ge | -gt) [[ "$v_major" -lt "$c_major" ]] && return 1
+	           [[ "$v_major" -gt "$c_major" ]] && return 0 ;;
+	-le | -lt) [[ "$v_major" -gt "$c_major" ]] && return 1
+	           [[ "$v_major" -lt "$c_major" ]] && return 0 ;;
+	esac
+
+	version_compare__recurse "$v_minor" "$operator" "$c_minor"
 }
 # --- END LIBRARY FILE ---
 # --- BEGIN LIBRARY FILE: term.sh ---
-term_width(){
-local width="$({ stty size 2>/dev/null||echo "22 80";}|cut -d ' ' -f2)"
-if [[ $width -ne 0 ]];then
-echo "$width"
-else
-echo "80"
-fi
-return 0
+
+# Gets the width of the terminal.
+# This will return 80 unless stdin is attached to the terminal.
+#
+# Returns:
+#     The terminal width, or 80 if there's no TTY.
+#
+term_width() {
+	# shellcheck disable=SC2155
+	local width="$({ stty size 2>/dev/null || echo "22 80"; } | cut -d ' ' -f2)"
+	if [[ "$width" -ne 0 ]]; then
+		echo "$width"
+	else
+		echo "80"
+	fi
+	return 0
 }
-term_clear(){
-printf "\x1B[3J\x1B[2J\x1B[H"
+
+# Clears the terminal using the ANSI escape sequences for erase screen and cursor absolute positioning.
+term_clear() {
+	printf "\x1B[3J\x1B[2J\x1B[H"
 }
 # --- END LIBRARY FILE ---
 # -----------------------------------------------------------------------------
@@ -320,7 +517,7 @@ if [[ "$#" -eq 0 ]]; then
 		printc "%{DIM}# %s, %s.\n# %s\n# %s\n# %s\n# \n# %s%{CLEAR}\n" \
 			"batpipe" \
 			"a bat-based preprocessor for less and bat" \
-			"Version: 2021.04.06" \
+			"Version: 2022.07.27" \
 			"Homepage: https://github.com/eth-p/bat-extras" \
 			"Copyright (C) 2019-2021 eth-p | MIT License" \
 			"To use batpipe, eval the output of this command in your shell init script."
@@ -379,7 +576,7 @@ TERM_WIDTH="$(term_width)"
 
 if [[ "$(basename -- "$(parent_executable | cut -f1 -d' ')")" == less ]]; then
 	BATPIPE_INSIDE_LESS=true
-elif [[ "$(basename -- "$(parent_executable | cut -f1 -d' ')")" == "$(basename -- "/usr/local/bin/bat")" ]]; then
+elif [[ "$(basename -- "$(parent_executable | cut -f1 -d' ')")" == "$(basename -- "bat")" ]]; then
 	BATPIPE_INSIDE_BAT=true
 fi
 
@@ -598,7 +795,7 @@ bat() {
 	fi
 
 	# Execute the real bat.
-	command "/usr/local/bin/bat" --paging=never "${__bat_batpipe_args[@]}" "${__bat_forward_args[@]}"
+	command "bat" --paging=never "${__bat_batpipe_args[@]}" "${__bat_forward_args[@]}"
 }
 
 # -----------------------------------------------------------------------------
