@@ -78,11 +78,14 @@ else
 fi
 
 # Use the correct binaries for the CPU architecture
-[ "$(dpkg --print-architecture)" = "armhf" ] && arch='armv7l'
-[ "$(dpkg --print-architecture)" = "arm64" ] && arch='aarch64'
-[ "$(dpkg --print-architecture)" = "aarch64" ] && arch='android'
-[ "$(dpkg --print-architecture)" = "amd64" ] && arch='x86_64'
-[ -z "${arch}" ] && { echo "CPU architecture unknown" >&2; exit 1; }
+if [ "$(uname -o)" = "Android" ]; then
+	[ "$(dpkg --print-architecture)" = "aarch64" ] && arch='android'
+else
+	[ "$(arch)" = "armv7l" ] && arch='armv7l'
+	[ "$(arch)" = "aarch64" ] && arch='aarch64'
+	[ "$(arch)" = "x86_64" ] && arch='x86_64'
+	[ -z "${arch}" ] && { echo "CPU architecture unknown" >&2; exit 1; }
+fi
 
 pushd "${STOW_DIR}" >/dev/null
 
