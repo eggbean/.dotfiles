@@ -4,8 +4,8 @@
 
 # If not running interactively, don't do anything
 case $- in
-	*i*) ;;
-	  *) return;;
+    *i*) ;;
+      *) return;;
 esac
 
 # History file settings
@@ -34,7 +34,7 @@ eval "$(starship init bash)"
 
 # Enable color support of ls
 if [ -x /usr/bin/dircolors ]; then
-	test -r ~/.dotfiles/bin/scripts/dir_colors && eval "$(dircolors -b ~/.dotfiles/bin/scripts/dir_colors)" || eval "$(dircolors -b)"
+    test -r ~/.dotfiles/bin/scripts/dir_colors && eval "$(dircolors -b ~/.dotfiles/bin/scripts/dir_colors)" || eval "$(dircolors -b)"
 fi
 
 # Colored GCC warnings and errors
@@ -42,46 +42,46 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 
 # Alias definitions.
 if [ -f ~/.bash_aliases ]; then
-	. ~/.bash_aliases
+    . ~/.bash_aliases
 fi
 
 # Enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-	if [ -f /usr/share/bash-completion/bash_completion ]; then
-		. /usr/share/bash-completion/bash_completion
-	elif [ -f /etc/bash_completion ]; then
-		. /etc/bash_completion
-	fi
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
 fi
 
 # Terminal colour mode
 if [[ -f "$HOME"/.terminfo/x/xterm-24bit || -f /etc/terminfo/x/xterm-24bit ]]; then
-	export TERM='xterm-24bit'
+    export TERM='xterm-24bit'
 else
-	export TERM='xterm-256color'
+    export TERM='xterm-256color'
 fi
 
 # Rename tmux windows automatically to hostname
 ssh() {
-	if [[ $TMUX ]]; then
-		tmux rename-window "$(echo "${@: -1}" | rev | cut -d '@' -f1 | rev | sed -E 's/\.([a-z0-9\-]+)\.compute\.amazonaws\.com$//' )"
-		command ssh "$@"
-		tmux set automatic-rename "on" >/dev/null
-	else
-		command ssh "$@"
-	fi
+    if [[ $TMUX ]]; then
+        tmux rename-window "$(echo "${@: -1}" | rev | cut -d '@' -f1 | rev | sed -E 's/\.([a-z0-9\-]+)\.compute\.amazonaws\.com$//' )"
+        command ssh "$@"
+        tmux set automatic-rename "on" >/dev/null
+    else
+        command ssh "$@"
+    fi
 }
 
 mosh() {
-	if [[ $TMUX ]]; then
-		tmux rename-window "$(echo "${@: -1}" | rev | cut -d '@' -f1 | rev | sed -E 's/\.([a-z0-9\-]+)\.compute\.amazonaws\.com$//' )"
-		command mosh "$@"
-		tmux set automatic-rename "on" >/dev/null
-	else
-		command mosh "$@"
-	fi
+    if [[ $TMUX ]]; then
+        tmux rename-window "$(echo "${@: -1}" | rev | cut -d '@' -f1 | rev | sed -E 's/\.([a-z0-9\-]+)\.compute\.amazonaws\.com$//' )"
+        command mosh "$@"
+        tmux set automatic-rename "on" >/dev/null
+    else
+        command mosh "$@"
+    fi
 }
 
 # Update $PATH for the Google Cloud SDK
@@ -92,7 +92,7 @@ if [ -f "$HOME/google-cloud-sdk/completion.bash.inc" ]; then . "$HOME/google-clo
 
 # Or gcloud docker container as executable
 if ! type gcloud >/dev/null 2>&1; then
-	gcloud() { docker run --rm --volumes-from gcloud-config google/cloud-sdk:alpine gcloud "$@"; }
+    gcloud() { docker run --rm --volumes-from gcloud-config google/cloud-sdk:alpine gcloud "$@"; }
 fi
 
 # aws-cli command completion
@@ -100,70 +100,70 @@ fi
 
 # Rename tmux windows when attaching to docker containers
 docker() {
-	if [[ $TMUX ]] && [[ "$1" == "attach" ]]; then
-		tmux rename-window "$2"
-		command docker "$@"
-		tmux set automatic-rename "on" >/dev/null
-	else
-		command docker "$@"
-	fi
+    if [[ $TMUX ]] && [[ "$1" == "attach" ]]; then
+        tmux rename-window "$2"
+        command docker "$@"
+        tmux set automatic-rename "on" >/dev/null
+    else
+        command docker "$@"
+    fi
 }
 
 # Prevent accidental git stashing, replace git browse and alias git to hub
 git() {
-	if [[ "$#" -eq 1 ]] && [[ "$1" == "stash" ]]; then
-		echo 'WARNING: run "git stash push" instead.'
-	elif [[ "$1" == "browse" ]]; then
-		gh browse "${@:2}"
-	else
-		if command -v hub >/dev/null; then
-			command hub "$@"
+    if [[ "$#" -eq 1 ]] && [[ "$1" == "stash" ]]; then
+        echo 'WARNING: run "git stash push" instead.'
+    elif [[ "$1" == "browse" ]]; then
+        gh browse "${@:2}"
+    else
+        if command -v hub >/dev/null; then
+            command hub "$@"
     else
       command git "$@"
-		fi
-	fi
+        fi
+    fi
 }
 
 # Use cat to display web page source and change tabs to 4 spaces
 cat() {
-	if [[ $1 == *://* ]]; then
-		curl -LsfS "$1"
-	else
-		command cat "$@" | expand -t4
-	fi
+    if [[ $1 == *://* ]]; then
+        curl -LsfS "$1"
+    else
+        command cat "$@" | expand -t4
+    fi
 }
 
 # Search man page for string
 mans() {
-	local q="\'"
-	local q_pattern="'${1//$q/$q\\$q$q}'"
-	local MANPAGER="less -+MFX -p $q_pattern"
-	man "$2"
+    local q="\'"
+    local q_pattern="'${1//$q/$q\\$q$q}'"
+    local MANPAGER="less -+MFX -p $q_pattern"
+    man "$2"
 }
 
 # CD Deluxe
 if  [[ -x /usr/local/bin/_cdd ]]; then
-	cdd() { while read -r x; do eval "$x" >/dev/null; done < <(dirs -l -p | /usr/local/bin/_cdd "$@"); }
-	alias cd=cdd
+    cdd() { while read -r x; do eval "$x" >/dev/null; done < <(dirs -l -p | /usr/local/bin/_cdd "$@"); }
+    alias cd=cdd
 elif
-	[[ -x "$HOME"/.local/bin/_cdd ]]; then
-	cdd() { while read -r x; do eval "$x" >/dev/null; done < <(dirs -l -p | "$HOME"/.local/bin/_cdd "$@"); }
-	alias cd=cdd
+    [[ -x "$HOME"/.local/bin/_cdd ]]; then
+    cdd() { while read -r x; do eval "$x" >/dev/null; done < <(dirs -l -p | "$HOME"/.local/bin/_cdd "$@"); }
+    alias cd=cdd
 fi
 
 # Directory bookmarks
 if [ -d "$HOME/.bookmarks" ]; then
-	goto() {
-		pushd -n "$PWD" >/dev/null
-		local CDPATH="$HOME/.bookmarks"
-		command cd -P "$@" >/dev/null
-	}
-	complete -W "$(command cd ~/.bookmarks && printf '%s\n' -- *)" goto
-	bookmark() {
-		pushd "$HOME/.bookmarks" >/dev/null
-		ln -s "$OLDPWD" "$@"
-		popd >/dev/null
-	}
+    goto() {
+        pushd -n "$PWD" >/dev/null
+        local CDPATH="$HOME/.bookmarks"
+        command cd -P "$@" >/dev/null
+    }
+    complete -W "$(command cd ~/.bookmarks && printf '%s\n' -- *)" goto
+    bookmark() {
+        pushd "$HOME/.bookmarks" >/dev/null
+        ln -s "$OLDPWD" "$@"
+        popd >/dev/null
+    }
 fi
 
 # Make directory and change directory into it
@@ -178,30 +178,22 @@ export HOSTFILE="$HOME/.hosts"
 # broot function
 [ -f ~/.config/broot/launcher/bash/br ] && . ~/.config/broot/launcher/bash/br
 
-# fzf bash completion
-[ -f "${XDG_CONFIG_HOME}"/fzf/fzf.bash ] && . "${XDG_CONFIG_HOME}"/fzf/fzf.bash
-
 # fzf open multiple files
 fzfr() { fzf -m -x | xargs -d'\n' -r "$@" ; }
-
-# git diff with bat
-batdiff() {
-	git diff --name-only --diff-filter=d | xargs bat --diff
-}
 
 # Return disk that directory is on
 whichdisk() { realpath "$(df "${1:-.}" | command grep '^/' | cut -d' ' -f1)" ; }
 
 # pastel colour mode
 if [[ $COLORTERM =~ ^(truecolor|24bit)$ ]]; then
-	export PASTEL_COLOR_MODE='24bit'
+    export PASTEL_COLOR_MODE='24bit'
 else
-	export PASTEL_COLOR_MODE='8bit'
+    export PASTEL_COLOR_MODE='8bit'
 fi
 
 # GitHub CLI bash completion
 if command -v gh >/dev/null; then
-	eval "$(gh completion -s bash 2>/dev/null)"
+    eval "$(gh completion -s bash 2>/dev/null)"
 fi
 
 # Hashicorp bash tab completion
@@ -215,13 +207,13 @@ ageh() { echo $((($(date +%s) - $(date +%s -r "$1")) / 3600)) hours; }
 aged() { echo $((($(date +%s) - $(date +%s -r "$1")) / 86400)) days; }
 
 # Colourise man pages
-export LESS_TERMCAP_mb=$'\E[1;31m'		# begin bold
-export LESS_TERMCAP_md=$'\E[1;36m'		# begin blink
-export LESS_TERMCAP_me=$'\E[0m'			# reset bold/blink
-export LESS_TERMCAP_so=$'\E[01;44;30m'	# begin reverse video
-export LESS_TERMCAP_se=$'\E[0m'			# reset reverse video
-export LESS_TERMCAP_us=$'\E[1;32m'		# begin underline
-export LESS_TERMCAP_ue=$'\E[0m'			# reset underline
+export LESS_TERMCAP_mb=$'\E[1;31m'      # begin bold
+export LESS_TERMCAP_md=$'\E[1;36m'      # begin blink
+export LESS_TERMCAP_me=$'\E[0m'         # reset bold/blink
+export LESS_TERMCAP_so=$'\E[01;44;30m'  # begin reverse video
+export LESS_TERMCAP_se=$'\E[0m'         # reset reverse video
+export LESS_TERMCAP_us=$'\E[1;32m'      # begin underline
+export LESS_TERMCAP_ue=$'\E[0m'         # reset underline
 export LESS_TERMCAP_mr=$(tput rev)
 export LESS_TERMCAP_mh=$(tput dim)
 export LESS_TERMCAP_ZN=$(tput ssubm)
@@ -260,13 +252,13 @@ export TMUX_PLUGIN_MANAGER_PATH="$XDG_DATA_HOME"/tmux/plugins
 export GVIMINIT='let $MYGVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/gvimrc" : "$XDG_CONFIG_HOME/nvim/init.gvim" | so $MYGVIMRC'
 export VIMINIT='let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$XDG_CONFIG_HOME/nvim/init.vim" | so $MYVIMRC'
 if [ -n "$DISPLAY" ]; then
-	export BROWSER=qutebrowser
+    export BROWSER=qutebrowser
 else
-	if ! type links >/dev/null 2>&1; then
-		export BROWSER=links
-	else
-		export BROWSER=lynx
-	fi
+    if ! type links >/dev/null 2>&1; then
+        export BROWSER=links
+    else
+        export BROWSER=lynx
+    fi
 fi
 
 # Source host specific environment
