@@ -1,0 +1,24 @@
+## Host specific functions for horus
+
+# Pihole may be in docker container
+if ! type pihole >/dev/null 2>&1; then
+	pihole() { docker exec pihole pihole "$@"; }
+fi
+
+# Start ssh-agent if necessary
+if ! [ -S "$SSH_AUTH_SOCK" ]; then
+	eval "$(ssh-agent -s)" > /dev/null
+	ssh-add
+	ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
+fi
+
+# Aliases
+alias vi='nvim --appimage-extract-and-run'
+alias vimdiff='nvim -d --appimage-extract-and-run'
+
+# Workaround for git-delta not working without GLIBC_2.29
+export GIT_CONFIG_COUNT=3 \
+GIT_CONFIG_KEY_0="core.pager" GIT_CONFIG_VALUE_0="LESS= less -FRXq" \
+GIT_CONFIG_KEY_1="pager.diff" GIT_CONFIG_VALUE_1="LESS= less -RSqx4+g" \
+GIT_CONFIG_KEY_2="pager.log" GIT_CONFIG_VALUE_2="LESS= less -Rq+g" \
+GIT_CONFIG_KEY_3="core.whatchanged" GIT_CONFIG_VALUE_3="LESS= less -Rq+g"

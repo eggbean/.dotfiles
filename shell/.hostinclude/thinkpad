@@ -1,5 +1,7 @@
 ## Host specific functions, aliases and environment variables for ThinkPad clients
 
+if grep -qi microsoft /proc/version; then source ~/.dotfiles/shell/.hostinclude/wsl && return; fi
+
 # Turn SD card reader on and off
 sdreader() {
 	while :; do
