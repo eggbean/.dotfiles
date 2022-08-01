@@ -98,6 +98,9 @@ fi
 # aws-cli command completion
 [ -L /usr/local/bin/aws_completer ] && complete -C '/usr/local/bin/aws_completer' aws
 
+# MinIO Client command completion
+complete -C mclient mclient
+
 # Rename tmux windows when attaching to docker containers
 docker() {
     if [[ $TMUX ]] && [[ "$1" == "attach" ]]; then
