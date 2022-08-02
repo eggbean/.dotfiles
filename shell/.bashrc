@@ -10,10 +10,15 @@ esac
 
 # History file settings
 HISTCONTROL=ignoreboth
-HISTSIZE=2000
-HISTFILESIZE=3000
 HISTTIMEFORMAT="%d/%m/%y %T "
-HISTIGNORE=ls:ll:la:l:cd:cdd:pwd:df:tmux:htop:git:hue:fg:date
+HISTIGNORE=ls:ll:la:l:pwd:df:du:history:tmux:htop:fg:man:mans:date:hue
+if [ ! "$(uname -o)" = "Android" ] && [ "$(arch)" = "x86_64" ]; then
+    HISTSIZE=2000
+    HISTFILESIZE=10000
+else
+    HISTSIZE=1000
+    HISTFILESIZE=5000
+fi
 
 # Shared history between tmux panes
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
@@ -45,9 +50,7 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-# Enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
+# Enable programmable completion features
 if ! shopt -oq posix; then
     if [ -f /usr/share/bash-completion/bash_completion ]; then
         . /usr/share/bash-completion/bash_completion
@@ -121,8 +124,8 @@ git() {
     else
         if command -v hub >/dev/null; then
             command hub "$@"
-    else
-      command git "$@"
+        else
+            command git "$@"
         fi
     fi
 }
