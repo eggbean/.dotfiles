@@ -1,0 +1,18 @@
+name: Mirror repository on S3
+on:
+  push:
+    branches:
+      - master
+jobs:
+  s3Backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: S3 Backup
+        uses: peter-evans/s3-backup@v1
+        env:
+          ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
+          SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
+          MIRROR_TARGET: eggbean-github-backups/dotfiles
+        with:
+          args: --overwrite --remove
