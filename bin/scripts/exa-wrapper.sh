@@ -93,4 +93,7 @@ shift "$((OPTIND - 1))"
 (( git == 1 )) && \
   [[ $(git -C "${*:-.}" rev-parse --is-inside-work-tree) == true ]] 2>/dev/null && exa_opts+=(--git)
 
-exa --color-scale "${exa_opts[@]}" "$@"
+shopt -s extglob
+[[ $(realpath "${*:-.}") == /@(mnt|?)/* ]] && exabin=exa-ntfs || exabin=exa
+
+${exabin} --color-scale "${exa_opts[@]}" "$@"
