@@ -77,14 +77,26 @@ ssh() {
     fi
 }
 
+# mosh() {
+#     if [[ $TMUX ]]; then
+#         tmux rename-window "$(echo "${@: -1}" | rev | cut -d '@' -f1 | rev | sed -E 's/\.([a-z0-9\-]+)\.compute\.amazonaws\.com$//' )"
+#         command mosh "$@"
+#         tmux set automatic-rename "on" >/dev/null
+#     else
+#         command mosh "$@"
+#     fi
+# }
+
+# https://superuser.com/a/1315015/8972
 mosh() {
-    if [[ $TMUX ]]; then
-        tmux rename-window "$(echo "${@: -1}" | rev | cut -d '@' -f1 | rev | sed -E 's/\.([a-z0-9\-]+)\.compute\.amazonaws\.com$//' )"
-        command mosh "$@"
-        tmux set automatic-rename "on" >/dev/null
-    else
-        command mosh "$@"
-    fi
+  case $@ in
+    hostname)
+      command mosh osiris.jinkosystems.co.uk -- bash -c 'echo "Bouncing via bastion..." && echo && ssh hostname.domain.com'
+      ;;
+    *)
+      command mosh "$@"
+      ;;
+  esac
 }
 
 # Update $PATH for the Google Cloud SDK
