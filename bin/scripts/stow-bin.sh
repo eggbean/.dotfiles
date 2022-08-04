@@ -1,10 +1,9 @@
 #!/bin/bash
 
-##	Usage: [sudo] stow-bin.sh [--nosudo] [--remove] [--logname LOGNAME]
+##	Usage: [sudo] stow-bin.sh [--nosudo] [--remove]
 ##
 ##	--nosudo			Stow/restow/unstow in ~/.local for non-sudoer user
 ##	--remove			Unstow
-##	--logname LOGNAME	Add username as logname command is not available on WSL on Windows
 ##
 ##	This script does not delete any existing files
 
@@ -13,7 +12,7 @@
 
 set -eo pipefail
 
-options=$(getopt -o '' --long nosudo --long remove --long logname: -- "$@")
+options=$(getopt -o '' --long nosudo --long remove: -- "$@")
 
 eval set -- "$options"
 while true; do
@@ -24,10 +23,6 @@ while true; do
 	--remove)
 		remove=true
 		;;
-	--logname)
-		shift;
-		logname=$1
-		;;
 	--)
 		shift
 		break
@@ -36,8 +31,7 @@ while true; do
 	shift
 done
 
-[ -z "${logname}" ] && logname="$(logname)"
-[ "$(id -u)" = "0" ] && HOME="/home/${logname}"
+[ "$(id -u)" = "0" ] && HOME="/home/${SUDO_USER}"
 STOW_DIR="$HOME/.dotfiles/bin"
 
 # Set variables for (re)stowing or unstowing
