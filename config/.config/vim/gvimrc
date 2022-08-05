@@ -15,9 +15,9 @@ syntax on
 set t_Co=256
 color summerfruit256
 if has("gui_gtk2")
-  set guifont=Iosevka\ Term\ 14
+  set guifont=Iosevka\ Term\ 12
 elseif has("gui_win32")
-  set guifont=Iosevka_NF:h14
+  set guifont=Iosevka_NF:h12
 endif
 highlight Cursor guifg=white guibg=red
 highlight iCursor guifg=white guibg=steelblue
@@ -154,9 +154,9 @@ function! ToggleDistractionFreeMode()
     highlight iCursor guifg=white guibg=black
     set linebreak | syntax off
     if has("gui_gtk2")
-      set guifont=Iosevka\ Term\ 14
+      set guifont=Iosevka\ Term\ 12
     elseif has("gui_win32")
-      set guifont=Iosevka_NF:h14:W500
+      set guifont=Iosevka_NF:h12:W500
     endif
     map j gj
     map k gk
@@ -167,9 +167,9 @@ function! ToggleDistractionFreeMode()
     endfor
     set nolinebreak | syntax on
     if has("gui_gtk2")
-      set guifont=Iosevka\ Term\ 14
+      set guifont=Iosevka\ Term\ 12
     elseif has("gui_win32")
-      set guifont=Iosevka_NF:h14
+      set guifont=Iosevka_NF:h12
     endif
     unmap j
     unmap k
