@@ -25,9 +25,16 @@ cp ~/.dotfiles/config/.config/mpv/* /mnt/c/Users/"$USER"/AppData/Roaming/mpv/
 cp ~/.dotfiles/config/.config/alacritty/alacritty.windows.yml /mnt/c/Users/"$USER"/AppData/Roaming/alacritty/alacritty.yml
 cp ~/.dotfiles/config/.config/alacritty/alacritty.main.yml /mnt/c/Users/"$USER"/AppData/Roaming/alacritty/alacritty.main.yml
 
-# ranger/rifle
+# ranger
 if [ ! -L ~/.dotfiles/config/.config/ranger/rifle.conf ]; then
   rm ~/.dotfiles/config/.config/ranger/rifle.conf
   ln -s ~/.dotfiles/config/.config/ranger/rifle.conf.windows ~/.dotfiles/config/.config/ranger/rifle.conf
   git update-index --skip-worktree ~/.dotfiles/config/.config/ranger/rifle.conf
 fi
+
+# windows terminal
+if [ -d ~/.winconfigs ]; then
+  [ ! -d /mnt/c/Users/jason/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState ] && mkdir -p /mnt/c/Users/jason/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState
+   cp ~/.winconfigs/Windows_Terminal/settings.json /mnt/c/Users/jason/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState
+fi
+
