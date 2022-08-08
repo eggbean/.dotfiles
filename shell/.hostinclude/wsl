@@ -5,3 +5,9 @@ export BROWSER='/mnt/c/Program\ Files/qutebrowser/qutebrowser.exe'
 
 # Desktop notifications
 notify-send() { wsl-notify-send.exe --category $WSL_DISTRO_NAME "${@}"; }
+
+# Function to change directory using Windows path
+gotopath() {
+    command cd "$(wslpath -u "$@")"
+}
+
