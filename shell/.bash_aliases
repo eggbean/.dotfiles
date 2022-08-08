@@ -47,7 +47,7 @@ if command -v whoisrb >/dev/null; then
 fi
 
 # Extras
-alias decomment='egrep -v "(^#.*|^$)"'
+alias decomment='egrep -v "(^[#;].*|^$)"'
 alias termcolours='/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/gawin/bash-colors-256/master/colors)"'
 alias nocolour="sed 's/\x1b\[[0-9;]*m//g'"
 alias fzfp='fzf --preview "bat --color=always --style=numbers --line-range=:500 {}"'
