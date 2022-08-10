@@ -19,6 +19,7 @@ alias xclip='xclip -r'
 alias sxiv='sxiv -abs f'
 alias qb='qutebrowser'
 alias mklink=' . mklink.sh'
+alias tv='tidy-viewer'
 
 # Aliases to avoid making mistakes:
 alias cp='cp -iv'
