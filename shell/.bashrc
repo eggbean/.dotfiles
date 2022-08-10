@@ -110,9 +110,6 @@ if ! type gcloud >/dev/null 2>&1; then
     gcloud() { docker run --rm --volumes-from gcloud-config google/cloud-sdk:alpine gcloud "$@"; }
 fi
 
-# aws-cli command completion
-[ -L /usr/local/bin/aws_completer ] && complete -C '/usr/local/bin/aws_completer' aws
-
 # MinIO Client command completion
 complete -C mclient mclient
 
