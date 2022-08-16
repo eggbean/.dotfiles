@@ -33,6 +33,9 @@ _starship() {
             module)
                 cmd+="__module"
                 ;;
+            preset)
+                cmd+="__preset"
+                ;;
             print-config)
                 cmd+="__print__config"
                 ;;
@@ -58,7 +61,7 @@ _starship() {
 
     case "${cmd}" in
         starship)
-            opts="-h -V --help --version bug-report completions config explain init module print-config prompt session time timings toggle help"
+            opts="-h -V --help --version bug-report completions config explain init module preset print-config prompt session time timings toggle help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 1 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -282,6 +285,20 @@ _starship() {
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        starship__preset)
+            opts="-l -h --list --help pastel-powerline plain-text-symbols pure-preset no-runtime-versions nerd-font-symbols bracketed-segments"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
                 *)
                     COMPREPLY=()
                     ;;
