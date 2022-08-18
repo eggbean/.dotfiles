@@ -1,8 +1,13 @@
 #!/bin/bash
 
+# Set file permissions for ssh keys
 mapfile -t privatekeys < <(find ssh/.ssh -regextype egrep -regex '.*/id_[^.]+$')
 chmod 400 "${privatekeys[@]}"
 chmod 644 ssh/.ssh/config
+
+# Set file permissions for GPG keys
+find config/.gnupg -type d -exec chmod 700 {} \;
+find config/.gnupg -type f -exec chmod 600 {} \;
 
 # htop changes its configuration file with view changes, so ignore
 git update-index --assume-unchanged config/.config/htop/htoprc
