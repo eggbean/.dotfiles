@@ -55,6 +55,12 @@ if [ -d "/usr/local/go/bin" ]; then
 	PATH=$PATH:/usr/local/go/bin
 fi
 
+# GPG Agent
+eval $(gpg-agent --daemon 2>/dev/null)
+export GPG_AGENT_INFO
+export SSH_AUTH_SOCK
+export GPG_TTY=$(tty)
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('${HOME}/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
