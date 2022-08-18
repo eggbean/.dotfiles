@@ -18,7 +18,7 @@ done
 
 # mpv
 [ ! -d /mnt/c/Users/"$USER"/AppData/Roaming/mpv/ ] && mkdir /mnt/c/Users/"$USER"/AppData/Roaming/mpv/
-cp ~/.dotfiles/config/.config/mpv/* /mnt/c/Users/"$USER"/AppData/Roaming/mpv/
+cp -r ~/.dotfiles/config/.config/mpv/* /mnt/c/Users/"$USER"/AppData/Roaming/mpv/
 
 # alacritty
 [ ! -d /mnt/c/Users/"$USER"/AppData/Roaming/alacritty/ ] && mkdir /mnt/c/Users/"$USER"/AppData/Roaming/alacritty/
