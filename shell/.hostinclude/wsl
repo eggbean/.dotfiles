@@ -3,6 +3,10 @@
 # Set variables for Windows applications
 export BROWSER='/mnt/c/Program\ Files/qutebrowser/qutebrowser.exe'
 
+# Allow Windows access to Vagrant
+export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
+export PATH="$PATH:/mnt/c/Program Files/Oracle/VirtualBox"
+
 # Desktop notifications
 notify-send() { wsl-notify-send.exe --category $WSL_DISTRO_NAME "${@}"; }
 
