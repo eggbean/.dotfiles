@@ -105,8 +105,8 @@ popd >/dev/null
 stow $stowcom -vt "${compdir}" completions 2>&1 \
 	&& echo "DONE: bash completions package $stowed" || { echo "ERROR $stowing bash completions package" >&2; exit 1; }
 
-# Stow/unstow fonts if local desktop system
-if [ -n "${DISPLAY}" ]; then
+# Stow/unstow fonts if local desktop system, but not on WSL
+if [ -n "${DISPLAY}" ] && grep -vqi microsoft /proc/version; then
 	if [ ! -d "${fontdir}" ]; then mkdir -p "${fontdir}"; fi
 	stow --no-folding $stowcom -vt "${fontdir}" fonts 2>&1 \
 		&& echo "DONE: fonts package $stowed" || { echo "ERROR $stowing fonts package" >&2; exit 1; }
