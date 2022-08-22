@@ -176,3 +176,11 @@ function! ToggleDistractionFreeMode()
   endif
 endfunction
 nmap <silent> <Leader>z :call ToggleDistractionFreeMode()<CR>
+
+" Set directories on Windows
+if has("gui_win32")
+  set backupdir=~/vimfiles/backup | call mkdir(&backupdir, 'p')
+  set directory=~/vimfiles/swap   | call mkdir(&directory, 'p')
+  set undodir=~/vimfiles/undo     | call mkdir(&undodir,   'p')
+  set viminfofile=~/vimfiles/viminfo
+endif
