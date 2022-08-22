@@ -1,0 +1,50 @@
+name: Upgrade skate
+on:
+  [workflow_dispatch]
+
+jobs:
+  upgrade:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Download and extract tarballs
+      run: |
+        # nameregex='^skate_\d[\d.]+?\d?_linux_amd64\.tar\.gz$'
+        # wget -q "$(curl -s https://api.github.com/repos/charmbracelet/skate/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
+        # tar -C bin/x86_64 -xvf skate_*_linux_amd64.tar.gz skate
+        # rm skate_*_linux_amd64.tar.gz
+
+        nameregex='^skate_\d[\d.]+?\d?_linux_amd64\.deb$'
+        wget -q "$(curl -s https://api.github.com/repos/charmbracelet/skate/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
+        dpkg-deb --fsys-tarfile skate_*_linux_amd64.deb | tar xOf - ./usr/bin/skate > skate
+        chmod +x skate
+        mv skate bin/x86_64
+        rm skate_*_linux_amd64.deb
+
+        nameregex='^skate_\d[\d.]+?\d?_linux_arm64\.tar\.gz$'
+        wget -q "$(curl -s https://api.github.com/repos/charmbracelet/skate/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
+        tar -xvf skate_*_linux_arm64.tar.gz
+        rm LICENSE README.md completions/skate.{fish,zsh}
+        mv skate bin/aarch64
+        mv completions/skate.bash bin/completions
+        mv manpages/skate.1.gz bin/man/man1
+        rm skate_*_linux_arm64.tar.gz
+
+        nameregex='^skate_\d[\d.]+?\d?_linux_armv7\.tar\.gz$'
+        wget -q "$(curl -s https://api.github.com/repos/charmbracelet/skate/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
+        tar -C bin/armv7l -xvf skate_*_linux_armv7.tar.gz skate
+        rm skate_*_linux_armv7.tar.gz
+
+
+    - name: Commit and push to repository
+      run: |
+        git config --global user.name "eggbean"
+        git config --global user.email 815311+eggbean@users.noreply.github.com
+        git add --all
+        git status
+        tag="$(curl -s https://api.github.com/repos/charmbracelet/skate/releases/latest | jq -r '.tag_name')"
+        git commit -m "Upgrade skate to ${tag}"
+        git push
