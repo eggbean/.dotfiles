@@ -97,3 +97,6 @@ tnoremap <Esc> <C-\><C-n>
 " Open files using xdg-open
 nnoremap gX :silent :execute
 	\ "!xdg-open" expand('%:p:h') . "/" . expand("<cfile>") " &"<cr>
+
+" Clear registers
+command! WipeReg for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor
