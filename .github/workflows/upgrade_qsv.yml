@@ -1,0 +1,50 @@
+name: Upgrade qsv
+on:
+  [workflow_dispatch]
+
+jobs:
+  upgrade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download and extract zip files
+        run: |
+          nameregex='^qsv-\d[\d.]+?\d?-aarch64-unknown-linux-gnu\.zip$'
+          url="$(curl -s https://api.github.com/repos/jqnatividad/qsv/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
+          file="${url##*/}"
+          wget -q "${url}"
+          unzip -p "${file}" qsv > qsv
+          chmod +x qsv
+          mv qsv bin/aarch64
+          rm "${file}"
+
+          nameregex='^qsv-\d[\d.]+?\d?-arm-unknown-linux-gnueabihf\.zip$'
+          url="$(curl -s https://api.github.com/repos/jqnatividad/qsv/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
+          file="${url##*/}"
+          wget -q "${url}"
+          unzip -p "${file}" qsv > qsv
+          chmod +x qsv
+          mv qsv bin/armv7l
+          rm "${file}"
+
+          nameregex='^qsv-\d[\d.]+?\d?-x86_64-unknown-linux-gnu\.zip$'
+          url="$(curl -s https://api.github.com/repos/jqnatividad/qsv/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
+          file="${url##*/}"
+          wget -q "${url}"
+          unzip -p "${file}" qsv > qsv
+          chmod +x qsv
+          mv qsv bin/x86_64
+          rm "${file}"
+
+      - name: Commit and push to repository
+        run: |
+          git config --global user.name "eggbean"
+          git config --global user.email 815311+eggbean@users.noreply.github.com
+          git add --all
+          git status
+          tag="$(curl -s https://api.github.com/repos/jqnatividad/qsv/releases/latest | jq -r '.tag_name')"
+          git commit -m "Upgrade qsv to ${tag}"
+          git push
