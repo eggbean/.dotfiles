@@ -236,6 +236,31 @@ export LESS_TERMCAP_ZV=$(tput rsubm)
 export LESS_TERMCAP_ZO=$(tput ssupm)
 export LESS_TERMCAP_ZW=$(tput rsupm)
 
+# fzf
+if command -v fzf >/dev/null; then
+  export FZF_DEFAULT_OPTS='
+    --reverse
+    --bind=ctrl-a:toggle-all
+    --bind=ctrl-alt-j:preview-down
+    --bind=ctrl-alt-k:preview-up
+    --bind=ctrl-d:preview-page-down
+    --bind=ctrl-u:preview-page-up
+    --bind=alt-bs:clear-query
+    --color fg:#F8F8F2
+    --color fg+:#F8F8F2
+    --color bg:-1
+    --color bg+:-1
+    --color hl:#50FA7B
+    --color hl+:#FFB86C
+    --color info:#BD93F9
+    --color prompt:#50FA7B
+    --color pointer:#FF79C6
+    --color marker:#FF5555
+    --color spinner:#8BE9FD
+    --color header:#8BE9FD
+  '
+fi
+
 # ENVIRONMENT VARIABLES
 # XDG locations need to be set for termux
 export XDG_CONFIG_HOME="$HOME"/.config
