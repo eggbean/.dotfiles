@@ -1,15 +1,15 @@
-## Host specific functions for osiris
+## Host specific stuff for osiris
 
 # Pihole may be in docker container
 if ! type pihole >/dev/null 2>&1; then
-	pihole() { docker exec pihole pihole "$@"; }
+  pihole() { docker exec pihole pihole "$@"; }
 fi
 
 # Start ssh-agent if necessary
 if ! [ -S "$SSH_AUTH_SOCK" ]; then
-	eval "$(ssh-agent -s)" > /dev/null
-	find ~/.ssh -regextype egrep -regex '.*/id_[^.]+$' | xargs ssh-add
-	ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
+  eval "$(ssh-agent -s)" > /dev/null
+  find ~/.ssh -regextype egrep -regex '.*/id_[^.]+$' | xargs ssh-add
+  ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
 fi
 
 # Aliases

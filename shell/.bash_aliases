@@ -3,7 +3,7 @@ alias l='ls'
 alias la='ls -A'
 alias ll='ls -l'
 alias lla='ls -Al'
-alias sudo='sudo '
+alias sudo='sudo '  # pass aliases to superuser
 alias tree='tree -C'
 alias diff='diff --color=always --tabsize=4'
 alias grep='grep --color=always'
@@ -18,7 +18,6 @@ alias ncdu='ncdu --exclude-kernfs --color dark'
 alias xclip='xclip -r'
 alias sxiv='sxiv -abs f'
 alias qb='qutebrowser'
-alias mklink=' . mklink.sh'
 alias tv='tidy-viewer'
 
 # Aliases to avoid making mistakes:
@@ -28,23 +27,23 @@ alias rm='rm -Iv'
 
 # Use nvim appimage if available
 if command -v nvim >/dev/null; then
-	alias vi='nvim'
+  alias vi='nvim'
 fi
 
 # Use nvim for vimdiff
 if command -v nvim >/dev/null; then
-	alias vimdiff='nvim -d'
+  alias vimdiff='nvim -d'
 fi
 
 # Command replacements
 if command -v exa >/dev/null; then
-	alias ls='exa-wrapper.sh'
+  alias ls='exa-wrapper.sh'
 else
-	alias ls='/bin/ls $LS_OPTIONS'
+  alias ls='/bin/ls $LS_OPTIONS'
 fi
 
 if command -v whoisrb >/dev/null; then
-	alias whois='whoisrb'
+  alias whois='whoisrb'
 fi
 
 # Extras

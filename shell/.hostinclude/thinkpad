@@ -1,17 +1,16 @@
-## Host specific functions, aliases and environment variables for ThinkPad clients
-
+## Host specific stuff for ThinkPad clients (not WSL)
 if grep -qi microsoft /proc/version; then source ~/.dotfiles/shell/.hostinclude/wsl && return; fi
 
 # Turn SD card reader on and off
 sdreader() {
-	while :; do
-		case $1 in
-			on	) echo "2-3" | sudo tee /sys/bus/usb/drivers/usb/bind &>/dev/null && echo 'SD card reader on' || echo 'No change' ;;
-			off	) echo "2-3" | sudo tee /sys/bus/usb/drivers/usb/unbind &>/dev/null && echo 'SD card reader off' || echo 'No change' ;;
-			*	) echo "Error" ;;
-		esac
-		return
-	done
+  while :; do
+    case $1 in
+      on  ) echo "2-3" | sudo tee /sys/bus/usb/drivers/usb/bind &>/dev/null && echo 'SD card reader on' || echo 'No change' ;;
+      off ) echo "2-3" | sudo tee /sys/bus/usb/drivers/usb/unbind &>/dev/null && echo 'SD card reader off' || echo 'No change' ;;
+      * ) echo "Error" ;;
+    esac
+    return
+  done
 }
 
 # Alias to turn the screen off
