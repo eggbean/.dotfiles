@@ -214,7 +214,7 @@ fi
 # Hashicorp bash tab completion
 [ -x /usr/bin/terraform ] && complete -C /usr/bin/terraform terraform
 [ -x /usr/bin/packer ] && complete -C /usr/bin/packer packer
-[ -x /usr/bin/vagrant ] && . /opt/vagrant/embedded/gems/2.3.0/gems/vagrant-2.3.0/contrib/bash/completion.sh
+[ -x /usr/bin/vault ] && complete -C /usr/bin/vault vault
 
 # Age of files
 agem() { echo $((($(date +%s) - $(date +%s -r "$1")) / 60)) minutes; }
