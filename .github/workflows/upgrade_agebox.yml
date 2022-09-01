@@ -1,0 +1,35 @@
+name: Upgrade agebox
+on:
+  [workflow_dispatch]
+
+jobs:
+  upgrade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download binaries
+        run: |
+          url="$(curl -s https://api.github.com/repos/slok/agebox/releases/latest | jq -r '.assets[] | .browser_download_url' | grep agebox-linux-amd64)"
+          wget -q "${url}" -O bin/x86_64/agebox
+          chmod +x bin/x86_64/agebox
+
+          url="$(curl -s https://api.github.com/repos/slok/agebox/releases/latest | jq -r '.assets[] | .browser_download_url' | grep agebox-linux-arm-v7)"
+          wget -q "${url}" -O bin/armv7l/agebox
+          chmod +x bin/armv7l/agebox
+
+          url="$(curl -s https://api.github.com/repos/slok/agebox/releases/latest | jq -r '.assets[] | .browser_download_url' | grep agebox-linux-arm64)"
+          wget -q "${url}" -O bin/aarch64/agebox
+          chmod +x bin/aarch64/agebox
+
+      - name: Commit and push to repository
+        run: |
+          git config --global user.name "eggbean"
+          git config --global user.email 815311+eggbean@users.noreply.github.com
+          git add --all
+          git status
+          tag="$(curl -s https://api.github.com/repos/slok/agebox/releases/latest | jq -r '.tag_name')"
+          git commit -m "Upgrade agebox to ${tag}" -m "Need to learn jq properly and replace grep hack in workflow"
+          git push
