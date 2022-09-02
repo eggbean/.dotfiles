@@ -67,7 +67,7 @@ else
 	if [ "$(id -u)" -ne "0" ]; then { echo "This script must be run as root to stow in /usr, or use the --nosudo option to stow in ~/.local." >&2; exit 1; }; fi
 	targetdir='/usr/local/bin'
 	mandir='/usr/local/share/man'
-	compdir='/etc/bash_completion.d'
+	compdir='/usr/share/bash-completion/completions'
 	fontdir='/usr/local/share/fonts'
 fi
 
