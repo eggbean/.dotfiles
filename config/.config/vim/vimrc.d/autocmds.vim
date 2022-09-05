@@ -1,13 +1,5 @@
 " AUTOCMDS
 
-" Regenerate spl files on startup
-set spellfile=vimrc.d/spell/en.utf-8.add
-for d in glob('vimrc.d/spell/*.add', 1, 1)
-  if filereadable(d) && (!filereadable(d . '.spl') || getftime(d) > getftime(d . '.spl'))
-    exec 'mkspell! ' . fnameescape(d)
-  endif
-endfor
-
 " Option for specific filetypes
 autocmd BufRead,BufNewFile *.md   setlocal textwidth=80 spell spelllang=en_gb
 autocmd BufRead,BufNewFile *.txt  setlocal textwidth=80 spell spelllang=en_gb

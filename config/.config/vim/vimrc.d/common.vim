@@ -118,3 +118,12 @@ nnoremap gX :silent :execute
 
 " Clear registers
 command! WipeReg for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor
+
+" Set dictionary and regenerate spl files on startup
+set dictionary+=/usr/share/dict/words
+set spellfile=vimrc.d/spell/en.utf-8.add
+for d in glob('vimrc.d/spell/*.add', 1, 1)
+  if filereadable(d) && (!filereadable(d . '.spl') || getftime(d) > getftime(d . '.spl'))
+    exec 'mkspell! ' . fnameescape(d)
+  endif
+endfor
