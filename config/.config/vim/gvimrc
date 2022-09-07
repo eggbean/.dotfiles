@@ -1,13 +1,5 @@
 " GVIM CONFIGURATION
 
-" Set directories on Windows
-if has("gui_win32")
-  set backupdir=~/vimfiles/backup | call mkdir(&backupdir, 'p')
-  set directory=~/vimfiles/swap   | call mkdir(&directory, 'p')
-  set undodir=~/vimfiles/undo     | call mkdir(&undodir,   'p')
-  set viminfofile=~/vimfiles/viminfo
-endif
-
 if has('unix') | call plug#begin('$XDG_DATA_HOME/vim/plugged') | elseif has('win32') | call plug#begin() | endif
   Plug 'ntpeters/vim-better-whitespace'
   Plug 'machakann/vim-highlightedyank'
@@ -22,9 +14,9 @@ call plug#end()
 syntax on
 set t_Co=256
 color summerfruit256
-if has("gui_gtk2")
+if has('gui_gtk2')
   set guifont=Iosevka\ Term\ 12
-elseif has("gui_win32")
+elseif has('gui_win32')
   set guifont=Iosevka_NF:h12
 endif
 highlight Cursor guifg=white guibg=red
@@ -129,9 +121,9 @@ inoremap <M-Z> <ESC>Z
 
 " Fullscreen with Alt-Enter
 function! ToggleFullScreen()
-  if has("gui_gtk2")
+  if has('gui_gtk2')
     :call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")
-  elseif has("gui_win32")
+  elseif has('gui_win32')
     :call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)
   endif
 endfunction
@@ -163,9 +155,9 @@ function! ToggleDistractionFreeMode()
     highlight Cursor guifg=white guibg=green
     highlight iCursor guifg=white guibg=black
     set linebreak | syntax off
-    if has("gui_gtk2")
+    if has('gui_gtk2')
       set guifont=Iosevka\ Term\ 12
-    elseif has("gui_win32")
+    elseif has('gui_win32')
       set guifont=Iosevka_NF:h12:W500
     endif
     map j gj
@@ -176,9 +168,9 @@ function! ToggleDistractionFreeMode()
       execute "wincmd " . key . " | close "
     endfor
     set nolinebreak | syntax on
-    if has("gui_gtk2")
+    if has('gui_gtk2')
       set guifont=Iosevka\ Term\ 12
-    elseif has("gui_win32")
+    elseif has('gui_win32')
       set guifont=Iosevka_NF:h12
     endif
     unmap j
