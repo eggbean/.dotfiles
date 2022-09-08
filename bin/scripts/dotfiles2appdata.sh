@@ -35,7 +35,8 @@ fi
 
 # windows terminal
 if [ -d /mnt/c/Users/"$USER"/winfiles/Windows_Terminal ]; then
-  [ ! -d /mnt/c/Users/jason/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState ] && mkdir -p /mnt/c/Users/jason/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState
-   cp /mnt/c/Users/"$USER"/winfiles/Windows_Terminal/settings.json /mnt/c/Users/jason/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState
+  [ ! -d /mnt/c/Users/"$USER"/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState ] && mkdir -p /mnt/c/Users/"$USER"/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState
+  cp /mnt/c/Users/"$USER"/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json /mnt/c/Users/"$USER"/winfiles/Windows_Terminal/settings.json.bak
+  unix2dos -q /mnt/c/Users/"$USER"/winfiles/Windows_Terminal/settings.json.bak
+  cp /mnt/c/Users/"$USER"/winfiles/Windows_Terminal/settings.json /mnt/c/Users/"$USER"/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState
 fi
-
