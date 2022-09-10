@@ -87,25 +87,6 @@ nnoremap <expr> <C-y> (g:scrollLock == 1) ? ':windo set scrollbind<CR><C-y>:wind
 " nnoremap <C-S-E> :windo set scrollbind<CR><C-e>:windo set noscrollbind<CR>
 " nnoremap <C-S-Y> :windo set scrollbind<CR><C-y>:windo set noscrollbind<CR>
 
-" Emacs mappings in insert mode
-inoremap <A-b> <C-Left>
-inoremap <A-f> <C-Right>
-inoremap <A-d> <space><esc>ce
-
-" Emacs-style editing on the command-line
-cnoremap <C-d> <Del>
-cnoremap <C-a> <Home>
-cnoremap <C-e> <End>
-cnoremap <C-p> <Up>
-cnoremap <C-n> <Down>
-cnoremap <C-b> <Left>
-cnoremap <C-f> <Right>
-cnoremap <M-b> <S-Left>
-cnoremap <M-f> <S-Right>
-cnoremap <M-d> <S-Right><C-w>
-cnoremap <M-BS> <C-w>
-cnoremap <C-k> <C-\>e(strpart(getcmdline(), 0, getcmdpos() - 1))<CR>
-
 " Zoom toggle (plugin)
 noremap Zz <c-w>m
 
