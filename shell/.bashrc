@@ -193,9 +193,6 @@ export HOSTFILE="$HOME/.hosts"
 # broot function
 [ -f ~/.config/broot/launcher/bash/br ] && . ~/.config/broot/launcher/bash/br
 
-# fzf open multiple files
-fzfr() { fzf -m -x | xargs -d'\n' -r "$@" ; }
-
 # Return disk that directory is on
 whichdisk() { realpath "$(df "${1:-.}" | command grep '^/' | cut -d' ' -f1)" ; }
 
@@ -247,6 +244,8 @@ if command -v fzf >/dev/null; then
     --bind=ctrl-d:preview-page-down
     --bind=ctrl-u:preview-page-up
     --bind=alt-bs:clear-query
+    --bind=ctrl-h:deselect
+    --bind=ctrl-l:select
     --color fg:#F8F8F2
     --color fg+:#F8F8F2
     --color bg:-1
@@ -260,6 +259,8 @@ if command -v fzf >/dev/null; then
     --color spinner:#8BE9FD
     --color header:#8BE9FD
   '
+  # fzf open multiple files
+  fzfr() { fzf -m -x | xargs -d'\n' -r "$@" ; }
 fi
 
 # Source host specific environment
