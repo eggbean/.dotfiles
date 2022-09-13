@@ -2,6 +2,7 @@
 
 call plug#begin('$XDG_DATA_HOME/vim/plugged')
   Plug 'tpope/vim-commentary'
+  Plug 'tpope/vim-fugitive'
   Plug 'tpope/vim-rsi'
   Plug 'machakann/vim-sandwich'
   Plug 'christoomey/vim-tmux-navigator'
