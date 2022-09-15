@@ -26,6 +26,18 @@ require('lualine').setup({
   options = {
     section_separators = '', component_separators = '|',
   },
+  sections = {
+    -- left
+    lualine_a = { 'mode' },
+    lualine_b = { 'branch', 'diff', 'diagnostic' },
+    lualine_c = { 'filename' },
+
+    -- right
+    lualine_x = { "vim.fn['zoom#statusline']()", 'encoding', 'fileformat', 'filetype' },
+    lualine_y = { 'progress' },
+    lualine_z = { 'location' }
+  },
+  extensions = { 'quickfix', 'fugitive', 'fzf' },
 })
 
 -- Set barbar options
