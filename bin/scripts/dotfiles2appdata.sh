@@ -4,7 +4,7 @@
 [ ! -d /mnt/c/Users/"$USER"/AppData/Roaming/qutebrowser/config/ ] && mkdir -p /mnt/c/Users/"$USER"/AppData/Roaming/qutebrowser/config/
 cp -r ~/.dotfiles/config/.config/qutebrowser/* /mnt/c/Users/"$USER"/AppData/Roaming/qutebrowser/config/
 
-# gvim (files made read-only to avoid me accidentally editing them in Windows)
+# vim/gvim (files made read-only to avoid me accidentally editing them in Windows)
 [ ! -d /mnt/c/Users/"$USER"/vimfiles/vimrc.d/ ] && mkdir -p /mnt/c/Users/"$USER"/vimfiles/vimrc.d/
 cd /mnt/c/Users/"$USER"/vimfiles/ || { echo "ERROR: /mnt/c/Users/$USER/vimfiles/ not found." >&2; exit 1; }
 files=('vimrc' 'gvimrc' 'vimrc.d\\*')
@@ -13,6 +13,7 @@ for f in "${files[@]}"; do
 done
 cp -r ~/.dotfiles/config/.config/vim/* .
 for f in "${files[@]}"; do
+  unix2dos "$f" 2>/dev/null
   attrib.exe +R "$f"
 done
 

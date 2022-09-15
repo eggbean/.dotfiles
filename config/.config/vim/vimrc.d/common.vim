@@ -38,7 +38,6 @@ set ttimeout
 set ttimeoutlen=100
 set laststatus=2
 set display+=lastline
-set clipboard+=unnamedplus
 set formatoptions+=j
 set sessionoptions-=options
 set viewoptions-=options
@@ -59,6 +58,11 @@ set writebackup
 set swapfile
 set undofile
 set shortmess+=F
+if has('unnamedplus')
+  set clipboard+=unnamedplus
+else
+  set clipboard+=unnamed
+endif
 if !empty(&viminfo)
   set viminfo^=!
 endif

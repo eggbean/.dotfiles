@@ -31,11 +31,13 @@ augroup filetype_sh
 augroup END
 
 " Skeleton templates
-augroup skeleton
-  autocmd!
-  autocmd BufNewFile *.sh 0r ~/.config/vim/templates/skeleton.sh
-  autocmd BufNewFile *.py 0r ~/.config/vim/templates/skeleton.py
-augroup END
+if has('unix')
+  augroup skeleton
+    autocmd!
+    autocmd BufNewFile *.sh 0r ~/.config/vim/templates/skeleton.sh
+    autocmd BufNewFile *.py 0r ~/.config/vim/templates/skeleton.py
+  augroup END
+endif
 
 " Rename tmux windows with filename
 if exists('$TMUX')
