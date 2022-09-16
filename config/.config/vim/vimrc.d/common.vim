@@ -58,11 +58,13 @@ set writebackup
 set swapfile
 set undofile
 set shortmess+=F
+
 if has('unnamedplus')
   set clipboard+=unnamedplus
 else
   set clipboard+=unnamed
 endif
+
 if !empty(&viminfo)
   set viminfo^=!
 endif
@@ -91,9 +93,6 @@ nnoremap <expr> <C-y> (g:scrollLock == 1) ? ':windo set scrollbind<CR><C-y>:wind
 " nnoremap <C-S-E> :windo set scrollbind<CR><C-e>:windo set noscrollbind<CR>
 " nnoremap <C-S-Y> :windo set scrollbind<CR><C-y>:windo set noscrollbind<CR>
 
-" Zoom toggle (plugin)
-noremap Zz <c-w>m
-
 " Exit terminal mode with ESC
 tnoremap <Esc> <C-\><C-n>
 
@@ -112,3 +111,6 @@ for d in glob('vimrc.d/spell/*.add', 1, 1)
     exec 'mkspell! ' . fnameescape(d)
   endif
 endfor
+
+" Highlight syntax within Markdown
+let g:markdown_fenced_languages = ['html', 'css', 'python', 'sh', 'vim']
