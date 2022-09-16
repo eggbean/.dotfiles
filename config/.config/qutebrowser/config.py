@@ -374,3 +374,8 @@ config.bind('<Alt+Shift+:>', 'mode-leave', mode='passthrough')
 config.bind('<Alt+Shift+:>', 'mode-leave', mode='prompt')
 config.bind('<Alt+Shift+:>', 'mode-leave', mode='register')
 config.bind('<Alt+Shift+:>', 'mode-leave', mode='yesno')
+
+# Use Shift-Insert to paste on Windows
+import sys
+if sys.platform == "win32":
+    config.bind('<Shift+Ins>', 'insert-text -- {clipboard}', mode='insert')
