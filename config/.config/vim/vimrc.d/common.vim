@@ -73,6 +73,9 @@ if has('termguicolors')
   set termguicolors
 endif
 
+" Remap Y to be consitent with nvim
+nnoremap Y y$
+
 " Write when forgetting sudo
 cmap w!! w !sudo tee % >/dev/null
 
@@ -83,6 +86,10 @@ inoremap <A-S-j> <Esc>:m .+1<CR>==gi
 inoremap <A-S-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-S-j> :m '>+1<CR>gv=gv
 vnoremap <A-S-k> :m '<-2<CR>gv=gv
+
+" Open files using xdg-open
+nnoremap gX :silent :execute
+  \ "!xdg-open" expand('%:p:h') . "/" . expand("<cfile>") " &"<cr>
 
 " Scroll splits together one line
 let g:scrollLock = 0
@@ -95,10 +102,6 @@ nnoremap <expr> <C-y> (g:scrollLock == 1) ? ':windo set scrollbind<CR><C-y>:wind
 
 " Exit terminal mode with ESC
 tnoremap <Esc> <C-\><C-n>
-
-" Open files using xdg-open
-nnoremap gX :silent :execute
-  \ "!xdg-open" expand('%:p:h') . "/" . expand("<cfile>") " &"<cr>
 
 " Clear registers
 command! WipeReg for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor

@@ -1,6 +1,7 @@
 " PLUGINS
 
-call plug#begin('$XDG_DATA_HOME/vim/plugged')
+if has('unix') | call plug#begin('$XDG_DATA_HOME/vim/plugged')
+elseif has('win32') | call plug#begin() | endif
   Plug 'tpope/vim-commentary'
   Plug 'tpope/vim-fugitive'
   Plug 'tpope/vim-rsi'

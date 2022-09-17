@@ -1,6 +1,7 @@
 " GVIM CONFIGURATION
 
-if has('unix') | call plug#begin('$XDG_DATA_HOME/vim/plugged') | elseif has('win32') | call plug#begin() | endif
+if has('unix') | call plug#begin('$XDG_DATA_HOME/vim/plugged')
+elseif has('win32') | call plug#begin() | endif
   Plug 'ntpeters/vim-better-whitespace'
   Plug 'machakann/vim-highlightedyank'
   " Plug 'ruedigerha/vim-fullscreen'
