@@ -1,28 +1,28 @@
 #!/bin/bash
 
 # qutebrowser
-[ ! -d /mnt/c/Users/"$USER"/AppData/Roaming/qutebrowser/config/ ] && mkdir -p /mnt/c/Users/"$USER"/AppData/Roaming/qutebrowser/config/
-cp -r ~/.dotfiles/config/.config/qutebrowser/* /mnt/c/Users/"$USER"/AppData/Roaming/qutebrowser/config/
+[ ! -d /mnt/c/Users/"$USER"/AppData/Roaming/qutebrowser/config ] && mkdir -p /mnt/c/Users/"$USER"/AppData/Roaming/qutebrowser/config
+cp -r ~/.dotfiles/config/.config/qutebrowser/* /mnt/c/Users/"$USER"/AppData/Roaming/qutebrowser/config
 
 # vim/gvim (files made read-only to avoid me accidentally editing them in Windows)
-[ ! -d /mnt/c/Users/"$USER"/vimfiles/vimrc.d/ ] && mkdir -p /mnt/c/Users/"$USER"/vimfiles/vimrc.d/
-cd /mnt/c/Users/"$USER"/vimfiles/ || { echo "ERROR: /mnt/c/Users/$USER/vimfiles/ not found." >&2; exit 1; }
-files=('vimrc' 'gvimrc' 'vimrc.d\\*')
+[ ! -d /mnt/c/Users/"$USER"/vimfiles/vimrc.d ] && mkdir -p /mnt/c/Users/"$USER"/vimfiles/vimrc.d
+cd /mnt/c/Users/"$USER"/vimfiles || { echo "ERROR: /mnt/c/Users/$USER/vimfiles not found." >&2; exit 1; }
+files=('vimrc' 'gvimrc' 'vimrc.d/autocmds.vim' 'vimrc.d/common.vim' 'vimrc.d/plugins.vim' 'vimrc.d/xdg.vim')
 for f in "${files[@]}"; do
-  attrib.exe -R "$f" 2>/dev/null
+  attrib.exe -R "$f" >/dev/null
 done
 cp -r ~/.dotfiles/config/.config/vim/* .
 for f in "${files[@]}"; do
-  unix2dos "$f" 2>/dev/null
   attrib.exe +R "$f"
+  unix2dos "$f" 2>/dev/null
 done
 
 # mpv
-[ ! -d /mnt/c/Users/"$USER"/AppData/Roaming/mpv/ ] && mkdir /mnt/c/Users/"$USER"/AppData/Roaming/mpv/
-cp -r ~/.dotfiles/config/.config/mpv/* /mnt/c/Users/"$USER"/AppData/Roaming/mpv/
+[ ! -d /mnt/c/Users/"$USER"/AppData/Roaming/mpv ] && mkdir /mnt/c/Users/"$USER"/AppData/Roaming/mpv
+cp -r ~/.dotfiles/config/.config/mpv/* /mnt/c/Users/"$USER"/AppData/Roaming/mpv
 
 # alacritty
-[ ! -d /mnt/c/Users/"$USER"/AppData/Roaming/alacritty/ ] && mkdir /mnt/c/Users/"$USER"/AppData/Roaming/alacritty/
+[ ! -d /mnt/c/Users/"$USER"/AppData/Roaming/alacritty ] && mkdir /mnt/c/Users/"$USER"/AppData/Roaming/alacritty
 cp ~/.dotfiles/config/.config/alacritty/alacritty.windows.yml /mnt/c/Users/"$USER"/AppData/Roaming/alacritty/alacritty.yml
 cp ~/.dotfiles/config/.config/alacritty/alacritty.main.yml /mnt/c/Users/"$USER"/AppData/Roaming/alacritty/alacritty.main.yml
 
