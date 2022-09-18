@@ -47,13 +47,13 @@ for f in .bash_aliases .bash_logout .bash_profile .bashrc .inputrc .profile; do
 		while read -N 1 -rp "Do you want to add your existing ~/$f to the dotfiles repostitory?   " yn; do
 			printf "\n"
 			case $yn in
-				[Yy]* ) mv $f "$HOME/.dotfiles/shell" \
-						&& shellad+=( "$f" ) \
-						&& printf "\n%s%s%-9s%s%s\n" "$bold" "$gren" "MOVED:" "$norm" "$f"
-						break ;;
-				[Nn]* ) printf "\n%s%-9s%s%s" "$bold" "SKIPPED:" "$norm" "$f"
-						break ;;
-					* ) printf "\n%s%s%s\n\n" "$bold" "Answer yes or no" "$norm" ;;
+				[Yy]* )	mv $f "$HOME/.dotfiles/shell" \
+								&& shellad+=( "$f" ) \
+								&& printf "\n%s%s%-9s%s%s\n" "$bold" "$gren" "MOVED:" "$norm" "$f"
+								break ;;
+				[Nn]* )	printf "\n%s%-9s%s%s" "$bold" "SKIPPED:" "$norm" "$f"
+								break ;;
+						* )	printf "\n%s%s%s\n\n" "$bold" "Answer yes or no" "$norm" ;;
 			esac
 		done
 	fi
@@ -71,32 +71,32 @@ for t in "${items[@]}"; do
 	printf "\n"
 	while read -N 1 -rp "Do you want to adopt ${yelw}$t${norm} in the dotfiles repository? (y/n)   " yn; do
 		case $yn in
-			[Yy]* ) if [ -d "$HOME/.dotfiles/config/.config/$t" ]; then
-						printf "\n%s\n" "You already have a ${yelw}$t${norm} directory in your dotfiles repository"
-						while read -N 1 -rp "Do you want to delete and replace it? (y/n)   " yn; do
-							case $yn in
-								[Yy]* ) rm -rf "$HOME/.dotfiles/config/.config/$t" \
-										&& printf "\n%s%s%-9s%s%s" "$bold" "$redc" "DELETED:" "$norm" "$HOME/.dotfiles/config/.config/$t" \
-										&& mv "$t" "$HOME/.dotfiles/config/.config" \
-										&& adopted+=( "$t" ) \
-										&& if [ -d "$XDG_DATA_HOME/$t" ]; then hasdata+=( "$t" ); fi \
-										&& printf "\n%s%s%-9s%s%s\n" "$bold" "$gren" "MOVED:" "$norm" "$t"
-										break ;;
-								[Nn]* ) printf "\n%s%-9s%s%s\n" "$bold" "SKIPPED:" "$norm" "$t"
-										break ;;
-									* ) printf "\n%s%s%s\n\n" "$bold" "Answer yes or no" "$norm" ;;
-							esac
-						done
-					else
-						mv "$t" "$HOME/.dotfiles/config/.config" \
-						&& adopted+=( "$t" ) \
-						&& if [ -d "$XDG_DATA_HOME/$t" ]; then hasdata+=( "$t" ); fi \
-						&& printf "\n%s%s%-9s%s%s\n" "$bold" "$gren" "MOVED:" "$norm" "$t"
-					fi
-					break ;;
-			[Nn]* ) printf "\n%s%-9s%s%s\n" "$bold" "SKIPPED:" "$norm" "$t"
-					break ;;
-				* ) printf "\n%s%s%s\n\n" "$bold" "Answer yes or no" "$norm";;
+			[Yy]* )	if [ -d "$HOME/.dotfiles/config/.config/$t" ]; then
+								printf "\n%s\n" "You already have a ${yelw}$t${norm} directory in your dotfiles repository"
+								while read -N 1 -rp "Do you want to delete and replace it? (y/n)   " yn; do
+									case $yn in
+										[Yy]* ) rm -rf "$HOME/.dotfiles/config/.config/$t" \
+														&& printf "\n%s%s%-9s%s%s" "$bold" "$redc" "DELETED:" "$norm" "$HOME/.dotfiles/config/.config/$t" \
+														&& mv "$t" "$HOME/.dotfiles/config/.config" \
+														&& adopted+=( "$t" ) \
+														&& if [ -d "$XDG_DATA_HOME/$t" ]; then hasdata+=( "$t" ); fi \
+														&& printf "\n%s%s%-9s%s%s\n" "$bold" "$gren" "MOVED:" "$norm" "$t"
+														break ;;
+										[Nn]* ) printf "\n%s%-9s%s%s\n" "$bold" "SKIPPED:" "$norm" "$t"
+														break ;;
+												* )	printf "\n%s%s%s\n\n" "$bold" "Answer yes or no" "$norm" ;;
+									esac
+								done
+							else
+								mv "$t" "$HOME/.dotfiles/config/.config" \
+								&& adopted+=( "$t" ) \
+								&& if [ -d "$XDG_DATA_HOME/$t" ]; then hasdata+=( "$t" ); fi \
+								&& printf "\n%s%s%-9s%s%s\n" "$bold" "$gren" "MOVED:" "$norm" "$t"
+							fi
+							break ;;
+			[Nn]* )	printf "\n%s%-9s%s%s\n" "$bold" "SKIPPED:" "$norm" "$t"
+							break ;;
+					* )	printf "\n%s%s%s\n\n" "$bold" "Answer yes or no" "$norm";;
 		esac
 	done
 done
