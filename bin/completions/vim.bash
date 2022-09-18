@@ -51,7 +51,7 @@ _vim() {
                    -n -r -L -A -H -T --not-a-term --ttyfail -u --noplugin -p -o -O + --cmd
                    -S -s -w -W -x --startuptime -i --clean -h --help --version' -- "$cur"))
       # man page, might not be in your vim compilation because they may require features like gui
-      COMPREPLY+=($(compgen -W '+/ -c -f --nofork -F -g -nb -U -X --echo-wid --literal --remote
+      COMPREPLY+=($(compgen -W '-c -f --nofork -F -g -nb -U -X --echo-wid --literal --remote
                     --remote-expr --remote-send --remote-silent --remote-wait --remote-wait-silent
                     --serverlist --servername --socketid' -- "$cur"))
       ;;

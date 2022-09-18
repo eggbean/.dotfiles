@@ -76,7 +76,7 @@ jobs:
           path: bin/aarch64
 
       - name: Get bash completion file
-        run: wget https://github.com/Bash-it/bash-it/raw/master/completion/available/tmux.completion.bash -O bin/completions/tmux.completion.bash
+        run: wget https://github.com/Bash-it/bash-it/raw/master/completion/available/tmux.completion.bash -O bin/completions/tmux.bash
 
       - name: Commit and push to repository
         run: |
