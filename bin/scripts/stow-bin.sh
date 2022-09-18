@@ -1,9 +1,9 @@
 #!/bin/bash
 
-##  Usage: [sudo] stow-bin.sh [--nosudo] [--remove]
+##  Usage: [sudo] stow-bin.sh [--nosudo] [--unstow]
 ##
 ##  --nosudo      Stow/restow/unstow in ~/.local for non-sudoer user
-##  --remove      Unstow
+##  --unstow      Unstow
 ##
 ##  This script does not delete any existing files
 
@@ -12,7 +12,7 @@
 
 set -eo pipefail
 
-options=$(getopt -o '' --long nosudo --long remove -- "$@")
+options=$(getopt -o '' --long nosudo --long unstow -- "$@")
 eval set -- "$options"
 
 while true; do
@@ -20,8 +20,8 @@ while true; do
   --nosudo)
     nosudo=true
     ;;
-  --remove)
-    remove=true
+  --unstow)
+    unstow=true
     ;;
   --)
     shift
@@ -35,7 +35,7 @@ done
 STOW_DIR="$HOME/.dotfiles/bin"
 
 # Set variables for (re)stowing or unstowing
-if [ -n "$remove" ]; then
+if [ -n "$unstow" ]; then
   stowcom='-D'
   stowed='unstowed'
   stowing='unstowing'
@@ -51,24 +51,26 @@ if [ -n "$nosudo" ]; then
   mandir="$HOME/.local/share/man"
   compdir="$HOME/.local/share/bash-completion/completions"
   fontdir="$HOME/.local/share/fonts"
-  if [ -z "$remove" ]; then
-    for d in "$targetdir" "$mandir" "$compdir" "$fontdir"; do
-      if [ ! -d "$d" ]; then mkdir -p "$d"; fi
-    done
-    if [ -d "$HOME/.dotfiles/bin/man" ]; then
-      pushd "$HOME/.dotfiles/bin/man" >/dev/null
-      mansubs=(*) && popd >/dev/null
-      for s in "${mansubs[@]}"; do
-        if [ ! -d "$mandir"/"$s" ]; then mkdir -p "$mandir"/"$s"; fi
-      done
-    fi
-  fi
 else
   if [ "$(id -u)" -ne "0" ]; then { echo "This script must be run as root to stow in /usr, or use the --nosudo option to stow in ~/.local." >&2; exit 1; }; fi
   targetdir='/usr/local/bin'
   mandir='/usr/local/share/man'
-  compdir='/usr/share/bash-completion/completions'
+  compdir='/usr/local/share/bash-completion/completions'
   fontdir='/usr/local/share/fonts'
+fi
+
+# Make target directories if they don't exist, if stowing
+if [ -z "$unstow" ]; then
+  for d in "$targetdir" "$mandir" "$compdir" "$fontdir"; do
+    if [ ! -d "$d" ]; then mkdir -p "$d"; fi
+  done
+  if [ -d "$HOME/.dotfiles/bin/man" ]; then
+    pushd "$HOME/.dotfiles/bin/man" >/dev/null
+    mansubs=(*) && popd >/dev/null
+    for s in "${mansubs[@]}"; do
+      if [ ! -d "$mandir"/"$s" ]; then mkdir "$mandir"/"$s"; fi
+    done
+  fi
 fi
 
 # Use the correct binaries for the CPU architecture
@@ -95,7 +97,6 @@ stow $stowcom -vt "$targetdir" scripts 2>&1 \
 pushd "$STOW_DIR/man" >/dev/null
 mansubs=(*)
 for m in "${mansubs[@]}"; do
-  if [ ! -d "$mandir"/"$m" ]; then mkdir "$mandir"/"$m"; fi
   stow $stowcom -vt "$mandir"/"$m" "$m" 2>&1 \
     && echo "DONE: $m package $stowed" || { echo "ERROR $stowing $m package - possible conflict with existing file(s)" >&2; exit 1; }
 done
@@ -107,14 +108,13 @@ stow $stowcom -vt "$compdir" completions 2>&1 \
 
 # Stow/unstow fonts if local desktop system, but not on WSL
 if [ -n "$DISPLAY" ] && grep -vqi microsoft /proc/version; then
-  if [ ! -d "$fontdir" ]; then mkdir -p "$fontdir"; fi
   stow --no-folding $stowcom -vt "$fontdir" fonts 2>&1 \
     && echo "DONE: fonts package $stowed" || { echo "ERROR $stowing fonts package" >&2; exit 1; }
   fc-cache -f && echo "DONE: font cache updated"
 fi
 
-# Clean up any empty directories in ~/.local if using --nosudo and --remove switches
-if [ -n "$nosudo" ] && [ -n "$remove" ]; then
+# Clean up any empty directories when unstowing
+if [ -n "$unstow" ]; then
   pushd man >/dev/null
   mansubs=(*) && popd >/dev/null
     for r in "${mansubs[@]}"; do
@@ -124,5 +124,3 @@ if [ -n "$nosudo" ] && [ -n "$remove" ]; then
     if [ -d "$e" ]; then rmdir -p --ignore-fail-on-non-empty "$e"; fi
   done
 fi
-
-exit
