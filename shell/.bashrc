@@ -221,6 +221,9 @@ export LESS_TERMCAP_ZW=$(tput rsupm)
 
 # fzf
 if command -v fzf >/dev/null; then
+  source ~/.dotfiles/bin/completions/fzf-completions.bash
+  source ~/.dotfiles/bin/completions/fzf-keybindings.bash
+
   export FZF_DEFAULT_OPTS='
     --ansi
     --reverse
