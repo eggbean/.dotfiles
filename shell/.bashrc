@@ -59,13 +59,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# Terminal colour mode
-if [[ -f "$HOME"/.terminfo/x/xterm-24bit || -f /etc/terminfo/x/xterm-24bit ]]; then
-  export TERM='xterm-24bit'
-else
-  export TERM='xterm-256color'
-fi
-
 # Rename tmux windows automatically to hostname
 ssh() {
   if [[ $TMUX ]]; then
@@ -195,13 +188,6 @@ export HOSTFILE="$HOME/.hosts"
 
 # Return disk that directory is on
 whichdisk() { realpath "$(df "${1:-.}" | command grep '^/' | cut -d' ' -f1)" ; }
-
-# pastel colour mode
-if [[ $COLORTERM =~ ^(truecolor|24bit)$ ]]; then
-  export PASTEL_COLOR_MODE='24bit'
-else
-  export PASTEL_COLOR_MODE='8bit'
-fi
 
 # GitHub CLI bash completion
 if command -v gh >/dev/null; then
