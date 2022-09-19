@@ -34,6 +34,9 @@ shopt -s no_empty_cmd_completion
 # Make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+# Set COLORTERM if Windows Terminal
+[ -n WT_SESSION ] && export COLORTERM='truecolor'
+
 # Set Starship prompt
 eval "$(starship init bash)"
 
