@@ -28,9 +28,9 @@ while :; do
             shelld=(*)
             popd > /dev/null
             is_file() { local f; for f; do [[ -e ~/"$f" && ! -L ~/"$f" ]] && return; done; return 1; }
-            if is_file "${shelld[@]}"; then [ ! -d ~/default-shell-files ] && mkdir ~/default-shell-files && echo "~/default-shell-files directory created"; fi
+            if is_file "${shelld[@]}"; then [ ! -d ~/existing-shell-files ] && mkdir ~/existing-shell-files && echo "~/existing-shell-files directory created"; fi
             for j in "${shelld[@]}"; do
-              if [[ -e ~/"$j" && ! -L ~/"$j" ]]; then mv ~/"$j" ~/default-shell-files && echo "Existing ~/$j file moved to ~/default-shell-files"; fi
+              if [[ -e ~/"$j" && ! -L ~/"$j" ]]; then mv ~/"$j" ~/existing-shell-files && echo "Existing ~/$j file moved to ~/existing-shell-files"; fi
             done
             stow -Rvt ~ shell && echo "DONE: shell package stowed" || { echo "ERROR stowing shell package" >&2; exit 1; }
             ;;
