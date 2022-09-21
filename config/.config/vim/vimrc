@@ -31,13 +31,20 @@ endif
 
 if has('win32') || has('gui_running')
   " Map Alt+[key] to normal terminal behaviour
-  inoremap <M-:> <ESC>:
+  inoremap <M-`> <ESC>`
   inoremap <M-"> <ESC>"
   inoremap <M-$> <ESC>$
   inoremap <M-%> <ESC>%
   inoremap <M-^> <ESC>^
+  inoremap <M-(> <ESC>(
+  inoremap <M-)> <ESC>)
   inoremap <M-{> <ESC>{
   inoremap <M-}> <ESC>}
+  inoremap <M-[> <ESC>[
+  inoremap <M-]> <ESC>]
+  inoremap <M-:> <ESC>:
+  inoremap <M-/> <ESC>/
+  inoremap <M-?> <ESC>?
   inoremap <M-1> <ESC>1
   inoremap <M-2> <ESC>2
   inoremap <M-3> <ESC>3
