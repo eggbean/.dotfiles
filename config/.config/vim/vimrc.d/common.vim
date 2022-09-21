@@ -16,9 +16,13 @@ set nrformats-=octal
 set complete-=i
 set nonumber
 set numberwidth=4
-" set relativenumber
-" set signcolumn=auto
+set norelativenumber
+set signcolumn=auto
 set incsearch
+set nolangremap
+let &nrformats="bin,hex"
+set showcmd
+set ruler
 set hlsearch
 set ignorecase
 set smartcase
@@ -30,9 +34,10 @@ set lazyredraw
 set magic
 set scrolloff=3
 set sidescrolloff=5
-set showmode
 set updatetime=4000
-" set colorcolumn=80
+set cdpath=,.,~/src,~/
+set complete=.,w,b,u,t
+set cscopeverbose
 
 set ttimeout
 set ttimeoutlen=100
@@ -65,6 +70,12 @@ else
   set clipboard+=unnamed
 endif
 
+if has('nvim')
+  set noshowmode
+else
+  set showmode
+endif
+
 if !empty(&viminfo)
   set viminfo^=!
 endif
@@ -73,23 +84,34 @@ if has('termguicolors')
   set termguicolors
 endif
 
+" Toggle colorcolumn
+nnoremap <F2> :execute "set colorcolumn=" . (&colorcolumn == "" ? "80" : "")<CR>
+
+" Toggle line numbers
+nnoremap <silent> <F3> :set number!<CR>
+inoremap <silent> <F3> :set number!<CR>
+vnoremap <silent> <F3> :set number!<CR>
+nnoremap <silent> <F4> :set relativenumber!<CR>
+inoremap <silent> <F4> :set relativenumber!<CR>
+vnoremap <silent> <F4> :set relativenumber!<CR>
+
 " Remap Y to be consitent with nvim
 nnoremap Y y$
 
-" Write when forgetting sudo
-cmap w!! w !sudo tee % >/dev/null
+" Write after forgetting sudo
+cnoremap w!! w !sudo tee % >/dev/null
 
 " Move lines
-nnoremap <A-S-j> :m .+1<CR>==
-nnoremap <A-S-k> :m .-2<CR>==
-inoremap <A-S-j> <Esc>:m .+1<CR>==gi
-inoremap <A-S-k> <Esc>:m .-2<CR>==gi
-vnoremap <A-S-j> :m '>+1<CR>gv=gv
-vnoremap <A-S-k> :m '<-2<CR>gv=gv
+nnoremap <M-S-j> :m .+1<CR>==
+nnoremap <M-S-k> :m .-2<CR>==
+inoremap <M-S-j> <Esc>:m .+1<CR>==gi
+inoremap <M-S-k> <Esc>:m .-2<CR>==gi
+vnoremap <M-S-j> :m '>+1<CR>gv=gv
+vnoremap <M-S-k> :m '<-2<CR>gv=gv
 
 " Open files using xdg-open
 nnoremap gX :silent :execute
-  \ "!xdg-open" expand('%:p:h') . "/" . expand("<cfile>") " &"<cr>
+  \ "!xdg-open" expand('%:p:h') . "/" . expand("<cfile>") " &"<CR>
 
 " Scroll splits together one line
 let g:scrollLock = 0
@@ -103,7 +125,7 @@ nnoremap <expr> <C-y> (g:scrollLock == 1) ? ':windo set scrollbind<CR><C-y>:wind
 " Exit terminal mode with ESC
 tnoremap <Esc> <C-\><C-n>
 
-" Clear registers
+" Clear registers (temporarily)
 command! WipeReg for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor
 
 " Set dictionary and regenerate spl files on startup

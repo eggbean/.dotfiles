@@ -10,9 +10,9 @@ if !has('gui_running')
   colorscheme gruvbox8_soft
   set background=dark
   " Change cursor depending on mode, like in nvim
-  let &t_SI = "\<Esc>[6 q"
-  let &t_SR = "\<Esc>[4 q"
-  let &t_EI = "\<Esc>[2 q"
+  let &t_SI = "\<ESC>[6 q"
+  let &t_SR = "\<ESC>[4 q"
+  let &t_EI = "\<ESC>[2 q"
   if has('unix')
     source ~/.config/vim/vimrc.d/plugins.vim
   elseif has('win32')
@@ -22,11 +22,9 @@ endif
 if has('unix')
   source ~/.config/vim/vimrc.d/common.vim
   source ~/.config/vim/vimrc.d/autocmds.vim
-  source ~/.config/vim/vimrc.d/pluginconfig.vim
 elseif has('win32')
   source ~/vimfiles/vimrc.d/common.vim
   source ~/vimfiles/vimrc.d/autocmds.vim
-  source ~/vimfiles/vimrc.d/pluginconfig.vim
 endif
 
 if has('win32') || has('gui_running')

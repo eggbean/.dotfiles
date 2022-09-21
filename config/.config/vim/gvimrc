@@ -10,7 +10,7 @@ call plug#end()
 " vim-highlightedyank
   let g:highlightedyank_highlight_duration = 750
 " let g:vimfullscreen_default_keymap = 0
-" nmap <silent> <a-cr> <Plug>(fullscreen_toggle)
+" nmap <silent> <M-CR> <Plug>(fullscreen_toggle)
 
 syntax on
 set t_Co=256
@@ -32,6 +32,7 @@ set guioptions -=m
 set guioptions -=T
 set winaltkeys=no
 set belloff=
+set visualbell
 
 " Macro to toggle window menu keys
 nnoremap <F9> :call ToggleWindowMenu()<CR>
@@ -57,8 +58,8 @@ function! ToggleFullScreen()
     :call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)
   endif
 endfunction
-set <a-cr>=\<esc>\<cr>
-map <silent> <a-cr> :call ToggleFullScreen()<CR>
+set <M-CR>=\<ESC>\<CR>
+map <silent> <M-CR> :call ToggleFullScreen()<CR>
 
 " Distraction Free Mode
 let g:dfm_width = 80 "absolute width or percentage, like 0.7
@@ -107,4 +108,4 @@ function! ToggleDistractionFreeMode()
     unmap k
   endif
 endfunction
-nmap <silent> <Leader>z :call ToggleDistractionFreeMode()<CR>
+nmap <silent> <F5> :call ToggleDistractionFreeMode()<CR>
