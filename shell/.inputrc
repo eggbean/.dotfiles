@@ -24,17 +24,12 @@ set visible-stats                   off
 "\e[B": history-search-forward
 "\e[A": history-search-backward
 
-# M-Del to delete next word forward
-"\033[3;3~": shell-kill-word
-
-# M-F11 to null (nested tmux config)
+# Silence keys used for tmux nested configuration
+# M-F11 to null
 "\033[23;3~": ""
-
-# M-F12 to null (nested tmux config)
+# M-F12 to null
 "\033[24;3~": ""
-
-# C-M-PgUp to null (nested tmux config)
+# C-M-PgUp to null
 "\033[5;7~": ""
-
-# C-M-PgDown to null (nested tmux config)
+# C-M-PgDown to null
 "\033[6;7~": ""
