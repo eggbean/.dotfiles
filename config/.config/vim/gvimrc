@@ -14,7 +14,8 @@ call plug#end()
 
 syntax on
 set t_Co=256
-color summerfruit256
+set termguicolors
+color PaperColor
 if has('gui_gtk2')
   set guifont=Iosevka\ Term\ 12
 elseif has('gui_win32')
@@ -24,7 +25,7 @@ highlight Cursor guifg=white guibg=red
 highlight iCursor guifg=white guibg=steelblue
 set guicursor=n-v-c:block-Cursor
 set guicursor+=i:ver20-iCursor
-hi StatusLine guibg=grey78 guifg=white
+hi StatusLine guibg=grey70 guifg=white
 set lines=35 columns=90
 set guioptions -=L
 set guioptions -=r
