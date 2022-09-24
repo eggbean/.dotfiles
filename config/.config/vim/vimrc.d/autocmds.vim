@@ -5,6 +5,7 @@ autocmd BufRead,BufNewFile *.md   setlocal textwidth=80 spell spelllang=en_gb
 autocmd BufRead,BufNewFile *.txt  setlocal textwidth=80 spell spelllang=en_gb
 autocmd BufRead,BufNewFile *.tf   setlocal tabstop=2 shiftwidth=2 expandtab
 autocmd BufRead,BufNewFile *.json setlocal tabstop=2 shiftwidth=2 expandtab
+autocmd Filetype gitcommit setlocal textwidth=80 colorcolumn=72 spell
 
 " yaml
 augroup filetype_yaml
