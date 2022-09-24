@@ -107,13 +107,22 @@ nnoremap Y y$
 " Write after forgetting sudo
 cnoremap w!! w !sudo tee % >/dev/null
 
-" Move lines
-nnoremap <M-S-j> :m .+1<CR>==
-nnoremap <M-S-k> :m .-2<CR>==
-inoremap <M-S-j> <Esc>:m .+1<CR>==gi
-inoremap <M-S-k> <Esc>:m .-2<CR>==gi
-vnoremap <M-S-j> :m '>+1<CR>gv=gv
-vnoremap <M-S-k> :m '<-2<CR>gv=gv
+" Move lines/blocks with Alt+Shift+j/k
+if has('unix')
+  nnoremap J :m .+1<CR>==
+  nnoremap K :m .-2<CR>==
+  inoremap J <Esc>:m .+1<CR>==gi
+  inoremap K <Esc>:m .-2<CR>==gi
+  vnoremap J :m '>+1<CR>gv=gv
+  vnoremap K :m '<-2<CR>gv=gv
+elseif has('win32')
+  nnoremap <M-S-j> :m .+1<CR>==
+  nnoremap <M-S-k> :m .-2<CR>==
+  inoremap <M-S-j> <Esc>:m .+1<CR>==gi
+  inoremap <M-S-k> <Esc>:m .-2<CR>==gi
+  vnoremap <M-S-j> :m '>+1<CR>gv=gv
+  vnoremap <M-S-k> :m '<-2<CR>gv=gv
+endif
 
 " Open files using xdg-open
 nnoremap gX :silent :execute
