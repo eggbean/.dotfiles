@@ -109,8 +109,6 @@ export MANPAGER='less -+MFX +g'
 export BAT_PAGER='less -+MFX -S'
 export EXA_COLORS='lc=38;5;124:lm=38;5;196:uu=38;5;178:gu=38;5;178:un=38;5;141:gn=38;5;141:bO=38;5;009'
 export RANGER_LOAD_DEFAULT_RC=FALSE
-export EDITOR='nvim'
-export VISUAL='nvim'
 export GVIMINIT='let $MYGVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/gvimrc" : "$XDG_CONFIG_HOME/nvim/init.gvim" | so $MYGVIMRC'
 export VIMINIT='let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$XDG_CONFIG_HOME/nvim/init.vim" | so $MYVIMRC'
 if [ ! "$(uname -o)" = "Android" ]; then
@@ -123,6 +121,13 @@ if [ ! "$(uname -o)" = "Android" ]; then
   else
     export BROWSER=elinks
   fi
+fi
+if command -v nvim >/dev/null; then
+  export EDITOR='nvim'
+  export VISUAL='nvim'
+else
+  export EDITOR='vim'
+  export VISUAL='vim'
 fi
 
 # End
