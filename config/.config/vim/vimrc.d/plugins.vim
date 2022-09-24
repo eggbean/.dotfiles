@@ -13,19 +13,17 @@ elseif has('win32') | call plug#begin() | endif
   Plug 'MattesGroeger/vim-bookmarks'
   Plug 'AndrewRadev/switch.vim'
   Plug 'gerazov/vim-toggle-bool'
-  " Plug 'chrisbra/matchit'
   Plug 'chrisbra/Recover.vim'
   Plug 'chrisbra/SudoEdit.vim'
   Plug 'chrisbra/csv.vim'
   Plug 'dhruvasagar/vim-zoom'
   " TESTING ...
-  Plug 'honza/vim-snippets'
   Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
   Plug 'ctrlpvim/ctrlp.vim'
-  Plug 'ap/vim-css-color'
   Plug 'eggbean/vim-tmux', { 'branch': 'missing-commands' }
   Plug 'frazrepo/vim-rainbow'
   Plug 'sheerun/vim-polyglot'
+  " Plug 'ap/vim-css-color'
   " Plug 'mattn/emmet-vim'
   " Plug 'dense-analysis/ale'
   " Plug 'arp242/jumpy.vim'
@@ -53,6 +51,12 @@ call plug#end()
   let g:better_whitespace_ctermcolor='Magenta'
   let g:better_whitespace_guicolor='Magenta'
   let g:show_spaces_that_precede_tabs = 1
+" UltiSnips
+  let g:UltiSnipsSnippetDirectories = ['$XDG_CONFIG_HOME/vim/UltiSnips', 'UltiSnips']
+  let g:UltiSnipsExpandTrigger="<Tab>"
+  let g:UltiSnipsJumpForwardTrigger="<Tab>"
+  let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
+  let g:UltiSnipsEditSplit="vertical"
 " vim-tmux-navigator
   let g:tmux_navigator_no_wrap = 1
   let g:tmux_navigator_disable_when_zoomed = 1
