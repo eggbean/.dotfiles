@@ -1,0 +1,49 @@
+snippet nosudo "Test is not sudo" b
+if [ "$(id -u)" -ne "0" ]; then
+endsnippet
+
+snippet flock "Set flock" b
+[ "${FLOCKER}" != "$0" ] && exec env FLOCKER="$0" flock -en "$0" "$0" "$@" || :
+endsnippet
+
+snippet func "function() {...}" b
+${1:function} () {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet /wh(ile)?/ "while ... (done)" rb
+while ${2:[[ ${1:condition} ]]}; do
+	${0:${VISUAL}}
+done
+endsnippet
+
+snippet until "until ... (done)" b
+until ${2:[[ ${1:condition} ]]}; do
+	${0:${VISUAL}}
+done
+endsnippet
+
+snippet if "if ... then (if)" b
+if [[ ${1:condition} ]]; then
+	${0:${VISUAL}}
+fi
+endsnippet
+
+snippet here "here document (here)"
+<<-${2:'${1:TOKEN}'}
+	$0`echo \\n`${1/['"`](.+)['"`]/$1/}
+endsnippet
+
+snippet forin "for ... in ... done (forin)" b
+for ${1:i}${2/.+/ in /}${2:words}; do
+	${0:${VISUAL}}
+done
+endsnippet
+
+snippet /case|sw(itch)?/ "case .. esac (case)" rb
+case ${1:word} in
+	${2:pattern} )
+		${0:${VISUAL}};;
+esac
+endsnippet
