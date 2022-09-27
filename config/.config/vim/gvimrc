@@ -1,21 +1,8 @@
 " GVIM CONFIGURATION
 
-if has('unix') | call plug#begin('$XDG_DATA_HOME/vim/plugged')
-elseif has('win32') | call plug#begin() | endif
-  Plug 'ntpeters/vim-better-whitespace'
-  Plug 'machakann/vim-highlightedyank'
-  " Plug 'ruedigerha/vim-fullscreen'
-call plug#end()
-
-" vim-highlightedyank
-  let g:highlightedyank_highlight_duration = 750
-" let g:vimfullscreen_default_keymap = 0
-" nmap <silent> <M-CR> <Plug>(fullscreen_toggle)
-
-syntax on
 set t_Co=256
-set termguicolors
 color PaperColor
+set background=light
 if has('gui_gtk2')
   set guifont=Iosevka\ Term\ 12
 elseif has('gui_win32')
@@ -36,7 +23,7 @@ set belloff=
 set visualbell
 
 " Macro to toggle window menu keys
-nnoremap <F9> :call ToggleWindowMenu()<CR>
+nnoremap <silent> <F9> :call ToggleWindowMenu()<CR>
 
 " Function to toggle window menu keys
 function ToggleWindowMenu()
@@ -56,7 +43,7 @@ function! ToggleFullScreen()
   if has('gui_gtk2')
     :call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")
   elseif has('gui_win32')
-    :call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)
+    :call libcallnr(expand("$VIM") . "/win/gvimfullscreen.dll", "ToggleFullScreen", 0)
   endif
 endfunction
 set <M-CR>=\<ESC>\<CR>

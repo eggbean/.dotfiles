@@ -1,44 +1,18 @@
 " AUTOCMDS
 
 " Option for specific filetypes
-autocmd BufRead,BufNewFile *.md   setlocal textwidth=80 spell spelllang=en_gb
-autocmd BufRead,BufNewFile *.txt  setlocal textwidth=80 spell spelllang=en_gb
-autocmd BufRead,BufNewFile *.tf   setlocal tabstop=2 shiftwidth=2 expandtab
-autocmd BufRead,BufNewFile *.json setlocal tabstop=2 shiftwidth=2 expandtab
-autocmd Filetype gitcommit setlocal textwidth=80 colorcolumn=72 spell
-
-" yaml
-augroup filetype_yaml
-  autocmd!
-  autocmd BufNewFile,BufReadPost *.{yaml,yml}
-    \ setlocal expandtab |
-    \ setlocal tabstop=2 |
-    \ setlocal softtabstop=2 |
-    \ setlocal shiftwidth=2 |
-    \ setlocal foldlevelstart=20 |
-    \ setlocal foldmethod=indent |
-    \ setlocal indentkeys-=0# |
-    \ setlocal indentkeys-=<:>
-augroup END
-
-" sh
-augroup filetype_sh
-  autocmd!
-  autocmd BufNewFile,BufReadPost *.sh
-    \ setlocal expandtab |
-    \ setlocal tabstop=2 |
-    \ setlocal softtabstop=2 |
-    \ setlocal shiftwidth=2
-augroup END
+autocmd BufRead,BufNewFile *.tf   setlocal tabstop=2
+autocmd BufRead,BufNewFile *.json setlocal tabstop=2
+autocmd BufRead,BufNewFile *.md   setlocal textwidth=80 spell
+autocmd BufRead,BufNewFile *.txt  setlocal tabstop=4 textwidth=80 noexpandtab spell
+autocmd Filetype gitcommit setlocal colorcolumn=72 textwidth=80 spell
 
 " Skeleton templates
-if has('unix')
-  augroup skeleton
-    autocmd!
-    autocmd BufNewFile *.sh 0r ~/.config/vim/templates/skeleton.sh
-    autocmd BufNewFile *.py 0r ~/.config/vim/templates/skeleton.py
-  augroup END
-endif
+augroup skeleton
+  autocmd!
+  autocmd BufNewFile *.sh 0r $VIM/templates/skeleton.sh
+  autocmd BufNewFile *.py 0r $VIM/templates/skeleton.py
+augroup END
 
 " Rename tmux windows with filename
 if exists('$TMUX')

@@ -1,20 +1,23 @@
 " NVIM CONFIGURATION
 
-source ~/.config/vim/vimrc.d/xdg.vim
-source ~/.config/vim/vimrc.d/plugins.vim
-source ~/.config/vim/vimrc.d/common.vim
-source ~/.config/vim/vimrc.d/autocmds.vim
+if has('unix')
+  let $VIM = "$HOME/.config/vim"
+elseif has('win32')
+  let $VIM = "$HOME/vimfiles"
+endif
+source $VIM/vimrc.d/xdg.vim
+source $VIM/vimrc.d/common.vim
+source $VIM/vimrc.d/autocmds.vim
+source $VIM/vimrc.d/plugins.vim
 
 " Highlighted yanking
 autocmd TextYankPost * silent! lua vim.highlight.on_yank()
 autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=750}
 
 " Language Providers
-if has('macunix')
-  let g:python3_host_prog = '/usr/local/bin/python3'
-elseif has('unix')
+if has('unix')
   let g:python3_host_prog = '/usr/bin/python3'
-elseif has('win32') || has('win64')
+elseif has('win32')
   " Windows
 endif
 let g:loaded_python_provider = 0

@@ -12,6 +12,7 @@ set smartindent
 set smarttab
 set backspace=indent,eol,start
 
+syntax on
 set nrformats-=octal
 set complete-=i
 set nonumber
@@ -57,6 +58,7 @@ set tabpagemax=50
 set title
 set listchars=tab:▸-,extends:>,precedes:<,nbsp:+
 set mouse=a
+set mousemodel=popup
 set hidden
 set backup
 set writebackup
@@ -91,7 +93,8 @@ if has('termguicolors')
 endif
 
 " Toggle colorcolumn
-nnoremap <F2> :execute "set colorcolumn=" . (&colorcolumn == "" ? "80" : "")<CR>
+nnoremap <silent> <F2> :execute "set colorcolumn=" . (&colorcolumn == "" ? "80" : "")<CR>
+vnoremap <silent> <F2> :execute "set colorcolumn=" . (&colorcolumn == "" ? "80" : "")<CR>
 
 " Toggle line numbers
 nnoremap <silent> <F3> :set number!<CR>
@@ -101,13 +104,17 @@ nnoremap <silent> <F4> :set relativenumber!<CR>
 inoremap <silent> <F4> :set relativenumber!<CR>
 vnoremap <silent> <F4> :set relativenumber!<CR>
 
-" Remap Y to be consitent with nvim
+" Toggle spell-checking
+nnoremap <silent> <F7> :set spell!<CR>
+vnoremap <silent> <F7> :set spell!<CR>
+
+" Remap Y to be consistent with nvim
 nnoremap Y y$
 
 " Write after forgetting sudo
 cnoremap w!! w !sudo tee % >/dev/null
 
-" Move lines/blocks with Alt+Shift+j/k
+" Move lines with Alt+Shift+j/k
 if has('unix')
   nnoremap J :m .+1<CR>==
   nnoremap K :m .-2<CR>==
@@ -144,9 +151,14 @@ tnoremap <Esc> <C-\><C-n>
 command! WipeReg for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor
 
 " Set dictionary and regenerate spl files on startup
-set dictionary+=/usr/share/dict/words
-set spellfile=vimrc.d/spell/en.utf-8.add
-for d in glob('vimrc.d/spell/*.add', 1, 1)
+set spelllang=en_gb
+if has('unix')
+  set dictionary+=/usr/share/dict/words
+  set spellfile=$HOME/.config/vim/spell/en.utf-8.add
+elseif has('win32')
+  set spellfile=$HOME/vimfiles/spell/en.utf-8.add
+endif
+for d in glob('spell/*.add', 1, 1)
   if filereadable(d) && (!filereadable(d . '.spl') || getftime(d) > getftime(d . '.spl'))
     exec 'mkspell! ' . fnameescape(d)
   endif
