@@ -46,8 +46,9 @@ elseif has('win32') | call plug#begin() | endif
   endif
   if has('gui_running')
     Plug 'ntpeters/vim-better-whitespace'
-    Plug 'xolox/vim-misc'
-    Plug 'xolox/vim-shell'
+    if has('win32')
+      Plug 'kkoenig/wimproved.vim'
+    endif
   endif
 call plug#end()
 

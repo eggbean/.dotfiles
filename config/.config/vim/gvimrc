@@ -22,7 +22,7 @@ set winaltkeys=no
 set belloff=
 set visualbell
 
-" Macro to toggle window menu keys
+" Toggle window menu keys with F9
 nnoremap <silent> <F9> :call ToggleWindowMenu()<CR>
 
 " Function to toggle window menu keys
@@ -38,62 +38,37 @@ function ToggleWindowMenu()
   endif
 endfunction
 
+" Distraction-free mode
+source $VIM/vimrc.d/distraction_free_mode.vim
+nmap <silent> <F12> :call ToggleDistractionFreeMode()<CR>
+
+" Set window to certain size with F10
+nnoremap <silent> <F10> :set lines=35 columns=90<CR>
+
+" Restore window positions
+source $VIM/vimrc.d/restore_position.vim
+
 " Fullscreen with Alt-Enter
 function! ToggleFullScreen()
   if has('gui_gtk2')
     :call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")
   elseif has('gui_win32')
-    :call libcallnr(expand("$VIM") . "/win/gvimfullscreen.dll", "ToggleFullScreen", 0)
+    if !exists("s:fullscr")
+      let s:fullscr = 0
+    endif
+    if (s:fullscr == 0)
+      :call ScreenSave()
+      :WToggleFullscreen
+      let s:fullscr = 1
+    elseif (s:fullscr == 1)
+      :WToggleFullscreen
+      :call ScreenRestore()
+      let s:fullscr = 0
+    endif
   endif
 endfunction
+map  <silent> <F11> :call ToggleFullScreen()<CR>
+map! <silent> <F11> :call ToggleFullScreen()<CR>
 set <M-CR>=\<ESC>\<CR>
-map <silent> <M-CR> :call ToggleFullScreen()<CR>
-
-" Distraction Free Mode
-let g:dfm_width = 80 "absolute width or percentage, like 0.7
-let g:dfm_height = 0.8
-
-let s:dfm_enabled = 0
-
-function! ToggleDistractionFreeMode()
-  let l:w = g:dfm_width > 1 ? g:dfm_width : (winwidth('%') * g:dfm_width)
-  let l:margins = {
-    \ "l": ("silent leftabove " . float2nr((winwidth('%') - l:w) / 2 - 1) . " vsplit new"),
-    \ "h": ("silent rightbelow " . float2nr((winwidth('%') - l:w) / 2 - 1) . " vsplit new"),
-    \ "j": ("silent leftabove " . float2nr(winheight('%') * (1 - g:dfm_height) / 2 - 1) . " split new"),
-    \ "k": ("silent rightbelow " . float2nr(winheight('%') * (1 - g:dfm_height) / 2 - 1) . " split new"),
-    \ }
-  if (s:dfm_enabled == 0)
-    let s:dfm_enabled = 1
-    for key in keys(l:margins)
-      execute l:margins[key] . " | wincmd " . key
-    endfor
-    for key in ['NonText', 'VertSplit', 'StatusLine', 'StatusLineNC']
-      execute 'hi ' . key . ' guifg=white guibg=white'
-    endfor
-    highlight Cursor guifg=white guibg=green
-    highlight iCursor guifg=white guibg=black
-    set linebreak | syntax off
-    if has('gui_gtk2')
-      set guifont=Iosevka\ Term\ 12
-    elseif has('gui_win32')
-      set guifont=Iosevka_NF:h12:W500
-    endif
-    map j gj
-    map k gk
-  else
-    let s:dfm_enabled = 0
-    for key in keys(l:margins)
-      execute "wincmd " . key . " | close "
-    endfor
-    set nolinebreak | syntax on
-    if has('gui_gtk2')
-      set guifont=Iosevka\ Term\ 12
-    elseif has('gui_win32')
-      set guifont=Iosevka_NF:h12
-    endif
-    unmap j
-    unmap k
-  endif
-endfunction
-nmap <silent> <F5> :call ToggleDistractionFreeMode()<CR>
+map  <silent> <M-CR> <F11><CR>
+map! <silent> <M-CR> <F11><CR>
