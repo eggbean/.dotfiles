@@ -36,9 +36,9 @@ fi
 # Linuxlogo and tmux sessions
 if [ -z "$TMUX" ]; then
   if command -v linux_logo >/dev/null; then
-    eval "$(source /etc/os-release && typeset -p ID PRETTY_NAME)"
-    [ -f /etc/machine-info ] && eval "$(source /etc/machine-info && typeset -p LOCATION)"
-    linux_logo -L "$ID" -f -F "${PRETTY_NAME}\nCompiled #C\n#N #M #X #T Processor#S, #R RAM\n#U\n#L\n$(hostname -f)\n${LOCATION}\n#E" 2>/dev/null
+    eval "$(. /etc/os-release && typeset -p ID PRETTY_NAME)"
+    [ -f /etc/machine-info ] && eval "$(. /etc/machine-info && typeset -p LOCATION)"
+    linux_logo -L "$ID" -f -F "$PRETTY_NAME\nCompiled #C\n#N #M #X #T Processor#S, #R RAM\n#U\n#L\n$(hostname -f)\n$LOCATION\n#E" 2>/dev/null
     unset ID PRETTY_NAME LOCATION
   elif [ "$(uname -o)" = "Android" ]; then
     clear && macchina
@@ -113,7 +113,7 @@ export GVIMINIT='let $MYGVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/gvimrc" : 
 export VIMINIT='let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$XDG_CONFIG_HOME/nvim/init.vim" | so $MYVIMRC'
 if [ ! "$(uname -o)" = "Android" ]; then
   if grep -qi microsoft /proc/version; then
-    export BROWSER='/mnt/c/Program\ Files/qutebrowser/qutebrowser.exe'
+    export BROWSER="/mnt/c/Program Files/qutebrowser/qutebrowser.exe"
     export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
     PATH="$PATH:/mnt/c/Program Files/Oracle/VirtualBox"
   elif [ -n "$DISPLAY" ]; then

@@ -35,7 +35,7 @@ shopt -s no_empty_cmd_completion
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # Set COLORTERM if Windows Terminal
-[ -n WT_SESSION ] && export COLORTERM='truecolor'
+[ -n "$WT_SESSION" ] && export COLORTERM='truecolor'
 
 # Set Starship prompt
 eval "$(starship init bash)"
@@ -125,6 +125,10 @@ git() {
   if [[ "$#" -eq 1 ]] && [[ "$1" == "stash" ]]; then
     echo 'WARNING: run "git stash push" instead.'
   elif [[ "$1" == "browse" ]]; then
+    # Fix $BROWSER needing escaping backslash for gh
+    if grep -qi microsoft /proc/version; then
+      local BROWSER="/mnt/c/Program\ Files/qutebrowser/qutebrowser.exe"
+    fi
     gh browse "${@:2}"
   else
     if command -v hub >/dev/null; then
@@ -180,7 +184,7 @@ fi
 # Make directory and change directory into it
 mkdircd() { mkdir -p "$@" && eval pushd "\"\$$#\"" >/dev/null || return; }
 
-# Minimalist terminal pastebin
+# Minimalist terminal pastebin to pipe to
 sprunge() { curl -F 'sprunge=<-' http://sprunge.us; }
 
 # Use a private mock hosts(5) file for completion
