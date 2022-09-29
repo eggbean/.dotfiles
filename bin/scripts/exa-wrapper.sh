@@ -13,6 +13,10 @@ lnk=0
 gpd=0
 # Show file git status automatically (can cause a slight delay in large repo subdirectories)
 git=1
+# Show icons
+ico=0
+# Color always (can be disabled with -N switch when not wanted)
+col=1
 
 help() {
     cat << EOF
@@ -88,8 +92,10 @@ shift "$((OPTIND - 1))"
 (( hru <= 0 )) && exa_opts+=(-B)
 (( fgp == 0 )) && exa_opts+=(-g)
 (( lnk == 0 )) && exa_opts+=(-H)
-(( nco == 1 )) && exa_opts+=(--color=never) || exa_opts+=(--color=always)
+(( col == 1 )) && exa_opts+=(--color=always) || exa_opts+=(--color=auto)
+(( nco == 1 )) && exa_opts+=(--color=never)
 (( gpd >= 1 )) && exa_opts+=(--group-directories-first)
+(( ico == 1 )) && exa_opts+=(--icons)
 (( git == 1 )) && \
   [[ $(git -C "${*:-.}" rev-parse --is-inside-work-tree) == true ]] 2>/dev/null && exa_opts+=(--git)
 
