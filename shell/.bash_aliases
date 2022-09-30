@@ -42,11 +42,14 @@ else
   alias ls='/bin/ls $LS_OPTIONS'
 fi
 
+# Use fzfp wrapper in tmux instead of fzf
+if [[ $TMUX ]]; then alias fzf='fzfp-tmux --width=50% --height=60%'; fi
+
 # Extras
+alias fzfp='fzf --preview "bat --color=always --style=numbers --line-range=:500 {}"'
 alias decomment='egrep -v "(^[#;].*|^$)"'
 alias nocolour="sed 's/\x1b\[[0-9;]*m//g'"
 alias termcolours='/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/gawin/bash-colors-256/master/colors)"'
-alias fzfp='fzf --preview "bat --color=always --style=numbers --line-range=:500 {}"'
 alias batlog='bat --paging=never -l log'
 alias driveinfo='df -HTx tmpfs -x overlay -x devtmpfs'
 alias cm='cmatrix -au 2'
