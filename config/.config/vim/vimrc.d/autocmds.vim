@@ -5,7 +5,7 @@ autocmd BufRead,BufNewFile *.tf   setlocal tabstop=2
 autocmd BufRead,BufNewFile *.json setlocal tabstop=2
 autocmd BufRead,BufNewFile *.md   setlocal textwidth=80 spell
 autocmd BufRead,BufNewFile *.txt  setlocal tabstop=4 textwidth=80 noexpandtab spell
-autocmd Filetype gitcommit setlocal colorcolumn=72 textwidth=80 spell
+autocmd Filetype gitcommit setlocal colorcolumn=72 textwidth=80 spell | colorscheme onedark
 
 " Skeleton templates
 augroup skeleton
