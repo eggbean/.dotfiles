@@ -1,7 +1,7 @@
 ## Host specific stuff for WSL clients
 
 # Desktop notifications
-notify-send() { wsl-notify-send.exe --category $WSL_DISTRO_NAME "${@}"; }
+notify-send() { wsl-notify-send.exe --appId "Windows Subsystem for Linux" --category $WSL_DISTRO_NAME "${@}"; }
 
 # Function to change directory using Windows path
 gotopath() {

@@ -1,4 +1,6 @@
-## Host specific stuff for ThinkPad clients (not WSL)
+## Host specific stuff for ThinkPad clients
+
+# If WSL do something else
 if grep -qi microsoft /proc/version; then source ~/.dotfiles/shell/.hostinclude/wsl && return; fi
 
 # Turn SD card reader on and off

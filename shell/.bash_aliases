@@ -29,7 +29,7 @@ alias cp='cp -iv'
 alias mv='mv -iv'
 alias rm='rm -Iv'
 
-# Use nvim appimage if available
+# Use nvim instead of vim if available
 if command -v nvim >/dev/null; then
   alias vi='nvim'
   alias vimdiff='nvim -d'
@@ -46,11 +46,12 @@ fi
 if [[ $TMUX ]]; then alias fzf='fzfp-tmux --width=50% --height=60%'; fi
 
 # Extras
-alias fzfp='fzf --preview "bat --color=always --style=numbers --line-range=:500 {}"'
+alias fzfp='command fzf --preview "bat --color=always --style=numbers --line-range=:500 {}"'
+alias batlog='bat --paging=never -l log'
 alias decomment='egrep -v "(^[#;].*|^$)"'
 alias nocolour="sed 's/\x1b\[[0-9;]*m//g'"
+alias unicat='awk "!a[\$0]++{print}"'
 alias termcolours='/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/gawin/bash-colors-256/master/colors)"'
-alias batlog='bat --paging=never -l log'
 alias driveinfo='df -HTx tmpfs -x overlay -x devtmpfs'
 alias cm='cmatrix -au 2'
 
