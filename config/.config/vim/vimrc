@@ -11,14 +11,14 @@ source $VIM/vimrc.d/autocmds.vim
 source $VIM/vimrc.d/plugins.vim
 
 if !has('gui_running')
-  colorscheme gruvbox8_soft
+  colorscheme sonokai
   set background=dark
   " Change cursor depending on mode, like in nvim
   let &t_SI = "\<ESC>[6 q"
   let &t_SR = "\<ESC>[4 q"
   let &t_EI = "\<ESC>[2 q"
 endif
-"
+
 " Map Alt+[key] to normal terminal behaviour
 " so that I don't have to use ESC at all in gvim and vim for Windows
 if has('win32') || has('gui_running')
