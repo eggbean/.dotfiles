@@ -7,6 +7,14 @@ autocmd BufRead,BufNewFile *.md   setlocal textwidth=80 spell
 autocmd BufRead,BufNewFile *.txt  setlocal tabstop=4 textwidth=80 noexpandtab spell
 autocmd Filetype gitcommit setlocal colorcolumn=72 textwidth=80 spell | colorscheme onedark
 
+" Enable syntax completion
+if has('autocmd') && exists('+omnifunc')
+  autocmd Filetype *
+    \ if &omnifunc == "" |
+    \   setlocal omnifunc=syntaxcomplete#Complete |
+    \ endif
+endif
+
 " Skeleton templates
 augroup skeleton
   autocmd!
