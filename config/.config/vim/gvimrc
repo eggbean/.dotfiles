@@ -23,7 +23,7 @@ set belloff=
 set visualbell
 
 " Toggle window menu keys with F9
-nnoremap <silent> <F9> :call ToggleWindowMenu()<CR>
+map <silent> <F9> :call ToggleWindowMenu()<CR>
 
 " Function to toggle window menu keys
 function ToggleWindowMenu()
@@ -40,35 +40,46 @@ endfunction
 
 " Distraction-free mode
 source $VIM/vimrc.d/distraction_free_mode.vim
-nmap <silent> <F12> :call ToggleDistractionFreeMode()<CR>
-
-" Set window to certain size with F10
-nnoremap <silent> <F10> :set lines=35 columns=90<CR>
+map <silent> <F12> :call ToggleDistractionFreeMode()<CR>
 
 " Restore window positions
 source $VIM/vimrc.d/restore_position.vim
 
+" Set window to certain size with F10
+function! SetScreenSize()
+  if has('gui_win32')
+    if !exists("s:fullscr")
+      let s:fullscr = 0
+    endif
+    if (s:fullscr == 1)
+      WToggleFullscreen
+      call ScreenRestore()
+      let s:fullscr = 0
+    endif
+  endif
+  set lines=35 columns=90
+endfunction
+nmap <silent> <F10> :call SetScreenSize()<CR>
+
 " Fullscreen with Alt-Enter
 function! ToggleFullScreen()
   if has('gui_gtk2')
-    :call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")
+    call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")
   elseif has('gui_win32')
     if !exists("s:fullscr")
       let s:fullscr = 0
     endif
     if (s:fullscr == 0)
-      :call ScreenSave()
-      :WToggleFullscreen
+      call ScreenSave()
+      WToggleFullscreen
       let s:fullscr = 1
     elseif (s:fullscr == 1)
-      :WToggleFullscreen
-      :call ScreenRestore()
+      WToggleFullscreen
+      call ScreenRestore()
       let s:fullscr = 0
     endif
   endif
 endfunction
-map  <silent> <F11> :call ToggleFullScreen()<CR>
-map! <silent> <F11> :call ToggleFullScreen()<CR>
+map <silent> <F11> :call ToggleFullScreen()<CR>
 set <M-CR>=\<ESC>\<CR>
-map  <silent> <M-CR> <F11><CR>
-map! <silent> <M-CR> <F11><CR>
+map <silent> <M-CR> <F11><CR>
