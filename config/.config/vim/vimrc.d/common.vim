@@ -169,3 +169,14 @@ endfor
 
 " Highlight syntax within Markdown
 let g:markdown_fenced_languages = ['html', 'css', 'python', 'sh', 'vim']
+
+" Language Providers
+if has('unix')
+  let g:python3_host_prog = '/usr/bin/python3'
+elseif has('win32')
+  let g:python3_host_prog = (system("where python"))
+endif
+let g:loaded_python_provider = 0
+let g:loaded_ruby_provider = 0
+let g:loaded_perl_provider = 0
+let g:loaded_node_provider = 0
