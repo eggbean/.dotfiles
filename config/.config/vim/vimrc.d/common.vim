@@ -152,11 +152,14 @@ command! WipeReg for i in range(34,122) | silent! call setreg(nr2char(i), []) | 
 
 " Set dictionary and regenerate spl files on startup
 set spelllang=en_gb
+set thesaurus=$VIM/spell/mthesaur.txt
 if has('unix')
   set dictionary+=/usr/share/dict/words
   set spellfile=$HOME/.config/vim/spell/en.utf-8.add
+  let g:tq_mthesaur_file="~/.config/vim/spell/mthesaur.txt"
 elseif has('win32')
   set spellfile=$HOME/vimfiles/spell/en.utf-8.add
+  let g:tq_mthesaur_file="~/vimfiles/spell/mthesaur.txt"
 endif
 for d in glob('spell/*.add', 1, 1)
   if filereadable(d) && (!filereadable(d . '.spl') || getftime(d) > getftime(d . '.spl'))

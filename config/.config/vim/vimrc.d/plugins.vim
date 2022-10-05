@@ -33,6 +33,7 @@ elseif has('win32') | call plug#begin() | endif
     " Plug 'juliosueiras/vim-terraform-completion'
     if has('python3')
       Plug 'SirVer/ultisnips'
+      Plug 'ron89/thesaurus_query.vim'
     endif
     if !has('nvim')
       Plug 'machakann/vim-highlightedyank'
