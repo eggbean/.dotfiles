@@ -8,8 +8,6 @@ elseif has('win32') | call plug#begin() | endif
     Plug 'tpope/vim-rsi'
     Plug 'machakann/vim-sandwich'
     Plug 'christoomey/vim-tmux-navigator'
-    Plug 'sheerun/vim-polyglot'
-    Plug 'dense-analysis/ale'
     Plug 'junegunn/fzf'
     Plug 'ntpeters/vim-better-whitespace'
     Plug 'airblade/vim-gitgutter'
@@ -21,11 +19,15 @@ elseif has('win32') | call plug#begin() | endif
     Plug 'chrisbra/csv.vim'
     Plug 'dhruvasagar/vim-zoom'
     Plug 'ap/vim-css-color'
+    Plug 'sheerun/vim-polyglot'
+    Plug 'dense-analysis/ale'
     Plug 'eggbean/vim-tmux', { 'branch': 'missing-commands' }
     " TESTING ...
+    Plug 'junegunn/vim-peekaboo'
+    Plug 'dstein64/vim-startuptime'
     Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
+    Plug 'ctrlpvim/ctrlp.vim'
     Plug 'frazrepo/vim-rainbow'
-    " Plug 'ctrlpvim/ctrlp.vim'
     " Plug 'mattn/emmet-vim'
     " Plug 'arp242/jumpy.vim'
     " Plug 'pearofducks/ansible-vim'
@@ -43,6 +45,7 @@ elseif has('win32') | call plug#begin() | endif
   endif
   if has('gui_running')
     Plug 'ntpeters/vim-better-whitespace'
+    Plug 'dhruvasagar/vim-zoom'
     if has('win32')
       Plug 'kkoenig/wimproved.vim'
     endif
