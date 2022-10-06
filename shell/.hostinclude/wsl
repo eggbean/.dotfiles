@@ -1,7 +1,11 @@
 ## Host specific stuff for WSL clients
 
+# Set WIN_HOME enviroment variable
+WIN_HOME_RAW="$(cmd.exe /c "<nul set /p=%UserProfile%" 2>/dev/null)"
+export WIN_HOME="$(wslpath "$WIN_HOME_RAW")"
+
 # Desktop notifications
-notify-send() { wsl-notify-send.exe --appId "Windows Subsystem for Linux" --category $WSL_DISTRO_NAME "${@}"; }
+notify-send() { wsl-notify-send.exe --appId "Windows Subsystem for Linux" --category "$WSL_DISTRO_NAME" "${@}"; }
 
 # Function to change directory using Windows path
 gotopath() {
