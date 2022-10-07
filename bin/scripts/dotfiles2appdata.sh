@@ -28,8 +28,8 @@ if [ -e "$winspell" ]; then
   fi
   rm /tmp/{difference,concatenated}
 fi
-files=('vimrc' 'gvimrc' 'vimrc.d/autocmds.vim' 'vimrc.d/common.vim' 'vimrc.d/distraction_free_mode.vim' \
-  'vimrc.d/plugins.vim' 'vimrc.d/restore_position.vim' 'vimrc.d/xdg.vim')
+files=('gvimrc' 'vimrc' 'vimrc.d/autocmds.vim' 'vimrc.d/distraction_free_mode.vim' 'vimrc.d/mappings.vim' \
+  'vimrc.d/opts.vim' 'vimrc.d/plugins.vim' 'vimrc.d/restore_position.vim' 'vimrc.d/xdg.vim')
 for f in "${files[@]}"; do
   if [ -f "$f" ]; then attrib.exe -R "$f" >/dev/null; fi
 done

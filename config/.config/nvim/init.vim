@@ -6,7 +6,8 @@ elseif has('win32')
   let $VIM = "$HOME/vimfiles"
 endif
 source $VIM/vimrc.d/xdg.vim
-source $VIM/vimrc.d/common.vim
+source $VIM/vimrc.d/opts.vim
+source $VIM/vimrc.d/mappings.vim
 source $VIM/vimrc.d/autocmds.vim
 source $VIM/vimrc.d/plugins.vim
 
