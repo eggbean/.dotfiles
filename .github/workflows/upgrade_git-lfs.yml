@@ -26,6 +26,7 @@ jobs:
           gzip git-lfs-"$numberonly"/man/man{1,5}/*
           rm -rf bin/man/man{1,5}/git-lfs*
           mv git-lfs-"$numberonly"/man/man1/* bin/man/man1
+          [ ! -d bin/man/man5 ] && mkdir bin/man/man5
           mv git-lfs-"$numberonly"/man/man5/* bin/man/man5
           rm -rf git-lfs-"$numberonly"/{CHANGELOG.md,install.sh,man/html,README.md} git-lfs-linux-amd64-"$version".tar.gz
 

@@ -22,6 +22,7 @@ jobs:
           mv bin/exa bin/armv7l
           gzip man/exa.1 man/exa_colors.5
           mv man/exa.1.gz bin/man/man1
+          [ ! -d bin/man/man5 ] && mkdir bin/man/man5
           mv man/exa_colors.5.gz bin/man/man5
           mv completions/exa.bash bin/completions
 
