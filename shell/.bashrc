@@ -157,13 +157,9 @@ mans() {
 }
 
 # CD Deluxe
-if  [[ -x /usr/local/bin/_cdd ]]; then
-  cdd() { while read -r x; do eval "$x" >/dev/null; done < <(dirs -l -p | /usr/local/bin/_cdd "$@"); }
-  alias cd=cdd
-elif
-  [[ -x "$HOME"/.local/bin/_cdd ]]; then
-  cdd() { while read -r x; do eval "$x" >/dev/null; done < <(dirs -l -p | "$HOME"/.local/bin/_cdd "$@"); }
-  alias cd=cdd
+if command -v _cdd >/dev/null; then
+  cdd() { while read -r x; do eval "$x" >/dev/null; done < <(dirs -l -p | _cdd "$@"); }
+  alias cd='cdd'
 fi
 
 # Directory bookmarks
@@ -179,6 +175,19 @@ if [ -d "$HOME/.bookmarks" ]; then
     ln -s "$OLDPWD" "$@"
     popd >/dev/null
   }
+fi
+
+# Combine bookmarks and cdd functions
+supercd() {
+  if [ "${1::1}" == '@' ]; then
+    goto "$@"
+  else
+    cdd "$@"
+  fi
+}
+
+if [[ $(type -t cdd) == function ]] && [[ $(type -t goto) == function ]]; then
+  alias cd='supercd'
 fi
 
 # Make directory and change directory into it
