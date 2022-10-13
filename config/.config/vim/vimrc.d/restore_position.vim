@@ -3,9 +3,9 @@
 if has("gui_running")
   function! ScreenFilename()
     if has('win32')
-      return $HOME.'\_vimsize'
+      return $HOME.'\vimfiles\_vimsize'
     else
-      return $HOME.'/.vimsize'
+      return $HOME.'/.local/state/vim/vimsize'
     endif
   endfunction
 
