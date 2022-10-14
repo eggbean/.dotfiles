@@ -92,6 +92,7 @@ STICKY 04;37;44
 .arj 31
 .bz 31
 .bz2 31
+.bz3 31
 .cab 31
 .cpio 31
 .deb 31
@@ -213,6 +214,9 @@ STICKY 04;37;44
 .4 38;5;244
 .5 38;5;244
 .vim-bookmarks 38;5;244
+.stow-global-ignore 38;5;244
+.stow-local-ignore 38;5;244
+.stow-no-folding 38;5;244
 
 #+--- Images ---+
 .bmp 38;5;170
