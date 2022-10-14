@@ -1,0 +1,2 @@
+" gitrebase filetype
+colorscheme onedark
