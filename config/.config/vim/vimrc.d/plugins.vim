@@ -67,13 +67,15 @@ call plug#end()
   let g:better_whitespace_guicolor='Magenta'
   let g:show_spaces_that_precede_tabs = 1
 " vim-tmux-navigator
-  let g:tmux_navigator_no_wrap = 1
-  let g:tmux_navigator_disable_when_zoomed = 1
-  let g:tmux_navigator_no_mappings = 1
-  nnoremap <silent> <C-M-h> :TmuxNavigateLeft<CR>
-  nnoremap <silent> <C-M-j> :TmuxNavigateDown<CR>
-  nnoremap <silent> <C-M-k> :TmuxNavigateUp<CR>
-  nnoremap <silent> <C-M-l> :TmuxNavigateRight<CR>
+  if exists('$TMUX')
+    let g:tmux_navigator_no_wrap = 1
+    let g:tmux_navigator_disable_when_zoomed = 1
+    let g:tmux_navigator_no_mappings = 1
+    nnoremap <silent> <Esc><C-h> :TmuxNavigateLeft<CR>
+    nnoremap <silent> <Esc><C-j> :TmuxNavigateDown<CR>
+    nnoremap <silent> <Esc><C-k> :TmuxNavigateUp<CR>
+    nnoremap <silent> <Esc><C-l> :TmuxNavigateRight<CR>
+  endif
 " gruvbox8 colour scheme
   let g:gruvbox_filetype_hi_groups = 1
   let g:gruvbox_italics = 1
