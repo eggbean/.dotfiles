@@ -8,51 +8,93 @@ _starship() {
 
     for i in ${COMP_WORDS[@]}
     do
-        case "${i}" in
-            "$1")
+        case "${cmd},${i}" in
+            ",$1")
                 cmd="starship"
                 ;;
-            bug-report)
-                cmd+="__bug__report"
+            starship,bug-report)
+                cmd="starship__bug__report"
                 ;;
-            completions)
-                cmd+="__completions"
+            starship,completions)
+                cmd="starship__completions"
                 ;;
-            config)
-                cmd+="__config"
+            starship,config)
+                cmd="starship__config"
                 ;;
-            explain)
-                cmd+="__explain"
+            starship,explain)
+                cmd="starship__explain"
                 ;;
-            help)
-                cmd+="__help"
+            starship,help)
+                cmd="starship__help"
                 ;;
-            init)
-                cmd+="__init"
+            starship,init)
+                cmd="starship__init"
                 ;;
-            module)
-                cmd+="__module"
+            starship,module)
+                cmd="starship__module"
                 ;;
-            preset)
-                cmd+="__preset"
+            starship,preset)
+                cmd="starship__preset"
                 ;;
-            print-config)
-                cmd+="__print__config"
+            starship,print-config)
+                cmd="starship__print__config"
                 ;;
-            prompt)
-                cmd+="__prompt"
+            starship,prompt)
+                cmd="starship__prompt"
                 ;;
-            session)
-                cmd+="__session"
+            starship,session)
+                cmd="starship__session"
                 ;;
-            time)
-                cmd+="__time"
+            starship,time)
+                cmd="starship__time"
                 ;;
-            timings)
-                cmd+="__timings"
+            starship,timings)
+                cmd="starship__timings"
                 ;;
-            toggle)
-                cmd+="__toggle"
+            starship,toggle)
+                cmd="starship__toggle"
+                ;;
+            starship__help,bug-report)
+                cmd="starship__help__bug__report"
+                ;;
+            starship__help,completions)
+                cmd="starship__help__completions"
+                ;;
+            starship__help,config)
+                cmd="starship__help__config"
+                ;;
+            starship__help,explain)
+                cmd="starship__help__explain"
+                ;;
+            starship__help,help)
+                cmd="starship__help__help"
+                ;;
+            starship__help,init)
+                cmd="starship__help__init"
+                ;;
+            starship__help,module)
+                cmd="starship__help__module"
+                ;;
+            starship__help,preset)
+                cmd="starship__help__preset"
+                ;;
+            starship__help,print-config)
+                cmd="starship__help__print__config"
+                ;;
+            starship__help,prompt)
+                cmd="starship__help__prompt"
+                ;;
+            starship__help,session)
+                cmd="starship__help__session"
+                ;;
+            starship__help,time)
+                cmd="starship__help__time"
+                ;;
+            starship__help,timings)
+                cmd="starship__help__timings"
+                ;;
+            starship__help,toggle)
+                cmd="starship__help__toggle"
                 ;;
             *)
                 ;;
@@ -103,7 +145,7 @@ _starship() {
             return 0
             ;;
         starship__config)
-            opts="-h --help <NAME> <VALUE>"
+            opts="-h --help [NAME] [VALUE]"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -191,8 +233,204 @@ _starship() {
             return 0
             ;;
         starship__help)
-            opts="<SUBCOMMAND>..."
+            opts="bug-report completions config explain init module preset print-config prompt session time timings toggle help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        starship__help__bug__report)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        starship__help__completions)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        starship__help__config)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        starship__help__explain)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        starship__help__help)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        starship__help__init)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        starship__help__module)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        starship__help__preset)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        starship__help__print__config)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        starship__help__prompt)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        starship__help__session)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        starship__help__time)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        starship__help__timings)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        starship__help__toggle)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
@@ -219,7 +457,7 @@ _starship() {
             return 0
             ;;
         starship__module)
-            opts="-l -s -w -p -P -d -k -j -h --list --status --pipestatus --terminal-width --path --logical-path --cmd-duration --keymap --jobs --help <NAME>"
+            opts="-l -s -w -p -P -d -k -j -h --list --status --pipestatus --terminal-width --path --logical-path --cmd-duration --keymap --jobs --help [NAME]"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -293,7 +531,7 @@ _starship() {
             return 0
             ;;
         starship__preset)
-            opts="-l -h --list --help pastel-powerline plain-text-symbols pure-preset no-runtime-versions nerd-font-symbols bracketed-segments"
+            opts="-l -h --list --help no-runtime-versions plain-text-symbols pure-preset bracketed-segments nerd-font-symbols pastel-powerline"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -307,7 +545,7 @@ _starship() {
             return 0
             ;;
         starship__print__config)
-            opts="-d -h --default --help <NAME>..."
+            opts="-d -h --default --help [NAME]..."
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -497,7 +735,7 @@ _starship() {
             return 0
             ;;
         starship__toggle)
-            opts="-h --help <NAME> <VALUE>"
+            opts="-h --help <NAME> [VALUE]"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
