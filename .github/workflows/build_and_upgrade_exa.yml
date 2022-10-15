@@ -1,0 +1,135 @@
+name: Build and upgrade exa
+on:
+  [workflow_dispatch]
+
+jobs:
+  armv7l:
+    name: armv7l build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: ogham/exa
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: armv7-unknown-linux-gnueabihf
+          override: true
+      - uses: actions-rs/cargo@v1
+        with:
+          use-cross: true
+          command: build
+      - name: Upload artefact
+        uses: actions/upload-artifact@v2
+        with:
+          name: armv7l-binary
+          path: .cargo/bin/exa
+      - name: Find binary
+        run: find / -type f -name exa
+
+  aarch64:
+    name: aarch64 build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: ogham/exa
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: aarch64-unknown-linux-gnu
+          override: true
+      - uses: actions-rs/cargo@v1
+        with:
+          use-cross: true
+          command: build
+      - name: Upload artefact
+        uses: actions/upload-artifact@v2
+        with:
+          name: aarch64-binary
+          path: .cargo/bin/exa
+
+  android:
+    name: android build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: ogham/exa
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: aarch64-linux-android
+          override: true
+      - uses: actions-rs/cargo@v1
+        with:
+          use-cross: true
+          command: build
+      - name: Upload artefact
+        uses: actions/upload-artifact@v2
+        with:
+          name: android-binary
+          path: .cargo/bin/exa
+
+  x86_64:
+    name: x86_64 build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: ogham/exa
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: x86_64-unknown-linux-gnu
+          override: true
+      - uses: actions-rs/cargo@v1
+        with:
+          use-cross: true
+          command: build
+      - name: Upload artefact
+        uses: actions/upload-artifact@v2
+        with:
+          name: x86_64-binary
+          path: .cargo/bin/exa
+
+  commit:
+    name: Commit and push to repository
+    needs: [armv7l, aarch64, android, x86_64]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download armv7l artefact
+        uses: actions/download-artifact@v3
+        with:
+          name: armv7l-binary
+          path: bin/armv7l
+
+      - name: Download aarch64 artefact
+        uses: actions/download-artifact@v3
+        with:
+          name: aarch64-binary
+          path: bin/aarch64
+
+      - name: Download android artefact
+        uses: actions/download-artifact@v3
+        with:
+          name: android-binary
+          path: bin/android
+
+      - name: Download x86_64 artefact
+        uses: actions/download-artifact@v3
+        with:
+          name: x86_64-binary
+          path: bin/x86_64
+
+      - name: Commit and push to repository
+        run: |
+          git config --global user.name "eggbean"
+          git config --global user.email 815311+eggbean@users.noreply.github.com
+          git add --all
+          git status
+          tag="$(curl -s https://api.github.com/repos/ogham/exa/releases/latest | jq -r '.tag_name')"
+          git commit -m "Upgrade exa to ${tag}+latest_commits"
+          git push
