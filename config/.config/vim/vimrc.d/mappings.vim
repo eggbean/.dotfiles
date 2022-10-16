@@ -16,8 +16,10 @@ vnoremap <silent> <F4> :set relativenumber!<CR>
 nnoremap <silent> <F7> :set spell!<CR>
 vnoremap <silent> <F7> :set spell!<CR>
 
-" Remap Y to be consistent with nvim
-nnoremap Y y$
+" Only yanks to clipboard,
+" not deletes, changes and puts like with clipboard setting
+nnoremap y "+y
+nnoremap Y ^"+y$
 
 " Write after forgetting sudo
 cnoremap w!! w !sudo tee % >/dev/null
