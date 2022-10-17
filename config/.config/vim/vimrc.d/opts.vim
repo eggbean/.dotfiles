@@ -88,7 +88,7 @@ endif
 
 " Set dictionary and regenerate spl files on startup
 set spelllang=en_gb
-set thesaurus=$VIM/spell/mthesaur.txt
+set thesaurus=$VIMFILES/spell/mthesaur.txt
 if has('unix')
   set dictionary+=/usr/share/dict/words
   set spellfile=$HOME/.config/vim/spell/en.utf-8.add

@@ -1,12 +1,7 @@
 " VIM AUTOCMDS
 
-" Option for specific filetypes
-autocmd BufRead,BufNewFile *.tf   setlocal tabstop=2
-autocmd BufRead,BufNewFile *.json setlocal tabstop=2
-autocmd BufRead,BufNewFile *.md   setlocal textwidth=80 spell
-autocmd BufRead,BufNewFile *.txt  setlocal tabstop=4 textwidth=80 noexpandtab spell
-
-" Highlight syntax within Markdown
+" Markdown
+autocmd BufNewFile,BufRead *.markdown,*.mdown,*.mkd,*.mkdn,*.mdwn,*.md setf markdown
 let g:markdown_fenced_languages = ['html', 'css', 'python', 'sh', 'vim']
 
 " Enable syntax completion
@@ -20,8 +15,8 @@ endif
 " Skeleton templates
 augroup skeleton
   autocmd!
-  autocmd BufNewFile *.sh 0r $VIM/templates/skeleton.sh
-  autocmd BufNewFile *.py 0r $VIM/templates/skeleton.py
+  autocmd BufNewFile *.sh 0r $VIMFILES/templates/skeleton.sh
+  autocmd BufNewFile *.py 0r $VIMFILES/templates/skeleton.py
 augroup END
 
 " Rename tmux windows with filename

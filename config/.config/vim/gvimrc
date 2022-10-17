@@ -39,11 +39,11 @@ function ToggleWindowMenu()
 endfunction
 
 " Distraction-free mode
-source $VIM/vimrc.d/distraction_free_mode.vim
+source $VIMFILES/vimrc.d/distraction_free_mode.vim
 map <silent> <F12> :call ToggleDistractionFreeMode()<CR>
 
 " Restore window positions
-source $VIM/vimrc.d/restore_position.vim
+source $VIMFILES/vimrc.d/restore_position.vim
 
 " Set window to certain size with F10
 function! SetScreenSize()
@@ -61,7 +61,7 @@ function! SetScreenSize()
 endfunction
 nmap <silent> <F10> :call SetScreenSize()<CR>
 
-" Fullscreen with Alt-Enter
+" Fullscreen with F11/Alt-Enter
 function! ToggleFullScreen()
   if has('gui_gtk2')
     call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")
