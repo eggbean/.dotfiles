@@ -169,7 +169,7 @@ if [ -d "$HOME/.bookmarks" ]; then
     local CDPATH="$HOME/.bookmarks"
     command cd -P "$@" >/dev/null
   }
-  complete -W "$(command cd ~/.bookmarks && printf '%s\n' -- *)" goto
+  complete -W "$(command cd ~/.bookmarks && printf '%s\n' *)" goto
   bookmark() {
     pushd "$HOME/.bookmarks" >/dev/null
     ln -s "$OLDPWD" "$@"
@@ -180,6 +180,7 @@ fi
 # Combine bookmarks and cdd functions
 supercd() {
   if [ "${1::1}" == '@' ]; then
+    # local CDPATH="$HOME/.bookmarks"
     goto "$@"
   else
     cdd "$@"
@@ -188,6 +189,7 @@ supercd() {
 
 if [[ $(type -t cdd) == function ]] && [[ $(type -t goto) == function ]]; then
   alias cd='supercd'
+  complete -W "$(command cd ~/.bookmarks && printf '%s\n' -- *)" supercd
 fi
 
 # Make directory and change directory into it
@@ -269,4 +271,4 @@ if command -v fzf >/dev/null; then
 fi
 
 # Source host specific environment
-[ -f ~/.dotfiles/shell/.hostinclude/"$(hostname -s)" ] && . ~/.dotfiles/shell/.hostinclude/"$(hostname -s)"
+[ -f ~/.dotfiles/shell/.includes/"$(hostname -s)" ] && . ~/.dotfiles/shell/.includes/"$(hostname -s)"
