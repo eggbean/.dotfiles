@@ -50,6 +50,11 @@ done
   && mkdir "$WIN_HOME"/AppData/Roaming/mpv
 cp -r "$HOME"/.dotfiles/config/.config/mpv/* "$WIN_HOME"/AppData/Roaming/mpv
 
+# GitHub CLI
+[ ! -d "$WIN_HOME/AppData/Roaming/GitHub CLI" ] \
+  && mkdir "$WIN_HOME/AppData/Roaming/GitHub CLI"
+cp -r "$HOME"/.dotfiles/config/.config/gh/{config,hosts}.yml "$WIN_HOME/AppData/Roaming/GitHub CLI"
+
 # ranger
 # rifle.conf file swapped over with one that works with Windows and change ignored by git
 cd "$HOME"/.dotfiles || { echo "ERROR" >&2; exit 1; }
