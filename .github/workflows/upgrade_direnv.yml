@@ -1,0 +1,44 @@
+name: Upgrade direnv
+on:
+  [workflow_dispatch]
+
+jobs:
+  upgrade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download and extract tarballs
+        run: |
+          name='direnv.linux-amd64'
+          wget -q "$(curl -s https://api.github.com/repos/direnv/direnv/releases/latest | jq -r '.assets[] | select(.name == $name).browser_download_url' --arg name "${name}")"
+          chmod +x "${name}"
+          mv "${name}" bin/x86_64/direnv
+
+          name='direnv.linux-arm'
+          wget -q "$(curl -s https://api.github.com/repos/direnv/direnv/releases/latest | jq -r '.assets[] | select(.name == $name).browser_download_url' --arg name "${name}")"
+          chmod +x "${name}"
+          mv "${name}" bin/armv7l/direnv
+
+          name='direnv.linux-arm64'
+          wget -q "$(curl -s https://api.github.com/repos/direnv/direnv/releases/latest | jq -r '.assets[] | select(.name == $name).browser_download_url' --arg name "${name}")"
+          chmod +x "${name}"
+          mv "${name}" bin/aarch64/direnv
+
+          wget -q https://github.com/direnv/direnv/raw/master/man/direnv-fetchurl.1 -O bin/man/man1/direnv-fetchurl.1
+          wget -q https://github.com/direnv/direnv/raw/master/man/direnv-stdlib.1 -O bin/man/man1/direnv-stdlib.1
+          wget -q https://github.com/direnv/direnv/raw/master/man/direnv.1 -O bin/man/man1/direnv.1
+          wget -q https://github.com/direnv/direnv/raw/master/man/direnv.toml.1 -O bin/man/man1/direnv.toml.1
+          gzip -f bin/man/man1/direnv*
+
+      - name: Commit and push to repository
+        run: |
+          git config --global user.name "eggbean"
+          git config --global user.email 815311+eggbean@users.noreply.github.com
+          git add --all
+          git status
+          tag="$(curl -s https://api.github.com/repos/direnv/direnv/releases/latest | jq -r '.tag_name')"
+          git commit -m "Upgrade direnv to ${tag}"
+          git push
