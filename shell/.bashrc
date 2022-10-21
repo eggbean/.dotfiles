@@ -40,6 +40,9 @@ shopt -s no_empty_cmd_completion
 # Set Starship prompt
 eval "$(starship init bash)"
 
+# Direnv hook
+eval "$(direnv hook bash)"
+
 # Enable color support of ls
 if [ -x /usr/bin/dircolors ]; then
   test -r ~/.dotfiles/bin/scripts/dir_colors && eval "$(dircolors -b ~/.dotfiles/bin/scripts/dir_colors)" || eval "$(dircolors -b)"
