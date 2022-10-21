@@ -12,7 +12,7 @@ lnk=0
 # Group directories first in long listing by default
 gpd=0
 # Show file git status automatically (can cause a slight delay in large repo subdirectories)
-git=1
+if [ "$no_exa_git" == "true" ]; then git=0; else git=1; fi
 # Show icons
 ico=0
 # Color always (can be disabled with -N switch when not wanted)
@@ -100,6 +100,6 @@ shift "$((OPTIND - 1))"
   [[ $(git -C "${*:-.}" rev-parse --is-inside-work-tree) == true ]] 2>/dev/null && exa_opts+=(--git)
 
 shopt -s extglob
-[[ $(realpath "${*:-.}") == /@(mnt|?)/* ]] && exabin=exa-ntfs || exabin=exa
+[[ $(realpath "${*:-.}") == /@(mnt|?)/* ]] 2>/dev/null && exabin=exa-ntfs || exabin=exa
 
 ${exabin} --color-scale "${exa_opts[@]}" "$@"
