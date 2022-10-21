@@ -4,30 +4,49 @@
 [core]
 	editor = vi
 	pager = delta
-	excludesfile = ~/.dotfiles/config/.config/git/gitignore-system
 	hooksPath = .githooks/
 [init]
 	defaultBranch = master
 [branch]
+	; autosetupmerge = always
 	autosetuprebase = always
+[commit]
+	cleanup = scissors
+[push]
+	default = tracking
 [pull]
 	ff = only
 	rebase = true
-[color]
-	ui = true
-[color "status"]
-	untracked = blue
+[merge]
+	conflictstyle = diff3
+	renamelimit = 9999
+	tool = nvimdiff
+[mergetool]
+	prompt = true
+[apply]
+	whitespace = fix
+[rerere]
+	enabled = true
+[status]
+	showStash = true
 [diff]
+	algorithm = histogram
+	submodule = log
 	tool = nvimdiff
 [difftool]
 	prompt = false
+[interactive]
+	diffFilter = delta --color-only --features=interactive
 [pager]
 ; 	log = LESS= less -Rq+g
 ; 	whatchanged = LESS= less -Rq+g
 ; 	diff = LESS= less -RSqx4+g
 	stash = false
-[interactive]
-	diffFilter = delta --color-only --features=interactive
+	branch = false
+[color]
+	ui = true
+[color "status"]
+	untracked = blue
 [delta]
 	features = decorations
 	line-numbers = true
@@ -55,8 +74,11 @@
 	hunk-header-line-number-style = "#067a00"
 	hunk-header-style = file line-number syntax
 [alias]
+	alias = ! git config -l | grep ^alias | cut -c 7- | sort
+	append = commit --amend --no-edit
+	please = push --force-with-lease
+	staged = diff --cached
 	localhist = "reflog --abbrev-commit --pretty=format:'%Cblue%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset'"
-	wdiff = ! "f () { git diff --color-words \"$@\" | grep --color=never $(printf '\\033\\[3[12]'); }; f"
-	mdiff = ! "f () { git diff --color \"$@\" | grep --color=never $(printf '\\033\\[3[12]'); }; f"
-	bdiff = ! "f () { git diff --name-only --diff-filter=d \"$@\" | xargs bat --diff; }; f"
 	vdiff = ! "f () { git difftool --tool=nvimdiff -- \"$@\"; }; f"
+[credential]
+	helper = manager-core

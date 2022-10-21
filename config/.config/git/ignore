@@ -1,5 +1,4 @@
 __pycache__/
-__init__.py
 *.env
 *.key
 *.pyc
@@ -8,3 +7,5 @@ __init__.py
 *.swp
 *.notes
 .vim-bookmarks
+**/desktop.ini
+*.ppk
