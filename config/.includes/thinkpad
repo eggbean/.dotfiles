@@ -1,7 +1,7 @@
 ## Host specific stuff for ThinkPad clients
 
 # If WSL do something else
-if grep -qi microsoft /proc/version; then source ~/.dotfiles/shell/.includes/wsl && return; fi
+if grep -qi microsoft /proc/version; then source ~/.dotfiles/config/.includes/wsl && return; fi
 
 # Turn SD card reader on and off
 sdreader() {

@@ -274,4 +274,4 @@ if command -v fzf >/dev/null; then
 fi
 
 # Source host specific environment
-[ -f ~/.dotfiles/shell/.includes/"$(hostname -s)" ] && . ~/.dotfiles/shell/.includes/"$(hostname -s)"
+[ -f ~/.dotfiles/config/.includes/"$(hostname -s)" ] && . ~/.dotfiles/config/.includes/"$(hostname -s)"

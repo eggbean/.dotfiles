@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Set file permissions for ssh keys
-mapfile -t privatekeys < <(find ssh/.ssh -regextype egrep -regex '.*/id_[^.]+$')
+mapfile -t privatekeys < <(find config/.ssh -regextype egrep -regex '.*/id_[^.]+$')
 chmod 400 "${privatekeys[@]}"
-chmod 644 ssh/.ssh/config
+chmod 644 config/.ssh/config
 
 # Set file permissions for GPG keys
 find config/.gnupg -type d -exec chmod 700 {} \;
