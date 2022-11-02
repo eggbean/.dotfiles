@@ -65,6 +65,11 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# Yoloing
+yolo() {
+  yes | sudo "$@"
+}
+
 # Rename tmux windows automatically to hostname
 ssh() {
   if [[ $TMUX ]]; then
