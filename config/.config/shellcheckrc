@@ -1,0 +1,2 @@
+# Ignore non-constant sources
+disable=SC1090
