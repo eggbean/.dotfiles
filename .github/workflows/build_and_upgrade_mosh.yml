@@ -1,0 +1,112 @@
+name: Build and upgrade mosh
+on:
+  [workflow_dispatch]
+
+jobs:
+  build_on_ARM:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: [armv7l, aarch64]
+        include:
+          - arch: armv7l
+            cpu: cortex-a7
+            base_image: raspios_lite:latest
+          - arch: aarch64
+            cpu: cortex-a53
+            base_image: raspios_lite_arm64:latest
+
+    steps:
+      - name: Get release version
+        run: |
+          export tag="$(curl -s https://api.github.com/repos/mobile-shell/mosh/releases/latest | jq -r '.tag_name')"
+          echo "version=${tag}" >> $GITHUB_ENV
+
+      - name: Download and extract mosh source code
+        run: |
+          name="${{ env.version }}.tar.gz"
+          wget -q "$(curl -s https://api.github.com/repos/mobile-shell/mosh/releases/latest | jq -r '.assets[] | select(.name == $name).browser_download_url' --arg name "${name}")"
+          tar -xvf ${{ env.version }}.tar.gz
+
+      - name: Build for ${{ matrix.arch }}
+        uses: pguyot/arm-runner-action@v2
+        with:
+          base_image: ${{ matrix.base_image }}
+          cpu: ${{ matrix.cpu }}
+          cpu_info: ${{ matrix.cpu_info }}
+          copy_artifact_path: ../usr/local/bin/mosh-client;../usr/local/bin/mosh-server
+          copy_artifact_dest: .
+          image_additional_mb: 1024
+          commands: |
+            apt-get install -y protobuf-compiler libprotobuf-dev libncurses-dev libutempter-dev libssl-dev zlib1g-dev
+            cd ${{ env.version }}
+            ./configure --enable-compile-warnings=error
+            make
+            make install
+
+      - name: Upload artefacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.arch }}-binaries
+          path: |
+            mosh-client
+            mosh-server
+
+  build_on_x86_64_and_commit:
+    needs: [build_on_ARM]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get release version
+        run: |
+          export tag="$(curl -s https://api.github.com/repos/mobile-shell/mosh/releases/latest | jq -r '.tag_name')"
+          echo "version=${tag}" >> $GITHUB_ENV
+
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download and extract mosh source code
+        run: |
+          name="${{ env.version }}.tar.gz"
+          wget -q "$(curl -s https://api.github.com/repos/mobile-shell/mosh/releases/latest | jq -r '.assets[] | select(.name == $name).browser_download_url' --arg name "${name}")"
+          tar -xvf ${{ env.version }}.tar.gz
+
+      - name: Build for x86_84
+        run: |
+          sudo apt-get install -y protobuf-compiler libprotobuf-dev libncurses-dev libutempter-dev libssl-dev zlib1g-dev
+          cd ${{ env.version }}
+          ./configure --enable-compile-warnings=error
+          make
+          sudo make install
+
+      - name: Move files
+        run: |
+          cp /usr/local/bin/mosh bin/scripts
+          cp /usr/local/bin/mosh-{client,server} bin/x86_64
+          mv ${{ env.version }}/conf/bash-completion/completions/mosh bin/completions
+          mv ${{ env.version }}/man/mosh* bin/man/man1
+          gzip -f bin/man/man1/mosh*.1
+          rm -rf ${{ env.version }}*
+
+      - name: Download armv7l artefacts
+        uses: actions/download-artifact@v3
+        with:
+          name: armv7l-binaries
+          path: bin/armv7l
+
+      - name: Download aarch64 artefacts
+        uses: actions/download-artifact@v3
+        with:
+          name: aarch64-binaries
+          path: bin/aarch64
+
+      - name: Commit and push to repository
+        run: |
+          git config --global user.name "eggbean"
+          git config --global user.email 815311+eggbean@users.noreply.github.com
+          git add --all
+          git status
+          tag="$(curl -s https://api.github.com/repos/mobile-shell/mosh/releases/latest | jq -r '.tag_name')"
+          git commit -m "Upgrade mosh to ${tag#*-}"
+          git push
