@@ -6,15 +6,17 @@ vnoremap <silent> <F2> :execute "set colorcolumn=" . (&colorcolumn == "" ? "80" 
 
 " Toggle line numbers
 nnoremap <silent> <F3> :set number!<CR>
-inoremap <silent> <F3> :set number!<CR>
 vnoremap <silent> <F3> :set number!<CR>
 nnoremap <silent> <F4> :set relativenumber!<CR>
-inoremap <silent> <F4> :set relativenumber!<CR>
 vnoremap <silent> <F4> :set relativenumber!<CR>
 
 " Toggle spell-checking
 nnoremap <silent> <F7> :set spell!<CR>
 vnoremap <silent> <F7> :set spell!<CR>
+
+" Toggle cursorcolumn
+nnoremap <silent> <F8> :set cursorcolumn!<CR>
+vnoremap <silent> <F8> :set cursorcolumn!<CR>
 
 " Only yanks to clipboard,
 " not deletes, changes and puts like with clipboard setting

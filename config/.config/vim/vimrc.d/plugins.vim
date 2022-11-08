@@ -8,26 +8,28 @@ elseif has('win32') | call plug#begin() | endif
     Plug 'tpope/vim-rsi'
     Plug 'machakann/vim-sandwich'
     Plug 'christoomey/vim-tmux-navigator'
-    Plug 'junegunn/fzf'
+    Plug 'iamcco/markdown-preview.nvim', { 'for': 'markdown' }
     Plug 'ntpeters/vim-better-whitespace'
     Plug 'airblade/vim-gitgutter'
-    Plug 'MattesGroeger/vim-bookmarks'
+    Plug 'AndrewRadev/sideways.vim'
     Plug 'AndrewRadev/switch.vim'
     Plug 'gerazov/vim-toggle-bool'
     Plug 'chrisbra/Recover.vim'
     Plug 'chrisbra/SudoEdit.vim'
     Plug 'chrisbra/csv.vim'
+    Plug 'MattesGroeger/vim-bookmarks'
+    Plug 'junegunn/fzf'
     Plug 'dhruvasagar/vim-zoom'
     Plug 'ap/vim-css-color'
     Plug 'sheerun/vim-polyglot'
     Plug 'dense-analysis/ale'
     Plug 'eggbean/vim-tmux', { 'branch': 'missing-commands' }
     " TESTING ...
-    Plug 'junegunn/vim-peekaboo'
+    Plug 'frazrepo/vim-rainbow'
+    Plug 'ojroques/vim-oscyank'
     Plug 'dstein64/vim-startuptime'
     Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
     Plug 'ctrlpvim/ctrlp.vim'
-    Plug 'frazrepo/vim-rainbow'
     " Plug 'mattn/emmet-vim'
     " Plug 'arp242/jumpy.vim'
     " Plug 'pearofducks/ansible-vim'
@@ -95,3 +97,17 @@ call plug#end()
   let g:ansible_unindent_after_newline = 1
 " vim-highlightedyank
   let g:highlightedyank_highlight_duration = 750
+" sideways
+  nnoremap <C-h> :SidewaysLeft<CR>
+  nnoremap <C-l> :SidewaysRight<CR>
+  omap aa <Plug>SidewaysArgumentTextobjA
+  xmap aa <Plug>SidewaysArgumentTextobjA
+  omap ia <Plug>SidewaysArgumentTextobjI
+  xmap ia <Plug>SidewaysArgumentTextobjI
+" vim-oscyank
+  vnoremap <leader>y :OSCYank<CR>
+  nmap     <leader>y :OSCYank<CR>
+" markdown-preview
+  let g:mkdp_echo_preview_url = 1
+  let g:mkdp_theme = 'light'
+  nmap <leader>m <Plug>MarkdownPreviewToggle

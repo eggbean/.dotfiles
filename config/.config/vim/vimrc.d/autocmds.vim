@@ -1,5 +1,8 @@
 " VIM AUTOCMDS
 
+" Set filetype so that linting plugins use bash syntax instead of sh
+autocmd BufNewFile,BufRead .bash_aliases,.bash_logout,.bash_profile,.bashrc,*.sh setf bash
+
 " Markdown
 autocmd BufNewFile,BufRead *.markdown,*.mdown,*.mkd,*.mkdn,*.mdwn,*.md setf markdown
 let g:markdown_fenced_languages = ['html', 'css', 'python', 'sh', 'vim']

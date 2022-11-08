@@ -1,10 +1,10 @@
 " VIM OPTIONS
 
 " Indentation
-set tabstop=2
-set shiftwidth=2
+set tabstop=4
+set shiftwidth=4
 set shiftround
-set softtabstop=2
+set softtabstop=4
 set autoindent
 set expandtab
 set list
@@ -65,12 +65,8 @@ set writebackup
 set swapfile
 set undofile
 set shortmess+=F
-
-if has('nvim')
-  set noshowmode
-else
-  set showmode
-endif
+set noshowmode
+set clipboard=unnamed
 
 if !empty(&viminfo)
   set viminfo^=!
