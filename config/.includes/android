@@ -1,2 +1,4 @@
 ## Host specific stuff for termux on android
 
+unset BROWSER
+unset GH_BROWSER

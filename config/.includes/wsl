@@ -14,6 +14,7 @@ gotopath() {
 
 # Aliases
 alias mklink=' . mklink.sh'
+alias qutebrowser='/mnt/c/Program\ Files/qutebrowser/qutebrowser.exe'
 
 # wsl2-ssh-pageant
 export SSH_AUTH_SOCK="$HOME/.ssh/agent.sock"
@@ -27,3 +28,13 @@ if ! ss -a | grep -q "$SSH_AUTH_SOCK"; then
   fi
   unset wsl2_ssh_pageant_bin
 fi
+
+# Set qutebrowser as default browser if installed
+if [ -x "/mnt/c/Program Files/qutebrowser/qutebrowser.exe" ]; then
+  export BROWSER="/mnt/c/Program Files/qutebrowser/qutebrowser.exe"
+  export GH_BROWSER="/mnt/c/Program\ Files/qutebrowser/qutebrowser.exe"
+fi
+
+# Vagrant
+export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
+PATH="$PATH:/mnt/c/Program Files/Oracle/VirtualBox"

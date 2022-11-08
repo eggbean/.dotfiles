@@ -3,10 +3,17 @@
 # shellcheck disable=SC1090,SC2164,SC2148,SC2155
 
 # If not running interactively, don't do anything
-case $- in
-  *i*) ;;
-    *) return;;
-esac
+[[ $- != *i* ]] && return
+
+# Shell options
+shopt -s checkwinsize
+shopt -s direxpand
+shopt -s globstar
+shopt -s cmdhist
+shopt -s lithist
+shopt -s histappend
+shopt -s hostcomplete
+shopt -s no_empty_cmd_completion
 
 # History file settings
 HISTCONTROL=ignoreboth
@@ -22,14 +29,6 @@ fi
 
 # Shared history between tmux panes
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
-
-# Shell options
-shopt -s checkwinsize
-shopt -s direxpand
-shopt -s globstar
-shopt -s histappend
-shopt -s hostcomplete
-shopt -s no_empty_cmd_completion
 
 # Make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -52,9 +51,7 @@ fi
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # Alias definitions.
-if [ -f ~/.bash_aliases ]; then
-  . ~/.bash_aliases
-fi
+. ~/.bash_aliases
 
 # Enable programmable completion features
 if ! shopt -oq posix; then
@@ -128,22 +125,12 @@ docker() {
   fi
 }
 
-# Prevent accidental git stashing, replace git browse and alias git to hub
+# Prevent accidental git stashing
 git() {
   if [[ "$#" -eq 1 ]] && [[ "$1" == "stash" ]]; then
     echo 'WARNING: run "git stash push" instead.'
-  elif [[ "$1" == "browse" ]]; then
-    # Fix $BROWSER needing escaping backslash for gh
-    if grep -qi microsoft /proc/version; then
-      local BROWSER="/mnt/c/Program\ Files/qutebrowser/qutebrowser.exe"
-    fi
-    gh browse "${@:2}"
   else
-    if command -v hub >/dev/null; then
-      command hub "$@"
-    else
-      command git "$@"
-    fi
+    command git "$@"
   fi
 }
 
@@ -276,6 +263,58 @@ if command -v fzf >/dev/null; then
   "
   # fzf open multiple files
   fzfr() { fzf -m -x | xargs -d'\n' -r "$@" ; }
+fi
+
+# ENVIRONMENT VARIABLES
+# xdg locations need to be set for termux
+export XDG_CACHE_HOME="$HOME"/.cache
+export XDG_DATA_HOME="$HOME"/.local/share
+export XDG_CONFIG_HOME="$HOME"/.config
+export XDG_STATE_HOME="$HOME"/.local/state
+export ADB_VENDOR_KEY="$XDG_CONFIG_HOME"/android
+export ANDROID_AVD_HOME="$XDG_DATA_HOME"/android/
+export ANDROID_SDK_HOME="$XDG_CONFIG_HOME"/android
+export ANDROID_EMULATOR_HOME="$XDG_DATA_HOME"/android/
+export ANSIBLE_CONFIG="$XDG_CONFIG_HOME"/ansible/ansible.cfg
+export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config
+export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME"/aws/credentials
+export AWS_WEB_IDENTITY_TOKEN_FILE="$XDG_DATA_HOME"/aws/token
+export CARGO_HOME="$XDG_DATA_HOME"/cargo
+export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
+export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME"/ripgrep/ripgreprc
+export TERMINFO="$XDG_DATA_HOME"/terminfo
+export TERMINFO_DIRS="$XDG_DATA_HOME"/terminfo:/usr/share/terminfo
+export TMUX_PLUGIN_MANAGER_PATH="$XDG_DATA_HOME"/tmux/plugins
+export VAGRANT_HOME="$XDG_DATA_HOME"/vagrant
+export VAGRANT_ALIAS_FILE="$XDG_DATA_HOME"/vagrant/aliases
+export VSCODE_PORTABLE="$XDG_DATA_HOME"/vscode
+export WGETRC="$XDG_CONFIG_HOME"/wget/wgetrc
+export LESSHISTFILE="$XDG_STATE_HOME"/less/history
+export LESSCHARSET='utf-8'
+export LANGUAGE="en_GB"
+export LANG="en_GB.UTF-8"
+export LC_ALL="en_GB.UTF-8"
+export LS_OPTIONS='-hv --color=always'
+export MOSH_TITLE_NOPREFIX=
+export PAGER='less -r'
+export LESS='-MRQx4FX#10'
+export MANPAGER='less -+MFX +g'
+export BAT_PAGER='less -+MFX -S'
+export EXA_COLORS='lc=38;5;124:lm=38;5;196:uu=38;5;178:gu=38;5;178:un=38;5;141:gn=38;5;141:bO=38;5;009'
+export RANGER_LOAD_DEFAULT_RC=FALSE
+export GVIMINIT='let $MYGVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/gvimrc" : "$XDG_CONFIG_HOME/nvim/init.gvim" | so $MYGVIMRC'
+export VIMINIT='let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$XDG_CONFIG_HOME/nvim/init.vim" | so $MYVIMRC'
+if [ -n "$DISPLAY" ]; then
+  export BROWSER=qutebrowser
+else
+  export BROWSER=elinks
+fi
+if command -v nvim >/dev/null; then
+  export EDITOR='nvim'
+  export VISUAL='nvim'
+else
+  export EDITOR='vim'
+  export VISUAL='vim'
 fi
 
 # Source host specific environment

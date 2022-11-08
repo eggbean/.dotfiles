@@ -20,3 +20,9 @@ alias screenoff='sleep 1; xset dpms force off'
 
 # Alias for battery info
 alias battery='date; sudo tlp-stat -b'
+
+# GPG Agent
+eval $(gpg-agent --daemon 2>/dev/null)
+export GPG_AGENT_INFO
+export SSH_AUTH_SOCK
+export GPG_TTY=$(tty)
