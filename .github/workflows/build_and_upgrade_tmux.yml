@@ -32,7 +32,7 @@ jobs:
           cpu_info: ${{ matrix.cpu_info }}
           copy_artifact_path: ../tmp/tmux-static/bin/tmux
           copy_artifact_dest: .
-          image_additional_mb: 1024
+          image_additional_mb: 2048
           commands: |
               test $(uname -m) = ${{ matrix.arch }}
               /bin/sh bin/scripts/build-static-tmux.sh
