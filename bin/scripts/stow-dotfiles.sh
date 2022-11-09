@@ -11,4 +11,15 @@ touch ~/.local/share/.stow-no-folding
 [ ! -d ~/.ssh ] && mkdir ~/.ssh
 touch ~/.ssh/.stow-no-folding
 
+# Move existing shell configuration files into a directory
+pushd ~ >/dev/null
+shellfiles=( .bash_aliases .bash_login .bash_logout .bash_profile .bashrc .inputrc )
+for file in "${shellfiles[@]}"; do
+  if [[ -f "$file" ]]; then
+    if [[ ! -d existing_files ]]; then mkdir existing_files; fi
+    mv "$file" existing_files
+  fi
+done
+
+pushd ~/.dotfiles >/dev/null
 stow --adopt -Rv -d ~/.dotfiles -t ~ config

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ~/.dotfiles || (echo "Cannot find ~/.dotfiles" >&2; exit 1)
+pushd ~/.dotfiles >/dev/null || (echo "Cannot find ~/.dotfiles" >&2; exit 1)
 
 # Stow binaries
 if [ "$UID" -ne 0 ] && [ "$EUID" -ne 0 ]; then
@@ -11,4 +11,6 @@ fi
 # Stow dotfiles
 bin/scripts/stow-dotfiles.sh config
 
+popd >/dev/null
+bind -f ~/.inputrc
 source ~/.bash_profile
