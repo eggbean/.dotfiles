@@ -1,5 +1,25 @@
 # ~/.bash_profile
 
+# Linuxlogo and tmux sessions for welcome
+# use neofetch or macchina on OSs without linuxlogo logos
+if [ -z "$TMUX" ]; then
+  if command -v neofetch >/dev/null; then
+    clear && echo && neofetch
+  elif [ "$(uname -o)" = "Android" ]; then
+    clear && macchina
+  elif command -v linux_logo >/dev/null; then
+    eval "$(. /etc/os-release && typeset -p ID PRETTY_NAME)"
+    [ -f /etc/machine-info ] && eval "$(. /etc/machine-info && typeset -p LOCATION)"
+    linux_logo -L "$ID" -f -F "$PRETTY_NAME\nCompiled #C\n#N #M #X #T Processor#S, #R RAM\n#U\n#L\n$(hostname -f)\n$LOCATION\n#E" 2>/dev/null
+    unset ID PRETTY_NAME LOCATION
+  fi
+  sessions=$(tmux list-sessions -F#S 2>/dev/null | xargs echo)
+  if [ -n "$sessions" ]; then
+    echo "  Available tmux sessions: ""$sessions"""
+  fi
+  unset sessions
+fi
+
 # include .bashrc if it exists
 if [ -f "$HOME/.bashrc" ]; then
   . "$HOME/.bashrc"
@@ -18,23 +38,6 @@ if [ -d "$HOME/bin" ]; then
 fi
 if [ -d "$HOME/.local/bin" ]; then
   PATH="$HOME/.local/bin:$PATH"
-fi
-
-# Linuxlogo and tmux sessions
-if [ -z "$TMUX" ]; then
-  if command -v linux_logo >/dev/null; then
-    eval "$(. /etc/os-release && typeset -p ID PRETTY_NAME)"
-    [ -f /etc/machine-info ] && eval "$(. /etc/machine-info && typeset -p LOCATION)"
-    linux_logo -L "$ID" -f -F "$PRETTY_NAME\nCompiled #C\n#N #M #X #T Processor#S, #R RAM\n#U\n#L\n$(hostname -f)\n$LOCATION\n#E" 2>/dev/null
-    unset ID PRETTY_NAME LOCATION
-  elif [ "$(uname -o)" = "Android" ]; then
-    clear && macchina
-  fi
-  sessions=$(tmux list-sessions -F#S 2>/dev/null | xargs echo)
-  if [ -n "$sessions" ]; then
-    echo "  Available tmux sessions: ""$sessions"""
-  fi
-  unset sessions
 fi
 
 # Golang
