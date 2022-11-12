@@ -15,3 +15,4 @@ config/.config/gcloud/legacy_credentials/gomez404@gmail.com/adc.json filter=git-
 config/.config/gcloud/legacy_credentials/gomez404@gmail.com/.boto filter=git-crypt diff=git-crypt
 config/.steampipe/config/*.spc filter=git-crypt diff=git-crypt
 config/.mclient/config.json filter=git-crypt diff=git-crypt
+bin/scripts/bootstrap*.sh filter=git-crypt diff=git-crypt
