@@ -5,6 +5,7 @@ yes | pkg update && pkg upgrade && \
 yes | pkg install \
   bat \
   cmatrix \
+  direnv \
   dnsutils \
   dust \
   exa \
@@ -35,9 +36,11 @@ yes | pkg install \
   starship \
   stow \
   termux-api \
+  termux-exec \
   terraform \
   tmux \
   traceroute \
   tree \
+  tsu \
   wget \
   whois

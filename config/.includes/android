@@ -2,3 +2,9 @@
 
 unset BROWSER
 unset GH_BROWSER
+unset LANGUAGE
+unset LANG
+unset LC_ALL
+
+# Start ssh-agent
+. source-ssh-agent

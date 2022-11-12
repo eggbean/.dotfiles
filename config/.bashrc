@@ -293,7 +293,7 @@ export LESSHISTFILE="$XDG_STATE_HOME"/less/history
 export LESSCHARSET='utf-8'
 export LANGUAGE="en_GB"
 export LANG="en_GB.UTF-8"
-export LC_ALL="en_GB.UTF-8"
+export LC_ALL="en_GB.UTF-8" 2>/dev/null
 export LS_OPTIONS='-hv --color=always'
 export MOSH_TITLE_NOPREFIX=
 export PAGER='less -r'
