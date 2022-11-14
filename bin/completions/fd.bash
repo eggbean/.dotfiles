@@ -1,4 +1,4 @@
-_target/release/fd() {
+_fd() {
     local i cur prev opts cmds
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
@@ -10,7 +10,7 @@ _target/release/fd() {
     do
         case "${cmd},${i}" in
             ",$1")
-                cmd="target/release/fd"
+                cmd="fd"
                 ;;
             *)
                 ;;
@@ -18,8 +18,8 @@ _target/release/fd() {
     done
 
     case "${cmd}" in
-        target/release/fd)
-            opts="-H -I -u -s -i -g -F -a -l -L -p -0 -d -E -t -e -S -o -x -X -c -j -1 -q -h -V --hidden --no-ignore --no-ignore-vcs --no-ignore-parent --no-global-ignore-file --unrestricted --case-sensitive --ignore-case --glob --regex --fixed-strings --absolute-path --list-details --follow --full-path --print0 --max-depth --min-depth --exact-depth --exclude --prune --type --extension --size --changed-within --changed-before --owner --exec --exec-batch --batch-size --ignore-file --color --threads --max-buffer-time --max-results --quiet --show-errors --base-directory --path-separator --search-path --strip-cwd-prefix --one-file-system --gen-completions --no-hidden --ignore --ignore-vcs --relative-path --no-follow --help --version [pattern] [path]..."
+        fd)
+            opts="-H -I -u -s -i -g -F -a -l -L -p -0 -d -E -t -e -S -o -x -X -c -j -1 -q -h -V --hidden --no-hidden --no-ignore --ignore --no-ignore-vcs --ignore-vcs --no-ignore-parent --no-global-ignore-file --unrestricted --case-sensitive --ignore-case --glob --regex --fixed-strings --absolute-path --relative-path --list-details --follow --no-follow --full-path --print0 --max-depth --min-depth --exact-depth --exclude --prune --type --extension --size --changed-within --changed-before --owner --exec --exec-batch --batch-size --ignore-file --color --threads --max-buffer-time --max-results --quiet --show-errors --base-directory --path-separator --search-path --strip-cwd-prefix --one-file-system --gen-completions --help --version [pattern] [path]..."
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 1 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -163,4 +163,4 @@ _target/release/fd() {
     esac
 }
 
-complete -F _target/release/fd -o bashdefault -o default target/release/fd
+complete -F _fd -o bashdefault -o default fd
