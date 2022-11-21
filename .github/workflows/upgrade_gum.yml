@@ -1,0 +1,42 @@
+name: Upgrade gum
+on:
+  [workflow_dispatch]
+
+jobs:
+  upgrade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download and extract tarballs
+        run: |
+          nameregex='^gum_\d[\d.]+?\d?_linux_x86_64\.tar\.gz$'
+          wget -q "$(curl -s https://api.github.com/repos/charmbracelet/gum/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
+          tar --exclude='README.md' -xvf gum_*_linux_x86_64.tar.gz
+          rm LICENSE completions/gum.{fish,zsh}
+          mv gum bin/x86_64
+          mv completions/gum.bash bin/completions
+          mv manpages/gum.1.gz bin/man/man1
+          rm gum_*_linux_x86_64.tar.gz
+
+          nameregex='^gum_\d[\d.]+?\d?_linux_arm64\.tar\.gz$'
+          wget -q "$(curl -s https://api.github.com/repos/charmbracelet/gum/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
+          tar -C bin/aarch64 -xvf gum_*_linux_arm64.tar.gz gum
+          rm gum_*_linux_arm64.tar.gz
+
+          nameregex='^gum_\d[\d.]+?\d?_linux_armv7\.tar\.gz$'
+          wget -q "$(curl -s https://api.github.com/repos/charmbracelet/gum/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
+          tar -C bin/armv7l -xvf gum_*_linux_armv7.tar.gz gum
+          rm gum_*_linux_armv7.tar.gz
+
+      - name: Commit and push to repository
+        run: |
+          git config --global user.name "eggbean"
+          git config --global user.email 815311+eggbean@users.noreply.github.com
+          git add --all
+          git status
+          tag="$(curl -s https://api.github.com/repos/charmbracelet/gum/releases/latest | jq -r '.tag_name')"
+          git commit -m "Upgrade gum to ${tag}"
+          git push
