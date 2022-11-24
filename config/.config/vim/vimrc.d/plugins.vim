@@ -37,6 +37,8 @@ elseif has('win32') | call plug#begin() | endif
     " Plug 'juliosueiras/vim-terraform-completion'
     if !has('nvim')
       Plug 'machakann/vim-highlightedyank'
+      Plug 'dracula/vim', { 'as': 'dracula' }
+      Plug 'itchyny/lightline.vim'
     endif
     if has('nvim')
       Plug 'EdenEast/nightfox.nvim'
@@ -111,3 +113,5 @@ call plug#end()
   let g:mkdp_echo_preview_url = 1
   let g:mkdp_theme = 'light'
   nmap <leader>m <Plug>MarkdownPreviewToggle
+" lightline.vim
+  let g:lightline = { 'colorscheme': 'dracula' }
