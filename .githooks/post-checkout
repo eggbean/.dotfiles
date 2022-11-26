@@ -5,6 +5,9 @@ mapfile -t privatekeys < <(find config/.ssh -regextype egrep -regex '.*/id_[^.]+
 chmod 400 "${privatekeys[@]}"
 chmod 644 config/.ssh/config
 
+# Set file permissions for OCI CLI config
+find config/.oci -type f -exec chmod 600 {} \;
+
 # Set file permissions for GPG keys
 find config/.gnupg -type d -exec chmod 700 {} \;
 find config/.gnupg -type f -exec chmod 600 {} \;
