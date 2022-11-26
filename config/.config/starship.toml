@@ -44,7 +44,7 @@ read_only = "🔒"
 home_symbol = "~"
 
 [terraform]
-format = " [$symbol$workspace]($style) "
+format = "[$symbol$workspace]($style) "
 
 [git_branch]
 format = "[$symbol $branch]($style)"
