@@ -5,17 +5,19 @@
 dot=1
 # Show human readable file sizes by default
 hru=1
+# Show file sizes in decimal (1KB=1000 bytes) as opposed to binary units (1KiB=1024 bytes)
+meb=0
 # Don't show group column
 fgp=0
 # Don't show hardlinks column
 lnk=0
-# Group directories first in long listing by default
-gpd=0
-# Show file git status automatically (can cause a slight delay in large repo subdirectories)
+# Show file git status automatically (can cause a slight delay in large repo trees)
 if [ "$no_exa_git" == "true" ]; then git=0; else git=1; fi
 # Show icons
 ico=0
-# Color always (can be disabled with -N switch when not wanted)
+# Group directories first in long listing by default
+gpd=0
+# Colour always even when piping (can be disabled with -N switch when not wanted)
 col=1
 
 help() {
@@ -48,6 +50,7 @@ help() {
    -s  file system blocks
    -g  don't show/show file git status *
    -n  ignore .gitignore files *
+   -b  file size in binary/decimal (--si in ls)
    -@  extended attributes and sizes *
 
     * not used in ls
@@ -59,7 +62,7 @@ EOF
 
 exa_opts=()
 
-while getopts ':aAtuUSI:rkhnsXL:MNg1lFGRdDiTx@' arg; do
+while getopts ':aAbtuUSI:rkhnsXL:MNg1lFGRdDiTx@' arg; do
   case $arg in
     a) (( dot == 1 )) && exa_opts+=(-a) || exa_opts+=(-a -a) ;;
     A) exa_opts+=(-a) ;;
@@ -78,6 +81,7 @@ while getopts ':aAtuUSI:rkhnsXL:MNg1lFGRdDiTx@' arg; do
     M) ((++gpd)) ;;
     N) ((++nco)) ;;
     g) ((++git)) ;;
+    b) ((--meb)) ;;
     1|l|F|G|R|d|D|i|T|x|@) exa_opts+=(-"$arg") ;;
     :) printf "%s: -%s switch requires a value\n" "${0##*/}" "${OPTARG}" >&2; exit 1
        ;;
@@ -91,6 +95,7 @@ shift "$((OPTIND - 1))"
 (( rev == 1 )) && exa_opts+=(-r)
 (( hru <= 0 )) && exa_opts+=(-B)
 (( fgp == 0 )) && exa_opts+=(-g)
+(( meb == 0 )) && exa_opts+=(-b)
 (( lnk == 0 )) && exa_opts+=(-H)
 (( col == 1 )) && exa_opts+=(--color=always) || exa_opts+=(--color=auto)
 (( nco == 1 )) && exa_opts+=(--color=never)
