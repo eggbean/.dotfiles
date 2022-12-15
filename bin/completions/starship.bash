@@ -531,7 +531,7 @@ _starship() {
             return 0
             ;;
         starship__preset)
-            opts="-l -h --list --help no-runtime-versions plain-text-symbols pure-preset bracketed-segments nerd-font-symbols pastel-powerline"
+            opts="-l -h --list --help tokyo-night nerd-font-symbols pastel-powerline no-runtime-versions no-empty-icons bracketed-segments plain-text-symbols no-nerd-font pure-preset"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
