@@ -61,7 +61,6 @@ elseif has('win32') | call plug#begin() | endif
 call plug#end()
 
 " PLUGIN CONFIGURATION
-
 " NERDTree
   map <M-p> :NERDTreeToggle<CR>
   let NERDTreeShowHidden = 1
@@ -75,10 +74,14 @@ call plug#end()
     let g:tmux_navigator_no_wrap = 1
     let g:tmux_navigator_disable_when_zoomed = 1
     let g:tmux_navigator_no_mappings = 1
-    nnoremap <silent> <Esc><C-h> :TmuxNavigateLeft<CR>
-    nnoremap <silent> <Esc><C-j> :TmuxNavigateDown<CR>
-    nnoremap <silent> <Esc><C-k> :TmuxNavigateUp<CR>
-    nnoremap <silent> <Esc><C-l> :TmuxNavigateRight<CR>
+    nnoremap <silent> <ESC><C-h> :TmuxNavigateLeft<CR>
+    nnoremap <silent> <ESC><C-j> :TmuxNavigateDown<CR>
+    nnoremap <silent> <ESC><C-k> :TmuxNavigateUp<CR>
+    nnoremap <silent> <ESC><C-l> :TmuxNavigateRight<CR>
+    nnoremap <silent> <ESC><C-Left>  :TmuxNavigateLeft<CR>
+    nnoremap <silent> <ESC><C-Down>  :TmuxNavigateDown<CR>
+    nnoremap <silent> <ESC><C-Up>    :TmuxNavigateUp<CR>
+    nnoremap <silent> <ESC><C-Right> :TmuxNavigateRight<CR>
   endif
 " gruvbox8 colour scheme
   let g:gruvbox_filetype_hi_groups = 1
