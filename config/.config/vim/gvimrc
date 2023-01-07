@@ -1,4 +1,5 @@
 " GVIM CONFIGURATION
+" Only runs on gvimrc, before vimrc
 
 set t_Co=256
 color PaperColor
@@ -21,14 +22,12 @@ set guioptions -=T
 set winaltkeys=no
 set belloff=
 set visualbell
+set signcolumn=yes
 unlet g:terminal_ansi_colors
 highlight Terminal guifg='#282C34'
 highlight Terminal guibg='#EEEEEE'
 
-" Toggle window menu keys with F9
-map <silent> <F9> :call ToggleWindowMenu()<CR>
-
-" Function to toggle window menu keys
+" Function to toggle window menu keys (F9)
 function ToggleWindowMenu()
   if (&winaltkeys == 'yes')
     set winaltkeys=no   "turn off menu keys
@@ -40,15 +39,12 @@ function ToggleWindowMenu()
     set guioptions +=T  "turn on icon toolbar
   endif
 endfunction
-
-" Distraction-free mode
-source $VIMFILES/vimrc.d/distraction_free_mode.vim
-map <silent> <F12> :call ToggleDistractionFreeMode()<CR>
+map <silent> <F9> :call ToggleWindowMenu()<CR>
 
 " Restore window positions
 source $VIMFILES/vimrc.d/restore_position.vim
 
-" Set window to certain size with F10
+" Set window to certain size (F10)
 function! SetScreenSize()
   if has('gui_win32')
     if !exists("s:fullscr")
@@ -64,7 +60,7 @@ function! SetScreenSize()
 endfunction
 nmap <silent> <F10> :call SetScreenSize()<CR>
 
-" Fullscreen with F11/Alt-Enter
+" Fullscreen (F11/Alt-Enter)
 function! ToggleFullScreen()
   if has('gui_gtk2')
     call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")
@@ -86,3 +82,7 @@ endfunction
 map <silent> <F11> :call ToggleFullScreen()<CR>
 set <M-CR>=\<ESC>\<CR>
 map <silent> <M-CR> <F11><CR>
+
+" Distraction-free mode (F12)
+source $VIMFILES/vimrc.d/distraction_free_mode.vim
+map <silent> <F12> :call ToggleDistractionFreeMode()<CR>

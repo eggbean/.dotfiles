@@ -36,6 +36,13 @@ if exists('$TMUX')
   autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
 endif
 
+" Fix - don't run better-whitespace in terminal
+if has('nvim')
+  augroup term
+    autocmd TermOpen * :DisableWhitespace
+  augroup END
+endif
+
 " Highlight Repeated Lines
 function! HighlightRepeats() range
   let lineCounts = {}

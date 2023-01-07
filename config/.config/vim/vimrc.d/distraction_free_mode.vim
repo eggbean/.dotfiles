@@ -5,6 +5,7 @@ let g:dfm_height = 0.8
 
 let s:dfm_enabled = 0
 
+
 function! ToggleDistractionFreeMode()
   let l:w = g:dfm_width > 1 ? g:dfm_width : (winwidth('%') * g:dfm_width)
   let l:margins = {
@@ -15,6 +16,13 @@ function! ToggleDistractionFreeMode()
     \ }
   if (s:dfm_enabled == 0)
     let s:dfm_enabled = 1
+    if (&signcolumn == 'yes')
+      let s:sigcol = 1
+      set signcolumn=auto
+    else
+      let s:sigcol = 0
+    endif
+    set formatoptions+=a
     for key in keys(l:margins)
       execute l:margins[key] . " | wincmd " . key
     endfor
@@ -34,6 +42,10 @@ function! ToggleDistractionFreeMode()
     map k gk
   else
     let s:dfm_enabled = 0
+    if (s:sigcol == 1)
+      set signcolumn=yes
+    endif
+    set formatoptions-=a
     for key in keys(l:margins)
       execute "wincmd " . key . " | close "
     endfor

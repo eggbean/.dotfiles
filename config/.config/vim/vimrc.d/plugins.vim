@@ -13,34 +13,38 @@ elseif has('win32') | call plug#begin() | endif
     Plug 'airblade/vim-gitgutter'
     Plug 'AndrewRadev/sideways.vim'
     Plug 'AndrewRadev/switch.vim'
-    Plug 'gerazov/vim-toggle-bool'
+    Plug 'eggbean/vim-toggle-bool', { 'branch': 'boolean' }
     Plug 'chrisbra/Recover.vim'
-    Plug 'chrisbra/SudoEdit.vim'
     Plug 'chrisbra/csv.vim'
+    Plug 'frazrepo/vim-rainbow'
     Plug 'MattesGroeger/vim-bookmarks'
     Plug 'junegunn/fzf'
     Plug 'dhruvasagar/vim-zoom'
     Plug 'ap/vim-css-color'
-    Plug 'sheerun/vim-polyglot'
     Plug 'dense-analysis/ale'
     Plug 'eggbean/vim-tmux', { 'branch': 'missing-commands' }
-    " TESTING ...
-    Plug 'frazrepo/vim-rainbow'
-    Plug 'ojroques/vim-oscyank'
     Plug 'dstein64/vim-startuptime'
+    Plug 'hashivim/vim-terraform'
+    Plug 'hashivim/vim-vagrant'
+    Plug 'hashivim/vim-vaultproject'
+    " EVALUATING ...
+    Plug 'juliosueiras/vim-terraform-completion'
+    Plug 'chrisbra/SudoEdit.vim'
+    Plug 'ojroques/vim-oscyank'
     Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
     Plug 'ctrlpvim/ctrlp.vim'
+    Plug 'dkarter/bullets.vim'
+    " Plug 'neoclide/coc.nvim', { 'branch': 'release' }
     " Plug 'mattn/emmet-vim'
-    " Plug 'arp242/jumpy.vim'
     " Plug 'pearofducks/ansible-vim'
-    " Plug 'hashivim/vim-terraform'
-    " Plug 'juliosueiras/vim-terraform-completion'
     if !has('nvim')
       Plug 'machakann/vim-highlightedyank'
       Plug 'dracula/vim', { 'as': 'dracula' }
       Plug 'itchyny/lightline.vim'
     endif
     if has('nvim')
+      Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+      Plug 'phelipetls/jsonpath.nvim'
       Plug 'EdenEast/nightfox.nvim'
       Plug 'nvim-lualine/lualine.nvim'
       Plug 'kyazdani42/nvim-web-devicons'
@@ -118,3 +122,10 @@ call plug#end()
   nmap <leader>m <Plug>MarkdownPreviewToggle
 " lightline.vim
   let g:lightline = { 'colorscheme': 'dracula' }
+" bullets.vim
+  let g:bullets_enabled_file_types = [
+    \ 'markdown',
+    \ 'text',
+    \ 'gitcommit',
+    \ 'scratch'
+    \]

@@ -1,6 +1,9 @@
 " VIM OPTIONS
+"
+" Some options are explicitly set to harmonise between different
+" versions/platforms/gvim/vim/nvim.
 
-" Indentation
+syntax on
 set tabstop=4
 set shiftwidth=4
 set shiftround
@@ -10,20 +13,8 @@ set expandtab
 set list
 set smartindent
 set smarttab
-set backspace=indent,eol,start
 
-syntax on
-set nrformats-=octal
-set complete-=i
-set nonumber
 set numberwidth=4
-set norelativenumber
-set signcolumn=auto
-set incsearch
-set nolangremap
-let &nrformats="bin,hex"
-set showcmd
-set ruler
 set hlsearch
 set ignorecase
 set smartcase
@@ -32,29 +23,16 @@ set wildmenu wildmode=list:longest,full
 set splitright
 set splitbelow
 set lazyredraw
-set magic
 set scrolloff=3
 set sidescrolloff=5
-set updatetime=4000
-set cdpath=,.,~/src,~/
-set complete=.,w,b,u,t
-set cscopeverbose
+set cdpath=,.,~/,~/.config/vim
 
-set ttimeout
-set ttimeoutlen=100
-set laststatus=2
-set display+=lastline
-set formatoptions+=j
-set sessionoptions-=options
-set viewoptions-=options
-set encoding=utf-8
+set formatoptions=jtcroqln
 scriptencoding utf-8
 set autoread
-set wrap
 set nowrapscan
 set history=1000
 set belloff=all
-set tabpagemax=50
 set title
 set listchars=tab:▸-,extends:>,precedes:<,nbsp:+
 set mouse=a
@@ -64,18 +42,15 @@ set backup
 set writebackup
 set swapfile
 set undofile
-set shortmess+=F
 set noshowmode
-set clipboard=unnamed
-
 if !empty(&viminfo)
   set viminfo^=!
 endif
 
 " Fix for tmux
 if exists('$TERM=tmux-256color')
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  let &t_8f = "\<ESC>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<ESC>[48;2;%lu;%lu;%lum"
 endif
 
 if has('termguicolors')
@@ -99,7 +74,7 @@ for d in glob('spell/*.add', 1, 1)
   endif
 endfor
 
-" Language Providers
+" Language providers
 if has('unix')
   let g:python3_host_prog = '/usr/bin/python3'
 elseif has('win32')
