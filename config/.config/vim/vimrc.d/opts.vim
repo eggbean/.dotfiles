@@ -4,6 +4,7 @@
 " versions/platforms/gvim/vim/nvim.
 
 syntax on
+scriptencoding utf-8
 set tabstop=4
 set shiftwidth=4
 set shiftround
@@ -13,7 +14,6 @@ set expandtab
 set list
 set smartindent
 set smarttab
-
 set numberwidth=4
 set hlsearch
 set ignorecase
@@ -26,9 +26,7 @@ set lazyredraw
 set scrolloff=3
 set sidescrolloff=5
 set cdpath=,.,~/,~/.config/vim
-
 set formatoptions=jtcroqln
-scriptencoding utf-8
 set autoread
 set nowrapscan
 set history=1000
@@ -43,8 +41,15 @@ set writebackup
 set swapfile
 set undofile
 set noshowmode
+set timeoutlen=600
+
+" Save uppercase global variables and limit oldfiles to 20
 if !empty(&viminfo)
-  set viminfo^=!
+  if has('unix')
+    set viminfo=!,'20,<50,s10,h
+  elseif has('win32')
+    set viminfo=!,'20,<50,s10,h,rA:,rB:
+  endif
 endif
 
 " Fix for tmux
