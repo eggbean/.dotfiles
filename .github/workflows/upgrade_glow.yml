@@ -12,20 +12,20 @@ jobs:
 
       - name: Download and extract tarballs
         run: |
-          nameregex='^glow_\d[\d.]+?\d?_linux_x86_64\.tar\.gz$'
+          nameregex='^glow_\d[\d.]+?\d?_Linux_x86_64\.tar\.gz$'
           wget -q "$(curl -s https://api.github.com/repos/charmbracelet/glow/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
-          tar -C bin/x86_64 -xvf glow_*_linux_x86_64.tar.gz glow
-          rm glow_*_linux_x86_64.tar.gz
+          tar -C bin/x86_64 -xvf glow_*_Linux_x86_64.tar.gz glow
+          rm glow_*_Linux_x86_64.tar.gz
 
-          nameregex='^glow_\d[\d.]+?\d?_linux_arm64\.tar\.gz$'
+          nameregex='^glow_\d[\d.]+?\d?_Linux_arm64\.tar\.gz$'
           wget -q "$(curl -s https://api.github.com/repos/charmbracelet/glow/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
-          tar -C bin/aarch64 -xvf glow_*_linux_arm64.tar.gz glow
-          rm glow_*_linux_arm64.tar.gz
+          tar -C bin/aarch64 -xvf glow_*_Linux_arm64.tar.gz glow
+          rm glow_*_Linux_arm64.tar.gz
 
-          nameregex='^glow_\d[\d.]+?\d?_linux_armv7\.tar\.gz$'
+          nameregex='^glow_\d[\d.]+?\d?_Linux_armv7\.tar\.gz$'
           wget -q "$(curl -s https://api.github.com/repos/charmbracelet/glow/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
-          tar -C bin/armv7l -xvf glow_*_linux_armv7.tar.gz glow
-          rm glow_*_linux_armv7.tar.gz
+          tar -C bin/armv7l -xvf glow_*_Linux_armv7.tar.gz glow
+          rm glow_*_Linux_armv7.tar.gz
 
       - name: Commit and push to repository
         run: |
