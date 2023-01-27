@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This bootstrap script should be sourced, not executed
+
 pushd ~/.dotfiles >/dev/null || exit 1
 
 eval "$(. /etc/os-release && typeset -p ID)"
