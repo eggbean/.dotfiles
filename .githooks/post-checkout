@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Set file permissions for ssh keys
-mapfile -t privatekeys < <(find config/.ssh -regextype egrep -regex '.*/id_[^.]+$')
-chmod 400 "${privatekeys[@]}"
-chmod 644 config/.ssh/config
-
 # Set file permissions for OCI CLI config
 find config/.oci -type f -exec chmod 600 {} \;
 
