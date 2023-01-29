@@ -29,12 +29,6 @@ alias cp='cp -iv'
 alias mv='mv -iv'
 alias rm='rm -Iv'
 
-# Use nvim instead of vim if available
-if command -v nvim >/dev/null; then
-  alias vi='nvim'
-  alias vimdiff='nvim -d'
-fi
-
 # Replace ls with exa
 if command -v exa >/dev/null; then
   alias ls='exa-wrapper.sh'

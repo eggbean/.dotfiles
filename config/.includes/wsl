@@ -15,6 +15,9 @@ gotopath() {
 # Aliases
 alias mklink=' . mklink.sh'
 alias qutebrowser='/mnt/c/Program\ Files/qutebrowser/qutebrowser.exe'
+alias vi='nvim'
+alias vimdiff='nvim -d'
+
 
 # wsl2-ssh-pageant
 export SSH_AUTH_SOCK="$HOME/.ssh/agent.sock"
