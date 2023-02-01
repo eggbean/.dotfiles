@@ -3,7 +3,7 @@ require('nightfox').setup({
   options = {
     transparent = false,     -- Disable setting background
     terminal_colors = false, -- Set terminal colors (vim.g.terminal_color_*)
-    dim_inactive = true,     -- Non focused panes set to alternative background
+    dim_inactive = false,    -- Non focused panes set to alternative background
     styles = {               -- Style to be applied to different syntax groups
       comments = "italic",
       functions = "italic,bold",
@@ -15,8 +15,23 @@ require('nightfox').setup({
     },
     modules = {              -- List of various plugins and additional options
       -- ...
-    },
+    }
+  },
+  groups = {
+    all = {
+      EndOfBuffer = { link = "Conceal" },
+    }
   }
+})
+
+vim.api.nvim_create_autocmd('Colorscheme', {
+  group = vim.api.nvim_create_augroup('config_custom_highlights', {}),
+  callback = function()
+    -- Current tab colour adjustments for barbar.nvim
+    vim.api.nvim_set_hl(0, 'BufferCurrent', {bg = '#44475A'})
+    vim.api.nvim_set_hl(0, 'BufferCurrentSign', {bg = '#44475A'})
+    vim.api.nvim_set_hl(0, 'BufferCurrentMod', {bg = '#44475A'})
+  end,
 })
 
 vim.cmd("colorscheme nordfox")
