@@ -1,9 +1,8 @@
 #!/bin/bash -e
 
 [ "$(id -u)" = "0" ] && (echo "This script is not supposed to be run as root" >&2; exit 1)
-[ ! -d ~/.dotfiles ] && (echo "Cannot find ~/.dotfiles" >&2; exit 1)
 
-# Make some files to prevent folding
+# Make some dummy files to prevent stow folding
 [ ! -d ~/.config ] && mkdir ~/.config
 touch ~/.config/.stow-no-folding
 [ ! -d ~/.local/share ] && mkdir -p ~/.local/share
@@ -15,9 +14,9 @@ touch ~/.ssh/.stow-no-folding
 pushd ~ >/dev/null
 shellfiles=( .bash_aliases .bash_login .bash_logout .bash_profile .bashrc .inputrc )
 for file in "${shellfiles[@]}"; do
-  if [[ -f "$file" ]]; then
-    if [[ ! -d existing_files ]]; then mkdir existing_files; fi
-    mv "$file" existing_files
+  if [ -e "$file" ] && [ ! -L "$file" ]; then
+    if [ ! -d "${TMPDIR:-/tmp}/existing_files" ]; then mkdir "${TMPDIR:-/tmp}/existing_files"; fi
+    mv "$file" "${TMPDIR:-/tmp}/existing_files"
   fi
 done
 
