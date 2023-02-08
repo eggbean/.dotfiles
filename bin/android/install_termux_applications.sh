@@ -20,7 +20,6 @@ yes | pkg install \
   inetutils \
   iproute2 \
   elinks \
-  macchina \
   man \
   mosh \
   ncurses-utils \

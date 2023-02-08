@@ -8,7 +8,7 @@ eval "$(. /etc/os-release && typeset -p ID)"
 if [ "$ID" == "ol" ]; then
   sudo dnf config-manager --set-enabled ol9_developer_EPEL
   sudo dnf upgrade -y
-  sudo dnf install -y git htop neofetch shellcheck stow tree
+  sudo dnf install -y git htop shellcheck stow tree
 fi
 
 # Stow binaries
