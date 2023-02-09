@@ -182,6 +182,9 @@ supercd() {
   fi
 }
 
+# Add zoxide to shell
+eval "$(zoxide init bash)"
+
 if [[ $(type -t cdd) == function ]] && [[ $(type -t goto) == function ]]; then
   alias cd='supercd'
   complete -W "$(command cd ~/.bookmarks && printf '%s\n' -- *)" supercd
