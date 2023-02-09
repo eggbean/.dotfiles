@@ -40,13 +40,13 @@ jobs:
           commands: |
             apt-get install -y make g++ libssl-dev
             cd AGWA-git-crypt-*
-            CXXFLAGS='-Wall -pedantic -Wno-long-long -O2 -static -pthread' make
+            LDFLAGS='-static -lcrypto -ldl -Wl,--whole-archive -lpthread -Wl,--no-whole-archive' make
             make install
 
       - name: Upload artefacts
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.arch }}-binaries
+          name: ${{ matrix.arch }}-binary
           path: |
             git-crypt
 
@@ -72,28 +72,27 @@ jobs:
 
       - name: Build for x86_84
         run: |
-          apt-get install -y make g++ libssl-dev
+          sudo apt-get install -y make g++ libssl-dev xsltproc docbook-xsl
           cd AGWA-git-crypt-*
-          CXXFLAGS='-Wall -pedantic -Wno-long-long -O2 -static -pthread' make
-          make install
+          LDFLAGS='-static -lcrypto -ldl -Wl,--whole-archive -lpthread -Wl,--no-whole-archive' make ENABLE_MAN=yes
 
       - name: Move files
         run: |
-          cp /usr/local/bin/git-crypt bin/x86_64
-          # mv ${{ env.version }}/man/git-crypt* bin/man/man1
-          # gzip -f bin/man/man1/git-crypt*.1
-          rm -rf ${{ env.version }}*
+          mv AGWA-git-crypt-*/git-crypt bin/x86_64
+          gzip AGWA-git-crypt-*/man/man1/git-crypt.1
+          mv AGWA-git-crypt-*/man/man1/git-crypt.1.gz bin/man/man1
+          rm -rf ${{ env.version }}* AGWA-git-crypt-*
 
       - name: Download armv7l artefacts
         uses: actions/download-artifact@v3
         with:
-          name: armv7l-binaries
+          name: armv7l-binary
           path: bin/armv7l
 
       - name: Download aarch64 artefacts
         uses: actions/download-artifact@v3
         with:
-          name: aarch64-binaries
+          name: aarch64-binary
           path: bin/aarch64
 
       - name: Commit and push to repository
