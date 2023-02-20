@@ -58,8 +58,8 @@
 	plus-emph-style = syntax "#175c2e"
 	hunk-header-style = syntax bold
 	hunk-header-decoration-style = omit
-	file-style = yellow italic
-	file-decoration-style = yellow ul
+	file-style = magenta italic
+	file-decoration-style = magenta ul
 	line-numbers-zero-style = "#4b5263"
 	line-numbers-left-format = "{nm:^4} "
 	line-numbers-right-format = "{np:^4} "
