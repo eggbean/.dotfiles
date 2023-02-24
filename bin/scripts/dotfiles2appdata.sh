@@ -82,3 +82,9 @@ if [ -d "$WIN_HOME"/winfiles/Windows_Terminal ]; then
   cp "$WIN_HOME"/winfiles/Windows_Terminal/settings.json \
     "$WIN_HOME"/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState
 fi
+
+# wsl2-ssh-pageant.exe agent
+if [ ! -L "$HOME"/.ssh/wsl2-ssh-pageant.exe ]; then
+  ln -s "$WIN_HOME"/winfiles/bin/wsl2-ssh-pageant.exe "$HOME"/.ssh/wsl2-ssh-pageant.exe
+  chmod +x "$HOME"/.ssh/wsl2-ssh-pageant.exe
+fi
