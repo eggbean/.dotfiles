@@ -41,6 +41,7 @@ set writebackup
 set swapfile
 set undofile
 set noshowmode
+set laststatus=2
 set timeoutlen=600
 
 " Save uppercase global variables and limit oldfiles to 20
