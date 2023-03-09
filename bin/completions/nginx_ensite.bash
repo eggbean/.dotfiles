@@ -1,3 +1,4 @@
+#!/bin/bash:wq
 # nginx-ensite --- Bash completion function for nginx_ensite/nginx_dissite.
 
 # Copyright (C) 2010 António P. P. Almeida <appa@perusio.net>
@@ -13,8 +14,6 @@
 
 # The above copyright notice and this permission notice shall be included in
 # all copies or substantial portions of the Software.
-
-#!/bin/bash:wq
 
 # Except as contained in this notice, the name(s) of the above copyright
 # holders shall not be used in advertising or otherwise to promote the sale,
