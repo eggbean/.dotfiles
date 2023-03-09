@@ -29,7 +29,6 @@ elseif has('win32') | call plug#begin() | endif
     Plug 'hashivim/vim-vaultproject'
     " EVALUATING ...
     Plug 'juliosueiras/vim-terraform-completion'
-    Plug 'chrisbra/SudoEdit.vim'
     Plug 'ojroques/vim-oscyank'
     Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
     Plug 'ctrlpvim/ctrlp.vim'
@@ -43,24 +42,26 @@ elseif has('win32') | call plug#begin() | endif
       Plug 'itchyny/lightline.vim'
     endif
     if has('nvim')
-      Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-      Plug 'phelipetls/jsonpath.nvim'
       Plug 'EdenEast/nightfox.nvim'
       Plug 'nvim-lualine/lualine.nvim'
       Plug 'kyazdani42/nvim-web-devicons'
       Plug 'romgrk/barbar.nvim'
+      Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+      " EVALUATING ...
+      Plug 'phelipetls/jsonpath.nvim'
     endif
+  endif
+  if !has('gui_running') && has('python3')
+    Plug 'SirVer/ultisnips'
+    Plug 'ron89/thesaurus_query.vim'
   endif
   if has('gui_running')
     Plug 'ntpeters/vim-better-whitespace'
+    Plug 'machakann/vim-sandwich'
     Plug 'dhruvasagar/vim-zoom'
     if has('win32')
       Plug 'kkoenig/wimproved.vim'
     endif
-  endif
-  if has('python3')
-    Plug 'SirVer/ultisnips'
-    Plug 'ron89/thesaurus_query.vim'
   endif
 call plug#end()
 

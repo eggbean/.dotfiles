@@ -13,6 +13,7 @@ set autoindent
 set expandtab
 set list
 set smartindent
+set backspace=eol,start
 set smarttab
 set numberwidth=4
 set hlsearch
