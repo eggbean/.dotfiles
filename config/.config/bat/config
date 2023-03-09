@@ -24,7 +24,7 @@
 #--map-syntax "*.ino:C++"
 #--map-syntax ".ignore:Git Ignore"
 
---theme="nightfox"
+--theme="brogrammer"
 --italic-text=always
 --color=always
 --tabs=4
