@@ -16,4 +16,5 @@ config/.steampipe/config/*.spc filter=git-crypt diff=git-crypt
 config/.mclient/config.json filter=git-crypt diff=git-crypt
 config/.oci/* filter=git-crypt diff=git-crypt
 config/.config/doctl/config.yaml filter=git-crypt diff=git-crypt
+config/.config/vim/spell/en.utf-8.add filter=git-crypt diff=git-crypt
 bin/scripts/bootstrap*.sh filter=git-crypt diff=git-crypt
