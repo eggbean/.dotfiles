@@ -315,5 +315,6 @@ STICKY 04;37;44
 #+--- Windows stuff ---+
 .regtrans-ms 38;5;244
 .blf 38;5;244
-.ini 38;5;244
 .DAT 38;5;244
+*desktop.ini 38;5;244
+*ntuser.ini 38;5;244
