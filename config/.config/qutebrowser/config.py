@@ -379,3 +379,6 @@ config.bind('<Alt+Shift+:>', 'mode-leave', mode='yesno')
 import sys
 if sys.platform == "win32":
     config.bind('<Shift+Ins>', 'insert-text -- {clipboard}', mode='insert')
+
+# Monospace font
+c.fonts.web.family.fixed = 'Consolas Regular'
