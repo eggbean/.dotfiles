@@ -93,10 +93,10 @@ done
 shift "$((OPTIND - 1))"
 
 (( rev == 1 )) && exa_opts+=(-r)
-(( hru <= 0 )) && exa_opts+=(-B)
 (( fgp == 0 )) && exa_opts+=(-g)
-(( meb == 0 )) && exa_opts+=(-b)
 (( lnk == 0 )) && exa_opts+=(-H)
+(( hru <= 0 )) && exa_opts+=(-B)
+(( meb == 0 && hru > 0 )) && exa_opts+=(-b)
 (( col == 1 )) && exa_opts+=(--color=always) || exa_opts+=(--color=auto)
 (( nco == 1 )) && exa_opts+=(--color=never)
 (( gpd >= 1 )) && exa_opts+=(--group-directories-first)
