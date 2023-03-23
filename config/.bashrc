@@ -36,12 +36,6 @@ PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 # Set COLORTERM if Windows Terminal
 [ -n "$WT_SESSION" ] && export COLORTERM='truecolor'
 
-# Set Starship prompt
-eval "$(starship init bash)"
-
-# Direnv hook
-eval "$(direnv hook bash)"
-
 # Enable color support of ls
 if [ -x /usr/bin/dircolors ]; then
   test -r ~/.dotfiles/bin/scripts/dir_colors && eval "$(dircolors -b ~/.dotfiles/bin/scripts/dir_colors)" || eval "$(dircolors -b)"
@@ -61,11 +55,6 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-
-# Yoloing
-yolo() {
-  yes | sudo "$@"
-}
 
 # Rename tmux windows automatically to hostname
 ssh() {
@@ -91,8 +80,8 @@ ssh() {
 # https://superuser.com/a/1315015/8972
 mosh() {
   case $@ in
-    hostname)
-      command mosh osiris.jinkosystems.co.uk -- bash -c 'echo "Bouncing via bastion..." && echo && ssh hostname.domain.com'
+    osiris)
+      command mosh bastet.jinkosystems.co.uk -- bash -c 'echo "Bouncing via bastion..." && echo && ssh osiris'
       ;;
     *)
       command mosh "$@"
@@ -110,9 +99,6 @@ if [ -f "$HOME/google-cloud-sdk/completion.bash.inc" ]; then . "$HOME/google-clo
 if ! type gcloud >/dev/null 2>&1; then
   gcloud() { docker run --rm --volumes-from gcloud-config google/cloud-sdk:alpine gcloud "$@"; }
 fi
-
-# MinIO Client command completion
-complete -C mclient mclient
 
 # Rename tmux windows when attaching to docker containers
 docker() {
@@ -151,44 +137,10 @@ mans() {
   man "$2"
 }
 
-# CD Deluxe
-if command -v _cdd >/dev/null; then
-  cdd() { while read -r x; do eval "$x" >/dev/null; done < <(dirs -l -p | _cdd "$@"); }
-  alias cd='cdd'
-fi
-
-# Directory bookmarks
-if [ -d "$HOME/.bookmarks" ]; then
-  goto() {
-    pushd -n "$PWD" >/dev/null
-    local CDPATH="$HOME/.bookmarks"
-    command cd -P "$@" >/dev/null
-  }
-  complete -W "$(command cd ~/.bookmarks && printf '%s\n' *)" goto
-  bookmark() {
-    pushd "$HOME/.bookmarks" >/dev/null
-    ln -s "$OLDPWD" "$@"
-    popd >/dev/null
-  }
-fi
-
-# Combine bookmarks and cdd functions
-supercd() {
-  if [ "${1::1}" == '@' ]; then
-    # local CDPATH="$HOME/.bookmarks"
-    goto "$@"
-  else
-    cdd "$@"
-  fi
+# Yoloing
+yolo() {
+  yes | sudo "$@"
 }
-
-# Add zoxide to shell
-eval "$(zoxide init bash)"
-
-if [[ $(type -t cdd) == function ]] && [[ $(type -t goto) == function ]]; then
-  alias cd='supercd'
-  complete -W "$(command cd ~/.bookmarks && printf '%s\n' -- *)" supercd
-fi
 
 # Make directory and change directory into it
 mkdircd() { mkdir -p "$@" && eval pushd "\"\$$#\"" >/dev/null || return; }
@@ -199,41 +151,18 @@ sprunge() { curl -F 'sprunge=<-' http://sprunge.us; }
 # Use a private mock hosts(5) file for completion
 export HOSTFILE="$HOME/.hosts"
 
-# broot function
-[ -f ~/.config/broot/launcher/bash/br ] && . ~/.config/broot/launcher/bash/br
-
 # Return disk that directory is on
 whichdisk() { realpath "$(df "${1:-.}" | command grep '^/' | cut -d' ' -f1)" ; }
-
-# GitHub CLI bash completion
-if command -v gh >/dev/null; then
-  eval "$(gh completion -s bash 2>/dev/null)"
-fi
-
-# Hashicorp bash tab completion
-[ -x /usr/bin/terraform ] && complete -C /usr/bin/terraform terraform
-[ -x /usr/bin/packer ] && complete -C /usr/bin/packer packer
-[ -x /usr/bin/vault ] && complete -C /usr/bin/vault vault
 
 # Age of files
 agem() { echo $((($(date +%s) - $(date +%s -r "$1")) / 60)) minutes; }
 ageh() { echo $((($(date +%s) - $(date +%s -r "$1")) / 3600)) hours; }
 aged() { echo $((($(date +%s) - $(date +%s -r "$1")) / 86400)) days; }
 
-# Colourise man pages
-export LESS_TERMCAP_mb=$'\E[1;31m'      # begin bold
-export LESS_TERMCAP_md=$'\E[1;36m'      # begin blink
-export LESS_TERMCAP_me=$'\E[0m'         # reset bold/blink
-export LESS_TERMCAP_so=$'\E[01;44;30m'  # begin reverse video
-export LESS_TERMCAP_se=$'\E[0m'         # reset reverse video
-export LESS_TERMCAP_us=$'\E[1;32m'      # begin underline
-export LESS_TERMCAP_ue=$'\E[0m'         # reset underline
-export LESS_TERMCAP_mr=$(tput rev)
-export LESS_TERMCAP_mh=$(tput dim)
-export LESS_TERMCAP_ZN=$(tput ssubm)
-export LESS_TERMCAP_ZV=$(tput rsubm)
-export LESS_TERMCAP_ZO=$(tput ssupm)
-export LESS_TERMCAP_ZW=$(tput rsupm)
+# GitHub CLI bash completion
+if command -v gh >/dev/null; then
+  eval "$(gh completion -s bash 2>/dev/null)"
+fi
 
 # fzf
 if command -v fzf >/dev/null; then
@@ -267,6 +196,21 @@ if command -v fzf >/dev/null; then
   # fzf open multiple files
   fzfr() { fzf -m -x | xargs -d'\n' -r "$@" ; }
 fi
+
+# Colourise man pages
+export LESS_TERMCAP_mb=$'\E[1;31m'      # begin bold
+export LESS_TERMCAP_md=$'\E[1;36m'      # begin blink
+export LESS_TERMCAP_me=$'\E[0m'         # reset bold/blink
+export LESS_TERMCAP_so=$'\E[01;44;30m'  # begin reverse video
+export LESS_TERMCAP_se=$'\E[0m'         # reset reverse video
+export LESS_TERMCAP_us=$'\E[1;32m'      # begin underline
+export LESS_TERMCAP_ue=$'\E[0m'         # reset underline
+export LESS_TERMCAP_mr=$(tput rev)
+export LESS_TERMCAP_mh=$(tput dim)
+export LESS_TERMCAP_ZN=$(tput ssubm)
+export LESS_TERMCAP_ZV=$(tput rsubm)
+export LESS_TERMCAP_ZO=$(tput ssupm)
+export LESS_TERMCAP_ZW=$(tput rsupm)
 
 # ENVIRONMENT VARIABLES
 # xdg locations need to be set for termux
@@ -319,6 +263,9 @@ else
   export EDITOR='vim'
   export VISUAL='vim'
 fi
+
+# Do more stuff if binaries have been stowed
+[ -f "$XDG_STATE_HOME"/dotfiles_stowed ] && . ~/.dotfiles/config/.includes/init.bashrc
 
 # Source host specific environment
 [ -f ~/.dotfiles/config/.includes/"$(hostname -s)" ] && . ~/.dotfiles/config/.includes/"$(hostname -s)"

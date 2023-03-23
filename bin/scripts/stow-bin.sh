@@ -28,16 +28,22 @@ while true; do
   shift
 done
 
-[ "$(id -u)" = "0" ] && HOME="/home/$SUDO_USER"
+if [ "$(id -u)" = "0" ]; then
+  HOME="/home/$SUDO_USER"
+  XDG_STATE_HOME="/home/$SUDO_USER/.local/state"
+fi
+
 STOW_DIR="$HOME/.dotfiles/bin"
 
 # Set variables for (re)stowing or unstowing
 if [ -n "$unstow" ]; then
   stowcom='-D'
   stowed='unstowed'
+  rm "$XDG_STATE_HOME"/dotfiles_stowed
 else
   stowcom='-R'
   stowed='stowed'
+  touch "$XDG_STATE_HOME"/dotfiles_stowed
 fi
 
 # Set variables for target locations and make directories if necessary
