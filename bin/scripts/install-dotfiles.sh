@@ -23,6 +23,8 @@ fi
 # Stow dotfiles
 bin/scripts/stow-dotfiles.sh config
 
+git remote update
+
 popd >/dev/null || exit 1
 bind -f ~/.inputrc
 source ~/.bash_profile
