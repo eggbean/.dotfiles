@@ -13,7 +13,6 @@ elseif has('win32') | call plug#begin() | endif
     Plug 'airblade/vim-gitgutter'
     Plug 'AndrewRadev/sideways.vim'
     Plug 'AndrewRadev/switch.vim'
-    Plug 'eggbean/vim-toggle-bool', { 'branch': 'boolean' }
     Plug 'chrisbra/Recover.vim'
     Plug 'chrisbra/csv.vim'
     Plug 'frazrepo/vim-rainbow'
@@ -22,12 +21,14 @@ elseif has('win32') | call plug#begin() | endif
     Plug 'dhruvasagar/vim-zoom'
     Plug 'ap/vim-css-color'
     Plug 'dense-analysis/ale'
+    Plug 'eggbean/vim-toggle-bool', { 'branch': 'boolean' }
     Plug 'eggbean/vim-tmux', { 'branch': 'missing-commands' }
     Plug 'dstein64/vim-startuptime'
     Plug 'hashivim/vim-terraform'
     Plug 'hashivim/vim-vagrant'
     Plug 'hashivim/vim-vaultproject'
     " EVALUATING ...
+    Plug 'EinfachToll/DidYouMean'
     Plug 'juliosueiras/vim-terraform-completion'
     Plug 'ojroques/vim-oscyank'
     Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
@@ -56,9 +57,12 @@ elseif has('win32') | call plug#begin() | endif
     Plug 'ron89/thesaurus_query.vim'
   endif
   if has('gui_running')
+    Plug 'tpope/vim-rsi'
+    Plug 'machakann/vim-highlightedyank'
     Plug 'ntpeters/vim-better-whitespace'
     Plug 'machakann/vim-sandwich'
     Plug 'dhruvasagar/vim-zoom'
+    Plug 'AndrewRadev/typewriter.vim'
     if has('win32')
       Plug 'kkoenig/wimproved.vim'
     endif
@@ -97,7 +101,7 @@ call plug#end()
   let g:bookmark_sign = '⭕'
   let g:bookmark_save_per_working_dir = 0
   let g:bookmark_manage_per_buffer = 1
-  let g:bookmark_auto_save_file = '$XDG_DATA_HOME/vim/bookmarks'
+  let g:bookmark_auto_save_file = '$XDG_DATA_HOME/vim'
   let g:bookmark_display_annotation = 1
 " vim-rainbow
   let g:rainbow_active = 1

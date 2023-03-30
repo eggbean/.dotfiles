@@ -46,6 +46,7 @@ vnoremap <silent> <F8> :call ToggleNetrw()<CR>
 cnoremap w!! w !sudo tee % >/dev/null
 
 " Insert empty lines without leaving Normal Mode
+" Set timeoutlen to around 600 for this to work without too much delay
 nmap oo o<ESC>k
 nmap OO O<ESC>j
 
