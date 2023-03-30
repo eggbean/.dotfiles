@@ -10,6 +10,8 @@
 #   qute://help/configuring.html
 #   qute://help/settings.html
 
+import sys
+
 # Change the argument to True to still load settings configured via autoconfig.yml
 config.load_autoconfig(False)
 
@@ -376,9 +378,10 @@ config.bind('<Alt+Shift+:>', 'mode-leave', mode='register')
 config.bind('<Alt+Shift+:>', 'mode-leave', mode='yesno')
 
 # Use Shift-Insert to paste on Windows
-import sys
 if sys.platform == "win32":
     config.bind('<Shift+Ins>', 'insert-text -- {clipboard}', mode='insert')
 
 # Monospace font
-c.fonts.web.family.fixed = 'Consolas Regular'
+if sys.platform == "win32":
+    c.fonts.web.family.fixed = 'Consolas Regular'
+    c.fonts.default_family = 'Consolas Regular'
