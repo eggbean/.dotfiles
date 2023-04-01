@@ -14,7 +14,7 @@ alias sxiv='sxiv -abs f'
 alias qb='qutebrowser'
 alias tv='tidy-viewer'
 
-# Add colours when piping as they're useful
+# Add colours when piping as I like colour
 # Can always use disable switch when required
 alias diff='diff --color=always --tabsize=4'
 alias grep='grep --color=always'
@@ -34,6 +34,11 @@ if command -v exa >/dev/null; then
   alias ls='exa-wrapper.sh'
 else
   alias ls='/bin/ls $LS_OPTIONS'
+fi
+
+# Replace tree with tre
+if command -v tre >/dev/null; then
+  alias tree='tre'
 fi
 
 # Use fzfp wrapper in tmux instead of fzf
