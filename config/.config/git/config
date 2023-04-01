@@ -81,4 +81,4 @@
 	localhist = "reflog --abbrev-commit --pretty=format:'%Cblue%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset'"
 	vdiff = ! "f () { git difftool --tool=nvimdiff -- \"$@\"; }; f"
 [credential]
-	helper = manager-core
+	helper = git-credential-manager
