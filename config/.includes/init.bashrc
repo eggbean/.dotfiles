@@ -1,11 +1,18 @@
 # ~/.bashrc sources this file at the end if binaries have been stowed
 # (therefore no further conditional statements required)
 
-# Direnv hook
-eval "$(direnv hook bash)"
-
 # MinIO Client command completion
 complete -C mclient mclient
+
+# broot function
+. ~/.config/broot/launcher/bash/br
+
+# Hashicorp bash tab completion
+complete -C /usr/bin/terraform terraform
+complete -C /usr/bin/packer packer
+complete -C /usr/bin/vault vault
+
+### And now for some mad directory changing stuff... ###
 
 # Directory bookmarks
 if [ -d "$HOME/.bookmarks" ]; then
@@ -22,11 +29,13 @@ if [ -d "$HOME/.bookmarks" ]; then
   }
 fi
 
-# CD Deluxe
+# CD Deluxe (I love this tool - far more people should use it!)
 cdd() { while read -r x; do eval "$x" >/dev/null; done < <(dirs -l -p | _cdd "$@"); }
 alias cd='cdd'
 
 # Combine bookmarks and cdd functions
+# (this is to avoid having to remember to type goto before I even
+# realise I want to, but unfortunately tab completion is lost)
 supercd() {
   if [ "${1::1}" == '@' ]; then
     goto "$@"
@@ -39,24 +48,29 @@ if [[ $(type -t cdd) == function ]] && [[ $(type -t goto) == function ]]; then
   complete -W "$(command cd ~/.bookmarks && printf '%s\n' -- *)" supercd
 fi
 
-# Add zoxide to shell
-eval "$(zoxide init --no-cmd bash)"
-z() {
-  pushd -n "$PWD" >/dev/null
-  __zoxide_z "$@"
-}
-zi() {
-  pushd -n "$PWD" >/dev/null
-  __zoxide_zi "$@"
-}
+# Don't initialise these tools a second time, as it causes
+# starship to show a background job when changing directories
+if [ ! "$init_bashrc_sourced" == true ]; then
 
-# broot function
-. ~/.config/broot/launcher/bash/br
+  # Direnv hook
+  eval "$(direnv hook bash)"
 
-# Hashicorp bash tab completion
-complete -C /usr/bin/terraform terraform
-complete -C /usr/bin/packer packer
-complete -C /usr/bin/vault vault
+  # Add zoxide to shell
+  # (and add directory changes to pushd stack for CD-Deluxe)
+  eval "$(zoxide init --no-cmd bash)"
+  z() {
+    pushd -n "$PWD" >/dev/null
+    __zoxide_z "$@"
+  }
+  zi() {
+    pushd -n "$PWD" >/dev/null
+    __zoxide_zi "$@"
+  }
 
-# Set Starship prompt
-eval "$(starship init bash)"
+  # Set Starship prompt
+  eval "$(starship init bash)"
+
+  # Set marker to say that these have already been initialised
+  init_bashrc_sourced=true
+
+fi
