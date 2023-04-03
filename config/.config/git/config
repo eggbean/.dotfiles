@@ -13,7 +13,8 @@
 [commit]
 	cleanup = scissors
 [push]
-	default = tracking
+	default = upstream
+	useForceIfIncludes = true
 [pull]
 	ff = only
 	rebase = true
