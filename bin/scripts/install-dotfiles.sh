@@ -1,5 +1,3 @@
-#!/bin/bash -e
-
 # This bootstrap script should be sourced, not executed
 
 pushd ~/.dotfiles >/dev/null || exit 1
@@ -28,3 +26,12 @@ git remote update
 popd >/dev/null || exit 1
 bind -f ~/.inputrc
 source ~/.bash_profile
+
+# Check for new kernel (in subshell, so not to change shell option)
+(
+cd /boot || exit 1
+shopt -s nullglob ; for file in config-* ; do kernels+=( "${file#config-}" ) ; done
+newest="$(printf '%s\n' "${kernels[@]}" | sort -V -t - -k 1,2 | tail -n1)"
+current="$(uname -r)"
+[[ "$current" != "$newest" ]] && echo "Reboot needed for new kernel"
+)
