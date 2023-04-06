@@ -31,14 +31,11 @@ popd >/dev/null || exit 1
 if [[ "$0" == "-bash" ]]; then
   bind -f ~/.inputrc
   source ~/.bash_profile
+elif [[ "$0" == "zsh" ]]; then
+  source ~/.zshrc
 fi
 
-# Check for new kernel (in subshell, so not to change shell option)
-(
-  if grep -qi microsoft /proc/version; then exit; fi
-  cd /boot || exit 1
-  shopt -s nullglob ; for file in config-* ; do kernels+=( "${file#config-}" ) ; done
-  newest="$(printf '%s\n' "${kernels[@]}" | sort -V -t - -k 1,2 | tail -n1)"
-  current="$(uname -r)"
-  [[ "$current" != "$newest" ]] && echo "Reboot needed for new kernel"
-)
+# Check for new kernel
+if ! grep -qi microsoft /proc/version; then
+  ~/.dotfiles/bin/scripts/kernel-update-check.sh
+fi
