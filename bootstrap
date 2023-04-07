@@ -1,15 +1,17 @@
-# This bootstrap script should be sourced, not executed
+# This script should be sourced, not executed
+# vim: filetype=bash
 
 pushd ~/.dotfiles >/dev/null || exit 1
 
+# Update packages and install some essentials
 eval "$(. /etc/os-release && typeset -p ID)"
 if [ "$ID" == "ol" ]; then
   sudo dnf config-manager --set-enabled ol9_developer_EPEL
   sudo dnf upgrade -y
-  sudo dnf install -y git htop shellcheck stow tree
+  sudo dnf install -y git htop stow shellcheck
 elif [ "$ID" == "debian" ]; then
   sudo apt-get update && sudo apt-get upgrade -y
-  sudo apt-get install -y git htop shellcheck stow tree
+  sudo apt-get install -y git htop stow shellcheck
 fi
 
 # Stow binaries
@@ -18,6 +20,7 @@ if [ "$UID" -ne 0 ] && [ "$EUID" -ne 0 ]; then
 else
   bin/scripts/stow-bin.sh --nosudo
 fi
+
 # Stow dotfiles
 bin/scripts/stow-dotfiles.sh config
 
@@ -29,9 +32,10 @@ source ~/.bash_profile
 
 # Check for new kernel (in subshell, so not to change shell option)
 (
-cd /boot || exit 1
-shopt -s nullglob ; for file in config-* ; do kernels+=( "${file#config-}" ) ; done
-newest="$(printf '%s\n' "${kernels[@]}" | sort -V -t - -k 1,2 | tail -n1)"
-current="$(uname -r)"
-[[ "$current" != "$newest" ]] && echo "Reboot needed for new kernel"
+  if grep -qi microsoft /proc/version; then exit; fi
+  cd /boot || exit 1
+  shopt -s nullglob ; for file in config-* ; do kernels+=( "${file#config-}" ) ; done
+  newest="$(printf '%s\n' "${kernels[@]}" | sort -V -t - -k 1,2 | tail -n1)"
+  current="$(uname -r)"
+  [[ "$current" != "$newest" ]] && echo "Reboot needed for new kernel"
 )
