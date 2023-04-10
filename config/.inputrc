@@ -24,6 +24,9 @@ set visible-stats                   off
 "\e[B": history-search-forward
 "\e[A": history-search-backward
 
+# M-Del to delete word forward
+"\033[3;3~": kill-word
+
 # Silence keys used for tmux nested configuration
 # M-F11 to null
 "\033[23;3~": ""
