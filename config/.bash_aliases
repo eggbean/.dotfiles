@@ -27,7 +27,7 @@ alias shellcheck='shellcheck --color=always'
 # Aliases to avoid making mistakes
 alias cp='cp -iv'
 alias mv='mv -iv'
-alias rm='rm -Iv'
+alias rm='rm -Iv --one-file-system'
 
 # Replace ls with exa
 if command -v exa >/dev/null; then
