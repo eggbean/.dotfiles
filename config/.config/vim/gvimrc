@@ -13,6 +13,10 @@ highlight Cursor guifg=white guibg=red
 highlight iCursor guifg=black guibg=steelblue
 set guicursor=n-v-c:block-Cursor
 set guicursor+=i:ver20-iCursor
+set statusline=
+set statusline+=%f
+set statusline+=%=
+set statusline+=%l:%c\ \ %p%%
 hi StatusLine guibg=grey70 guifg=white
 set lines=35 columns=90
 set guioptions -=L
