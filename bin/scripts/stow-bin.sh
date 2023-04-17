@@ -50,7 +50,8 @@ fi
 if [ -n "$nosudo" ]; then
   targetdir="$HOME/.local/bin"
   mandir="$HOME/.local/share/man"
-  compdir="$HOME/.local/share/bash-completion/completions"
+  bashcompdir="$HOME/.local/share/bash-completion/completions"
+  zshcompdir="$HOME/.local/share/zsh/site-functions"
   fontdir="$HOME/.local/share/fonts"
 else
   if [ "$(id -u)" -ne "0" ]; then
@@ -59,13 +60,14 @@ else
   fi
   targetdir='/usr/local/bin'
   mandir='/usr/local/share/man'
-  compdir='/usr/local/share/bash-completion/completions'
+  bashcompdir='/usr/local/share/bash-completion/completions'
+  zshcompdir="/usr/local/share/zsh/site-functions"
   fontdir='/usr/local/share/fonts'
 fi
 
 # If stowing, make target directories if they don't exist
 if [ -z "$unstow" ]; then
-  for d in "$targetdir" "$mandir" "$compdir" "$fontdir"; do
+  for d in "$targetdir" "$mandir" "$bashcompdir" "$zshcompdir" "$fontdir"; do
     if [ ! -d "$d" ]; then mkdir -p "$d"; fi
   done
   if [ -d "$HOME/.dotfiles/bin/man" ]; then
@@ -107,8 +109,12 @@ done
 popd >/dev/null
 
 # Stow/unstow bash completion files
-stow $stowcom -vt "$compdir" completions 2>&1 \
+stow $stowcom -vt "$bashcompdir" bash-completions 2>&1 \
   && echo "DONE: bash completions package $stowed"
+
+# Stow/unstow zsh completion files
+stow $stowcom -vt "$zshcompdir" zsh-completions 2>&1 \
+  && echo "DONE: zsh completions package $stowed"
 
 # Stow/unstow fonts if local desktop system, but not on WSL
 if [ -n "$DISPLAY" ] && grep -vqi microsoft /proc/version; then
@@ -124,7 +130,7 @@ if [ -n "$unstow" ]; then
     for r in "${mansubs[@]}"; do
       if [ -d "$mandir"/"$r" ]; then rmdir --ignore-fail-on-non-empty "$mandir"/"$r"; fi
     done
-  for e in "$targetdir" "$mandir" "$compdir" "$fontdir"; do
+  for e in "$targetdir" "$mandir" "$bashcompdir" "$zshcompdir" "$fontdir"; do
     if [ -d "$e" ]; then rmdir -p --ignore-fail-on-non-empty "$e"; fi
   done
 fi
