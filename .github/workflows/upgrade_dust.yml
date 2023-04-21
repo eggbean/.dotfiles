@@ -27,7 +27,8 @@ jobs:
           tar --wildcards --strip-components=1 -C bin/x86_64 -xvf dust-v*-x86_64-unknown-linux-gnu.tar.gz dust-v*-x86_64-unknown-linux-gnu/dust
           rm dust-v*-x86_64-unknown-linux-gnu.tar.gz
 
-          wget -qO bin/completions/dust.bash https://raw.githubusercontent.com/bootandy/dust/master/completions/dust.bash
+          wget -qO bin/bash-completions/dust.bash https://raw.githubusercontent.com/bootandy/dust/master/completions/dust.bash
+          wget -qO bin/zsh-completions/_dust https://raw.githubusercontent.com/bootandy/dust/master/completions/_dust
 
       - name: Commit and push to repository
         run: |
@@ -36,5 +37,5 @@ jobs:
           git add --all
           git status
           tag="$(curl -s https://api.github.com/repos/bootandy/dust/releases/latest | jq -r '.tag_name')"
-          git commit -m "Upgrade dust to ${tag}"
+          git commit -m "[Action] Upgrade dust to ${tag}"
           git push
