@@ -1,0 +1,38 @@
+name: Upgrade monolith
+on:
+  [workflow_dispatch]
+
+jobs:
+  upgrade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download files
+        run: |
+          name='monolith-gnu-linux-x86_64'
+          wget -q "$(curl -s https://api.github.com/repos/Y2Z/monolith/releases/latest | jq -r '.assets[] | select(.name == $name).browser_download_url' --arg name "${name}")"
+          chmod +x "${name}"
+          mv "${name}" bin/x86_64/monolith
+
+          name='monolith-gnu-linux-armhf'
+          wget -q "$(curl -s https://api.github.com/repos/Y2Z/monolith/releases/latest | jq -r '.assets[] | select(.name == $name).browser_download_url' --arg name "${name}")"
+          chmod +x "${name}"
+          mv "${name}" bin/armv7l/monolith
+
+          name='monolith-gnu-linux-aarch64'
+          wget -q "$(curl -s https://api.github.com/repos/Y2Z/monolith/releases/latest | jq -r '.assets[] | select(.name == $name).browser_download_url' --arg name "${name}")"
+          chmod +x "${name}"
+          mv "${name}" bin/aarch64/monolith
+
+      - name: Commit and push to repository
+        run: |
+          git config --global user.name "eggbean"
+          git config --global user.email 815311+eggbean@users.noreply.github.com
+          git add --all
+          git status
+          tag="$(curl -s https://api.github.com/repos/Y2Z/monolith/releases/latest | jq -r '.tag_name')"
+          git commit -m "[Action] Upgrade monolith to ${tag}"
+          git push
