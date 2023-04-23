@@ -14,20 +14,21 @@ jobs:
         run: |
           name='starship-aarch64-unknown-linux-musl.tar.gz'
           wget -q "$(curl -s https://api.github.com/repos/starship/starship/releases/latest | jq -r '.assets[] | select(.name == $name).browser_download_url' --arg name "${name}")"
-          tar xf "${name}" -C bin/aarch64
+          tar -xf "${name}" -C bin/aarch64
           rm "${name}"
 
           name='starship-arm-unknown-linux-musleabihf.tar.gz'
           wget -q "$(curl -s https://api.github.com/repos/starship/starship/releases/latest | jq -r '.assets[] | select(.name == $name).browser_download_url' --arg name "${name}")"
-          tar xf "${name}" -C bin/armv7l
+          tar -xf "${name}" -C bin/armv7l
           rm "${name}"
 
           name='starship-x86_64-unknown-linux-gnu.tar.gz'
           wget -q "$(curl -s https://api.github.com/repos/starship/starship/releases/latest | jq -r '.assets[] | select(.name == $name).browser_download_url' --arg name "${name}")"
-          tar xf "${name}" -C bin/x86_64
+          tar -xf "${name}" -C bin/x86_64
           rm "${name}"
 
-          bin/x86_64/starship completions bash > bin/completions/starship.bash
+          bin/x86_64/starship completions bash > bin/bash-completions/starship.bash
+          bin/x86_64/starship completions zsh > bin/zsh-completions/_starship
 
       - name: Commit and push to repository
         run: |
@@ -36,5 +37,5 @@ jobs:
           git add --all
           git status
           tag="$(curl -s https://api.github.com/repos/starship/starship/releases/latest | jq -r '.tag_name')"
-          git commit -m "Upgrade starship to ${tag}"
+          git commit -m "[Action] Upgrade starship to ${tag}"
           git push
