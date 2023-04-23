@@ -1,5 +1,5 @@
 _starship() {
-    local i cur prev opts cmds
+    local i cur prev opts cmd
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
@@ -531,12 +531,20 @@ _starship() {
             return 0
             ;;
         starship__preset)
-            opts="-l -h --list --help tokyo-night nerd-font-symbols pastel-powerline no-runtime-versions no-empty-icons bracketed-segments plain-text-symbols no-nerd-font pure-preset"
+            opts="-o -l -h --output --list --help tokyo-night nerd-font-symbols no-runtime-versions pastel-powerline pure-preset no-empty-icons plain-text-symbols bracketed-segments no-nerd-font"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
+                --output)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
                 *)
                     COMPREPLY=()
                     ;;
@@ -559,12 +567,16 @@ _starship() {
             return 0
             ;;
         starship__prompt)
-            opts="-s -w -p -P -d -k -j -h --right --continuation --status --pipestatus --terminal-width --path --logical-path --cmd-duration --keymap --jobs --help"
+            opts="-s -w -p -P -d -k -j -h --right --profile --continuation --status --pipestatus --terminal-width --path --logical-path --cmd-duration --keymap --jobs --help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
+                --profile)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
                 --status)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
