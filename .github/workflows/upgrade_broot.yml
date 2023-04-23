@@ -21,10 +21,12 @@ jobs:
           mv x86_64-linux/broot bin/x86_64
           gzip broot.1
           mv broot.1.gz bin/man/man1
-          mv completion/{br,broot}.bash bin/completions
-          mv default-conf/{conf.hjson,default-conf.hjson}
-          mv default-conf/* config/.config/broot
+          mv completion/{br,broot}.bash bin/bash-completions
+          mv completion/{_br,_broot} bin/zsh-completions
           rm -rf completion
+          mv default-conf/{conf.hjson,default-conf.hjson}
+          [ ! -d config/.config/broot ] && mkdir config/.config/broot
+          mv default-conf/* config/.config/broot
 
       - name: Commit and push to repository
         run: |
@@ -33,5 +35,5 @@ jobs:
           git add --all
           git status
           tag="$(curl -s https://api.github.com/repos/Canop/broot/releases/latest | jq -r '.tag_name')"
-          git commit -m "Upgrade broot to ${tag} for x86_64 and armv7l" -m "Currently there is no aarch64/Android build https://github.com/Canop/broot/issues/565"
+          git commit -m "[Action] Upgrade broot to ${tag} for x86_64 and armv7l"
           git push
