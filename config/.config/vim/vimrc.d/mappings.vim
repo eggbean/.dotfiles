@@ -42,9 +42,6 @@ endfunction
 nnoremap <silent> <F8> :call ToggleNetrw()<CR>
 vnoremap <silent> <F8> :call ToggleNetrw()<CR>
 
-" Write after forgetting sudo
-cnoremap w!! w !sudo tee % >/dev/null
-
 " Insert empty lines without leaving Normal Mode
 " Set timeoutlen to around 600 for this to work without too much delay
 nmap oo o<ESC>k
@@ -67,6 +64,9 @@ elseif has('win32')
   vnoremap <M-S-k> :m '<-2<CR>gv=gv
 endif
 
+" Reselect pasted text
+nnoremap gp `[v`]
+
 " Open files using xdg-open
 nnoremap gX :silent :execute
   \ "!xdg-open" expand('%:p:h') . "/" . expand("<cfile>") " &"<CR>
@@ -82,6 +82,9 @@ nnoremap <expr> <C-y> (g:scrollLock == 1) ? ':windo set scrollbind<CR><C-y>:wind
 
 " Exit terminal mode with ESC
 tnoremap <ESC> <C-\><C-n>
+
+" Write after forgetting sudo
+cnoremap w!! w !sudo tee % >/dev/null
 
 " Clear registers
 command! WipeReg for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor
