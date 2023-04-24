@@ -41,11 +41,8 @@ if [ -x /usr/bin/dircolors ]; then
   test -r ~/.dotfiles/bin/scripts/dir_colors && eval "$(dircolors -b ~/.dotfiles/bin/scripts/dir_colors)" || eval "$(dircolors -b)"
 fi
 
-# Colored GCC warnings and errors
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
 # Alias definitions.
-. ~/.bash_aliases
+. ~/.aliases
 
 # Enable programmable completion features
 if ! shopt -oq posix; then
@@ -67,17 +64,6 @@ ssh() {
   fi
 }
 
-# mosh() {
-#   if [[ $TMUX ]]; then
-#     tmux rename-window "$(echo "${@: -1}" | rev | cut -d '@' -f1 | rev | sed -E 's/\.([a-z0-9\-]+)\.compute\.amazonaws\.com$//' )"
-#     command mosh "$@"
-#     tmux set automatic-rename "on" >/dev/null
-#   else
-#     command mosh "$@"
-#   fi
-# }
-
-# https://superuser.com/a/1315015/8972
 mosh() {
   case $@ in
     osiris)
@@ -88,17 +74,6 @@ mosh() {
       ;;
   esac
 }
-
-# Update $PATH for the Google Cloud SDK
-if [ -f "$HOME/google-cloud-sdk/path.bash.inc" ]; then . "$HOME/google-cloud-sdk/path.bash.inc"; fi
-
-# Enable shell command completion for gcloud cli
-if [ -f "$HOME/google-cloud-sdk/completion.bash.inc" ]; then . "$HOME/google-cloud-sdk/completion.bash.inc"; fi
-
-# Or gcloud docker container as executable
-if ! type gcloud >/dev/null 2>&1; then
-  gcloud() { docker run --rm --volumes-from gcloud-config google/cloud-sdk:alpine gcloud "$@"; }
-fi
 
 # Rename tmux windows when attaching to docker containers
 docker() {
@@ -173,8 +148,8 @@ if command -v fzf >/dev/null; then
     --ansi \
     --reverse \
     --bind=ctrl-a:toggle-all \
-    --bind=ctrl-alt-j:preview-down \
-    --bind=ctrl-alt-k:preview-up \
+    --bind=pgdn:preview-page-down \
+    --bind=pgup:preview-page-up \
     --bind=ctrl-d:preview-page-down \
     --bind=ctrl-u:preview-page-up \
     --bind=alt-bs:clear-query \
@@ -248,6 +223,7 @@ export LESS='-MRQx4FX#10'
 export MANPAGER='less -+MFX +g'
 export BAT_PAGER='less -+MFX -S'
 export EXA_COLORS='xa=38;5;135:lc=38;5;124:lm=38;5;196:uu=38;5;178:gu=38;5;178:un=38;5;141:gn=38;5;141:bO=38;5;009'
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 export RANGER_LOAD_DEFAULT_RC=FALSE
 export GVIMINIT='let $MYGVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/gvimrc" : "$XDG_CONFIG_HOME/nvim/init.gvim" | so $MYGVIMRC'
 export VIMINIT='let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$XDG_CONFIG_HOME/nvim/init.vim" | so $MYVIMRC'
