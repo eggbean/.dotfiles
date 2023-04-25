@@ -23,7 +23,9 @@ jobs:
           rm steampipe_linux_arm64.tar.gz
 
       - name: Update bash tab completion
-        run: bin/x86_64/steampipe completion bash > bin/completions/steampipe.bash
+        run: |
+          bin/x86_64/steampipe completion bash > bin/bash-completions/steampipe.bash
+          bin/x86_64/steampipe completion zsh > bin/zsh-completions/_steampipe
 
       - name: Commit and push to repository
         run: |
@@ -32,5 +34,5 @@ jobs:
           git add --all
           git status
           tag="$(curl -s https://api.github.com/repos/turbot/steampipe/releases/latest | jq -r '.tag_name')"
-          git commit -m "Upgrade steampipe to ${tag} (x86_64 and aarch64)"
+          git commit -m "[Action] Upgrade steampipe to ${tag}"
           git push
