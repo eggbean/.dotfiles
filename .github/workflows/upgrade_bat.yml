@@ -17,7 +17,9 @@ jobs:
           tar --wildcards --strip-components=1 -C bin/aarch64 -xvf bat-v*-unknown-linux-gnu.tar.gz bat-v*-unknown-linux-gnu/bat
           tar --wildcards --strip-components=1 -C bin/man/man1 -xvf bat-v*-unknown-linux-gnu.tar.gz bat-v*-unknown-linux-gnu/bat.1
           gzip -f bin/man/man1/bat.1 2>/dev/null
-          tar --wildcards --strip-components=2 -C bin/completions -xvf bat-v*-unknown-linux-gnu.tar.gz bat-v*-unknown-linux-gnu/autocomplete/bat.bash
+          tar --wildcards --strip-components=2 -C bin/bash-completions -xvf bat-v*-unknown-linux-gnu.tar.gz bat-v*-unknown-linux-gnu/autocomplete/bat.bash
+          tar --wildcards --strip-components=2 -C bin/zsh-completions -xvf bat-v*-unknown-linux-gnu.tar.gz bat-v*-unknown-linux-gnu/autocomplete/bat.zsh
+          mv bin/zsh-completions/{bat.zsh,_bat}
           rm bat-v*-unknown-linux-gnu.tar.gz
 
           nameregex='^bat-v\d[\d.]+?\d?-arm-unknown-linux-gnueabihf\.tar\.gz$'
@@ -37,5 +39,5 @@ jobs:
           git add --all
           git status
           tag="$(curl -s https://api.github.com/repos/sharkdp/bat/releases/latest | jq -r '.tag_name')"
-          git commit -m "Upgrade bat to ${tag}"
+          git commit -m "[Action] Upgrade bat to ${tag}"
           git push
