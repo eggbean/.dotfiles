@@ -1,8 +1,9 @@
-# Set up the prompt
-
-autoload -Uz promptinit
-promptinit
-prompt adam1
+# Set up starship prompt
+cp "$HOME/.config/starship.toml" "$HOME/.config/starship-zsh.toml"
+export STARSHIP_CONFIG="$HOME/.config/starship-zsh.toml"
+starship config character.success_symbol "[%](white)"
+starship config character.error_symbol "[%](bold red)"
+eval "$(starship init zsh)"
 
 setopt histignorealldups sharehistory
 
