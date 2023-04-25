@@ -31,6 +31,9 @@ jobs:
           rm yq_man_page_only.tar.gz
           gzip -f bin/man/man1/yq.1
 
+          bin/x86_64/yq shell-completion bash > bin/bash-completions/yq.bash
+          bin/x86_64/yq shell-completion zsh > bin/zsh-completions/_yq
+
       - name: Commit and push to repository
         run: |
           git config --global user.name "eggbean"
