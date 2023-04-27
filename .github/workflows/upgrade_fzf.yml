@@ -27,13 +27,15 @@ jobs:
           tar --wildcards -C bin/armv7l -xf fzf-*-linux_armv7.tar.gz
           rm fzf-*-linux_armv7.tar.gz
 
-          wget https://github.com/junegunn/fzf/raw/master/man/man1/fzf.1 -O bin/man/man1/fzf.1
-          wget https://github.com/junegunn/fzf/raw/master/man/man1/fzf-tmux.1 -O bin/man/man1/fzf-tmux.1
+          wget -q https://github.com/junegunn/fzf/raw/master/man/man1/fzf.1 -O bin/man/man1/fzf.1
+          wget -q https://github.com/junegunn/fzf/raw/master/man/man1/fzf-tmux.1 -O bin/man/man1/fzf-tmux.1
           gzip -f bin/man/man1/fzf{,-tmux}.1
-          wget https://github.com/junegunn/fzf/raw/master/bin/fzf-tmux -O bin/scripts/fzf-tmux
+          wget -q https://github.com/junegunn/fzf/raw/master/bin/fzf-tmux -O bin/scripts/fzf-tmux
           chmod +x bin/scripts/fzf-tmux
-          wget https://github.com/junegunn/fzf/raw/master/shell/completion.bash -O bin/completions/fzf-completions.bash
-          wget https://github.com/junegunn/fzf/raw/master/shell/key-bindings.bash -O bin/completions/fzf-keybindings.bash
+          wget -q https://github.com/junegunn/fzf/raw/master/shell/completion.bash -O bin/bash-completions/fzf-completions.bash
+          wget -q https://github.com/junegunn/fzf/raw/master/shell/key-bindings.bash -O bin/bash-completions/fzf-keybindings.bash
+          wget -q https://github.com/junegunn/fzf/raw/master/shell/completion.zsh -O bin/zsh-completions/fzf-completions.zsh
+          wget -q https://github.com/junegunn/fzf/raw/master/shell/key-bindings.zsh -O bin/zsh-completions/fzf-keybindings.zsh
 
       - name: Commit and push to repository
         run: |
@@ -42,5 +44,5 @@ jobs:
           git add --all
           git status
           tag="$(curl -s https://api.github.com/repos/junegunn/fzf/releases/latest | jq -r '.tag_name')"
-          git commit -m "Upgrade fzf to ${tag}"
+          git commit -m "[Action] Upgrade fzf to ${tag}"
           git push
