@@ -6,10 +6,8 @@
 [[ $- != *i* ]] && return
 
 # Shell options
-shopt -s checkwinsize
 shopt -s direxpand
 shopt -s globstar
-shopt -s cmdhist
 shopt -s lithist
 shopt -s histappend
 shopt -s hostcomplete
@@ -19,29 +17,13 @@ shopt -s no_empty_cmd_completion
 HISTCONTROL=ignoreboth
 HISTTIMEFORMAT="%d/%m/%y %T "
 HISTIGNORE=ls:ll:la:l:pwd:df:du:history:tmux:htop:fg:man:mans:date:hue
-if [ ! "$(uname -o)" = "Android" ] && [ "$(arch)" = "x86_64" ]; then
-  HISTSIZE=2000
-  HISTFILESIZE=10000
-else
-  HISTSIZE=1000
-  HISTFILESIZE=5000
-fi
+HISTSIZE=5000
+HISTFILESIZE=5000
 
 # Shared history between tmux panes
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
-# Make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
-# Set COLORTERM if Windows Terminal
-[ -n "$WT_SESSION" ] && export COLORTERM='truecolor'
-
-# Enable color support of ls
-if [ -x /usr/bin/dircolors ]; then
-  test -r ~/.dotfiles/bin/scripts/dir_colors && eval "$(dircolors -b ~/.dotfiles/bin/scripts/dir_colors)" || eval "$(dircolors -b)"
-fi
-
-# Alias definitions.
+# Alias definitions
 . ~/.aliases
 
 # Enable programmable completion features
@@ -51,6 +33,17 @@ if ! shopt -oq posix; then
   elif [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
   fi
+fi
+
+# Make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# Set COLORTERM if Windows Terminal
+[[ $WT_SESSION ]] && export COLORTERM='truecolor'
+
+# Enable color support of ls
+if [ -x /usr/bin/dircolors ]; then
+  test -r ~/.dotfiles/bin/scripts/dir_colors && eval "$(dircolors -b ~/.dotfiles/bin/scripts/dir_colors)" || eval "$(dircolors -b)"
 fi
 
 # Rename tmux windows automatically to hostname
@@ -88,7 +81,7 @@ docker() {
 
 # Prevent accidental git stashing
 git() {
-  if [[ "$#" -eq 1 ]] && [[ "$1" == "stash" ]]; then
+  if [[ $# -eq 1 ]] && [[ $1 == stash ]]; then
     echo 'WARNING: run "git stash push" instead.'
   else
     command git "$@"
@@ -102,14 +95,6 @@ cat() {
   else
     command cat "$@" | expand -t4
   fi
-}
-
-# Search man page for string
-mans() {
-  local q="\'"
-  local q_pattern="'${1//$q/$q\\$q$q}'"
-  local MANPAGER="less -+MFX -p $q_pattern"
-  man "$2"
 }
 
 # Yoloing
@@ -173,19 +158,31 @@ if command -v fzf >/dev/null; then
 fi
 
 # Colourise man pages
-export LESS_TERMCAP_mb=$'\E[1;31m'      # begin bold
-export LESS_TERMCAP_md=$'\E[1;36m'      # begin blink
-export LESS_TERMCAP_me=$'\E[0m'         # reset bold/blink
-export LESS_TERMCAP_so=$'\E[01;44;30m'  # begin reverse video
-export LESS_TERMCAP_se=$'\E[0m'         # reset reverse video
-export LESS_TERMCAP_us=$'\E[1;32m'      # begin underline
-export LESS_TERMCAP_ue=$'\E[0m'         # reset underline
-export LESS_TERMCAP_mr=$(tput rev)
-export LESS_TERMCAP_mh=$(tput dim)
-export LESS_TERMCAP_ZN=$(tput ssubm)
-export LESS_TERMCAP_ZV=$(tput rsubm)
-export LESS_TERMCAP_ZO=$(tput ssupm)
-export LESS_TERMCAP_ZW=$(tput rsupm)
+man() {
+  env \
+    LESS_TERMCAP_mb=$'\e[1;31m' \
+    LESS_TERMCAP_md=$'\e[1;36m' \
+    LESS_TERMCAP_me=$'\e[0m' \
+    LESS_TERMCAP_so=$'\e[01;44;30m' \
+    LESS_TERMCAP_se=$'\e[0m' \
+    LESS_TERMCAP_us=$'\e[1;32m' \
+    LESS_TERMCAP_ue=$'\e[0m' \
+    LESS_TERMCAP_mr=$(tput rev) \
+    LESS_TERMCAP_mh=$(tput dim) \
+    LESS_TERMCAP_ZN=$(tput ssubm) \
+    LESS_TERMCAP_ZV=$(tput rsubm) \
+    LESS_TERMCAP_ZO=$(tput ssupm) \
+    LESS_TERMCAP_ZW=$(tput rsupm) \
+    man "$@"
+}
+
+# Search man page for string
+mans() {
+  local q="\'"
+  local q_pattern="'${1//$q/$q\\$q$q}'"
+  local MANPAGER="less -+MFX -p $q_pattern"
+  man "$2"
+}
 
 # ENVIRONMENT VARIABLES
 # xdg locations need to be set for termux
@@ -225,13 +222,18 @@ export BAT_PAGER='less -+MFX -S'
 export EXA_COLORS='xa=38;5;135:lc=38;5;124:lm=38;5;196:uu=38;5;178:gu=38;5;178:un=38;5;141:gn=38;5;141:bO=38;5;009'
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 export RANGER_LOAD_DEFAULT_RC=FALSE
+export STARSHIP_CONFIG="$HOME"/.config/starship.toml
 export GVIMINIT='let $MYGVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/gvimrc" : "$XDG_CONFIG_HOME/nvim/init.gvim" | so $MYGVIMRC'
 export VIMINIT='let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$XDG_CONFIG_HOME/nvim/init.vim" | so $MYVIMRC'
-if [ -n "$DISPLAY" ]; then
+
+# Browser
+if [[ $DISPLAY ]]; then
   export BROWSER=qutebrowser
 else
   export BROWSER=elinks
 fi
+
+# Text Editor
 if command -v nvim >/dev/null; then
   export EDITOR='nvim'
   export VISUAL='nvim'
@@ -241,7 +243,7 @@ else
 fi
 
 # Do more stuff if binaries have been stowed
-[ -f "$XDG_STATE_HOME"/dotfiles_stowed ] && . ~/.dotfiles/config/.includes/init.bashrc
+[[ -f $XDG_STATE_HOME/dotfiles_stowed ]] && . ~/.dotfiles/config/.includes/init.bashrc
 
 # Source host specific environment
-[ -f ~/.dotfiles/config/.includes/"$(hostname -s)" ] && . ~/.dotfiles/config/.includes/"$(hostname -s)"
+[[ -f ~/.dotfiles/config/.includes/"$(hostname -s)" ]] && . ~/.dotfiles/config/.includes/"$(hostname -s)"

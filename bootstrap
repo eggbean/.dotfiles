@@ -5,17 +5,17 @@ pushd ~/.dotfiles >/dev/null || exit 1
 
 # Update packages and install some essentials
 eval "$(. /etc/os-release && typeset -p ID)"
-if [[ "$ID" == "ol" ]]; then
+if [[ $ID == ol ]]; then
   sudo dnf config-manager --set-enabled ol9_developer_EPEL
   sudo dnf upgrade -y
   sudo dnf install -y $(cat packages | egrep -v "[\s]*([#;].*|^$)")
-elif [[ "$ID" == "debian" ]]; then
+elif [[ $ID == debian ]]; then
   sudo apt-get update && sudo apt-get upgrade -y
   sudo apt-get install -y $(cat packages | egrep -v "[\s]*([#;].*|^$)")
 fi
 
 # Stow binaries
-if [[ "$UID" -ne 0 ]] && [[ "$EUID" -ne 0 ]]; then
+if [[ $UID -ne 0 ]] && [[ $EUID -ne 0 ]]; then
   sudo bin/scripts/stow-bin.sh
 else
   bin/scripts/stow-bin.sh --nosudo
@@ -28,14 +28,14 @@ git remote update
 
 popd >/dev/null || exit 1
 
-if [[ "$0" == "-bash" ]]; then
+if [[ $0 == *bash ]]; then
   bind -f ~/.inputrc
   source ~/.bash_profile
-elif [[ "$0" == "zsh" ]]; then
+elif [[ $0 == *zsh ]]; then
   source ~/.zshrc
 fi
 
 # Check for new kernel
 if ! grep -qi microsoft /proc/version; then
-  ~/.dotfiles/bin/scripts/kernel-update-check.sh
+  bin/scripts/kernel-update-check.sh
 fi
