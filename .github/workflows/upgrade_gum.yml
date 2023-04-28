@@ -12,24 +12,25 @@ jobs:
 
       - name: Download and extract tarballs
         run: |
-          nameregex='^gum_\d[\d.]+?\d?_linux_x86_64\.tar\.gz$'
+          nameregex='^gum_\d[\d.]+?\d?_Linux_x86_64\.tar\.gz$'
           wget -q "$(curl -s https://api.github.com/repos/charmbracelet/gum/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
-          tar --exclude='README.md' -xvf gum_*_linux_x86_64.tar.gz
-          rm LICENSE completions/gum.{fish,zsh}
+          tar --exclude='README.md' -xvf gum_*_Linux_x86_64.tar.gz
+          rm LICENSE completions/gum.fish
           mv gum bin/x86_64
-          mv completions/gum.bash bin/completions
+          mv completions/gum.bash bin/bash-completions
+          mv completions/gum.zsh bin/zsh-completions/_gum
           mv manpages/gum.1.gz bin/man/man1
-          rm gum_*_linux_x86_64.tar.gz
+          rm gum_*_Linux_x86_64.tar.gz
 
-          nameregex='^gum_\d[\d.]+?\d?_linux_arm64\.tar\.gz$'
+          nameregex='^gum_\d[\d.]+?\d?_Linux_arm64\.tar\.gz$'
           wget -q "$(curl -s https://api.github.com/repos/charmbracelet/gum/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
-          tar -C bin/aarch64 -xvf gum_*_linux_arm64.tar.gz gum
-          rm gum_*_linux_arm64.tar.gz
+          tar -C bin/aarch64 -xvf gum_*_Linux_arm64.tar.gz gum
+          rm gum_*_Linux_arm64.tar.gz
 
-          nameregex='^gum_\d[\d.]+?\d?_linux_armv7\.tar\.gz$'
+          nameregex='^gum_\d[\d.]+?\d?_Linux_armv7\.tar\.gz$'
           wget -q "$(curl -s https://api.github.com/repos/charmbracelet/gum/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
-          tar -C bin/armv7l -xvf gum_*_linux_armv7.tar.gz gum
-          rm gum_*_linux_armv7.tar.gz
+          tar -C bin/armv7l -xvf gum_*_Linux_armv7.tar.gz gum
+          rm gum_*_Linux_armv7.tar.gz
 
       - name: Commit and push to repository
         run: |
@@ -38,5 +39,5 @@ jobs:
           git add --all
           git status
           tag="$(curl -s https://api.github.com/repos/charmbracelet/gum/releases/latest | jq -r '.tag_name')"
-          git commit -m "Upgrade gum to ${tag}"
+          git commit -m "[Action] Upgrade gum to ${tag}"
           git push
