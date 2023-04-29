@@ -1,15 +1,10 @@
-# Set up starship prompt
-cp ~/.config/starship.toml ~/.config/starship-zsh.toml
-export STARSHIP_CONFIG="$HOME/.config/starship-zsh.toml"
-starship config character.success_symbol "[%](white)"
-starship config character.error_symbol "[%](bold red)"
-eval "$(starship init zsh)"
+# ~/.zshrc
 
 # Command history
 HISTSIZE=5000
 SAVEHIST=5000
 HISTFILE=~/.zsh_history
-setopt histignorealldups sharehistory
+setopt histignorealldups extendedhistory incappendhistory
 
 # Completion system
 typeset -gaU fpath=($fpath /usr/local/share/bash-completion/completions)
@@ -22,7 +17,6 @@ zstyle ':completion:*' completer _expand _complete _correct _approximate
 zstyle ':completion:*' format 'Completing %d'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' menu select=2
-eval "$(dircolors -b)"
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
@@ -31,21 +25,26 @@ zstyle ':completion:*' menu select=long
 zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
 zstyle ':completion:*' use-compctl false
 zstyle ':completion:*' verbose true
+zstyle ':completion:*' rehash true
+zstyle -e ':completion:*' hosts 'reply=($(< ~/.hosts))'
 
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
+# Dir colours
+eval "$(dircolors -b ~/.dotfiles/bin/scripts/dir_colors)"
+
 # Alias definitions
 source $HOME/.aliases
 
-# Keybindings
+# Key bindings
 bindkey -e
 bindkey '^?'    backward-delete-char
 bindkey '^[[3~' delete-char
 bindkey '^[[5~' up-line-or-history
 bindkey '^[[6~' down-line-or-history
-bindkey '^[[A'  up-line-or-search
-bindkey '^[[B'  down-line-or-search
+bindkey '^[[A'  history-beginning-search-backward
+bindkey '^[[B'  history-beginning-search-forward
 bindkey '^[[C'  forward-char
 bindkey '^[[D'  backward-char
 bindkey "^[[H"  beginning-of-line
@@ -91,13 +90,13 @@ fi
 # Colourise man pages
 man() {
   env \
-    LESS_TERMCAP_mb=$'\E[1;31m' \
-    LESS_TERMCAP_md=$'\E[1;36m' \
-    LESS_TERMCAP_me=$'\E[0m' \
-    LESS_TERMCAP_so=$'\E[01;44;30m' \
-    LESS_TERMCAP_se=$'\E[0m' \
-    LESS_TERMCAP_us=$'\E[1;32m' \
-    LESS_TERMCAP_ue=$'\E[0m' \
+    LESS_TERMCAP_mb=$'\e[1;31m' \
+    LESS_TERMCAP_md=$'\e[1;36m' \
+    LESS_TERMCAP_me=$'\e[0m' \
+    LESS_TERMCAP_so=$'\e[01;44;30m' \
+    LESS_TERMCAP_se=$'\e[0m' \
+    LESS_TERMCAP_us=$'\e[1;32m' \
+    LESS_TERMCAP_ue=$'\e[0m' \
     LESS_TERMCAP_mr=$(tput rev) \
     LESS_TERMCAP_mh=$(tput dim) \
     LESS_TERMCAP_ZN=$(tput ssubm) \
@@ -173,7 +172,7 @@ else
 fi
 
 # Do more stuff if binaries have been stowed
-[[ -f $XDG_STATE_HOME/dotfiles_stowed ]] && . ~/.dotfiles/config/.includes/init.zshrc
+[[ -f $XDG_STATE_HOME/binaries_stowed ]] && . ~/.dotfiles/config/.includes/init.zshrc
 
 # Source host specific environment
 [[ -f ~/.dotfiles/config/.includes/"$(hostname -s)" ]] && . ~/.dotfiles/config/.includes/"$(hostname -s)"

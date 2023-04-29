@@ -39,11 +39,11 @@ STOW_DIR="$HOME/.dotfiles/bin"
 if [ -n "$unstow" ]; then
   stowcom='-D'
   stowed='unstowed'
-  rm "$XDG_STATE_HOME"/dotfiles_stowed
+  rm "$XDG_STATE_HOME"/binaries_stowed
 else
   stowcom='-R'
   stowed='stowed'
-  touch "$XDG_STATE_HOME"/dotfiles_stowed
+  touch "$XDG_STATE_HOME"/binaries_stowed
 fi
 
 # Set variables for target locations and make directories if necessary
