@@ -47,12 +47,21 @@ bindkey '^[[A'  history-beginning-search-backward
 bindkey '^[[B'  history-beginning-search-forward
 bindkey '^[[C'  forward-char
 bindkey '^[[D'  backward-char
-bindkey "^[[H"  beginning-of-line
-bindkey "^[[F"  end-of-line
-bindkey -s "^[[23;3~" ""
-bindkey -s "^[[24;3~" ""
-bindkey -s "^[[5;7~"  ""
-bindkey -s "^[[6;7~"  ""
+# bindkey "^[[H"  beginning-of-line
+# bindkey "^[[F"  end-of-line
+# bindkey "^[[23;3~" ""
+# bindkey "^[[24;3~" ""
+# bindkey "^[[5;7~"  ""
+# bindkey "^[[6;7~"  ""
+
+# Set COLORTERM if Windows Terminal
+if [[ $WT_SESSION ]]; then
+  bindkey '^[OA' history-beginning-search-backward
+  bindkey '^[OB' history-beginning-search-forward
+  bindkey '^[OC' forward-char
+  bindkey '^[OD' backward-char
+  export COLORTERM='truecolor'
+fi
 
 # Don't include non-alphanumeric characters in words, like bash
 autoload -U select-word-style
@@ -166,9 +175,6 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 export RANGER_LOAD_DEFAULT_RC=FALSE
 export GVIMINIT='let $MYGVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/gvimrc" : "$XDG_CONFIG_HOME/nvim/init.gvim" | so $MYGVIMRC'
 export VIMINIT='let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$XDG_CONFIG_HOME/nvim/init.vim" | so $MYVIMRC'
-
-# Set COLORTERM if Windows Terminal
-[[ $WT_SESSION ]] && export COLORTERM='truecolor'
 
 # Browser
 if [[ $DISPLAY ]]; then
