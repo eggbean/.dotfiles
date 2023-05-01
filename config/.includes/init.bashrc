@@ -8,16 +8,20 @@ complete -C mclient mclient
 . ~/.config/broot/launcher/bash/br
 
 # Hashicorp bash tab completion
-complete -C /usr/bin/terraform terraform
-complete -C /usr/bin/packer packer
-complete -C /usr/bin/vault vault
+complete -C terraform terraform
+complete -C packer packer
+complete -C vault vault
 
 ### And now for some mad directory changing stuff... ###
+
+# CD Deluxe
+cdd() { while read -r x; do eval "$x" >/dev/null; done < <(dirs -l -p | _cdd "$@"); }
+alias cd='cdd'
 
 # Directory bookmarks
 if [ -d "$HOME/.bookmarks" ]; then
   goto() {
-    pushd -n "$PWD" >/dev/null
+    pushd -n "$PWD" >/dev/null # add to dirs stack for CD-Deluxe
     local CDPATH="$HOME/.bookmarks"
     command cd -P "$@" >/dev/null
   }
@@ -29,28 +33,24 @@ if [ -d "$HOME/.bookmarks" ]; then
   }
 fi
 
-# CD Deluxe (I love this tool - far more people should use it!)
-cdd() { while read -r x; do eval "$x" >/dev/null; done < <(dirs -l -p | _cdd "$@"); }
-alias cd='cdd'
-
-# Combine bookmarks and cdd functions
+# Combine bookmarks and cdd functions to replace cd
 # (this is to avoid having to remember to type goto before I even
 # realise I want to, but unfortunately tab completion is lost)
 supercd() {
-  if [ "${1::1}" == '@' ]; then
+  if [[ "${1::1}" == "@" ]]; then
     goto "$@"
   else
     cdd "$@"
   fi
 }
+
 if [[ $(type -t cdd) == function ]] && [[ $(type -t goto) == function ]]; then
   alias cd='supercd'
-  complete -W "$(command cd ~/.bookmarks && printf '%s\n' -- *)" supercd
 fi
 
 # Don't initialise these tools a second time, as it causes
 # starship to show a background job when changing directories
-if [ ! "$init_bashrc_sourced" == true ]; then
+if [[ ! $init_bashrc_sourced == true ]]; then
 
   # Direnv hook
   eval "$(direnv hook bash)"

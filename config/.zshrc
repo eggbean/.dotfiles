@@ -31,7 +31,7 @@ zstyle -e ':completion:*' hosts 'reply=($(< ~/.hosts))'
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
-# Dir colours
+# Enable color support of ls
 eval "$(dircolors -b ~/.dotfiles/bin/scripts/dir_colors)"
 
 # Alias definitions
@@ -49,6 +49,14 @@ bindkey '^[[C'  forward-char
 bindkey '^[[D'  backward-char
 bindkey "^[[H"  beginning-of-line
 bindkey "^[[F"  end-of-line
+bindkey -s "^[[23;3~" ""
+bindkey -s "^[[24;3~" ""
+bindkey -s "^[[5;7~"  ""
+bindkey -s "^[[6;7~"  ""
+
+# Don't include non-alphanumeric characters in words, like bash
+autoload -U select-word-style
+select-word-style bash
 
 # Turn off all beeps
 # unsetopt BEEP
@@ -59,6 +67,9 @@ unsetopt HIST_BEEP
 
 # fzf
 if command -v fzf >/dev/null; then
+  source ~/.dotfiles/bin/zsh-completions/fzf-completions.zsh
+  source ~/.dotfiles/bin/zsh-completions/fzf-keybindings.zsh
+
   export FZF_DEFAULT_OPTS=" \
     --ansi \
     --reverse \
@@ -133,6 +144,7 @@ export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME"/ripgrep/ripgreprc
 export TERMINFO="$XDG_DATA_HOME"/terminfo
 export TERMINFO_DIRS="$XDG_DATA_HOME"/terminfo:/usr/share/terminfo
+export TIMEFMT=$'real\t%E\nuser\t%U\nsys\t%S'
 export TMUX_PLUGIN_MANAGER_PATH="$XDG_DATA_HOME"/tmux/plugins
 export VAGRANT_HOME="$XDG_DATA_HOME"/vagrant
 export VAGRANT_ALIAS_FILE="$XDG_DATA_HOME"/vagrant/aliases
@@ -155,6 +167,9 @@ export RANGER_LOAD_DEFAULT_RC=FALSE
 export GVIMINIT='let $MYGVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/gvimrc" : "$XDG_CONFIG_HOME/nvim/init.gvim" | so $MYGVIMRC'
 export VIMINIT='let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$XDG_CONFIG_HOME/nvim/init.vim" | so $MYVIMRC'
 
+# Set COLORTERM if Windows Terminal
+[[ $WT_SESSION ]] && export COLORTERM='truecolor'
+
 # Browser
 if [[ $DISPLAY ]]; then
   export BROWSER=qutebrowser
@@ -163,7 +178,7 @@ else
 fi
 
 # Text Editor
-if command -v nvim >/dev/null; then
+if (( $+commands[nvim] )); then
   export EDITOR='nvim'
   export VISUAL='nvim'
 else
@@ -175,4 +190,4 @@ fi
 [[ -f $XDG_STATE_HOME/binaries_stowed ]] && . ~/.dotfiles/config/.includes/init.zshrc
 
 # Source host specific environment
-[[ -f ~/.dotfiles/config/.includes/"$(hostname -s)" ]] && . ~/.dotfiles/config/.includes/"$(hostname -s)"
+[[ -f ~/.dotfiles/config/.includes/$(hostname -s) ]] && . ~/.dotfiles/config/.includes/"$(hostname -s)"

@@ -23,9 +23,6 @@ HISTFILESIZE=5000
 # Shared history between tmux panes
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
-# Alias definitions
-. ~/.aliases
-
 # Enable programmable completion features
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
@@ -38,13 +35,11 @@ fi
 # Make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# Set COLORTERM if Windows Terminal
-[[ $WT_SESSION ]] && export COLORTERM='truecolor'
-
 # Enable color support of ls
-if [ -x /usr/bin/dircolors ]; then
-  test -r ~/.dotfiles/bin/scripts/dir_colors && eval "$(dircolors -b ~/.dotfiles/bin/scripts/dir_colors)" || eval "$(dircolors -b)"
-fi
+eval "$(dircolors -b ~/.dotfiles/bin/scripts/dir_colors)"
+
+# Alias definitions
+. ~/.aliases
 
 # Rename tmux windows automatically to hostname
 ssh() {
@@ -126,8 +121,8 @@ fi
 
 # fzf
 if command -v fzf >/dev/null; then
-  source ~/.dotfiles/bin/completions/fzf-completions.bash
-  source ~/.dotfiles/bin/completions/fzf-keybindings.bash
+  source ~/.dotfiles/bin/bash-completions/fzf-completions.bash
+  source ~/.dotfiles/bin/bash-completions/fzf-keybindings.bash
 
   export FZF_DEFAULT_OPTS=" \
     --ansi \
@@ -226,6 +221,9 @@ export STARSHIP_CONFIG="$HOME"/.config/starship.toml
 export GVIMINIT='let $MYGVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/gvimrc" : "$XDG_CONFIG_HOME/nvim/init.gvim" | so $MYGVIMRC'
 export VIMINIT='let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$XDG_CONFIG_HOME/nvim/init.vim" | so $MYVIMRC'
 
+# Set COLORTERM if Windows Terminal
+[[ $WT_SESSION ]] && export COLORTERM='truecolor'
+
 # Browser
 if [[ $DISPLAY ]]; then
   export BROWSER=qutebrowser
@@ -243,7 +241,7 @@ else
 fi
 
 # Do more stuff if binaries have been stowed
-[[ -f $XDG_STATE_HOME/dotfiles_stowed ]] && . ~/.dotfiles/config/.includes/init.bashrc
+[[ -f $XDG_STATE_HOME/binaries_stowed ]] && . ~/.dotfiles/config/.includes/init.bashrc
 
 # Source host specific environment
-[[ -f ~/.dotfiles/config/.includes/"$(hostname -s)" ]] && . ~/.dotfiles/config/.includes/"$(hostname -s)"
+[[ -f ~/.dotfiles/config/.includes/$(hostname -s) ]] && . ~/.dotfiles/config/.includes/"$(hostname -s)"
