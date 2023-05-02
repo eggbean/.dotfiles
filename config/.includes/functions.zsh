@@ -1,5 +1,75 @@
 # zsh functions
 
+# Rename tmux windows automatically to hostname
+ssh() {
+  if [[ $TMUX ]]; then
+    tmux rename-window "$(echo "${@: -1}" | rev | cut -d '@' -f1 | rev | sed -E 's/\.([a-z0-9\-]+)\.compute\.amazonaws\.com$//' )"
+    command ssh "$@"
+    tmux set automatic-rename "on" >/dev/null
+  else
+    command ssh "$@"
+  fi
+}
+
+mosh() {
+  case $@ in
+    osiris)
+      command mosh bastet.jinkosystems.co.uk -- bash -c 'echo "Bouncing via bastion..." && echo && ssh osiris'
+      ;;
+    *)
+      command mosh "$@"
+      ;;
+  esac
+}
+
+# Rename tmux windows when attaching to docker containers
+docker() {
+  if [[ $TMUX ]] && [[ "$1" == "attach" ]]; then
+    tmux rename-window "$2"
+    command docker "$@"
+    tmux set automatic-rename "on" >/dev/null
+  else
+    command docker "$@"
+  fi
+}
+
+# Prevent accidental git stashing
+git() {
+  if [[ $# -eq 1 ]] && [[ $1 == stash ]]; then
+    echo 'WARNING: run "git stash push" instead.'
+  else
+    command git "$@"
+  fi
+}
+
+# Use cat to display web page source and change tabs to 4 spaces
+cat() {
+  if [[ $1 == *://* ]]; then
+    curl -LsfS "$1"
+  else
+    command cat "$@" | expand -t4
+  fi
+}
+
+# Yoloing
+yolo() {
+  yes | sudo "$@"
+}
+
+# Make directory and change directory into it
+mkdircd() { mkdir -p "$@" && eval pushd "\"\$$#\"" >/dev/null || return; }
+
+# Minimalist terminal pastebin to pipe to
+sprunge() { curl -F 'sprunge=<-' http://sprunge.us; }
+
+# Return disk that directory is on
+whichdisk() { realpath "$(df "${1:-.}" | command grep '^/' | cut -d' ' -f1)" ; }
+
+# Age of files
+agem() { echo $((($(date +%s) - $(date +%s -r "$1")) / 60)) minutes; }
+ageh() { echo $((($(date +%s) - $(date +%s -r "$1")) / 3600)) hours; }
+aged() { echo $((($(date +%s) - $(date +%s -r "$1")) / 86400)) days; }
+
 # fzf
 if command -v fzf >/dev/null; then
   source ~/.dotfiles/bin/zsh-completions/fzf-completions.zsh
