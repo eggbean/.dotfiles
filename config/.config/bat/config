@@ -30,3 +30,4 @@
 --tabs=4
 --map-syntax *.notes:Markdown
 --map-syntax *.bashrc:'Bourne Again Shell (bash)'
+--map-syntax *.zshrc:'Bourne Again Shell (bash)'
