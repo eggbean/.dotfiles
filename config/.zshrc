@@ -39,14 +39,14 @@ source $HOME/.aliases
 
 # Key bindings
 bindkey -e
-bindkey '^?'    backward-delete-char
+# bindkey '^?'    backward-delete-char
 bindkey '^[[3~' delete-char
-bindkey '^[[5~' up-line-or-history
-bindkey '^[[6~' down-line-or-history
-bindkey '^[[A'  history-beginning-search-backward
-bindkey '^[[B'  history-beginning-search-forward
-bindkey '^[[C'  forward-char
-bindkey '^[[D'  backward-char
+# bindkey '^[[5~' up-line-or-history
+# bindkey '^[[6~' down-line-or-history
+# bindkey '^[[A'  history-beginning-search-backward
+# bindkey '^[[B'  history-beginning-search-forward
+# bindkey '^[[C'  forward-char
+# bindkey '^[[D'  backward-char
 # bindkey "^[[H"  beginning-of-line
 # bindkey "^[[F"  end-of-line
 # bindkey "^[[23;3~" ""
@@ -54,12 +54,20 @@ bindkey '^[[D'  backward-char
 # bindkey "^[[5;7~"  ""
 # bindkey "^[[6;7~"  ""
 
+for direction (up down) {
+  autoload $direction-line-or-beginning-search
+  zle -N $direction-line-or-beginning-search
+  key=$terminfo[kcu$direction[1]1]
+  for key ($key ${key/O/[})
+    bindkey $key $direction-line-or-beginning-search
+}
+
 # Set COLORTERM if Windows Terminal
 if [[ $WT_SESSION ]]; then
-  bindkey '^[OA' history-beginning-search-backward
-  bindkey '^[OB' history-beginning-search-forward
-  bindkey '^[OC' forward-char
-  bindkey '^[OD' backward-char
+  # bindkey '^[OA' history-beginning-search-backward
+  # bindkey '^[OB' history-beginning-search-forward
+  # bindkey '^[OC' forward-char
+  # bindkey '^[OD' backward-char
   export COLORTERM='truecolor'
 fi
 
@@ -127,10 +135,8 @@ man() {
 }
 
 # Search man page for string
-mans() {
-  local q="\'"
-  local q_pattern="'${1//$q/$q\\$q$q}'"
-  local MANPAGER="less -+MFX -p $q_pattern"
+mans(){
+  local -x MANPAGER="less -+MFX -p ${(q+)1}"
   man "$2"
 }
 
