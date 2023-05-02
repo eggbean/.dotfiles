@@ -5,8 +5,8 @@
 # MinIO Client command completion
 complete -o nospace -C mclient mclient
 
-# # broot function
-# . ~/.config/broot/launcher/bash/br
+# broot function
+[ -f ~/.config/broot/launcher/bash/br ] && source ~/.config/broot/launcher/bash/br
 
 # Hashicorp bash tab completion
 complete -o nospace -C terraform terraform

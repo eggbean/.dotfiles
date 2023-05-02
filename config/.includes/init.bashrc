@@ -6,7 +6,7 @@
 complete -C mclient mclient
 
 # broot function
-. ~/.config/broot/launcher/bash/br
+[ -f ~/.config/broot/launcher/bash/br ] && source ~/.config/broot/launcher/bash/br
 
 # Hashicorp bash tab completion
 complete -C terraform terraform
