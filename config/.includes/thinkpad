@@ -1,4 +1,5 @@
 ## Host specific stuff for ThinkPad clients
+# vim: filetype=bash
 
 # If WSL do something else
 if grep -qi microsoft /proc/version; then source ~/.dotfiles/config/.includes/wsl && return; fi

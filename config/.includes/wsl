@@ -1,4 +1,5 @@
 ## Host specific stuff for WSL clients
+# vim: filetype=bash
 
 # Set WIN_HOME enviroment variable
 WIN_HOME_RAW="$(cmd.exe /c "<nul set /p=%UserProfile%" 2>/dev/null)"

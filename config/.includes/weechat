@@ -1,5 +1,5 @@
 ## Host specific stuff for hosts running weechat
+# vim: filetype=bash
 
 # Alias for managing bare git repository for weechat configuration
 alias wgit='/usr/bin/git --git-dir=/home/jason/.cfg/ --work-tree=/home/jason'
-

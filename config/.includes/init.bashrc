@@ -1,5 +1,6 @@
 # ~/.bashrc sources this file at the end if binaries have been stowed
 # (therefore no further conditional statements required)
+# vim: filetype=bash
 
 # MinIO Client command completion
 complete -C mclient mclient

@@ -1,4 +1,5 @@
 ## Host specific stuff for termux on android
+# vim: filetype=bash
 
 unset BROWSER
 unset GH_BROWSER
