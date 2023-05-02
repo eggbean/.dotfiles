@@ -6,6 +6,10 @@ SAVEHIST=5000
 HISTFILE=~/.zsh_history
 setopt histignorealldups extendedhistory incappendhistory
 
+# Don't include non-alphanumeric characters in words, like bash
+autoload -U select-word-style
+select-word-style bash
+
 # Completion system
 typeset -gaU fpath=($fpath /usr/local/share/bash-completion/completions)
 autoload -Uz compinit bashcompinit
@@ -27,32 +31,19 @@ zstyle ':completion:*' use-compctl false
 zstyle ':completion:*' verbose true
 zstyle ':completion:*' rehash true
 zstyle -e ':completion:*' hosts 'reply=($(< ~/.hosts))'
-
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
-# Enable color support of ls
-eval "$(dircolors -b ~/.dotfiles/bin/scripts/dir_colors)"
-
-# Alias definitions
-source $HOME/.aliases
-
 # Key bindings
 bindkey -e
-# bindkey '^?'    backward-delete-char
-bindkey '^[[3~' delete-char
-# bindkey '^[[5~' up-line-or-history
-# bindkey '^[[6~' down-line-or-history
-# bindkey '^[[A'  history-beginning-search-backward
-# bindkey '^[[B'  history-beginning-search-forward
-# bindkey '^[[C'  forward-char
-# bindkey '^[[D'  backward-char
-# bindkey "^[[H"  beginning-of-line
-# bindkey "^[[F"  end-of-line
-# bindkey "^[[23;3~" ""
-# bindkey "^[[24;3~" ""
-# bindkey "^[[5;7~"  ""
-# bindkey "^[[6;7~"  ""
+# bindkey '^[[3~' delete-char
+bindkey '^[[3;3~' kill-word
+
+# Silence keys used in my nested tmux configuration
+bindkey "^[[23;3~" ""
+bindkey "^[[24;3~" ""
+bindkey "^[[5;7~"  ""
+bindkey "^[[6;7~"  ""
 
 for direction (up down) {
   autoload $direction-line-or-beginning-search
@@ -62,25 +53,16 @@ for direction (up down) {
     bindkey $key $direction-line-or-beginning-search
 }
 
-# Set COLORTERM if Windows Terminal
-if [[ $WT_SESSION ]]; then
-  # bindkey '^[OA' history-beginning-search-backward
-  # bindkey '^[OB' history-beginning-search-forward
-  # bindkey '^[OC' forward-char
-  # bindkey '^[OD' backward-char
-  export COLORTERM='truecolor'
-fi
-
-# Don't include non-alphanumeric characters in words, like bash
-autoload -U select-word-style
-select-word-style bash
-
-# Turn off all beeps
-# unsetopt BEEP
 # Turn off autocomplete beeps
 unsetopt LIST_BEEP
 # Turn off end of history beeps
 unsetopt HIST_BEEP
+
+# Enable color support of ls
+eval "$(dircolors -b ~/.dotfiles/bin/scripts/dir_colors)"
+
+# Alias definitions
+source $HOME/.aliases
 
 # fzf
 if command -v fzf >/dev/null; then
@@ -171,6 +153,8 @@ export LANGUAGE="en_GB"
 export LANG="en_GB.UTF-8"
 export LC_ALL="en_GB.UTF-8" 2>/dev/null
 export LS_OPTIONS='-hv --color=always'
+export CLICOLOR=1
+export CLICOLOR_FORCE=1
 export MOSH_TITLE_NOPREFIX=
 export PAGER='less -r'
 export LESS='-MRQx4FX#10'
@@ -181,6 +165,9 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 export RANGER_LOAD_DEFAULT_RC=FALSE
 export GVIMINIT='let $MYGVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/gvimrc" : "$XDG_CONFIG_HOME/nvim/init.gvim" | so $MYGVIMRC'
 export VIMINIT='let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$XDG_CONFIG_HOME/nvim/init.vim" | so $MYVIMRC'
+
+# Set COLORTERM if Windows Terminal
+[[ $WT_SESSION ]] && export COLORTERM='truecolor'
 
 # Browser
 if [[ $DISPLAY ]]; then

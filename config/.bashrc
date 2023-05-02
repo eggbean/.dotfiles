@@ -41,9 +41,6 @@ eval "$(dircolors -b ~/.dotfiles/bin/scripts/dir_colors)"
 # Alias definitions
 . ~/.aliases
 
-# Set COLORTERM if Windows Terminal
-[[ $WT_SESSION ]] && export COLORTERM='truecolor'
-
 # Rename tmux windows automatically to hostname
 ssh() {
   if [[ $TMUX ]]; then
@@ -212,6 +209,8 @@ export LANGUAGE="en_GB"
 export LANG="en_GB.UTF-8"
 export LC_ALL="en_GB.UTF-8" 2>/dev/null
 export LS_OPTIONS='-hv --color=always'
+export CLICOLOR=1
+export CLICOLOR_FORCE=1
 export MOSH_TITLE_NOPREFIX=
 export PAGER='less -r'
 export LESS='-MRQx4FX#10'
@@ -223,6 +222,9 @@ export RANGER_LOAD_DEFAULT_RC=FALSE
 export STARSHIP_CONFIG="$HOME"/.config/starship.toml
 export GVIMINIT='let $MYGVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/gvimrc" : "$XDG_CONFIG_HOME/nvim/init.gvim" | so $MYGVIMRC'
 export VIMINIT='let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$XDG_CONFIG_HOME/nvim/init.vim" | so $MYVIMRC'
+
+# Set COLORTERM if Windows Terminal
+[[ $WT_SESSION ]] && export COLORTERM='truecolor'
 
 # Browser
 if [[ $DISPLAY ]]; then
