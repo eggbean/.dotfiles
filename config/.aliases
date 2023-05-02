@@ -4,7 +4,6 @@ alias la='ls -A'
 alias ll='ls -l'
 alias lla='ls -Al'
 alias sudo='sudo '  # pass aliases to superuser
-alias tree='tree -C'
 alias mc='. /usr/share/mc/bin/mc-wrapper.sh'
 alias wget='wget --hsts-file="$XDG_CACHE_HOME"/wget-hsts'
 alias crontab='crontab -i'
@@ -13,6 +12,7 @@ alias xclip='xclip -r'
 alias sxiv='sxiv -abs f'
 alias qb='qutebrowser'
 alias tv='tidy-viewer'
+alias cm='cmatrix -au 2'
 
 # Add colours when piping as I like colour
 # Can always use disable switch when required
@@ -38,7 +38,9 @@ fi
 
 # Replace tree with tre
 if command -v tre >/dev/null; then
-  alias tree='tre'
+  alias tree='tre --color always'
+else
+  alias tree='tree -C'
 fi
 
 # Use fzfp wrapper in tmux instead of fzf
@@ -52,12 +54,3 @@ alias nocolour="sed 's/\x1b\[[0-9;]*m//g'"
 alias unicat='awk "!a[\$0]++{print}"'
 alias termcolours='/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/gawin/bash-colors-256/master/colors)"'
 alias driveinfo='df -HTx tmpfs -x overlay -x devtmpfs'
-alias cm='cmatrix -au 2'
-
-# Changing directory quickly
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
-alias ......="cd ../../../../.."
-alias .......="cd ../../../../../.."
