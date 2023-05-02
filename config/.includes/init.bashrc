@@ -2,6 +2,11 @@
 # (therefore no further conditional statements required)
 # vim: filetype=bash
 
+# GitHub CLI bash completion
+if command -v gh >/dev/null; then
+  eval "$(gh completion -s bash 2>/dev/null)"
+fi
+
 # MinIO Client command completion
 complete -C mclient mclient
 

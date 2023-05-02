@@ -2,6 +2,24 @@
 # (therefore no further conditional statements required)
 # vim: filetype=zsh
 
+# GitHub CLI zsh completion update
+if [ $commands[gh] ]; then
+  gh completion -s zsh > ~/.dotfiles/bin/zsh-completions/_gh
+fi
+
+# nginx site symlinker
+nginx_ensite() {
+  unfunction "$0"
+  source ../../bin/bash-completions/nginx_ensite.bash
+  $0 "$@"
+}
+
+nginx_dissite() {
+  unfunction "$0"
+  source ../../bin/bash-completions/nginx_dissite.bash
+  $0 "$@"
+}
+
 # MinIO Client command completion
 complete -o nospace -C mclient mclient
 

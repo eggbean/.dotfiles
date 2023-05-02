@@ -44,11 +44,6 @@ eval "$(dircolors -b ~/.dotfiles/bin/scripts/dir_colors)"
 # Use a private mock hosts(5) file for completion
 export HOSTFILE="$HOME/.hosts"
 
-# GitHub CLI bash completion
-if command -v gh >/dev/null; then
-  eval "$(gh completion -s bash 2>/dev/null)"
-fi
-
 # Functions
 source ~/.dotfiles/config/.includes/functions.bash
 

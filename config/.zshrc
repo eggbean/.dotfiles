@@ -13,7 +13,7 @@ select-word-style bash
 # Completion system
 typeset -gaU fpath=($fpath /usr/local/share/bash-completion/completions)
 autoload -Uz compinit bashcompinit
-compinit
+compinit -i
 bashcompinit
 
 zstyle ':completion:*' auto-description 'specify: %d'
@@ -33,8 +33,6 @@ zstyle ':completion:*' rehash true
 zstyle -e ':completion:*' hosts 'reply=($(< ~/.hosts))'
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
-
-source ~/.dotfiles/config/.includes/completions.zsh
 
 # Key bindings
 bindkey -e
