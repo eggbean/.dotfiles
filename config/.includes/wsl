@@ -19,7 +19,6 @@ alias qutebrowser='/mnt/c/Program\ Files/qutebrowser/qutebrowser.exe'
 alias vi='nvim'
 alias vimdiff='nvim -d'
 
-
 # wsl2-ssh-pageant
 export SSH_AUTH_SOCK="$HOME/.ssh/agent.sock"
 if ! ss -a | grep -q "$SSH_AUTH_SOCK"; then
@@ -42,3 +41,9 @@ fi
 # Vagrant
 export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
 PATH="$PATH:/mnt/c/Program Files/Oracle/VirtualBox"
+
+# Android
+export ADB_VENDOR_KEY="$XDG_CONFIG_HOME"/android
+export ANDROID_AVD_HOME="$XDG_DATA_HOME"/android/
+export ANDROID_SDK_HOME="$XDG_CONFIG_HOME"/android
+export ANDROID_EMULATOR_HOME="$XDG_DATA_HOME"/android/
