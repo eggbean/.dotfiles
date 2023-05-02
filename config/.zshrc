@@ -66,7 +66,7 @@ source $HOME/.aliases
 source ~/.dotfiles/config/.includes/functions.zsh
 
 # Environment variables
-source ~/.dotfiles/config/.includes/envars.zsh
+source ~/.dotfiles/config/.includes/envars.sh
 
 # Do more stuff if binaries have been stowed
 [[ -f $XDG_STATE_HOME/binaries_stowed ]] && . ~/.dotfiles/config/.includes/init.zshrc

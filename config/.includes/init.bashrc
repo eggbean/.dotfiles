@@ -74,6 +74,7 @@ if [[ ! $init_bashrc_sourced == true ]]; then
   }
 
   # Set Starship prompt
+  export STARSHIP_CONFIG="$HOME"/.config/starship.toml
   eval "$(starship init bash)"
 
   # Set marker to say that these have already been initialised

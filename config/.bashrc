@@ -48,7 +48,7 @@ export HOSTFILE="$HOME/.hosts"
 source ~/.dotfiles/config/.includes/functions.bash
 
 # Environment variables
-source ~/.dotfiles/config/.includes/envars.bash
+source ~/.dotfiles/config/.includes/envars.sh
 
 # Do more stuff if binaries have been stowed
 [[ -f $XDG_STATE_HOME/binaries_stowed ]] && . ~/.dotfiles/config/.includes/init.bashrc

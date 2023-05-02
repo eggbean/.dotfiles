@@ -123,7 +123,4 @@ man() {
 }
 
 # Search man page for string
-mans(){
-  local -x MANPAGER="less -+MFX -p ${(q+)1}"
-  man "$2"
-}
+mans() MANPAGER="less -+MFX -p ${(q+)1}" man $2

@@ -1,6 +1,6 @@
-# zsh environment variables
+# Environment Variables
 
-# xdg locations need to be set for termux
+# XDG locations need to be set for termux
 export XDG_CACHE_HOME="$HOME"/.cache
 export XDG_DATA_HOME="$HOME"/.local/share
 export XDG_CONFIG_HOME="$HOME"/.config
@@ -50,7 +50,7 @@ else
 fi
 
 # Text Editor
-if (( $+commands[nvim] )); then
+if command -v nvim >/dev/null; then
   export EDITOR='nvim'
   export VISUAL='nvim'
 else
