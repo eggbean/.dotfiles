@@ -38,7 +38,7 @@ vimdirs=('after' 'autoload' 'colors' 'compiler' 'doc' 'ftdetect' 'ftplugin' \
   'indent' 'keymap' 'plugin' 'spell' 'syntax' 'templates' 'UltiSnips' 'vimrc.d')
 for d in "${vimdirs[@]}"; do
   if [ -d "$HOME/.dotfiles/config/.config/vim/$d" ]; then
-    rsync --recursive --delete "$HOME/.dotfiles/config/.config/vim/$d/" "$d"
+    rsync --links --recursive --delete "$HOME/.dotfiles/config/.config/vim/$d/" "$d"
   fi
 done
 for f in "${files[@]}"; do
