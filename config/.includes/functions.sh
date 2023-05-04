@@ -84,6 +84,8 @@ if command -v fzf >/dev/null; then
     --bind=ctrl-a:toggle-all \
     --bind=pgdn:preview-page-down \
     --bind=pgup:preview-page-up \
+    --bind=alt-j:preview-half-page-down \
+    --bind=alt-k:preview-half-page-up \
     --bind=ctrl-d:preview-page-down \
     --bind=ctrl-u:preview-page-up \
     --bind=alt-bs:clear-query \
