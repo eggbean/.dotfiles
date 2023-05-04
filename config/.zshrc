@@ -34,7 +34,7 @@ zstyle -e ':completion:*' hosts 'reply=($(< ~/.hosts))'
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
-# Key bindings
+# Key bindings (silence some keys used in my nested tmux config)
 bindkey -e
 bindkey '^[[3~' delete-char
 bindkey '^[[3;3~' kill-word
@@ -63,7 +63,7 @@ eval "$(dircolors -b ~/.dotfiles/bin/scripts/dir_colors)"
 source $HOME/.aliases
 
 # Functions
-source ~/.dotfiles/config/.includes/functions.zsh
+source ~/.dotfiles/config/.includes/functions.sh
 
 # Environment variables
 source ~/.dotfiles/config/.includes/envars.sh

@@ -1,4 +1,7 @@
-# zsh functions
+# Functions
+
+[[ $BASH_VERSION ]] && shell=bash
+[[ $ZSH_VERSION ]] && shell=zsh
 
 # Rename tmux windows automatically to hostname
 ssh() {
@@ -24,7 +27,7 @@ mosh() {
 
 # Rename tmux windows when attaching to docker containers
 docker() {
-  if [[ $TMUX ]] && [[ "$1" == "attach" ]]; then
+  if [[ $TMUX ]] && [[ $1 == attach ]]; then
     tmux rename-window "$2"
     command docker "$@"
     tmux set automatic-rename "on" >/dev/null
@@ -72,8 +75,8 @@ aged() { echo $((($(date +%s) - $(date +%s -r "$1")) / 86400)) days; }
 
 # fzf
 if command -v fzf >/dev/null; then
-  source ~/.dotfiles/bin/zsh-completions/fzf-completions.zsh
-  source ~/.dotfiles/bin/zsh-completions/fzf-keybindings.zsh
+  source ~/.dotfiles/bin/"$shell"-completions/fzf-completions."$shell"
+  source ~/.dotfiles/bin/"$shell"-completions/fzf-keybindings."$shell"
 
   export FZF_DEFAULT_OPTS=" \
     --ansi \
@@ -123,4 +126,15 @@ man() {
 }
 
 # Search man page for string
-mans() MANPAGER="less -+MFX -p ${(q+)1}" man $2
+if [[ $shell == bash ]]; then
+  mans() {
+    local q="\'"
+    local q_pattern="'${1//$q/$q\\$q$q}'"
+    local MANPAGER="less -+MFX -p $q_pattern"
+    man "$2"
+  }
+elif [[ $shell == zsh ]]; then
+  mans() {
+    MANPAGER="less -+MFX -p ${(qq)1}" man $2
+  }
+fi

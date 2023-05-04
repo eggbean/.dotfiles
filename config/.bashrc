@@ -45,7 +45,7 @@ eval "$(dircolors -b ~/.dotfiles/bin/scripts/dir_colors)"
 export HOSTFILE="$HOME/.hosts"
 
 # Functions
-source ~/.dotfiles/config/.includes/functions.bash
+source ~/.dotfiles/config/.includes/functions.sh
 
 # Environment variables
 source ~/.dotfiles/config/.includes/envars.sh
