@@ -16,9 +16,10 @@ jobs:
           wget -q "$(curl -s https://api.github.com/repos/ajeetdsouza/zoxide/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
           tar --exclude='README.md' -xvf zoxide-*-x86_64-unknown-linux-musl.tar.gz
           mv zoxide bin/x86_64
-          gzip man/man1/zoxide*.1
+          gzip -f man/man1/zoxide*.1
           mv man/man1/zoxide*.1.gz bin/man/man1
-          mv completions/zoxide.bash bin/completions
+          mv completions/zoxide.bash bin/bash-completions
+          mv completions/_zoxide bin/zsh-completions
           rm -rf CHANGELOG.md LICENSE completions/
           rm zoxide-*-x86_64-unknown-linux-musl.tar.gz
 
@@ -39,5 +40,5 @@ jobs:
           git add --all
           git status
           tag="$(curl -s https://api.github.com/repos/ajeetdsouza/zoxide/releases/latest | jq -r '.tag_name')"
-          git commit -m "Upgrade zoxide to ${tag}"
+          git commit --fixup=amend::/'\[Action\] Upgrade zoxide' -m "[Action] Upgrade zoxide to ${tag}"
           git push
