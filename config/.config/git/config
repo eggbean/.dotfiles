@@ -22,6 +22,8 @@
 	conflictstyle = diff3
 	renamelimit = 9999
 	tool = nvimdiff
+[rebase]
+	autosquash = true
 [mergetool]
 	prompt = true
 [apply]
