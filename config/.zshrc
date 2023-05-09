@@ -30,11 +30,11 @@ zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p
 zstyle ':completion:*' use-compctl false
 zstyle ':completion:*' verbose true
 zstyle ':completion:*' rehash true
-zstyle -e ':completion:*' hosts 'reply=($(< ~/.hosts))'
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+zstyle -e ':completion:*' hosts 'reply=($(< ~/.hosts))'
 
-# Key bindings (silence some keys used in my nested tmux config)
+# Key bindings (including silencing some keys used in my nested tmux config)
 bindkey -e
 bindkey '^[[3~' delete-char
 bindkey '^[[3;3~' kill-word
@@ -50,6 +50,10 @@ for direction (up down) {
   for key ($key ${key/O/[})
     bindkey $key $direction-line-or-beginning-search
 }
+
+# Edit command line in visual editor
+autoload -U edit-command-line && zle -N edit-command-line
+bindkey '^x^e' edit-command-line
 
 # Turn off autocomplete beeps
 unsetopt LIST_BEEP
