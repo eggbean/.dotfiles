@@ -6,6 +6,10 @@
 #
 # For bash v5 >
 #
+# For auto-completion add `cli_auto_prompt = on` to config
+# ..or add AWS_CLI_AUTO_PROMPT=on environment variable
+# see: https://go.aws/3BiT8WJ
+#
 # For updates go to:
 url='https://gist.github.com/eggbean/345e28e2d7d878f2cce68f45eeb50a38'
 
@@ -80,6 +84,5 @@ else
   ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli
 fi
 
-printf "%s\n" "complete -C aws_completer aws" > /etc/bash_completion.d/aws_bash_completer
-
 rm -rf awscliv2.{zip,sig} aws/
+aws --version

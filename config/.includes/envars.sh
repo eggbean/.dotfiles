@@ -9,6 +9,7 @@ export ANSIBLE_CONFIG="$XDG_CONFIG_HOME"/ansible/ansible.cfg
 export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config
 export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME"/aws/credentials
 export AWS_WEB_IDENTITY_TOKEN_FILE="$XDG_DATA_HOME"/aws/token
+export AWS_CLI_AUTO_PROMPT="on"
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME"/ripgrep/ripgreprc
