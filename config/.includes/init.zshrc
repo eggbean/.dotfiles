@@ -7,7 +7,7 @@ if [ $commands[gh] ]; then
   gh completion -s zsh > ~/.dotfiles/bin/zsh-completions/_gh
 fi
 
-# nginx site symlinker
+# nginx site symlinker (lazy-loading)
 nginx_ensite() {
   unfunction "$0"
   source ../../bin/bash-completions/nginx_ensite.bash
@@ -73,7 +73,16 @@ if [[ ! $init_zshrc_sourced == true ]]; then
   eval "$(direnv hook zsh)"
 
   # Add zoxide to shell
-  eval "$(zoxide init zsh)"
+  # (and add directory changes to pushd stack for CD-Deluxe)
+  eval "$(zoxide init --no-cmd zsh)"
+  z() {
+    local setopt AUTO_PUSHD
+    __zoxide_z "$@"
+  }
+  zi() {
+    local setopt AUTO_PUSHD
+    __zoxide_zi "$@"
+  }
 
   # Starship prompt
   command cp ~/.config/starship.toml ~/.config/starship-zsh.toml >/dev/null
