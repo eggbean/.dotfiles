@@ -2,7 +2,7 @@
 
 ## Change following to '0' for output to be like ls and '1' for exa features
 # Don't list implied . and .. by default with -a
-dot=1
+dot=0
 # Show human readable file sizes by default
 hru=1
 # Show file sizes in decimal (1KB=1000 bytes) as opposed to binary units (1KiB=1024 bytes)
@@ -15,6 +15,8 @@ lnk=0
 if [ "$no_exa_git" == "true" ]; then git=0; else git=1; fi
 # Show icons
 ico=0
+# Show column headers
+hed=0
 # Group directories first in long listing by default
 gpd=0
 # Colour always even when piping (can be disabled with -N switch when not wanted)
@@ -96,6 +98,7 @@ shift "$((OPTIND - 1))"
 (( fgp == 0 )) && exa_opts+=(-g)
 (( lnk == 0 )) && exa_opts+=(-H)
 (( hru <= 0 )) && exa_opts+=(-B)
+(( hed == 1 )) && exa_opts+=(-h)
 (( meb == 0 && hru > 0 )) && exa_opts+=(-b)
 (( col == 1 )) && exa_opts+=(--color=always) || exa_opts+=(--color=auto)
 (( nco == 1 )) && exa_opts+=(--color=never)
