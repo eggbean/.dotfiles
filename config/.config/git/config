@@ -8,8 +8,8 @@
 [init]
 	defaultBranch = master
 [branch]
-	; autosetupmerge = always
-	autosetuprebase = always
+	; autoSetupMerge = always
+	autoSetupRebase = always
 [commit]
 	cleanup = scissors
 [push]
@@ -19,11 +19,11 @@
 	ff = only
 	rebase = true
 [merge]
-	conflictstyle = diff3
-	renamelimit = 9999
+	conflictStyle = diff3
+	renameLimit = 9999
 	tool = nvimdiff
 [rebase]
-	autosquash = true
+	autoSquash = true
 [mergetool]
 	prompt = true
 [apply]
@@ -41,9 +41,9 @@
 [interactive]
 	diffFilter = delta --color-only --features=interactive
 [pager]
-; 	log = LESS= less -Rq+g
-; 	whatchanged = LESS= less -Rq+g
-; 	diff = LESS= less -RSqx4+g
+	; log = LESS= less -Rq+g
+	; whatchanged = LESS= less -Rq+g
+	; diff = LESS= less -RSqx4+g
 	stash = false
 	branch = false
 [color]
@@ -83,5 +83,3 @@
 	staged = diff --cached
 	localhist = "reflog --abbrev-commit --pretty=format:'%Cblue%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset'"
 	vdiff = ! "f () { git difftool --tool=nvimdiff -- \"$@\"; }; f"
-[credential]
-	helper = git-credential-manager
