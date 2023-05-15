@@ -3,17 +3,17 @@
 # Command history
 HISTSIZE=5000
 SAVEHIST=5000
-HISTFILE=~/.zsh_history
+HISTFILE="$XDG_CACHE_HOME/zsh/zsh_history"
 setopt histignorealldups extendedhistory incappendhistory
 
-# Don't include non-alphanumeric characters in words, like bash
+# Don't include non-alphanumeric characters in words (like bash)
 autoload -U select-word-style
 select-word-style bash
 
 # Completion system
 typeset -gaU fpath=($fpath /usr/local/share/bash-completion/completions)
 autoload -Uz compinit bashcompinit
-compinit -i
+compinit -i -d "$XDG_CACHE_HOME/zsh/zcompdump"
 bashcompinit
 
 zstyle ':completion:*' auto-description 'specify: %d'
@@ -32,7 +32,7 @@ zstyle ':completion:*' verbose true
 zstyle ':completion:*' rehash true
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
-zstyle -e ':completion:*' hosts 'reply=($(< ~/.hosts))'
+zstyle -e ':completion:*' hosts 'reply=($(< ~/.dotfiles/config/.includes/hosts))'
 
 # Key bindings (including silencing some keys used in my nested tmux config)
 bindkey -e
@@ -43,6 +43,7 @@ bindkey "^[[24;3~" ""
 bindkey "^[[5;7~"  ""
 bindkey "^[[6;7~"  ""
 
+# Up/down arrow keys completion
 for direction (up down) {
   autoload $direction-line-or-beginning-search
   zle -N $direction-line-or-beginning-search
@@ -61,10 +62,10 @@ unsetopt LIST_BEEP
 unsetopt HIST_BEEP
 
 # Enable color support of ls
-eval "$(dircolors -b ~/.dotfiles/bin/scripts/dir_colors)"
+eval "$(dircolors -b ~/.dotfiles/config/.includes/dir_colors)"
 
 # Alias definitions
-source $HOME/.aliases
+source ~/.dotfiles/config/.includes/aliases.sh
 
 # Functions
 source ~/.dotfiles/config/.includes/functions.sh

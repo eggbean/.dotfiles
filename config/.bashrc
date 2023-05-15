@@ -19,6 +19,7 @@ HISTTIMEFORMAT="%d/%m/%y %T "
 HISTIGNORE=ls:ll:la:l:pwd:df:du:history:tmux:htop:fg:man:mans:date:hue
 HISTSIZE=5000
 HISTFILESIZE=5000
+HISTFILE="$XDG_CACHE_HOME/bash/bash_history"
 
 # Shared history between tmux panes
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
@@ -36,13 +37,13 @@ fi
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # Enable color support of ls
-eval "$(dircolors -b ~/.dotfiles/bin/scripts/dir_colors)"
+eval "$(dircolors -b ~/.dotfiles/config/.includes/dir_colors)"
 
 # Alias definitions
-. ~/.aliases
+source ~/.dotfiles/config/.includes/aliases.sh
 
 # Use a private mock hosts(5) file for completion
-export HOSTFILE="$HOME/.hosts"
+export HOSTFILE="~/.dotfiles/config/.includes/hosts"
 
 # Functions
 source ~/.dotfiles/config/.includes/functions.sh
