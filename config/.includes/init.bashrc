@@ -18,6 +18,34 @@ complete -C terraform terraform
 complete -C packer packer
 complete -C vault vault
 
+# Don't initialise these tools a second time, as it causes
+# starship to show a background job when changing directories
+if [[ ! $init_bashrc_sourced == true ]]; then
+
+  # Direnv hook
+  eval "$(direnv hook bash)"
+
+  # Add zoxide to shell
+  # (and add directory changes to pushd stack for CD-Deluxe)
+  eval "$(zoxide init --no-cmd bash)"
+  z() {
+    pushd -n "$PWD" >/dev/null
+    __zoxide_z "$@"
+  }
+  zi() {
+    pushd -n "$PWD" >/dev/null
+    __zoxide_zi "$@"
+  }
+
+  # Set Starship prompt
+  export STARSHIP_CONFIG="$HOME"/.config/starship.toml
+  eval "$(starship init bash)"
+
+  # Set marker to say that these have already been initialised
+  init_bashrc_sourced=true
+
+fi
+
 ### And now for some mad directory changing stuff... ###
 
 # CD Deluxe
@@ -52,32 +80,4 @@ supercd() {
 
 if [[ $(type -t cdd) == function ]] && [[ $(type -t goto) == function ]]; then
   alias cd='supercd'
-fi
-
-# Don't initialise these tools a second time, as it causes
-# starship to show a background job when changing directories
-if [[ ! $init_bashrc_sourced == true ]]; then
-
-  # Direnv hook
-  eval "$(direnv hook bash)"
-
-  # Add zoxide to shell
-  # (and add directory changes to pushd stack for CD-Deluxe)
-  eval "$(zoxide init --no-cmd bash)"
-  z() {
-    pushd -n "$PWD" >/dev/null
-    __zoxide_z "$@"
-  }
-  zi() {
-    pushd -n "$PWD" >/dev/null
-    __zoxide_zi "$@"
-  }
-
-  # Set Starship prompt
-  export STARSHIP_CONFIG="$HOME"/.config/starship.toml
-  eval "$(starship init bash)"
-
-  # Set marker to say that these have already been initialised
-  init_bashrc_sourced=true
-
 fi

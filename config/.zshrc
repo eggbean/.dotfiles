@@ -4,7 +4,7 @@
 HISTSIZE=5000
 SAVEHIST=5000
 HISTFILE="$XDG_CACHE_HOME/zsh/zsh_history"
-setopt histignorealldups extendedhistory incappendhistory
+setopt HIST_IGNORE_ALL_DUPS EXTENDED_HISTORY INC_APPEND_HISTORY
 
 # Don't include non-alphanumeric characters in words (like bash)
 autoload -U select-word-style
@@ -60,6 +60,9 @@ bindkey '^x^e' edit-command-line
 unsetopt LIST_BEEP
 # Turn off end of history beeps
 unsetopt HIST_BEEP
+
+# Push directories to pushd dirs stack on changes
+setopt AUTO_PUSHD PUSHD_SILENT PUSHD_IGNORE_DUPS
 
 # Enable color support of ls
 eval "$(dircolors -b ~/.dotfiles/config/.includes/dir_colors)"

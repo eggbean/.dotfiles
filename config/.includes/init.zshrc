@@ -31,6 +31,35 @@ complete -o nospace -C terraform terraform
 complete -o nospace -C packer packer
 complete -o nospace -C vault vault
 
+# Don't initialise these tools a second time, as it causes
+# starship to show a background job when changing directories
+if [[ ! $init_zshrc_sourced == true ]]; then
+
+  # Direnv hook
+  eval "$(direnv hook zsh)"
+
+  # Add zoxide to shell
+  # (workaround to retain caseless tab completion on lastest version)
+  eval "$(zoxide init --no-cmd zsh)"
+  z() {
+    __zoxide_z "$@"
+  }
+  zi() {
+    __zoxide_zi "$@"
+  }
+
+  # Starship prompt
+  command cp ~/.config/starship.toml ~/.config/starship-zsh.toml >/dev/null
+  export STARSHIP_CONFIG="$HOME/.config/starship-zsh.toml"
+  starship config character.success_symbol "[%](white)"
+  starship config character.error_symbol "[%](bold red)"
+  eval "$(starship init zsh)"
+
+  # Set marker to say that these have already been initialised
+  init_zshrc_sourced=true
+
+fi
+
 ### And now for some mad directory changing stuff... ###
 
 # CD Deluxe
@@ -51,47 +80,16 @@ if [ -d "$HOME/.bookmarks" ]; then
 fi
 
 # Combine bookmarks and cdd functions to replace cd
-# (this is to avoid having to remember to type goto before I even
-# realise I want to, but unfortunately tab completion is lost)
-# supercd() {
-#   if [[ "${1::1}" == "@" ]]; then
-#     goto "$@"
-#   else
-#     cdd "$@"
-#   fi
-# }
+# (this is to avoid having to remember to type goto
+# before I even realise what I want to do)
+supercd() {
+  if [[ "${1[1]}" == "@" ]]; then
+    goto "$@"
+  else
+    cdd "$@"
+  fi
+}
 
-# if [[ $(whence -w cdd) =~ function ]] && [[ $(whence -w goto) =~ function ]]; then
-#   alias cd='supercd'
-# fi
-
-# Don't initialise these tools a second time, as it causes
-# starship to show a background job when changing directories
-if [[ ! $init_zshrc_sourced == true ]]; then
-
-  # Direnv hook
-  eval "$(direnv hook zsh)"
-
-  # Add zoxide to shell
-  # (and add directory changes to pushd stack for CD-Deluxe)
-  eval "$(zoxide init --no-cmd zsh)"
-  z() {
-    local setopt AUTO_PUSHD
-    __zoxide_z "$@"
-  }
-  zi() {
-    local setopt AUTO_PUSHD
-    __zoxide_zi "$@"
-  }
-
-  # Starship prompt
-  command cp ~/.config/starship.toml ~/.config/starship-zsh.toml >/dev/null
-  export STARSHIP_CONFIG="$HOME/.config/starship-zsh.toml"
-  starship config character.success_symbol "[%](white)"
-  starship config character.error_symbol "[%](bold red)"
-  eval "$(starship init zsh)"
-
-  # Set marker to say that these have already been initialised
-  init_zshrc_sourced=true
-
+if [[ $(whence -w cdd) =~ function ]] && [[ $(whence -w goto) =~ function ]]; then
+  alias cd='supercd'
 fi
