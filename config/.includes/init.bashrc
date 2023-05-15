@@ -53,15 +53,15 @@ cdd() { while read -r x; do eval "$x" >/dev/null; done < <(dirs -l -p | _cdd "$@
 alias cd='cdd'
 
 # Directory bookmarks
-if [ -d "$HOME/.bookmarks" ]; then
+if [ -d "$XDG_CACHE_HOME/bookmarks" ]; then
   goto() {
     pushd -n "$PWD" >/dev/null # add to dirs stack for CD-Deluxe
-    local CDPATH="$HOME/.bookmarks"
+    local CDPATH="$XDG_CACHE_HOME/bookmarks"
     command cd -P "$@" >/dev/null
   }
-  complete -W "$(command cd ~/.bookmarks && printf '%s\n' *)" goto
+  complete -W "$(command cd "$XDG_CACHE_HOME/bookmarks" && printf '%s\n' *)" goto
   bookmark() {
-    pushd "$HOME/.bookmarks" >/dev/null
+    pushd "$XDG_CACHE_HOME/bookmarks" >/dev/null
     ln -s "$OLDPWD" "$@"
     popd >/dev/null
   }

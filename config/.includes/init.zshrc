@@ -67,13 +67,13 @@ cdd() { while read -r x; do eval "$x" >/dev/null; done < <(dirs -l -p | _cdd "$@
 alias cd='cdd'
 
 # Directory bookmarks
-if [ -d "$HOME/.bookmarks" ]; then
+if [ -d "$XDG_CACHE_HOME/bookmarks" ]; then
   goto() {
-    local CDPATH="$HOME/.bookmarks"
+    local CDPATH="$XDG_CACHE_HOME/bookmarks"
     pushd -qP "$@"
   }
   bookmark() {
-    pushd -q "$HOME/.bookmarks"
+    pushd -q "$XDG_CACHE_HOME/bookmarks"
     ln -s "$OLDPWD" "$@"
     popd -q
   }
