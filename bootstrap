@@ -1,8 +1,6 @@
 # This script should be sourced, not executed
 # vim: filetype=bash
 
-pushd ~/.dotfiles >/dev/null || exit 1
-
 # Update packages and install some essentials
 eval "$(. /etc/os-release && typeset -p ID)"
 if [[ $ID == ol ]]; then
@@ -16,26 +14,29 @@ fi
 
 # Stow binaries
 if [[ $UID -ne 0 ]] && [[ $EUID -ne 0 ]]; then
-  sudo bin/scripts/stow-bin.sh
+  sudo ~/.dotfiles/bin/scripts/stow-bin.sh
 else
-  bin/scripts/stow-bin.sh --nosudo
+  ~/.dotfiles/bin/scripts/stow-bin.sh --nosudo
 fi
 
 # Stow dotfiles
-bin/scripts/stow-dotfiles.sh config
+~/.dotfiles/bin/scripts/stow-dotfiles.sh config
+
+# Clone antidote
+if [[ ! -d ${ZDOTDIR:-~}/.antidote ]]; then
+  git clone --depth=1 https://github.com/mattmc3/antidote.git ${ZDOTDIR:-~}/.antidote
+fi
+
+if [[ $BASH_VERSION ]]; then
+  bind -f ~/.inputrc
+  source ~/.bash_profile
+elif [[ $ZSH_VERSION ]]; then
+  exec zsh
+fi
 
 git remote update
 
-popd >/dev/null || exit 1
-
-if [[ $0 == *bash ]]; then
-  bind -f ~/.inputrc
-  source ~/.bash_profile
-elif [[ $0 == *zsh ]]; then
-  source ~/.zshrc
-fi
-
 # Check for new kernel
 if ! grep -qi microsoft /proc/version; then
-  bin/scripts/kernel-update-check.sh
+  ~/.dotfiles/bin/scripts/kernel-update-check.sh
 fi
