@@ -124,6 +124,7 @@ man() {
     LESS_TERMCAP_ZV=$(tput rsubm) \
     LESS_TERMCAP_ZO=$(tput ssupm) \
     LESS_TERMCAP_ZW=$(tput rsupm) \
+    GROFF_NO_SGR=1 \
     man "$@"
 }
 
