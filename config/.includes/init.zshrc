@@ -1,5 +1,4 @@
 # ~/.zshrc sources this file at the end if binaries have been stowed
-# (therefore no further conditional statements required)
 # vim: filetype=zsh
 
 # GitHub CLI zsh completion update
@@ -67,21 +66,21 @@ cdd() { while read -r x; do eval "$x" >/dev/null; done < <(dirs -l -p | _cdd "$@
 alias cd='cdd'
 
 # Directory bookmarks
-if [ -d "$XDG_CACHE_HOME/bookmarks" ]; then
-  goto() {
-    local CDPATH="$XDG_CACHE_HOME/bookmarks"
-    pushd -qP "$@"
-  }
-  bookmark() {
-    pushd -q "$XDG_CACHE_HOME/bookmarks"
-    ln -s "$OLDPWD" "$@"
-    popd -q
-  }
-fi
+[[ ! -d $XDG_CACHE_HOME/bookmarks ]] && mkdir "$XDG_CACHE_HOME/bookmarks"
+goto() {
+  local CDPATH="$XDG_CACHE_HOME/bookmarks"
+  pushd -qP "$@"
+}
+complete -W "$(builtin cd "$XDG_CACHE_HOME/bookmarks" && printf '%s\n' *)" goto
+bookmark() {
+  pushd -q "$XDG_CACHE_HOME/bookmarks"
+  ln -s "$OLDPWD" "$@"
+  popd -q
+}
 
 # Combine bookmarks and cdd functions to replace cd
-# (this is to avoid having to remember to type goto
-# before I even realise what I want to do)
+# (this is to avoid having to remember to type goto before I even
+# realise I want to, but unfortunately tab completion is lost)
 supercd() {
   if [[ "${1[1]}" == "@" ]]; then
     goto "$@"

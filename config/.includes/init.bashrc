@@ -1,5 +1,4 @@
 # ~/.bashrc sources this file at the end if binaries have been stowed
-# (therefore no further conditional statements required)
 # vim: filetype=bash
 
 # GitHub CLI bash completion
@@ -53,19 +52,18 @@ cdd() { while read -r x; do eval "$x" >/dev/null; done < <(dirs -l -p | _cdd "$@
 alias cd='cdd'
 
 # Directory bookmarks
-if [ -d "$XDG_CACHE_HOME/bookmarks" ]; then
-  goto() {
-    pushd -n "$PWD" >/dev/null # add to dirs stack for CD-Deluxe
-    local CDPATH="$XDG_CACHE_HOME/bookmarks"
-    command cd -P "$@" >/dev/null
-  }
-  complete -W "$(command cd "$XDG_CACHE_HOME/bookmarks" && printf '%s\n' *)" goto
-  bookmark() {
-    pushd "$XDG_CACHE_HOME/bookmarks" >/dev/null
-    ln -s "$OLDPWD" "$@"
-    popd >/dev/null
-  }
-fi
+[[ ! -d $XDG_CACHE_HOME/bookmarks ]] && mkdir "$XDG_CACHE_HOME/bookmarks"
+goto() {
+  pushd -n "$PWD" >/dev/null # add to dirs stack for CD-Deluxe
+  local CDPATH="$XDG_CACHE_HOME/bookmarks"
+  command cd -P "$@" >/dev/null
+}
+complete -W "$(command cd "$XDG_CACHE_HOME/bookmarks" && printf '%s\n' *)" goto
+bookmark() {
+  pushd "$XDG_CACHE_HOME/bookmarks" >/dev/null
+  ln -s "$OLDPWD" "$@"
+  popd >/dev/null
+}
 
 # Combine bookmarks and cdd functions to replace cd
 # (this is to avoid having to remember to type goto before I even
