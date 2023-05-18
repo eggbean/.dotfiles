@@ -47,3 +47,9 @@ export ADB_VENDOR_KEY="$XDG_CONFIG_HOME"/android
 export ANDROID_AVD_HOME="$XDG_DATA_HOME"/android/
 export ANDROID_SDK_HOME="$XDG_CONFIG_HOME"/android
 export ANDROID_EMULATOR_HOME="$XDG_DATA_HOME"/android/
+
+# GPG Agent
+eval $(gpg-agent --daemon 2>/dev/null)
+export GPG_AGENT_INFO
+export SSH_AUTH_SOCK
+export GPG_TTY=$(tty)
