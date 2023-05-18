@@ -1,10 +1,5 @@
-# Environment Variables
+# Environment Variables (for interactive shells)
 
-# XDG locations need to be set for termux
-export XDG_CACHE_HOME="$HOME"/.cache
-export XDG_DATA_HOME="$HOME"/.local/share
-export XDG_CONFIG_HOME="$HOME"/.config
-export XDG_STATE_HOME="$HOME"/.local/state
 export ANSIBLE_CONFIG="$XDG_CONFIG_HOME"/ansible/ansible.cfg
 export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config
 export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME"/aws/credentials

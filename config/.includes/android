@@ -7,5 +7,10 @@ unset LANGUAGE
 unset LANG
 unset LC_ALL
 
+# XDG locations need to be set for termux
+export XDG_CACHE_HOME="$HOME"/.cache
+export XDG_DATA_HOME="$HOME"/.local/share
+export XDG_CONFIG_HOME="$HOME"/.config
+
 # Start ssh-agent
 . source-ssh-agent

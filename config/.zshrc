@@ -4,7 +4,7 @@
 HISTSIZE=5000
 SAVEHIST=5000
 HISTFILE="$XDG_CACHE_HOME/zsh/zsh_history"
-setopt HIST_IGNORE_ALL_DUPS EXTENDED_HISTORY INC_APPEND_HISTORY
+setopt HIST_EXPIRE_DUPS_FIRST EXTENDED_HISTORY INC_APPEND_HISTORY HIST_IGNORE_SPACE
 
 # Don't include non-alphanumeric characters in words (like bash)
 autoload -U select-word-style
@@ -12,9 +12,11 @@ select-word-style bash
 
 # Completion system
 typeset -gaU fpath=($fpath /usr/local/share/bash-completion/completions)
+zmodload zsh/complist
 autoload -Uz compinit bashcompinit
 compinit -i -d "$XDG_CACHE_HOME/zsh/zcompdump"
 bashcompinit
+_comp_options+=(globdots) # With hidden files
 
 zstyle ':completion:*' auto-description 'specify: %d'
 zstyle ':completion:*' completer _expand _complete _correct _approximate
@@ -43,6 +45,9 @@ bindkey "^[[24;3~" ""
 bindkey "^[[5;7~"  ""
 bindkey "^[[6;7~"  ""
 
+# Shift-tab to reverse completion suggestions
+bindkey -M menuselect '^[[Z' reverse-menu-complete
+
 # Up/down arrow keys completion
 for direction (up down) {
   autoload $direction-line-or-beginning-search
@@ -56,10 +61,16 @@ for direction (up down) {
 autoload -U edit-command-line && zle -N edit-command-line
 bindkey '^x^e' edit-command-line
 
+# Enable zmv
+autoload zmv
+
 # Turn off autocomplete beeps
 unsetopt LIST_BEEP
 # Turn off end of history beeps
 unsetopt HIST_BEEP
+
+# Allow interective comments
+setopt INTERACTIVE_COMMENTS
 
 # Push directories to pushd dirs stack on changes
 setopt AUTO_PUSHD PUSHD_SILENT PUSHD_IGNORE_DUPS
