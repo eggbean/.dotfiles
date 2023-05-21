@@ -6,10 +6,10 @@ eval "$(. /etc/os-release && typeset -p ID)"
 if [[ $ID == ol ]]; then
   sudo dnf config-manager --set-enabled ol9_developer_EPEL
   sudo dnf upgrade -y
-  sudo dnf install -y $(cat packages | egrep -v "[\s]*([#;].*|^$)")
+  sudo dnf install -y $(egrep -v "[\s]*([#;].*|^$)" packages)
 elif [[ $ID == debian ]]; then
   sudo apt-get update && sudo apt-get upgrade -y
-  sudo apt-get install -y $(cat packages | egrep -v "[\s]*([#;].*|^$)")
+  sudo apt-get install -y $(egrep -v "[\s]*([#;].*|^$)" packages)
 fi
 
 # Stow binaries
