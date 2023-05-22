@@ -27,10 +27,21 @@ if [[ ! -d ${ZDOTDIR:-~}/.antidote ]]; then
   git clone --depth=1 https://github.com/mattmc3/antidote.git ${ZDOTDIR:-~}/.antidote
 fi
 
+# Initialise shell
 if [[ $BASH_VERSION ]]; then
   bind -f ~/.inputrc
   source ~/.bash_profile
 elif [[ $ZSH_VERSION ]]; then
+  if [[ -d ~/.antidote ]]; then
+    source ~/.antidote/antidote.zsh
+    antidote load ~/.dotfiles/config/.includes/zsh_plugins.txt
+  fi
+  if [[ ! -d $XDG_CACHE_HOME/zsh ]]; then
+    mkdir -p "$XDG_CACHE_HOME/zsh"
+  fi
+  if [[ ! -f $XDG_CACHE_HOME/zsh/zsh_history ]]; then
+    touch "$XDG_CACHE_HOME/zsh/zsh_history"
+  fi
   exec zsh
 fi
 

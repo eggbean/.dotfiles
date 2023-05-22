@@ -87,15 +87,6 @@ source ~/.dotfiles/config/.includes/functions.sh
 # Environment variables
 source ~/.dotfiles/config/.includes/envars.sh
 
-# Antidote
-if [[ -d ~/.antidote ]]; then
-  source ~/.antidote/antidote.zsh
-  antidote load ~/.dotfiles/config/.includes/zsh_plugins.txt
-fi
-
-# Make cache directory if it doesn't exist
-[[ ! -d $XDG_CACHE_HOME/zsh ]] && mkdir "$XDG_CACHE_HOME/zsh"
-
 # Do more stuff if binaries have been stowed
 [[ -f $XDG_STATE_HOME/binaries_stowed ]] && . ~/.dotfiles/config/.includes/init.zshrc
 
