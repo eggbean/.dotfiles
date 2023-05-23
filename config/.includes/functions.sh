@@ -60,7 +60,7 @@ yolo() {
 }
 
 # Make directory and change directory into it
-mkdircd() { mkdir -p "$@" && eval pushd "\"\$$#\"" >/dev/null || return; }
+take() { mkdir -p "$@" && eval pushd "\"\$$#\"" >/dev/null || return; }
 
 # Minimalist terminal pastebin to pipe to
 sprunge() { curl -F 'sprunge=<-' http://sprunge.us; }
