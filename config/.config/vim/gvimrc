@@ -17,7 +17,7 @@ set statusline=
 set statusline+=%f
 set statusline+=%=
 set statusline+=%l:%c\ \ %p%%
-hi StatusLine guibg=grey70 guifg=white
+hi StatusLine guibg=grey70 guifg=#eeeeee
 set lines=35 columns=90
 set guioptions -=L
 set guioptions -=r

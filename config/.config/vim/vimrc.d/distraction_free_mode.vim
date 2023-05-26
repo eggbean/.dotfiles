@@ -51,7 +51,7 @@ function! ToggleDistractionFreeMode()
     endfor
     set nolinebreak | syntax on
     colorscheme PaperColor
-    hi StatusLine guibg=grey70 guifg=white
+    hi StatusLine guibg=grey70 guifg=#eeeeee
     highlight Cursor guifg=white guibg=red
     highlight iCursor guifg=white guibg=steelblue
     if has('gui_gtk2')
