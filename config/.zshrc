@@ -16,7 +16,7 @@ zmodload zsh/complist
 autoload -Uz compinit bashcompinit
 compinit -i -d "$XDG_CACHE_HOME/zsh/zcompdump"
 bashcompinit
-_comp_options+=(globdots) # With hidden files
+_comp_options+=(globdots) # Complete hidden files
 
 zstyle ':completion:*' auto-description 'specify: %d'
 zstyle ':completion:*' completer _expand _complete _correct _approximate
@@ -36,15 +36,6 @@ zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 zstyle -e ':completion:*' hosts 'reply=($(< ~/.dotfiles/config/.includes/hosts))'
 
-# Key bindings (including silencing some keys used in my nested tmux config)
-bindkey -e
-bindkey '^[[3~' delete-char
-bindkey '^[[3;3~' kill-word
-bindkey "^[[23;3~" ""
-bindkey "^[[24;3~" ""
-bindkey "^[[5;7~"  ""
-bindkey "^[[6;7~"  ""
-
 # Shift-tab to reverse completion suggestions
 bindkey -M menuselect '^[[Z' reverse-menu-complete
 
@@ -56,6 +47,15 @@ for direction (up down) {
   for key ($key ${key/O/[})
     bindkey $key $direction-line-or-beginning-search
 }
+
+# Key bindings (including silencing some keys used in my nested tmux config)
+bindkey -e
+bindkey '^[[3~' delete-char
+bindkey '^[[3;3~' kill-word
+bindkey "^[[23;3~" ""
+bindkey "^[[24;3~" ""
+bindkey "^[[5;7~"  ""
+bindkey "^[[6;7~"  ""
 
 # Edit command line in visual editor
 autoload -U edit-command-line && zle -N edit-command-line
@@ -75,7 +75,7 @@ setopt INTERACTIVE_COMMENTS
 # Push directories to pushd dirs stack on changes
 setopt AUTO_PUSHD PUSHD_SILENT PUSHD_IGNORE_DUPS
 
-# Enable color support of ls
+# Enable colour support of ls
 eval "$(dircolors -b ~/.dotfiles/config/.includes/dir_colors)"
 
 # Alias definitions
@@ -86,6 +86,12 @@ source ~/.dotfiles/config/.includes/functions.sh
 
 # Environment variables
 source ~/.dotfiles/config/.includes/envars.sh
+
+# Load antidote
+if [[ -d ~/.cache/antidote ]]; then
+  source ~/.cache/antidote/antidote.zsh
+  antidote load ~/.dotfiles/config/.includes/zsh_plugins.txt
+fi
 
 # Do more stuff if binaries have been stowed
 [[ -f $XDG_STATE_HOME/binaries_stowed ]] && . ~/.dotfiles/config/.includes/init.zshrc

@@ -1,5 +1,11 @@
 # ~/.bash_profile
 
+# XDG directories
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_STATE_HOME="$HOME/.local/state"
+
 # neofetch and tmux sessions for welcome
 if [[ -z $TMUX ]]; then
   eval "$(source /etc/os-release && typeset -p ID)"
