@@ -29,8 +29,13 @@ while true; do
 done
 
 if [ "$(id -u)" = "0" ]; then
-  HOME="/home/$SUDO_USER"
-  XDG_STATE_HOME="/home/$SUDO_USER/.local/state"
+  if [ -n "$SUDO_USER" ]; then
+    USER="$SUDO_USER"
+  else
+    USER="$(logname)"
+  fi
+  HOME="/home/$USER"
+  XDG_STATE_HOME="/home/$USER/.local/state"
 fi
 
 STOW_DIR="$HOME/.dotfiles/bin"
@@ -43,6 +48,7 @@ if [ -n "$unstow" ]; then
 else
   stowcom='-R'
   stowed='stowed'
+  if [ ! -d "$XDG_STATE_HOME" ]; then mkdir -p "$XDG_STATE_HOME"; fi
   touch "$XDG_STATE_HOME"/binaries_stowed
 fi
 
