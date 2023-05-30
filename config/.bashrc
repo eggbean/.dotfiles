@@ -17,8 +17,8 @@ shopt -s no_empty_cmd_completion
 HISTCONTROL=ignoreboth
 HISTTIMEFORMAT="%d/%m/%y %T "
 HISTIGNORE=ls:ll:la:l:pwd:df:du:history:tmux:htop:fg:man:mans:date:hue
-HISTSIZE=5000
-HISTFILESIZE=5000
+HISTSIZE=10000
+HISTFILESIZE=10000
 HISTFILE="$XDG_CACHE_HOME/bash/bash_history"
 
 # Shared history between tmux panes

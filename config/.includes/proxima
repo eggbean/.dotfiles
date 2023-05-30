@@ -5,3 +5,8 @@
 if ! type pihole >/dev/null 2>&1; then
   pihole() { docker exec pihole pihole "$@"; }
 fi
+
+# Less history to save memory
+HISTFILESIZE=1000
+HISTSIZE=1000
+SAVEHIST=1000
