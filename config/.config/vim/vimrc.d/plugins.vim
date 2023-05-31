@@ -111,6 +111,7 @@ call plug#end()
   let g:ansible_unindent_after_newline = 1
 " vim-highlightedyank
   let g:highlightedyank_highlight_duration = 750
+  highlight HighlightedyankRegion cterm=reverse gui=reverse
 " sideways
   nnoremap <C-h> :SidewaysLeft<CR>
   nnoremap <C-l> :SidewaysRight<CR>

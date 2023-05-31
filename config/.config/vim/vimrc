@@ -11,7 +11,6 @@ source $VIMFILES/vimrc.d/xdg.vim        " Add XDG directories to vim and share w
 source $VIMFILES/vimrc.d/opts.vim       " Setting options
 source $VIMFILES/vimrc.d/mappings.vim   " Key mappings
 source $VIMFILES/vimrc.d/autocmds.vim   " Auto commands dependent on filetype
-source $VIMFILES/vimrc.d/plugins.vim    " Plugins and plugin configuration
 
 " Set vim colour scheme
 if !has('gui_running')
@@ -22,6 +21,8 @@ if !has('gui_running')
   let &t_SR = "\<ESC>[4 q"
   let &t_EI = "\<ESC>[2 q"
 endif
+
+source $VIMFILES/vimrc.d/plugins.vim    " Plugins and plugin configuration
 
 " Map Alt+[key] to terminal-like behaviour
 " so that I don't have to use ESC in gvim and vim for Windows
