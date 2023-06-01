@@ -18,6 +18,8 @@ compinit -i -d "$XDG_CACHE_HOME/zsh/zcompdump"
 bashcompinit
 _comp_options+=(globdots) # Complete hidden files
 
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/zcompcache"
 zstyle ':completion:*' auto-description 'specify: %d'
 zstyle ':completion:*' completer _expand _complete _correct _approximate
 zstyle ':completion:*' format 'Completing %d'
