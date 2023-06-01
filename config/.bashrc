@@ -16,7 +16,7 @@ shopt -s no_empty_cmd_completion
 # History file settings
 HISTCONTROL=ignoreboth
 HISTTIMEFORMAT="%d/%m/%y %T "
-HISTIGNORE=ls:ll:la:l:pwd:df:du:history:tmux:htop:fg:man:mans:date:hue
+HISTIGNORE=ls:l:la:ll:lla:pwd:df:du:history:tmux:htop:fg:man:mans:date:hue
 HISTSIZE=10000
 HISTFILESIZE=10000
 HISTFILE="$XDG_CACHE_HOME/bash/bash_history"

@@ -4,7 +4,7 @@
 HISTSIZE=10000
 SAVEHIST=10000
 HISTFILE="$XDG_CACHE_HOME/zsh/zsh_history"
-setopt HIST_EXPIRE_DUPS_FIRST EXTENDED_HISTORY SHARE_HISTORY HIST_IGNORE_SPACE
+setopt HIST_IGNORE_ALL_DUPS EXTENDED_HISTORY SHARE_HISTORY HIST_IGNORE_SPACE
 
 # Don't include non-alphanumeric characters in words (like bash)
 autoload -U select-word-style
@@ -36,6 +36,11 @@ zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 zstyle -e ':completion:*' hosts 'reply=($(< ~/.dotfiles/config/.includes/hosts))'
 
+# Remove path/file underlining (zsh-syntax-highlighting plugin)
+(( ${+ZSH_HIGHLIGHT_STYLES} )) || typeset -A ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[path]=none
+ZSH_HIGHLIGHT_STYLES[path_prefix]=none
+
 # Key bindings (including silencing some keys used in my nested tmux config)
 bindkey -e
 bindkey '^[[3~' delete-char
@@ -44,6 +49,8 @@ bindkey "^[[23;3~" ""
 bindkey "^[[24;3~" ""
 bindkey "^[[5;7~"  ""
 bindkey "^[[6;7~"  ""
+
+# Shift-tab to reverse completion suggestions
 bindkey '^[[Z' reverse-menu-complete
 
 # Up/down arrow keys partial completion
@@ -54,9 +61,6 @@ for direction (up down) {
   for key ($key ${key/O/[})
     bindkey $key $direction-line-or-beginning-search
 }
-
-# Shift-tab to reverse completion suggestions
-# bindkey -M menuselect '^[[Z' reverse-menu-complete
 
 # Edit command line in visual editor
 autoload -U edit-command-line && zle -N edit-command-line

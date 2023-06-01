@@ -38,7 +38,7 @@ if [[ ! $init_zshrc_sourced == true ]]; then
   eval "$(direnv hook zsh)"
 
   # Add zoxide to shell
-  # (workaround to retain caseless tab completion on lastest version)
+  # workaround to retain caseless tab completion on latest version (0.9.1)
   eval "$(zoxide init --no-cmd zsh)"
   z() {
     __zoxide_z "$@"
@@ -47,7 +47,7 @@ if [[ ! $init_zshrc_sourced == true ]]; then
     __zoxide_zi "$@"
   }
 
-  # Starship prompt
+  # Starship prompt (copy bash config)
   command cp ~/.config/starship.toml ~/.config/starship-zsh.toml >/dev/null
   export STARSHIP_CONFIG="$HOME/.config/starship-zsh.toml"
   starship config character.success_symbol "[%](white)"
@@ -78,7 +78,7 @@ bookmark() {
   popd -q
 }
 
-# Combine bookmarks and cdd functions to replace cd
+# Combine goto and cdd functions to replace cd
 # (this is to avoid having to remember to type goto before I even
 # realise I want to, but unfortunately tab completion is lost)
 supercd() {
@@ -88,7 +88,4 @@ supercd() {
     cdd "$@"
   fi
 }
-
-if [[ $(whence -w cdd) =~ function ]] && [[ $(whence -w goto) =~ function ]]; then
-  alias cd='supercd'
-fi
+alias cd='supercd'

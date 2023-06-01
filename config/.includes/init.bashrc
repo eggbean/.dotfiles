@@ -65,7 +65,7 @@ bookmark() {
   popd >/dev/null
 }
 
-# Combine bookmarks and cdd functions to replace cd
+# Combine goto and cdd functions to replace cd
 # (this is to avoid having to remember to type goto before I even
 # realise I want to, but unfortunately tab completion is lost)
 supercd() {
@@ -75,7 +75,4 @@ supercd() {
     cdd "$@"
   fi
 }
-
-if [[ $(type -t cdd) == function ]] && [[ $(type -t goto) == function ]]; then
-  alias cd='supercd'
-fi
+alias cd='supercd'
