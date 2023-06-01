@@ -85,5 +85,6 @@
 	append = commit --amend --no-edit
 	please = push --force-with-lease
 	staged = diff --cached
+	divergence = diff master origin/master
 	localhist = "reflog --abbrev-commit --pretty=format:'%Cblue%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset'"
 	vdiff = ! "f () { git difftool --tool=nvimdiff -- \"$@\"; }; f"
