@@ -20,10 +20,7 @@ else
 fi
 
 # Stow dotfiles
-~/.dotfiles/bin/scripts/stow-dotfiles.sh config
-
-# Pull dotfiles origin/master
-git -C ~/.dotfiles remote update
+~/.dotfiles/bin/scripts/stow-dotfiles.sh
 
 # Setup/update antidote
 if [[ $ZSH_VERSION ]]; then
@@ -35,6 +32,12 @@ if [[ $ZSH_VERSION ]]; then
   antidote load ~/.dotfiles/config/.includes/zsh_plugins.txt
   antidote update
 fi
+
+# Pull dotfiles origin/master
+git -C ~/.dotfiles remote update
+[[ $(git rev-parse HEAD) == $(git ls-remote $(git rev-parse --abbrev-ref @{u} | \
+  sed 's/\// /g') | cut -f1) ]] && echo Local repository is up to date || \
+    echo Local repository has diverged from remote
 
 # Setup cache directories
 if [[ $BASH_VERSION ]]; then
