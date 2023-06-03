@@ -59,6 +59,9 @@ yolo() {
   yes | sudo "$@"
 }
 
+# tre $EDITOR aliasing
+tre() { command tre "$@" -e && source "/tmp/tre_aliases_$USER" 2>/dev/null; }
+
 # Make directory and change directory into it
 take() { mkdir -p "$@" && eval pushd "\"\$$#\"" >/dev/null || return; }
 

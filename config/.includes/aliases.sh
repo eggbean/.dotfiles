@@ -8,6 +8,7 @@ alias mc='. /usr/share/mc/bin/mc-wrapper.sh'
 alias wget='wget --hsts-file="$XDG_CACHE_HOME"/wget-hsts'
 alias crontab='crontab -i'
 alias ncdu='ncdu --exclude-kernfs --color dark'
+alias tree='tree -C'
 alias xclip='xclip -r'
 alias sxiv='sxiv -abs f'
 alias qb='qutebrowser'
@@ -34,13 +35,6 @@ if command -v exa >/dev/null; then
   alias ls='exa-wrapper.sh'
 else
   alias ls='/bin/ls $LS_OPTIONS'
-fi
-
-# Replace tree with tre
-if command -v tre >/dev/null; then
-  alias tree='tre --color always'
-else
-  alias tree='tree -C'
 fi
 
 # Use fzfp wrapper in tmux instead of fzf
