@@ -34,5 +34,5 @@ jobs:
           git add --all
           git status
           tag="$(curl -s https://api.github.com/repos/dandavison/delta/releases/latest | jq -r '.tag_name')"
-          git commit -m "Upgrade delta to ${tag}"
+          git commit -m "[Action] Upgrade delta to ${tag}"
           git push
