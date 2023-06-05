@@ -51,6 +51,12 @@ source ~/.dotfiles/config/.includes/functions.sh
 # Environment variables
 source ~/.dotfiles/config/.includes/envars.sh
 
+# Setup cache directories
+if [[ ! -d ~/.cache/bash ]]; then
+  mkdir -p ~/.cache/bash
+  touch ~/.cache/bash/bash_history
+fi
+
 # Do more stuff if binaries have been stowed
 [[ -f $XDG_STATE_HOME/binaries_stowed ]] && . ~/.dotfiles/config/.includes/init.bashrc
 

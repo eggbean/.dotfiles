@@ -100,6 +100,12 @@ if [[ -d ~/.cache/antidote ]]; then
   antidote load ~/.dotfiles/config/.includes/zsh_plugins.txt
 fi
 
+# Setup cache directories
+if [[ ! -d ~/.cache/zsh ]]; then
+  mkdir -p ~/.cache/zsh
+  touch ~/.cache/zsh/zsh_history
+fi
+
 # Do more stuff if binaries have been stowed
 [[ -f $XDG_STATE_HOME/binaries_stowed ]] && . ~/.dotfiles/config/.includes/init.zshrc
 

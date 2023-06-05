@@ -39,19 +39,6 @@ git -C ~/.dotfiles remote update
   sed 's/\// /g') | cut -f1) ]] && echo Local repository is up to date || \
     echo Local repository has diverged from remote
 
-# Setup cache directories
-if [[ $BASH_VERSION ]]; then
-  if [[ ! -d ~/.cache/bash ]]; then
-    mkdir -p ~/.cache/bash
-    touch ~/.cache/bash/bash_history
-  fi
-elif [[ $ZSH_VERSION ]]; then
-  if [[ ! -d ~/.cache/zsh ]]; then
-    mkdir -p ~/.cache/zsh
-    touch ~/.cache/zsh/zsh_history
-  fi
-fi
-
 # Check for new kernel
 if ! grep -qi microsoft /proc/version; then
   ~/.dotfiles/bin/scripts/kernel-update-check.sh
