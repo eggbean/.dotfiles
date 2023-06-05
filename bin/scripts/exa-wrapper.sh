@@ -45,7 +45,7 @@ help() {
    -S  sort by file size
    -t  sort by modified time
    -u  sort by accessed time
-   -U  sort by created time *
+   -c  sort by created time *
    -X  sort by extension
    -T  tree *
    -L  level [DEPTH] *
@@ -64,13 +64,13 @@ EOF
 
 exa_opts=()
 
-while getopts ':aAbtuUSI:rkhnsXL:MNg1lFGRdDiTx@' arg; do
+while getopts ':aAbtucSI:rkhnsXL:MNg1lFGRdDiTx@' arg; do
   case $arg in
     a) (( dot == 1 )) && exa_opts+=(-a) || exa_opts+=(-a -a) ;;
     A) exa_opts+=(-a) ;;
     t) exa_opts+=(-s modified); ((++rev)) ;;
     u) exa_opts+=(-us accessed); ((++rev)) ;;
-    U) exa_opts+=(-Us created); ((++rev)) ;;
+    c) exa_opts+=(-Us created); ((++rev)) ;;
     S) exa_opts+=(-s size); ((++rev)) ;;
     I) exa_opts+=(--ignore-glob="${OPTARG}") ;;
     r) ((++rev)) ;;
