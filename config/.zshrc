@@ -42,10 +42,14 @@ zstyle -e ':completion:*' hosts 'reply=($(< ~/.dotfiles/config/.includes/hosts))
 ZSH_HIGHLIGHT_STYLES[path]=none
 ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 
-# Key bindings (including silencing some keys used in my nested tmux config)
+# Some key bindings
 bindkey -e
-bindkey '^[[3~' delete-char
-bindkey '^[[3;3~' kill-word
+bindkey  "^[[1~"   beginning-of-line
+bindkey  "^[[4~"   end-of-line
+bindkey '^[[3~'    delete-char
+bindkey '^[[3;3~'  kill-word
+
+# Silence some keys used in my nested tmux config
 bindkey "^[[23;3~" ""
 bindkey "^[[24;3~" ""
 bindkey "^[[5;7~"  ""
@@ -106,7 +110,9 @@ if [[ ! -d ~/.cache/zsh ]]; then
 fi
 
 # Do more stuff if binaries have been stowed
-[[ -f $XDG_STATE_HOME/binaries_stowed ]] && . ~/.dotfiles/config/.includes/init.zshrc
+[[ -f $XDG_STATE_HOME/binaries_stowed ]] && \
+  . ~/.dotfiles/config/.includes/init.zshrc
 
 # Source host specific environment
-[[ -f ~/.dotfiles/config/.includes/$(hostname -s) ]] && . ~/.dotfiles/config/.includes/"$(hostname -s)"
+[[ -f ~/.dotfiles/config/.includes/$(hostname -s) ]] && \
+  . ~/.dotfiles/config/.includes/"$(hostname -s)"
