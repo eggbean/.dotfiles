@@ -44,16 +44,17 @@ ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 
 # Some key bindings
 bindkey -e
-bindkey  "^[[1~"   beginning-of-line
-bindkey  "^[[4~"   end-of-line
-bindkey '^[[3~'    delete-char
-bindkey '^[[3;3~'  kill-word
+bindkey '^U'      backward-kill-line
+bindkey '^[[1~'   beginning-of-line
+bindkey '^[[4~'   end-of-line
+bindkey '^[[3~'   delete-char
+bindkey '^[[3;3~' kill-word
 
 # Silence some keys used in my nested tmux config
-bindkey "^[[23;3~" ""
-bindkey "^[[24;3~" ""
-bindkey "^[[5;7~"  ""
-bindkey "^[[6;7~"  ""
+bindkey '^[[23;3~' ''
+bindkey '^[[24;3~' ''
+bindkey '^[[5;7~'  ''
+bindkey '^[[6;7~'  ''
 
 # Shift-tab to reverse completion suggestions
 bindkey '^[[Z' reverse-menu-complete
