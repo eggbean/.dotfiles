@@ -2,7 +2,11 @@
 
 # This script essentially copies Linux configuration files from the dotfiles repository to Windows
 
-[[ "$(id -u)" = "0" ]] && { echo "This script is not supposed to be run as root" >&2; exit 1; }
+if ! grep -qi microsoft /proc/version; then
+  { echo "This isn't a Windows WSL system" >&2; exit 1; }
+fi
+
+[[ $(id -u) == 0 ]] && { echo "This script is not supposed to be run as root" >&2; exit 1; }
 
 WIN_HOME_RAW="$(cmd.exe /c "<nul set /p=%UserProfile%" 2>/dev/null)"
 WIN_HOME="$(wslpath "$WIN_HOME_RAW")"
