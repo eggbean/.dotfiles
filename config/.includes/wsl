@@ -1,10 +1,6 @@
 ## Host specific stuff for WSL clients
 # vim: filetype=bash
 
-# Set WIN_HOME enviroment variable
-WIN_HOME_RAW="$(cmd.exe /c "<nul set /p=%UserProfile%" 2>/dev/null)"
-export WIN_HOME="$(wslpath "$WIN_HOME_RAW")"
-
 # Desktop notifications
 notify-send() { wsl-notify-send.exe --appId "Windows Subsystem for Linux" --category "$WSL_DISTRO_NAME" "${@}"; }
 
@@ -37,6 +33,14 @@ if [ -x "/mnt/c/Program Files/qutebrowser/qutebrowser.exe" ]; then
   export BROWSER="/mnt/c/Program Files/qutebrowser/qutebrowser.exe"
   export GH_BROWSER="/mnt/c/Program\ Files/qutebrowser/qutebrowser.exe"
 fi
+
+# Set WIN_HOME environment variable
+WIN_HOME_RAW="$(cmd.exe /c "<nul set /p=%UserProfile%" 2>/dev/null)"
+export WIN_HOME="$(wslpath "$WIN_HOME_RAW")"
+
+# Add winfiles\bin to path
+PATH="$PATH:$WIN_HOME/winfiles/bin"
+export PATH
 
 # Vagrant
 export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"

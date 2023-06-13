@@ -88,3 +88,8 @@ if [ ! -L "$HOME"/.ssh/wsl2-ssh-pageant.exe ]; then
   ln -s "$WIN_HOME"/winfiles/bin/wsl2-ssh-pageant.exe "$HOME"/.ssh/wsl2-ssh-pageant.exe
   chmod +x "$HOME"/.ssh/wsl2-ssh-pageant.exe
 fi
+
+# wsl-notify-send.exe
+if [ ! -x "$WIN_HOME"/winfiles/bin/wsl-notify-send.exe ]; then
+  chmod +x "$WIN_HOME"/winfiles/bin/wsl-notify-send.exe
+fi
