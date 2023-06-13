@@ -93,3 +93,9 @@ fi
 if [ ! -x "$WIN_HOME"/winfiles/bin/wsl-notify-send.exe ]; then
   chmod +x "$WIN_HOME"/winfiles/bin/wsl-notify-send.exe
 fi
+
+# Install xdg-open-wsl
+if [ ! -x /usr/local/bin/xdg-open ]; then
+  sudo wget -qO /usr/local/bin/xdg-open https://github.com/cpbotha/xdg-open-wsl/raw/master/xdg_open_wsl/xdg_open_wsl.py
+  sudo chmod +x /usr/local/bin/xdg-open
+fi
