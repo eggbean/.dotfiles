@@ -17,7 +17,8 @@ jobs:
           tar --wildcards --strip-components=1 -C bin/aarch64 -xvf fd-v*-unknown-linux-gnu.tar.gz fd-v*-unknown-linux-gnu/fd
           tar --wildcards --strip-components=1 -C bin/man/man1 -xvf fd-v*-unknown-linux-gnu.tar.gz fd-v*-unknown-linux-gnu/fd.1
           gzip -f bin/man/man1/fd.1 2>/dev/null
-          tar --wildcards --strip-components=2 -C bin/completions -xvf fd-v*-unknown-linux-gnu.tar.gz fd-v*-unknown-linux-gnu/autocomplete/fd.bash
+          tar --wildcards --strip-components=2 -C bin/bash-completions -xvf fd-v*-unknown-linux-gnu.tar.gz fd-v*-unknown-linux-gnu/autocomplete/fd.bash
+          tar --wildcards --strip-components=2 -C bin/zsh-completions -xvf fd-v*-unknown-linux-gnu.tar.gz fd-v*-unknown-linux-gnu/autocomplete/_fd
           rm fd-v*-unknown-linux-gnu.tar.gz
 
           nameregex='^fd-v\d[\d.]+?\d?-arm-unknown-linux-gnueabihf\.tar\.gz$'
@@ -37,5 +38,5 @@ jobs:
           git add --all
           git status
           tag="$(curl -s https://api.github.com/repos/sharkdp/fd/releases/latest | jq -r '.tag_name')"
-          git commit -m "Upgrade fd to ${tag}"
+          git commit -m "[Action] Upgrade fd to ${tag}"
           git push
