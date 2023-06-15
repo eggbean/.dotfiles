@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# This is a modified version of my exa-wrapper.sh script (https://bit.ly/exa-wrapper)
+# which has a couple of conditional tweaks for use on Windows Subsystem for Linux
+
 ## Change following to '0' for output to be like ls and '1' for exa features
 # Don't list implied . and .. by default with -a
 dot=0
@@ -12,7 +15,9 @@ fgp=0
 # Don't show hardlinks column
 lnk=0
 # Show file git status automatically (can cause a slight delay in large repo trees)
-if [ "$no_exa_git" == "true" ]; then git=0; else git=1; fi
+git=1     # Replacing with test for variable set by direnv
+          # as git for Linux is very slow on NTFS
+          if [[ $no_exa_git =~ true ]]; then git=0; else git=1; fi
 # Show icons
 ico=0
 # Show column headers
@@ -41,6 +46,7 @@ help() {
    -M  group directories first *
    -I  ignore [GLOBS]
    -i  show inodes
+   -o  show octal permissions *
    -N  no colour *
    -S  sort by file size
    -t  sort by modified time
@@ -52,7 +58,7 @@ help() {
    -s  file system blocks
    -g  don't show/show file git status *
    -n  ignore .gitignore files *
-   -b  file size in binary/decimal (--si in ls)
+   -b  file sizes in binary/decimal (--si in ls)
    -@  extended attributes and sizes *
 
     * not used in ls
@@ -60,11 +66,11 @@ EOF
     exit
 }
 
-[[ "$*" =~ --help ]] && help
+[[ $* =~ --help ]] && help
 
 exa_opts=()
 
-while getopts ':aAbtucSI:rkhnsXL:MNg1lFGRdDiTx@' arg; do
+while getopts ':aAbtucSI:rkhnsXL:MNg1lFGRdDioTx@' arg; do
   case $arg in
     a) (( dot == 1 )) && exa_opts+=(-a) || exa_opts+=(-a -a) ;;
     A) exa_opts+=(-a) ;;
@@ -80,6 +86,7 @@ while getopts ':aAbtucSI:rkhnsXL:MNg1lFGRdDiTx@' arg; do
     s) exa_opts+=(-S) ;;
     X) exa_opts+=(-s extension) ;;
     L) exa_opts+=(--level="${OPTARG}") ;;
+    o) exa_opts+=(--octal-permissions) ;;
     M) ((++gpd)) ;;
     N) ((++nco)) ;;
     g) ((++git)) ;;
@@ -105,9 +112,13 @@ shift "$((OPTIND - 1))"
 (( gpd >= 1 )) && exa_opts+=(--group-directories-first)
 (( ico == 1 )) && exa_opts+=(--icons)
 (( git == 1 )) && \
-  [[ $(git -C "${*:-.}" rev-parse --is-inside-work-tree) == true ]] 2>/dev/null && exa_opts+=(--git)
+  [[ $(git -C ${*:-.} rev-parse --is-inside-work-tree) == true ]] 2>/dev/null && exa_opts+=(--git)
 
-shopt -s extglob
-[[ $(realpath "${*:-.}") == /@(mnt|?)/* ]] 2>/dev/null && exabin=exa-ntfs || exabin=exa
+# Use my patched version of exa on NTFS drives so that files
+# aren't all seen as executables, so appear in $LS_COLORS.
+if grep -qi microsoft /proc/version; then
+  shopt -s extglob
+  [[ $(realpath ${*:-.}) == /@(mnt|?)/* ]] 2>/dev/null && exabin=exa-ntfs || exabin=exa
+fi
 
-${exabin} --color-scale "${exa_opts[@]}" "$@"
+${exabin:-exa} --color-scale "${exa_opts[@]}" "$@"
