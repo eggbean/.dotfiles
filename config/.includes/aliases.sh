@@ -37,6 +37,12 @@ else
   alias ls='/bin/ls $LS_OPTIONS'
 fi
 
+# Use nvim instead of vim when available
+if command -v nvim >/dev/null; then
+  alias vi='nvim'
+  alias vimdiff='nvim -d'
+fi
+
 # Use fzfp wrapper in tmux instead of fzf
 if [[ $TMUX ]]; then alias fzf='fzfp-tmux --width=50% --height=60%'; fi
 

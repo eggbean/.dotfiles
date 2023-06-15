@@ -15,8 +15,6 @@ gotopath() {
 # Aliases
 alias mklink=' . mklink.sh'
 alias qutebrowser='/mnt/c/Program\ Files/qutebrowser/qutebrowser.exe'
-alias vi='nvim'
-alias vimdiff='nvim -d'
 
 # Set qutebrowser as default browser if installed
 if [ -x "/mnt/c/Program Files/qutebrowser/qutebrowser.exe" ]; then
