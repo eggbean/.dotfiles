@@ -101,8 +101,10 @@ call plug#end()
   let g:bookmark_sign = '⭕'
   let g:bookmark_save_per_working_dir = 0
   let g:bookmark_manage_per_buffer = 0
-  let g:bookmark_auto_save_file = $XDG_DATA_HOME .'/vim-bookmarks'
   let g:bookmark_display_annotation = 1
+  if has('unix')
+    let g:bookmark_auto_save_file = $XDG_DATA_HOME .'/vim-bookmarks'
+  endif
 " vim-rainbow
   let g:rainbow_active = 1
 " vim-toggle-bool
