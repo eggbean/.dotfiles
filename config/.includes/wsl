@@ -2,7 +2,10 @@
 # vim: filetype=bash
 
 # Desktop notifications
-notify-send() { wsl-notify-send.exe --appId "Windows Subsystem for Linux" --category "$WSL_DISTRO_NAME" "${@}"; }
+notify-send() {
+  wsl-notify-send.exe --appId "Windows Subsystem for Linux" \
+    --category "$WSL_DISTRO_NAME" "${@}"
+}
 
 # Function to change directory using Windows path
 gotopath() {
@@ -15,23 +18,34 @@ alias qutebrowser='/mnt/c/Program\ Files/qutebrowser/qutebrowser.exe'
 alias vi='nvim'
 alias vimdiff='nvim -d'
 
+# Set qutebrowser as default browser if installed
+if [ -x "/mnt/c/Program Files/qutebrowser/qutebrowser.exe" ]; then
+  export BROWSER="/mnt/c/Program Files/qutebrowser/qutebrowser.exe"
+  export GH_BROWSER="/mnt/c/Program\ Files/qutebrowser/qutebrowser.exe"
+fi
+
+# Use git for Windows on NTFS partitions
+# as git for Linux is very slow
+git() {
+  if [[ $(pwd -P) == /mnt/[a-z]/* ]]; then
+    git.exe "$@"
+  else
+    command git "$@"
+  fi
+}
+
 # wsl2-ssh-pageant
 export SSH_AUTH_SOCK="$HOME/.ssh/agent.sock"
 if ! ss -a | grep -q "$SSH_AUTH_SOCK"; then
   rm -f "$SSH_AUTH_SOCK"
   wsl2_ssh_pageant_bin="$HOME/.ssh/wsl2-ssh-pageant.exe"
   if test -x "$wsl2_ssh_pageant_bin"; then
-    (setsid nohup socat UNIX-LISTEN:"$SSH_AUTH_SOCK,fork" EXEC:"$wsl2_ssh_pageant_bin" >/dev/null 2>&1 &)
+    (setsid nohup socat UNIX-LISTEN:"$SSH_AUTH_SOCK,fork" \
+      EXEC:"$wsl2_ssh_pageant_bin" >/dev/null 2>&1 &)
   else
     echo >&2 "WARNING: $wsl2_ssh_pageant_bin is not executable."
   fi
   unset wsl2_ssh_pageant_bin
-fi
-
-# Set qutebrowser as default browser if installed
-if [ -x "/mnt/c/Program Files/qutebrowser/qutebrowser.exe" ]; then
-  export BROWSER="/mnt/c/Program Files/qutebrowser/qutebrowser.exe"
-  export GH_BROWSER="/mnt/c/Program\ Files/qutebrowser/qutebrowser.exe"
 fi
 
 # Set WIN_HOME environment variable
@@ -46,7 +60,7 @@ export PATH
 export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
 PATH="$PATH:/mnt/c/Program Files/Oracle/VirtualBox"
 
-# Android
+# Android Debug Bridge (ADB)
 export ADB_VENDOR_KEY="$XDG_CONFIG_HOME"/android
 export ANDROID_AVD_HOME="$XDG_DATA_HOME"/android/
 export ANDROID_SDK_HOME="$XDG_CONFIG_HOME"/android

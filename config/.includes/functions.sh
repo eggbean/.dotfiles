@@ -1,4 +1,4 @@
-# Functions
+# Functions (for bash and zsh)
 
 [[ $BASH_VERSION ]] && shell=bash
 [[ $ZSH_VERSION ]] && shell=zsh
@@ -36,15 +36,6 @@ docker() {
   fi
 }
 
-# Prevent accidental git stashing
-git() {
-  if [[ $# -eq 1 ]] && [[ $1 == stash ]]; then
-    echo 'WARNING: run "git stash push" instead.'
-  else
-    command git "$@"
-  fi
-}
-
 # Use cat to display web page source and change tabs to 4 spaces
 cat() {
   if [[ $1 == *://* ]]; then
@@ -55,9 +46,7 @@ cat() {
 }
 
 # Yoloing
-yolo() {
-  yes | sudo "$@"
-}
+yolo() { yes | sudo "$@"; }
 
 # tre $EDITOR aliasing
 tre() { command tre "$@" -e && source "/tmp/tre_aliases_$USER" 2>/dev/null; }
