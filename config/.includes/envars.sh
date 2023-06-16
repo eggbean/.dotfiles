@@ -42,7 +42,7 @@ export VIMINIT='let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$X
 if [[ $DISPLAY ]]; then
   export BROWSER=qutebrowser
 else
-  export BROWSER=elinks
+  export BROWSER=w3m
 fi
 
 # Text Editor
