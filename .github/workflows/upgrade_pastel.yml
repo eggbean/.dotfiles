@@ -15,7 +15,8 @@ jobs:
           nameregex='^pastel-v\d[\d.]+?\d?-aarch64-unknown-linux-gnu\.tar\.gz$'
           wget -q "$(curl -s https://api.github.com/repos/sharkdp/pastel/releases/latest | jq -r '.assets[] | select(.name|test($name)).browser_download_url' --arg name "${nameregex}")"
           tar --wildcards --strip-components=1 -C bin/aarch64 -xvf pastel-v*-unknown-linux-gnu.tar.gz pastel-v*-unknown-linux-gnu/pastel
-          tar --wildcards --strip-components=2 -C bin/completions -xvf pastel-v*-unknown-linux-gnu.tar.gz pastel-v*-unknown-linux-gnu/autocomplete/pastel.bash
+          tar --wildcards --strip-components=2 -C bin/bash-completions -xvf pastel-v*-unknown-linux-gnu.tar.gz pastel-v*-unknown-linux-gnu/autocomplete/pastel.bash
+          tar --wildcards --strip-components=2 -C bin/zsh-completions -xvf pastel-v*-unknown-linux-gnu.tar.gz pastel-v*-unknown-linux-gnu/autocomplete/_pastel
           rm pastel-v*-unknown-linux-gnu.tar.gz
 
           nameregex='^pastel-v\d[\d.]+?\d?-arm-unknown-linux-gnueabihf\.tar\.gz$'
@@ -35,5 +36,5 @@ jobs:
           git add --all
           git status
           tag="$(curl -s https://api.github.com/repos/sharkdp/pastel/releases/latest | jq -r '.tag_name')"
-          git commit -m "Upgrade pastel to ${tag}"
+          git commit -m "[Action] Upgrade pastel to ${tag}"
           git push
