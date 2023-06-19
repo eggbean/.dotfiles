@@ -10,3 +10,8 @@ export XDG_STATE_HOME="$HOME/.local/state"
 if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprofile"
 fi
+
+# Nix package manager
+if [ -e "$HOME"/.nix-profile/etc/profile.d/nix.sh ]; then
+  source "$HOME"/.nix-profile/etc/profile.d/nix.sh
+fi
