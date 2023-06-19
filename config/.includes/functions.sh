@@ -6,7 +6,8 @@
 # Rename tmux windows automatically to hostname
 ssh() {
   if [[ $TMUX ]]; then
-    tmux rename-window "$(echo "${@: -1}" | rev | cut -d '@' -f1 | rev | sed -E 's/\.([a-z0-9\-]+)\.compute\.amazonaws\.com$//' )"
+    tmux rename-window "$(echo "${@: -1}" | \
+      rev | cut -d '@' -f1 | rev | sed -E 's/\.([a-z0-9\-]+)\.compute\.amazonaws\.com$//' )"
     command ssh "$@"
     tmux set automatic-rename "on" >/dev/null
   else
@@ -14,15 +15,19 @@ ssh() {
   fi
 }
 
+# mosh to bastion (mobile connection) and ssh from there (stable connection)
+# This way ports for mosh only need to be opened on the bastion
+# There's no need for a mosh connection from the bastion
+# Guardian Agent (sga-ssh) is used to forward ssh-agent from local host
 mosh() {
+  [[ $TMUX ]] && tmux rename-window "$@"
   case $@ in
-    osiris)
-      command mosh bastet.jinkosystems.co.uk -- bash -c 'echo "Bouncing via bastion..." && echo && ssh osiris'
-      ;;
-    *)
-      command mosh "$@"
-      ;;
+    bastet) command mosh bastet.jinkosystems.co.uk ;;
+         *) command mosh bastet.jinkosystems.co.uk -- \
+              bash -c "printf '%s\n\n' 'Bouncing via bastion...' && \
+              sga-ssh $@" ;;
   esac
+  [[ $TMUX ]] && tmux set automatic-rename "on" >/dev/null
 }
 
 # Rename tmux windows when attaching to docker containers
