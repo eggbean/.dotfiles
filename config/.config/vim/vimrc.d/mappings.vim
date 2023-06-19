@@ -85,6 +85,3 @@ tnoremap <ESC> <C-\><C-n>
 
 " Write after forgetting sudo
 cnoremap w!! w !sudo tee % >/dev/null
-
-" Clear registers
-command! WipeReg for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor

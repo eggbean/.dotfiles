@@ -55,3 +55,16 @@ function! HighlightRepeats() range
   endfor
 endfunction
 command! -range=% HighlightRepeats <line1>,<line2>call HighlightRepeats()
+
+" Clear registers
+function! WipeReg()
+  for i in range(34,122)
+    silent! call setreg(nr2char(i), [])
+  endfor
+  if has ('nvim')
+    wsh!
+  else
+    wv!
+  endif
+endfunction
+command! WipeReg call WipeReg()
