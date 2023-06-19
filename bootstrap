@@ -27,8 +27,7 @@ fi
 # Setup/update antidote
 if [[ $ZSH_VERSION ]]; then
   if [[ ! -d ~/.cache/antidote ]]; then
-    git clone --depth=1 https://github.com/mattmc3/antidote.git \
-      ~/.cache/antidote
+    git clone --depth=1 https://github.com/mattmc3/antidote.git ~/.cache/antidote
   fi
   source ~/.cache/antidote/antidote.zsh
   antidote load ~/.dotfiles/config/.includes/zsh_plugins.txt
@@ -40,10 +39,12 @@ git -C ~/.dotfiles remote update
 [[ $(git -C ~/.dotfiles rev-parse HEAD) == \
   $(git -C ~/.dotfiles ls-remote $(git -C ~/.dotfiles rev-parse --abbrev-ref @{u} | \
     sed 's/\// /g') | cut -f1) ]] && echo Local repository is up to date || \
-      echo Local repository has diverged from remote. Updating now.. && \
-      git -C ~/.dotfiles stash push --quiet && \
-      git -C ~/.dotfiles pull --no-ff && \
-      git -C ~/.dotfiles stash pop --quiet
+      echo Local repository has diverged from remote. Updating now.. && {
+        git -C ~/.dotfiles diff-index --quiet HEAD || stash=true
+        [[ $stash ]] && git -C ~/.dotfiles stash push --quiet && \
+        git -C ~/.dotfiles pull --no-ff && \
+        [[ $stash ]] && git -C ~/.dotfiles stash pop --quiet
+      }
 
 # Check for new kernel
 if ! grep -qi microsoft /proc/version; then
