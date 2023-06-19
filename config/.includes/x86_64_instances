@@ -1,2 +1,9 @@
 ## Host specific stuff for x86_64 instances
 # vim: filetype=bash
+
+# Oracle 9 x86_64 doesn't seem to have fuse installed
+# so just use vim instead of nvim --appimage-extract
+export EDITOR='vim'
+export VISUAL='vim'
+alias vi='vim'
+unalias vimdiff
