@@ -43,9 +43,6 @@ format = "[$path]($style)[$read_only]($read_only_style)"
 read_only = "🔒"
 home_symbol = "~"
 
-[terraform]
-format = "[$symbol$workspace]($style) "
-
 [git_branch]
 format = "[$symbol $branch]($style)"
 symbol = " "
@@ -56,6 +53,12 @@ ignore_branches = ["master", "main"]
 
 [git_state]
 format = ' \([$state($progress_current/$progress_total)]($style)\) '
+
+[python]
+format = ' [${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+
+[terraform]
+format = "[$symbol$workspace]($style) "
 
 [cmd_duration]
 min_time = 180_000
