@@ -5,11 +5,11 @@
 eval "$(. /etc/os-release && typeset -p ID)"
 if [[ $ID == ol ]]; then
   sudo dnf config-manager --set-enabled ol9_developer_EPEL
-  sudo dnf upgrade -y
+  sudo dnf upgrade -y || { echo "Failed"; return 1; }
   sudo dnf install -y $(egrep -v "[\s]*([#;].*|^$)" ~/.dotfiles/packages) || \
     { echo "Failed"; return 1; }
 elif [[ $ID == debian ]]; then
-  sudo apt-get update && sudo apt-get upgrade -y
+  sudo apt-get update && sudo apt-get upgrade -y || { echo "Failed"; return 1; }
   sudo apt-get install -y $(egrep -v "[\s]*([#;].*|^$)" ~/.dotfiles/packages) || \
     { echo "Failed"; return 1; }
 fi
@@ -38,13 +38,13 @@ fi
 git -C ~/.dotfiles remote update
 [[ $(git -C ~/.dotfiles rev-parse HEAD) == \
   $(git -C ~/.dotfiles ls-remote $(git -C ~/.dotfiles rev-parse --abbrev-ref @{u} | \
-    sed 's/\// /g') | cut -f1) ]] && echo Local repository is up to date || \
-      echo Local repository has diverged from remote. Updating now.. && {
-        git -C ~/.dotfiles diff-index --quiet HEAD || stash=true
-        [[ $stash ]] && git -C ~/.dotfiles stash push --quiet && \
-        git -C ~/.dotfiles pull --no-ff && \
-        [[ $stash ]] && git -C ~/.dotfiles stash pop --quiet
-      }
+  sed 's/\// /g') | cut -f1) ]] && echo Local repository is up to date || \
+  echo Local repository has diverged from remote. Updating now.. && {
+  git -C ~/.dotfiles diff-index --quiet HEAD || stash=true
+  [[ $stash ]] && git -C ~/.dotfiles stash push --quiet && \
+    git -C ~/.dotfiles pull --no-ff && \
+    [[ $stash ]] && git -C ~/.dotfiles stash pop --quiet
+  }
 
 # Check for new kernel
 if ! grep -qi microsoft /proc/version; then
