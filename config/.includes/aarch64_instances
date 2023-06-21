@@ -1,2 +1,8 @@
 ## Host specific stuff for aarch64 instances
 # vim: filetype=bash
+
+# GPG Agent
+eval $(gpg-agent --daemon 2>/dev/null)
+export GPG_AGENT_INFO
+# export SSH_AUTH_SOCK
+export GPG_TTY=$(tty)
