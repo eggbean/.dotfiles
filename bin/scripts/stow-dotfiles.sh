@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-[ "$(id -u)" = "0" ] && (echo "This script is not supposed to be run as root" >&2; exit 1)
+[ "$(id -u)" = "0" ] && { echo "This script is not supposed to be run as root" >&2; exit 1; }
 
 # Make some dummy files to prevent stow folding
 [ ! -d ~/.config ] && mkdir ~/.config
@@ -21,4 +21,4 @@ for file in "${shellfiles[@]}"; do
 done
 
 pushd ~/.dotfiles >/dev/null
-stow --adopt -Rv -d ~/.dotfiles -t ~ config
+stow --adopt -Rv -d ~/.dotfiles -t ~ config 2>"${TMPDIR:-/tmp}"/stow-dotfiles.sh.log

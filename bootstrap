@@ -14,16 +14,6 @@ elif [[ $ID == debian ]]; then
     { echo "Failed"; return 1; }
 fi
 
-# Stow binaries
-if [[ $UID -ne 0 ]] && [[ $EUID -ne 0 ]]; then
-  sudo ~/.dotfiles/bin/scripts/stow-bin.sh || { echo "Failed"; return 1; }
-else
-  ~/.dotfiles/bin/scripts/stow-bin.sh --nosudo || { echo "Failed"; return 1; }
-fi
-
-# Stow dotfiles
-~/.dotfiles/bin/scripts/stow-dotfiles.sh || { echo "Failed"; return 1; }
-
 # Setup/update antidote
 if [[ $ZSH_VERSION ]]; then
   if [[ ! -d ~/.cache/antidote ]]; then
@@ -45,6 +35,22 @@ git -C ~/.dotfiles remote update
     git -C ~/.dotfiles pull --no-ff && \
     [[ $stash ]] && git -C ~/.dotfiles stash pop --quiet
   }
+
+# Stow binaries
+if [[ $UID -ne 0 ]] && [[ $EUID -ne 0 ]]; then
+  sudo ~/.dotfiles/bin/scripts/stow-bin.sh && \
+    echo "Binaries stowed" || \
+    { echo "Failed: stow-bin.sh"; return 1; }
+else
+  ~/.dotfiles/bin/scripts/stow-bin.sh --nosudo && \
+    echo "Binaries stowed" || \
+    { echo "Failed: stow-bin.sh"; return 1; }
+fi
+
+# Stow dotfiles
+~/.dotfiles/bin/scripts/stow-dotfiles.sh && \
+  echo "Dotfiles stowed" || \
+  { echo "Failed: stow-dotfiles.sh"; return 1; }
 
 # Check for new kernel
 if ! grep -qi microsoft /proc/version; then

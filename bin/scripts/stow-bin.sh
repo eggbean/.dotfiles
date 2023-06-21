@@ -87,46 +87,40 @@ fi
 
 # Use the correct binaries for CPU architecture
 if [ "$(uname -o)" = "Android" ]; then
-  [ "$(dpkg --print-architecture)" = "aarch64" ] && arch='android' || ( echo "CPU architecture unknown" >&2; exit 1 )
+  [ "$(dpkg --print-architecture)" = "aarch64" ] && arch='android' || { echo "CPU architecture unknown" >&2; exit 1; }
 else
   [ "$(arch)" = "armv7l" ] && arch='armv7l'
   [ "$(arch)" = "aarch64" ] && arch='aarch64'
   [ "$(arch)" = "x86_64" ] && arch='x86_64'
-  [ -z "$arch" ] && ( echo "CPU architecture unknown" >&2; exit 1 )
+  [ -z "$arch" ] && { echo "CPU architecture unknown" >&2; exit 1; }
 fi
 
 pushd "$STOW_DIR" >/dev/null
 
 # Stow/unstow binaries
-stow $stowcom -vt "$targetdir" "$arch" 2>&1 \
-  && echo "DONE: bin package $stowed"
+stow $stowcom -vt "$targetdir" "$arch" 2>"${TMPDIR:-/tmp}"/stow-bin.sh.log
 
 # Stow/unstow shell scripts
-stow $stowcom -vt "$targetdir" scripts 2>&1 \
-  && echo "DONE: scripts package $stowed"
+stow $stowcom -vt "$targetdir" scripts 2>>"${TMPDIR:-/tmp}"/stow-bin.sh.log
 
 # Stow/unstow man files
 pushd "$STOW_DIR/man" >/dev/null
 mansubs=(*)
 for m in "${mansubs[@]}"; do
-  stow $stowcom -vt "$mandir"/"$m" "$m" 2>&1 \
-    && echo "DONE: $m package $stowed"
+  stow $stowcom -vt "$mandir"/"$m" "$m" 2>>"${TMPDIR:-/tmp}"/stow-bin.sh.log
 done
 popd >/dev/null
 
 # Stow/unstow bash completion files
-stow $stowcom -vt "$bashcompdir" bash-completions 2>&1 \
-  && echo "DONE: bash completions package $stowed"
+stow $stowcom -vt "$bashcompdir" bash-completions 2>>"${TMPDIR:-/tmp}"/stow-bin.sh.log
 
 # Stow/unstow zsh completion files
-stow $stowcom -vt "$zshcompdir" zsh-completions 2>&1 \
-  && echo "DONE: zsh completions package $stowed"
+stow $stowcom -vt "$zshcompdir" zsh-completions 2>>"${TMPDIR:-/tmp}"/stow-bin.sh.log
 
 # Stow/unstow fonts if local desktop system, but not on WSL
 if [ -n "$DISPLAY" ] && grep -vqi microsoft /proc/version; then
-  stow --no-folding $stowcom -vt "$fontdir" fonts 2>&1 \
-    && echo "DONE: fonts package $stowed"
-  fc-cache -f && echo "DONE: font cache updated"
+  stow --no-folding $stowcom -vt "$fontdir" fonts 2>>"${TMPDIR:-/tmp}"/stow-bin.sh.log
+  fc-cache -f
 fi
 
 # Clean up any empty directories when unstowing
