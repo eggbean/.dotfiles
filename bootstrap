@@ -6,13 +6,14 @@ eval "$(. /etc/os-release && typeset -p ID)"
 if [[ $ID == ol ]]; then
   sudo dnf config-manager --set-enabled ol9_developer_EPEL
   sudo dnf upgrade -y || { echo "Failed"; return 1; }
-  sudo dnf install -y $(egrep -v "[\s]*([#;].*|^$)" ~/.dotfiles/packages) || \
-    { echo "Failed"; return 1; }
+  source ~/.dotfiles/packages && sudo dnf install -y -- "${packages[@]}" || \
+    { echo "Failed: package update"; return 1; }
 elif [[ $ID == debian ]]; then
   sudo apt-get update && sudo apt-get upgrade -y || { echo "Failed"; return 1; }
-  sudo apt-get install -y $(egrep -v "[\s]*([#;].*|^$)" ~/.dotfiles/packages) || \
-    { echo "Failed"; return 1; }
+  source ~/.dotfiles/packages && sudo apt-get install -y -- "${packages[@]}" || \
+    { echo "Failed: package update"; return 1; }
 fi
+unset packages
 
 # Setup/update antidote
 if [[ $ZSH_VERSION ]]; then

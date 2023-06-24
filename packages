@@ -1,9 +1,13 @@
-# Packages
-zsh
-git
-tree
-htop
-stow
-shellcheck
-ranger
-w3m
+packages=()
+
+# Always
+packages+=(
+  zsh
+  git
+  tree
+  htop
+  stow
+  shellcheck
+  ranger
+  w3m
+)
