@@ -1,7 +1,7 @@
 # ~/.zlogin
 
 # neofetch and tmux sessions for welcome
-if [[ -z $TMUX ]]; then
+if [[ -z $TMUX ]] && [[ -z $TMUX_SSH_SPLIT ]]; then
   eval "$(source /etc/os-release && typeset -p ID)"
   if [[ $ID == debian ]]; then args='--ascii_colors 7 1 1'; fi
   clear && echo && neofetch "$args"
