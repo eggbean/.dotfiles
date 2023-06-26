@@ -6,18 +6,18 @@ eval "$(. /etc/os-release && typeset -p ID)"
 if [[ $ID == ol ]]; then
   sudo dnf config-manager --set-enabled ol9_developer_EPEL
   sudo dnf upgrade -y || \
-    { echo "Failed: packages update"; return 1; }
+    { echo "Failed: packages update" >&2; return 1; }
   if ! cmp --silent ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages; then
     source ~/.dotfiles/packages && sudo dnf install -y -- "${packages[@]}" || \
-      { echo "Failed: package installation"; return 1; }
+      { echo "Failed: package installation" >&2; return 1; }
     command cp ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages
   fi
 elif [[ $ID == debian ]]; then
   sudo apt-get update && sudo apt-get upgrade -y || \
-    { echo "Failed: packages update"; return 1; }
+    { echo "Failed: packages update" >&2; return 1; }
   if ! cmp --silent ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages; then
     source ~/.dotfiles/packages && sudo apt-get install -y -- "${packages[@]}" || \
-      { echo "Failed: package installation"; return 1; }
+      { echo "Failed: package installation" >&2; return 1; }
     command cp ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages
   fi
 fi
@@ -49,17 +49,17 @@ git -C ~/.dotfiles remote update
 if [[ $UID -ne 0 ]] && [[ $EUID -ne 0 ]]; then
   sudo ~/.dotfiles/bin/scripts/stow-bin.sh && \
     echo "Binaries stowed" || \
-    { echo "Failed: stow-bin.sh"; return 1; }
+    { echo "Failed: stow-bin.sh" >&2; return 1; }
 else
   ~/.dotfiles/bin/scripts/stow-bin.sh --nosudo && \
     echo "Binaries stowed" || \
-    { echo "Failed: stow-bin.sh"; return 1; }
+    { echo "Failed: stow-bin.sh" >&2; return 1; }
 fi
 
 # Stow dotfiles
 ~/.dotfiles/bin/scripts/stow-dotfiles.sh && \
   echo "Dotfiles stowed" || \
-  { echo "Failed: stow-dotfiles.sh"; return 1; }
+  { echo "Failed: stow-dotfiles.sh" >&2; return 1; }
 
 # Check for new kernel
 if ! grep -qi microsoft /proc/version; then
