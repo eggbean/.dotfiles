@@ -4,6 +4,7 @@ packages=()
 packages+=(
   zsh
   git
+  gawk
   tree
   htop
   stow
