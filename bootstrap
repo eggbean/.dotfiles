@@ -5,14 +5,16 @@
 eval "$(. /etc/os-release && typeset -p ID)"
 if [[ $ID == ol ]]; then
   sudo dnf config-manager --set-enabled ol9_developer_EPEL
-  sudo dnf upgrade -y || { echo "Failed: packages update"; return 1; }
+  sudo dnf upgrade -y || \
+    { echo "Failed: packages update"; return 1; }
   if ! cmp --silent ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages; then
     source ~/.dotfiles/packages && sudo dnf install -y -- "${packages[@]}" || \
       { echo "Failed: package installation"; return 1; }
     command cp ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages
   fi
 elif [[ $ID == debian ]]; then
-  sudo apt-get update && sudo apt-get upgrade -y || { echo "Failed: packages update"; return 1; }
+  sudo apt-get update && sudo apt-get upgrade -y || \
+    { echo "Failed: packages update"; return 1; }
   if ! cmp --silent ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages; then
     source ~/.dotfiles/packages && sudo apt-get install -y -- "${packages[@]}" || \
       { echo "Failed: package installation"; return 1; }
@@ -28,7 +30,7 @@ if [[ $ZSH_VERSION ]]; then
   fi
   source ~/.cache/antidote/antidote.zsh
   antidote load ~/.dotfiles/config/.includes/zsh_plugins.txt
-  antidote update
+  antidote update | grep -Ev "(^antidote: checking for updates|^$)"
 fi
 
 # Pull dotfiles origin/master
