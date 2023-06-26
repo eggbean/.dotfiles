@@ -15,6 +15,7 @@ export TMUX_PLUGIN_MANAGER_PATH="$XDG_DATA_HOME"/tmux/plugins
 export VAGRANT_HOME="$XDG_DATA_HOME"/vagrant
 export VAGRANT_ALIAS_FILE="$XDG_DATA_HOME"/vagrant/aliases
 export VSCODE_PORTABLE="$XDG_DATA_HOME"/vscode
+export W3M_DIR="$XDG_STATE_HOME"/w3m
 export WGETRC="$XDG_CONFIG_HOME"/wget/wgetrc
 export LESSHISTFILE="$XDG_STATE_HOME"/less/history
 export LESSCHARSET='utf-8'

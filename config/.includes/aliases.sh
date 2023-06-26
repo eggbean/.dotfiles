@@ -14,6 +14,7 @@ alias sxiv='sxiv -abs f'
 alias qb='qutebrowser'
 alias tv='tidy-viewer'
 alias cm='cmatrix -au 2'
+alias w3m='w3m -config "$XDG_CONFIG_HOME"/w3m/config'
 
 # Add colours when piping as I like colour
 # Can always use disable switch when required
