@@ -20,21 +20,21 @@ git -C ~/.dotfiles remote update
   sed 's/\// /g') | cut -f1) ]] && echo Local repository is up to date || \
   echo Local repository has diverged from remote. Updating now.. && {
   git -C ~/.dotfiles diff-index --quiet HEAD || stash=true
-  [[ $stash ]] && git -C ~/.dotfiles stash push --quiet && \
-    git -C ~/.dotfiles pull --no-ff && \
+  [[ $stash ]] && git -C ~/.dotfiles stash push --quiet
+    git -C ~/.dotfiles pull --no-ff
     [[ $stash ]] && git -C ~/.dotfiles stash pop --quiet
   }
 
 # Install some essential packages
 if [[ $ID =~ ^(fedora|amzn|ol)$ ]]; then
   if ! cmp --silent ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages; then
-    source ~/.dotfiles/packages && sudo dnf install -y -- "${packages[@]}" || \
+    source ~/.dotfiles/packages; sudo dnf install -y -- "${packages[@]}" || \
       { echo "Failed: package installation" >&2; return 1; }
     command cp ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages
   fi
 elif [[ $ID =~ ^(debian|ubuntu)$ ]]; then
   if ! cmp --silent ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages; then
-    source ~/.dotfiles/packages && sudo apt-get install -y -- "${packages[@]}" || \
+    source ~/.dotfiles/packages; sudo apt-get install -y -- "${packages[@]}" || \
       { echo "Failed: package installation" >&2; return 1; }
     command cp ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages
   fi
