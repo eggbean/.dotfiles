@@ -1,3 +1,5 @@
+# Alias definitiions (for bash and zsh)
+
 # Command defaults and aliases
 alias l='ls'
 alias la='ls -A'

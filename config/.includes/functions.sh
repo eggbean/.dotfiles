@@ -1,4 +1,4 @@
-# Functions (for bash and zsh)
+# Shell functions (for bash and zsh)
 
 [[ $BASH_VERSION ]] && shell=bash
 [[ $ZSH_VERSION ]] && shell=zsh

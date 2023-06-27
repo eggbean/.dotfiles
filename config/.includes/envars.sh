@@ -1,4 +1,4 @@
-# Environment Variables (for interactive shells)
+# Environment variables (for interactive shells)
 
 export ANSIBLE_CONFIG="$XDG_CONFIG_HOME"/ansible/ansible.cfg
 export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config

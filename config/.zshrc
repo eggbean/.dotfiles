@@ -25,7 +25,7 @@ zstyle ':completion:*' completer _expand _complete _correct _approximate
 zstyle ':completion:*' format 'Completing %d'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' menu select=2
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS} "ma=48;5;244;38;5;0"
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS} "ma=38;2;46;52;64;48;2;128;128;128"
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
 zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
@@ -36,11 +36,6 @@ zstyle ':completion:*' rehash true
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 zstyle -e ':completion:*' hosts 'reply=($(< ~/.dotfiles/config/.includes/hosts))'
-
-# Remove path/file underlining (zsh-syntax-highlighting plugin)
-(( ${+ZSH_HIGHLIGHT_STYLES} )) || typeset -A ZSH_HIGHLIGHT_STYLES
-ZSH_HIGHLIGHT_STYLES[path]=none
-ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 
 # Some key bindings
 bindkey -e
@@ -71,6 +66,11 @@ for direction (up down) {
 # Edit command line in visual editor
 autoload -U edit-command-line && zle -N edit-command-line
 bindkey '^x^e' edit-command-line
+
+# Remove path/file underlining (zsh-syntax-highlighting plugin)
+(( ${+ZSH_HIGHLIGHT_STYLES} )) || typeset -A ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[path]=none
+ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 
 # Enable zmv
 autoload zmv

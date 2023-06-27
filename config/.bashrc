@@ -39,11 +39,11 @@ fi
 # Enable colour support of ls
 eval "$(dircolors -b ~/.dotfiles/config/.includes/dir_colors)"
 
-# Alias definitions
-source ~/.dotfiles/config/.includes/aliases.sh
-
 # Use a private mock hosts(5) file for completion
 export HOSTFILE="~/.dotfiles/config/.includes/hosts"
+
+# Alias definitions
+source ~/.dotfiles/config/.includes/aliases.sh
 
 # Functions
 source ~/.dotfiles/config/.includes/functions.sh
@@ -58,7 +58,9 @@ if [[ ! -d ~/.cache/bash ]]; then
 fi
 
 # Do more stuff if binaries have been stowed
-[[ -f $XDG_STATE_HOME/binaries_stowed ]] && . ~/.dotfiles/config/.includes/init.bashrc
+[[ -f $XDG_STATE_HOME/binaries_stowed ]] && \
+  . ~/.dotfiles/config/.includes/init.bashrc
 
 # Source host specific environment
-[[ -f ~/.dotfiles/config/.includes/$(hostname -s) ]] && . ~/.dotfiles/config/.includes/"$(hostname -s)"
+[[ -f ~/.dotfiles/config/.includes/$(hostname -s) ]] && \
+  . ~/.dotfiles/config/.includes/"$(hostname -s)"
