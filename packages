@@ -1,3 +1,7 @@
+# Conditionally set array of packages to install
+# vim: filetype=bash
+
+eval "$(. /etc/os-release && typeset -p ID)"
 packages=()
 
 # Always
@@ -12,3 +16,20 @@ packages+=(
   ranger
   w3m
 )
+
+# Mosh dependencies
+# - bastion hosts and laptop/desktop clients (name starts with h)
+if [[ $(hostname -s) =~ ^(bastet|h.+)$ ]]; then
+  # Debian-based
+  [[ $ID =~ ^(debian|ubuntu)$ ]] && packages+=(
+    openssh-client
+    ssh-askpass
+    autossh
+  )
+  # RHEL-based
+  [[ $ID =~ ^(fedora|amzn|ol)$ ]] && packages+=(
+    openssh-clients
+    openssh-askpass
+    autossh
+  )
+fi
