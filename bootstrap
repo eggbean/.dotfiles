@@ -1,20 +1,38 @@
 # This script should be sourced, not executed
 # vim: filetype=bash
 
-# Update packages and install some essentials
+# Update packages
 eval "$(. /etc/os-release && typeset -p ID)"
-if [[ $ID == ol ]]; then
-  sudo dnf config-manager --set-enabled ol9_developer_EPEL
+if [[ $ID =~ ^(fedora|amzn|ol)$ ]]; then
+  [[ $ID == ol ]] && repo=ol9_developer_EPEL
+  sudo dnf config-manager --set-enabled $repo
   sudo dnf upgrade -y || \
     { echo "Failed: packages update" >&2; return 1; }
+elif [[ $ID =~ ^(debian|ubuntu)$ ]]; then
+  sudo apt-get update && sudo apt-get upgrade -y || \
+    { echo "Failed: packages update" >&2; return 1; }
+fi
+
+# Pull dotfiles origin/master
+git -C ~/.dotfiles remote update
+[[ $(git -C ~/.dotfiles rev-parse HEAD) == \
+  $(git -C ~/.dotfiles ls-remote $(git -C ~/.dotfiles rev-parse --abbrev-ref @{u} | \
+  sed 's/\// /g') | cut -f1) ]] && echo Local repository is up to date || \
+  echo Local repository has diverged from remote. Updating now.. && {
+  git -C ~/.dotfiles diff-index --quiet HEAD || stash=true
+  [[ $stash ]] && git -C ~/.dotfiles stash push --quiet && \
+    git -C ~/.dotfiles pull --no-ff && \
+    [[ $stash ]] && git -C ~/.dotfiles stash pop --quiet
+  }
+
+# Install some essential packages
+if [[ $ID =~ ^(fedora|amzn|ol)$ ]]; then
   if ! cmp --silent ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages; then
     source ~/.dotfiles/packages && sudo dnf install -y -- "${packages[@]}" || \
       { echo "Failed: package installation" >&2; return 1; }
     command cp ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages
   fi
-elif [[ $ID == debian ]]; then
-  sudo apt-get update && sudo apt-get upgrade -y || \
-    { echo "Failed: packages update" >&2; return 1; }
+elif [[ $ID =~ ^(debian|ubuntu)$ ]]; then
   if ! cmp --silent ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages; then
     source ~/.dotfiles/packages && sudo apt-get install -y -- "${packages[@]}" || \
       { echo "Failed: package installation" >&2; return 1; }
@@ -32,18 +50,6 @@ if [[ $ZSH_VERSION ]]; then
   antidote load ~/.dotfiles/config/.includes/zsh_plugins.txt
   antidote update | grep -Ev "(^antidote: checking for updates|^$)"
 fi
-
-# Pull dotfiles origin/master
-git -C ~/.dotfiles remote update
-[[ $(git -C ~/.dotfiles rev-parse HEAD) == \
-  $(git -C ~/.dotfiles ls-remote $(git -C ~/.dotfiles rev-parse --abbrev-ref @{u} | \
-  sed 's/\// /g') | cut -f1) ]] && echo Local repository is up to date || \
-  echo Local repository has diverged from remote. Updating now.. && {
-  git -C ~/.dotfiles diff-index --quiet HEAD || stash=true
-  [[ $stash ]] && git -C ~/.dotfiles stash push --quiet && \
-    git -C ~/.dotfiles pull --no-ff && \
-    [[ $stash ]] && git -C ~/.dotfiles stash pop --quiet
-  }
 
 # Stow binaries
 if [[ $UID -ne 0 ]] && [[ $EUID -ne 0 ]]; then
