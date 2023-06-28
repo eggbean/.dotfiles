@@ -1,16 +1,19 @@
 # This script should be sourced, not executed
 # vim: filetype=bash
 
+redc=$(tput setaf 1)
+norm=$(tput sgr0)
+
 # Update packages
 eval "$(. /etc/os-release && typeset -p ID)"
 if [[ $ID =~ ^(fedora|amzn|ol)$ ]]; then
   [[ $ID == ol ]] && repo=ol9_developer_EPEL
   sudo dnf config-manager --set-enabled $repo
   sudo dnf upgrade -y || \
-    { echo "Failed: packages update" >&2; return 1; }
+    { echo "${redc}Failed: packages update${norm}" >&2; return 1; }
 elif [[ $ID =~ ^(debian|ubuntu)$ ]]; then
   sudo apt-get update && sudo apt-get upgrade -y || \
-    { echo "Failed: packages update" >&2; return 1; }
+    { echo "${redc}Failed: packages update${norm}" >&2; return 1; }
 fi
 
 # Pull dotfiles origin/master
@@ -29,13 +32,13 @@ git -C ~/.dotfiles remote update
 if [[ $ID =~ ^(fedora|amzn|ol)$ ]]; then
   if ! cmp --silent ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages; then
     source ~/.dotfiles/packages; sudo dnf install -y -- "${packages[@]}" || \
-      { echo "Failed: package installation" >&2; return 1; }
+      { echo "${redc}Failed: package installation${norm}" >&2; return 1; }
     command cp ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages
   fi
 elif [[ $ID =~ ^(debian|ubuntu)$ ]]; then
   if ! cmp --silent ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages; then
     source ~/.dotfiles/packages; sudo apt-get install -y -- "${packages[@]}" || \
-      { echo "Failed: package installation" >&2; return 1; }
+      { echo "${redc}Failed: package installation${norm}" >&2; return 1; }
     command cp ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages
   fi
 fi
@@ -55,17 +58,17 @@ fi
 if [[ $UID -ne 0 ]] && [[ $EUID -ne 0 ]]; then
   sudo ~/.dotfiles/bin/scripts/stow-bin.sh && \
     echo "Binaries stowed" || \
-    { echo "Failed: stow-bin.sh" >&2; return 1; }
+    { echo "${redc}Failed: stow-bin.sh${norm}" >&2; return 1; }
 else
   ~/.dotfiles/bin/scripts/stow-bin.sh --nosudo && \
     echo "Binaries stowed" || \
-    { echo "Failed: stow-bin.sh" >&2; return 1; }
+    { echo "${redc}Failed: stow-bin.sh${norm}" >&2; return 1; }
 fi
 
 # Stow dotfiles
 ~/.dotfiles/bin/scripts/stow-dotfiles.sh && \
   echo "Dotfiles stowed" || \
-  { echo "Failed: stow-dotfiles.sh" >&2; return 1; }
+  { echo "${redc}Failed: stow-dotfiles.sh${norm}" >&2; return 1; }
 
 # Check for new kernel
 if ! grep -qi microsoft /proc/version; then
