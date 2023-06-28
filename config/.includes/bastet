@@ -1,1 +1,7 @@
-x86_64_instances
+## Host specific stuff for bastet (bastion host)
+# vim: filetype=bash
+
+source ~/.dotfiles/config/.includes/bastion
+
+[[ $(arch) == aarch64 ]] && source ~/.dotfiles/config/.includes/aarch64_instances
+[[ $(arch) == x86_64 ]] && source ~/.dotfiles/config/.includes/x86_64_instances

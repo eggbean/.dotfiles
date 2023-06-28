@@ -1,0 +1,12 @@
+## Host specific stuff for bastion hosts
+# vim: filetype=bash
+
+# === sga-guardian ===
+
+# Set environment variables overriding the ssh program
+export RSYNC_RSH=sga-ssh
+export GIT_SSH_COMMAND=sga-ssh
+
+# For tools not providing environment variables, set aliases
+alias mosh="mosh --ssh=sga-ssh"
+alias scp="scp -S sga-ssh"
