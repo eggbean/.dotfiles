@@ -4,7 +4,7 @@
 eval "$(. /etc/os-release && typeset -p ID)"
 packages=()
 
-# Always
+# Always install
 packages+=(
   zsh
   git
@@ -31,5 +31,12 @@ if [[ $(hostname -s) =~ ^(bastet|h.+)$ ]]; then
     openssh-clients
     openssh-askpass
     autossh
+  )
+fi
+
+# Install on Linux desktop/laptop clients (not WSL)
+if [[ -n $DISPLAY ]] && grep -vqi microsoft /proc/version; then
+  packages+=(
+    copyq
   )
 fi
