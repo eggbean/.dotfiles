@@ -17,6 +17,11 @@ packages+=(
   w3m
 )
 
+# Debian-based only (apt)
+[[ $ID =~ ^(debian|ubuntu)$ ]] && packages+=(
+  wget2
+)
+
 # Mosh dependencies
 # - bastion hosts and laptop/desktop clients (name starts with h)
 if [[ $(hostname -s) =~ ^(bastet|h.+)$ ]]; then
@@ -34,7 +39,7 @@ if [[ $(hostname -s) =~ ^(bastet|h.+)$ ]]; then
   )
 fi
 
-# Install on Linux desktop/laptop clients (not WSL)
+# Linux desktop/laptop clients (not WSL)
 if [[ -n $DISPLAY ]] && grep -vqi microsoft /proc/version; then
   packages+=(
     copyq
