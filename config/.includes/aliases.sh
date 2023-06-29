@@ -7,7 +7,6 @@ alias ll='ls -l'
 alias lla='ls -Al'
 alias sudo='sudo '  # pass aliases to superuser
 alias mc='. /usr/share/mc/bin/mc-wrapper.sh'
-alias wget='wget --hsts-file="$XDG_CACHE_HOME"/wget-hsts'
 alias crontab='crontab -i'
 alias ncdu='ncdu --exclude-kernfs --color dark'
 alias tree='tree -C'
@@ -38,6 +37,13 @@ if command -v exa >/dev/null; then
   alias ls='exa-wrapper.sh'
 else
   alias ls='/bin/ls $LS_OPTIONS'
+fi
+
+# Replace wget with wget2 when available
+if command -v wget2 >/dev/null; then
+  alias wget='wget2 --hsts-file="$XDG_CACHE_HOME"/wget-hsts'
+else
+  alias wget='wget --hsts-file="$XDG_CACHE_HOME"/wget-hsts'
 fi
 
 # Use nvim instead of vim when available
