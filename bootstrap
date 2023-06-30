@@ -22,10 +22,11 @@ git -C ~/.dotfiles remote update
   $(git -C ~/.dotfiles ls-remote $(git -C ~/.dotfiles rev-parse --abbrev-ref @{u} | \
   sed 's/\// /g') | cut -f1) ]] && echo Local repository is up to date || \
   echo Local repository has diverged from remote. Updating now.. && {
-  git -C ~/.dotfiles diff-index --quiet HEAD || stash=true
-  [[ $stash ]] && git -C ~/.dotfiles stash push --quiet
+    git -C ~/.dotfiles diff-index --quiet HEAD || stash=true
+    [[ $stash ]] && git -C ~/.dotfiles stash push --quiet
     git -C ~/.dotfiles pull --no-ff
     [[ $stash ]] && git -C ~/.dotfiles stash pop --quiet
+    unset stash
   }
 
 # Install some essential packages
@@ -43,6 +44,27 @@ elif [[ $ID =~ ^(debian|ubuntu)$ ]]; then
   fi
 fi
 unset packages
+
+# Install/update Nix package manager
+if ! command -v nix  >/dev/null; then
+  git -C ~/.dotfiles diff-index --quiet HEAD || stash=true
+  [[ $stash ]] && git -C ~/.dotfiles stash push --quiet
+  { sh <(curl -sL https://nixos.org/nix/install) --no-daemon && \
+    echo Nix package manager installed; } && \
+    . /home/jason/.nix-profile/etc/profile.d/nix.sh || \
+    { echo "${redc}Failed: Nix package manager installation${norm}" >&2; return 1; }
+  git -C ~/.dotfiles checkout . --quiet   # remove additions to shell config
+  [[ $stash ]] && git -C ~/.dotfiles stash pop --quiet
+  unset stash
+fi
+nix-channel --update
+if ! cmp --silent ~/.dotfiles/nix.pkgs $XDG_STATE_HOME/nix_packages; then
+  for nixpkg in $(egrep -v "[\s]*([#;].*|^$)" ./nix.pkgs); do
+    nix-env -iA $nixpkg && echo $nixpkg installed || \
+      { echo "${redc}Failed: $nixpkg nix package${norm}" >&2; return 1; }
+  done
+  command cp ~/.dotfiles/nix.pkgs $XDG_STATE_HOME/nix_packages
+fi
 
 # Setup/update antidote
 if [[ $ZSH_VERSION ]]; then
