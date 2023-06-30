@@ -8,6 +8,7 @@ packages=()
 packages+=(
   zsh
   git
+  curl
   gawk
   tree
   htop
