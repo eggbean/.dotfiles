@@ -6,6 +6,7 @@ nixpkgs.direnv
 nixpkgs.du-dust
 nixpkgs.exa
 nixpkgs.fd
+nixpkgs.glibcLocales
 nixpkgs.glow
 nixpkgs.grex
 nixpkgs.gum
