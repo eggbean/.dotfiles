@@ -12,7 +12,7 @@ if [[ $ID =~ ^(fedora|amzn|ol)$ ]]; then
   sudo dnf upgrade -y || \
     { echo "${redc}Failed: packages update${norm}" >&2; return 1; }
 elif [[ $ID =~ ^(debian|ubuntu)$ ]]; then
-  sudo apt-get update && sudo apt-get upgrade -y || \
+  sudo apt-get update -qq && sudo apt-get upgrade -y || \
     { echo "${redc}Failed: packages update${norm}" >&2; return 1; }
 fi
 
