@@ -30,20 +30,17 @@ git -C ~/.dotfiles remote update
   }
 
 # Install some essential packages
-if [[ $ID =~ ^(fedora|amzn|ol)$ ]]; then
+[[ $ID =~ ^(fedora|amzn|ol)$ ]] && pkmngcmd='dnf'
+[[ $ID =~ ^(debian|ubuntu)$ ]] && pkmngcmd='apt-get'
+if [[ $pkmngcmd ]]; then
   if ! cmp --silent ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages; then
-    source ~/.dotfiles/packages; sudo dnf install -y -- "${packages[@]}" || \
+    source ~/.dotfiles/packages; sudo $pkmngcmd install -y -- "${packages[@]}" || \
       { echo "${redc}Failed: package installation${norm}" >&2; return 1; }
     command cp ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages
+    unset packages
   fi
-elif [[ $ID =~ ^(debian|ubuntu)$ ]]; then
-  if ! cmp --silent ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages; then
-    source ~/.dotfiles/packages; sudo apt-get install -y -- "${packages[@]}" || \
-      { echo "${redc}Failed: package installation${norm}" >&2; return 1; }
-    command cp ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages
-  fi
+  unset pkmngcmd
 fi
-unset packages
 
 # Install/update Nix package manager
 if ! command -v nix  >/dev/null; then
