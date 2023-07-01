@@ -4,6 +4,10 @@
 redc=$(tput setaf 1)
 norm=$(tput sgr0)
 
+if ! command -v gum >/dev/null; then
+  alias gum="~/.dotfiles/bin/$(arch)/gum"
+fi
+
 # Update packages
 eval "$(. /etc/os-release && typeset -p ID)"
 if [[ $ID =~ ^(fedora|amzn|ol)$ ]]; then
@@ -12,7 +16,8 @@ if [[ $ID =~ ^(fedora|amzn|ol)$ ]]; then
   sudo dnf upgrade -y || \
     { echo "${redc}Failed: packages update${norm}" >&2; return 1; }
 elif [[ $ID =~ ^(debian|ubuntu)$ ]]; then
-  sudo apt-get update -qq && sudo apt-get upgrade -y || \
+  gum spin --title "Updating package information from sources" -- \
+    sudo apt-get update -qq && sudo apt-get upgrade -y || \
     { echo "${redc}Failed: packages update${norm}" >&2; return 1; }
 fi
 
@@ -46,7 +51,8 @@ fi
 if ! command -v nix  >/dev/null; then
   git -C ~/.dotfiles diff-index --quiet HEAD || stash=true
   [[ $stash ]] && git -C ~/.dotfiles stash push --quiet
-  { sh <(curl -sL https://nixos.org/nix/install) --no-daemon && \
+  { gum spin --title "Installing Nix package manager" -- \
+    sh <(curl -sL https://nixos.org/nix/install) --no-daemon && \
     echo Nix package manager installed; } && \
     . /home/jason/.nix-profile/etc/profile.d/nix.sh || \
     { echo "${redc}Failed: Nix package manager installation${norm}" >&2; return 1; }
@@ -75,17 +81,20 @@ fi
 
 # Stow binaries
 if [[ $UID -ne 0 ]] && [[ $EUID -ne 0 ]]; then
-  sudo ~/.dotfiles/bin/scripts/stow-bin.sh && \
+  gum spin --title "Stowing binaries" -- \
+    sudo ~/.dotfiles/bin/scripts/stow-bin.sh && \
     echo "Binaries stowed" || \
     { echo "${redc}Failed: stow-bin.sh${norm}" >&2; return 1; }
 else
-  ~/.dotfiles/bin/scripts/stow-bin.sh --nosudo && \
+  gum spin --title "Stowing binaries" -- \
+    ~/.dotfiles/bin/scripts/stow-bin.sh --nosudo && \
     echo "Binaries stowed" || \
     { echo "${redc}Failed: stow-bin.sh${norm}" >&2; return 1; }
 fi
 
 # Stow dotfiles
-~/.dotfiles/bin/scripts/stow-dotfiles.sh && \
+gum spin --title "Stowing dotfiles" -- \
+  ~/.dotfiles/bin/scripts/stow-dotfiles.sh && \
   echo "Dotfiles stowed" || \
   { echo "${redc}Failed: stow-dotfiles.sh${norm}" >&2; return 1; }
 
