@@ -33,10 +33,11 @@ alias mv='mv -iv'
 alias rm='rm -Iv --one-file-system'
 
 # Replace ls with exa
-if command -v exa >/dev/null; then
+if command -v exa >/dev/null && \
+  command -v exa-wrapper.sh >/dev/null; then
   alias ls='exa-wrapper.sh'
 else
-  alias ls='/bin/ls $LS_OPTIONS'
+  alias ls="command ls $LS_OPTIONS"
 fi
 
 # Replace wget with wget2 when available
