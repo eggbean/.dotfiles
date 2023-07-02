@@ -4,5 +4,5 @@
 # GPG Agent
 eval $(gpg-agent --daemon 2>/dev/null)
 export GPG_AGENT_INFO
-# export SSH_AUTH_SOCK
+export SSH_AUTH_SOCK
 export GPG_TTY=$(tty)
