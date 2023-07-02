@@ -37,29 +37,36 @@ git -C ~/.dotfiles remote update
     unset stash
   }
 
-# Install some essential packages
+# Install/uninstall some native packages
 [[ $ID =~ ^(fedora|amzn|ol)$ ]] && pkmngcmd='dnf'
 [[ $ID =~ ^(debian|ubuntu)$ ]] && pkmngcmd='apt-get'
 if [[ $pkmngcmd ]]; then
   if ! cmp --silent ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages; then
     source ~/.dotfiles/packages; sudo $pkmngcmd install -y -- "${packages[@]}" || \
       { echo "${redc}Failed: package installation${norm}" >&2; return 1; }
+    current=("${packages[@]}") && unset packages
+    if [[ -e $XDG_STATE_HOME/bootstrap_packages ]]; then
+      source $XDG_STATE_HOME/bootstrap_packages
+      for i in "${current[@]}"; do packages=(${packages[@]//*$i*}); done
+      sudo $pkmngcmd remove -y -- "${packages[@]}" || \
+        { echo "${redc}Failed: package removal${norm}" >&2; return 1; }
+    fi
     command cp ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages
-    unset packages
+    unset packages current
   fi
   unset pkmngcmd
 fi
 
-# Install/update Nix package manager
+# Install/update nix package manager
 # and install/uninstall packages
 if ! command -v nix  >/dev/null; then
   git -C ~/.dotfiles diff-index --quiet HEAD || stash=true
   [[ $stash ]] && git -C ~/.dotfiles stash push --quiet
-  { gum spin --title "Installing Nix package manager" -- \
+  { gum spin --title "Installing nix package manager" -- \
     sh <(curl -sL https://nixos.org/nix/install) --no-daemon && \
-    echo Nix package manager installed; } && \
+    echo nix package manager installed; } && \
     . /home/jason/.nix-profile/etc/profile.d/nix.sh || \
-    { echo "${redc}Failed: Nix package manager installation${norm}" >&2; return 1; }
+    { echo "${redc}Failed: nix package manager installation${norm}" >&2; return 1; }
   git -C ~/.dotfiles/config checkout .zshenv .bash_profile --quiet
   [[ $stash ]] && git -C ~/.dotfiles stash pop --quiet
   unset stash
