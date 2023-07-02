@@ -6,7 +6,6 @@ alias la='ls -A'
 alias ll='ls -l'
 alias lla='ls -Al'
 alias sudo='sudo '  # pass aliases to superuser
-alias mc='. /usr/share/mc/bin/mc-wrapper.sh'
 alias crontab='crontab -i'
 alias ncdu='ncdu --exclude-kernfs --color dark'
 alias tree='tree -C'

@@ -13,7 +13,7 @@ config/.config/gcloud/credentials.db filter=git-crypt diff=git-crypt
 config/.config/gcloud/legacy_credentials/gomez404@gmail.com/adc.json filter=git-crypt diff=git-crypt
 config/.config/gcloud/legacy_credentials/gomez404@gmail.com/.boto filter=git-crypt diff=git-crypt
 config/.steampipe/config/*.spc filter=git-crypt diff=git-crypt
-config/.mclient/config.json filter=git-crypt diff=git-crypt
+config/.mc/config.json filter=git-crypt diff=git-crypt
 config/.oci/* filter=git-crypt diff=git-crypt
 config/.config/doctl/config.yaml filter=git-crypt diff=git-crypt
 config/.config/vim/spell/en.utf-8.add filter=git-crypt diff=git-crypt
