@@ -10,6 +10,7 @@ nixpkgs.git-crypt
 nixpkgs.glibcLocales
 nixpkgs.glow
 nixpkgs.grex
+nixpkgs.guardian-agent
 nixpkgs.jless
 nixpkgs.minio-client
 nixpkgs.monolith
