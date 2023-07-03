@@ -33,7 +33,7 @@ set nowrapscan
 set history=1000
 set belloff=all
 set title
-set listchars=tab:▸-,extends:>,precedes:<,nbsp:+
+set listchars=tab:··,extends:>,precedes:<,nbsp:+
 set mouse=a
 set mousemodel=popup
 set hidden
