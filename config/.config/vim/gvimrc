@@ -1,5 +1,5 @@
 " GVIM CONFIGURATION
-" Only runs on gvimrc, after vimrc
+" Only sourced by gvim, after sourcing vimrc
 
 set t_Co=256
 color PaperColor
@@ -14,10 +14,10 @@ highlight iCursor guifg=black guibg=steelblue
 set guicursor=n-v-c:block-Cursor
 set guicursor+=i:ver20-iCursor
 set statusline=
-set statusline+=%f
+set statusline+=\ \ %f
 set statusline+=\ %m
 set statusline+=%=
-set statusline+=%l:%c\ \ %p%%
+set statusline+=%l:%c\ \ %p%%\ \ 
 hi StatusLine guibg=grey70 guifg=#eeeeee
 set lines=35 columns=90
 set guioptions -=L
