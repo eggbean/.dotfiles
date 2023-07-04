@@ -1,6 +1,7 @@
 Tarrasch/zsh-bd
 jirutka/zsh-shift-select
 romkatv/windows-terminal-zsh-integration
-zsh-users/zsh-completions
+spwhitt/nix-zsh-completions
 zsh-users/zsh-autosuggestions
+zsh-users/zsh-completions
 zsh-users/zsh-syntax-highlighting
