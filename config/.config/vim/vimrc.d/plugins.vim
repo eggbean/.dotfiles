@@ -11,6 +11,7 @@ elseif has('win32') | call plug#begin() | endif
     Plug 'iamcco/markdown-preview.nvim', { 'for': 'markdown' }
     Plug 'ntpeters/vim-better-whitespace'
     Plug 'airblade/vim-gitgutter'
+    Plug 'nanotee/zoxide.vim'
     Plug 'AndrewRadev/sideways.vim'
     Plug 'AndrewRadev/switch.vim'
     Plug 'chrisbra/Recover.vim'
