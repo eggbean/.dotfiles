@@ -2,6 +2,7 @@ nixpkgs.agebox
 nixpkgs.bat
 nixpkgs.broot
 nixpkgs.chezmoi
+nixpkgs.delta
 nixpkgs.direnv
 nixpkgs.du-dust
 nixpkgs.exa
@@ -11,6 +12,7 @@ nixpkgs.glibcLocales
 nixpkgs.glow
 nixpkgs.grex
 nixpkgs.guardian-agent
+nixpkgs.hyperfine
 nixpkgs.jless
 nixpkgs.minio-client
 nixpkgs.monolith
