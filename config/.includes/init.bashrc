@@ -7,7 +7,7 @@ if command -v gh >/dev/null; then
 fi
 
 # MinIO Client command completion
-complete -C mclient mclient
+complete -C mc mc
 
 # broot function
 [ -f ~/.config/broot/launcher/bash/br ] && source ~/.config/broot/launcher/bash/br
@@ -19,7 +19,7 @@ complete -C vault vault
 
 # Don't initialise these tools a second time, as it causes
 # starship to show a background job when changing directories
-if [[ ! $init_bashrc_sourced == true ]]; then
+if command -v nix >/dev/null && [[ ! $init_bashrc_sourced == true ]]; then
 
   # Direnv hook
   eval "$(direnv hook bash)"

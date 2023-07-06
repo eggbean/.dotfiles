@@ -1,5 +1,8 @@
 # ~/.zshrc
 
+# Setup prompt
+PROMPT='%n@%m:%1~%# '
+
 # Command history
 HISTSIZE=10000
 SAVEHIST=10000

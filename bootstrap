@@ -1,14 +1,19 @@
 # This script should be sourced, not executed
 # vim: filetype=bash
 
+SECONDS=0
 redc=$(tput setaf 1)
 gren=$(tput setaf 2)
 yelw=$(tput setaf 3)
-bold=$(tput bold)
 norm=$(tput sgr0)
-
+if [[ -z $XDG_STATE_HOME ]]; then
+  export XDG_STATE_HOME="/home/$USER/.local/state"
+fi
+if [[ ! -d $XDG_STATE_HOME ]]; then
+  mkdir -p $XDG_STATE_HOME
+fi
 if ! command -v gum >/dev/null; then
-  alias gum="~/.dotfiles/bin/$(arch)/gum"
+  alias gum='~/.dotfiles/bin/$(arch)/gum'
 fi
 
 # Update packages
@@ -19,7 +24,7 @@ if [[ $ID =~ ^(fedora|amzn|ol)$ ]]; then
   sudo dnf upgrade -y || \
     { echo "${redc}Failed: packages update${norm}" >&2; return 1; }
 elif [[ $ID =~ ^(debian|ubuntu)$ ]]; then
-  gum spin --title "Updating package information from sources" -- \
+  gum spin --spinner.width=1 --title "Updating package information from sources" -- \
     sudo apt-get update -qq && sudo apt-get upgrade -y || \
     { echo "${redc}Failed: packages update${norm}" >&2; return 1; }
 fi
@@ -27,7 +32,7 @@ fi
 # Pull dotfiles origin/master
 git -C ~/.dotfiles remote update
 [[ $(git -C ~/.dotfiles rev-parse HEAD) == \
-  $(git -C ~/.dotfiles ls-remote $(git -C ~/.dotfiles rev-parse --abbrev-ref @{u} | \
+  $(git -C ~/.dotfiles ls-remote $(git -C ~/.dotfiles rev-parse --abbrev-ref '@{u}' | \
   sed 's/\// /g') | cut -f1) ]] && echo Local repository is up to date || \
   echo Local repository has diverged from remote. Updating now.. && {
     git -C ~/.dotfiles diff-index --quiet HEAD || stash=true
@@ -47,7 +52,7 @@ if [[ $pkmngcmd ]]; then
     current=("${packages[@]}") && unset packages
     if [[ -e $XDG_STATE_HOME/bootstrap_packages ]]; then
       source $XDG_STATE_HOME/bootstrap_packages
-      for i in "${current[@]}"; do packages=(${packages[@]//*$i*}); done
+      for i in "${current[@]}"; do packages=("${packages[@]//*$i*}"); done
       sudo $pkmngcmd remove -y -- "${packages[@]}" || \
         { echo "${redc}Failed: package removal${norm}" >&2; return 1; }
     fi
@@ -58,38 +63,52 @@ if [[ $pkmngcmd ]]; then
 fi
 
 # Install/update nix package manager
-# and install/uninstall packages
-if ! command -v nix  >/dev/null; then
-  git -C ~/.dotfiles diff-index --quiet HEAD || stash=true
-  [[ $stash ]] && git -C ~/.dotfiles stash push --quiet
-  { gum spin --title "Installing nix package manager" -- \
-    sh <(curl -sL https://nixos.org/nix/install) --no-daemon && \
-    echo nix package manager installed; } && \
-    . /home/jason/.nix-profile/etc/profile.d/nix.sh || \
+# and install/uninstall packages, but not on Android
+if ! command -v nix  >/dev/null && [[ $(uname -o) != Android ]]; then
+  { gum spin --spinner.width=1 --title "Installing nix package manager" -- \
+    sh <(curl -sL https://nixos.org/nix/install) --yes --no-modify-profile && \
+    echo Nix package manager installed; } && \
+    source ~/.nix-profile/etc/profile.d/nix.sh || \
     { echo "${redc}Failed: nix package manager installation${norm}" >&2; return 1; }
-  git -C ~/.dotfiles/config checkout .zshenv .bash_profile --quiet
-  [[ $stash ]] && git -C ~/.dotfiles stash pop --quiet
   unset stash
+  if [[ -f /etc/nix/nix.conf ]]; then
+    if grep -v 'experimental-features = nix-command flakes' /etc/nix/nix.conf; then
+      sudo sh -c "echo 'experimental-features = nix-command flakes' >> /etc/nix/nix.conf"
+    fi
+  else
+    sudo mkdir /etc/nix
+    sudo sh -c "echo 'experimental-features = nix-command flakes' > /etc/nix/nix.conf"
+  fi
 fi
 nix-channel --update
 if ! cmp --silent ~/.dotfiles/nix.pkgs $XDG_STATE_HOME/nix_packages; then
-  installpkgs=("${(f)$(comm -2 -3 <(sort -u ~/.dotfiles/nix.pkgs) \
-    <(sort -u $XDG_STATE_HOME/nix_packages 2>/dev/null))}")
-  for nixpkg in ${installpkgs[@]}; do
-    nix-env -iA $nixpkg && \
-      echo "${gren}${nixpkg#nixpkgs.} installed${norm}" || \
-      { echo "${redc}Failed: ${nixpkg#nixpkgs.} nix package installation${norm}" >&2
-        return 1; }
+  source ~/.dotfiles/nix.pkgs
+  newpkgs=("${nixpkgs[@]}") && unset nixpkgs
+  if [[ -e $XDG_STATE_HOME/nix_packages ]]; then
+    source $XDG_STATE_HOME/nix_packages
+    for i in "${nixpkgs[@]}"; do newpkgs=("${newpkgs[@]//*$i*}"); done
+  fi
+  for addpkg in "${newpkgs[@]}"; do
+    export NIXPKGS_ALLOW_UNFREE=1
+    nix-env -iA $addpkg \
+      && echo "${gren}${addpkg#nixpkgs.} installed${norm}" || \
+      { echo "${redc}Failed: ${addpkg#nixpkgs.} nix package installation${norm}" >&2
+      return 1; }
   done
-  removepkgs=("${(f)$(comm -1 -3 <(sort -u ~/.dotfiles/nix.pkgs) \
-    <(sort -u $XDG_STATE_HOME/nix_packages 2>/dev/null))}")
-  for rmnixpkg in ${removepkgs[@]}; do
-    nix-env --uninstall ${rmnixpkg#nixpkgs.} && \
-      echo "${yelw}${rmnixpkg#nixpkgs.} uninstalled${norm}" || \
-      { echo "${redc}Failed: ${rmnixpkg#nixpkgs.} nix package removal${norm}" >&2
+  unset nixpkgs newpkgs
+  source ~/.dotfiles/nix.pkgs
+  current=("${nixpkgs[@]}") && unset nixpkgs
+  if [[ -e $XDG_STATE_HOME/nix_packages ]]; then
+    source $XDG_STATE_HOME/nix_packages
+    for i in "${current[@]}"; do nixpkgs=("${nixpkgs[@]//*$i*}"); done
+    for rempkg in "${nixpkgs[@]}"; do
+      nix-env --uninstall ${rempkg#nixpkgs.} \
+        && echo "${yelw}${rempkg#nixpkgs.} uninstalled${norm}" || \
+        { echo "${redc}Failed: ${rempkg#nixpkgs.} nix package removal${norm}" >&2
         return 1; }
-  done
-  unset installpkgs removepkgs
+    done
+  fi
+  unset nixpkgs current
   command cp ~/.dotfiles/nix.pkgs $XDG_STATE_HOME/nix_packages
 fi
 
@@ -105,19 +124,19 @@ fi
 
 # Stow binaries
 if [[ $UID -ne 0 ]] && [[ $EUID -ne 0 ]]; then
-  gum spin --title "Stowing binaries" -- \
+  gum spin --spinner.width=1 --title "Stowing binaries" -- \
     sudo ~/.dotfiles/bin/scripts/stow-bin.sh && \
     echo "Binaries stowed" || \
     { echo "${redc}Failed: stow-bin.sh${norm}" >&2; return 1; }
 else
-  gum spin --title "Stowing binaries" -- \
+  gum spin --spinner.width=1 --title "Stowing binaries" -- \
     ~/.dotfiles/bin/scripts/stow-bin.sh --nosudo && \
     echo "Binaries stowed" || \
     { echo "${redc}Failed: stow-bin.sh${norm}" >&2; return 1; }
 fi
 
 # Stow dotfiles
-gum spin --title "Stowing dotfiles" -- \
+gum spin --spinner.width=1 --title "Stowing dotfiles" -- \
   ~/.dotfiles/bin/scripts/stow-dotfiles.sh && \
   echo "Dotfiles stowed" || \
   { echo "${redc}Failed: stow-dotfiles.sh${norm}" >&2; return 1; }
@@ -127,5 +146,12 @@ if ! grep -qi microsoft /proc/version; then
   ~/.dotfiles/bin/scripts/kernel-update-check.sh
 fi
 
+printf 'Time taken %d:%02d:%02d\n' \
+  $((SECONDS/3600)) $(((SECONDS/60)%60)) $((SECONDS%60))
+
 # Initialise shell
-exec $SHELL
+if [[ $BASH_VERSION ]]; then
+  exec bash
+elif [[ $ZSH_VERSION ]]; then
+  exec zsh
+fi

@@ -20,7 +20,7 @@ nginx_dissite() {
 }
 
 # MinIO Client command completion
-complete -o nospace -C mclient mclient
+complete -o nospace -C mc mc
 
 # broot function
 [ -f ~/.config/broot/launcher/bash/br ] && source ~/.config/broot/launcher/bash/br
@@ -32,7 +32,7 @@ complete -o nospace -C vault vault
 
 # Don't initialise these tools a second time, as it causes
 # starship to show a background job when changing directories
-if [[ ! $init_zshrc_sourced == true ]]; then
+if command -v nix >/dev/null && [[ ! $init_zshrc_sourced == true ]]; then
 
   # Direnv hook
   eval "$(direnv hook zsh)"

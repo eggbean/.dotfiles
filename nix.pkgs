@@ -1,37 +1,42 @@
-nixpkgs.agebox
-nixpkgs.bat
-nixpkgs.broot
-nixpkgs.chezmoi
-nixpkgs.delta
-nixpkgs.direnv
-nixpkgs.du-dust
-nixpkgs.exa
-nixpkgs.fd
-nixpkgs.git-crypt
-nixpkgs.glibcLocales
-nixpkgs.glow
-nixpkgs.grex
-nixpkgs.guardian-agent
-nixpkgs.hyperfine
-nixpkgs.jless
-nixpkgs.minio-client
-nixpkgs.monolith
-nixpkgs.moreutils
-nixpkgs.neovim
-nixpkgs.ngrok
-nixpkgs.nix-bash-completions
-nixpkgs.nix-zsh-completions
-nixpkgs.pastel
-nixpkgs.rclone
-nixpkgs.ripgrep
-nixpkgs.skate
-nixpkgs.starship
-nixpkgs.steampipe
-nixpkgs.terragrunt
-nixpkgs.tidy-viewer
-nixpkgs.tmux
-nixpkgs.tre
-nixpkgs.wdiff
-nixpkgs.yq-go
-nixpkgs.zola
-nixpkgs.zoxide
+# Set array of nix packages to install
+# vim: filetype=bash
+
+nixpkgs=(
+  nixpkgs.agebox
+  nixpkgs.ansible
+  nixpkgs.bat
+  nixpkgs.broot
+  nixpkgs.chezmoi
+  nixpkgs.delta
+  nixpkgs.direnv
+  nixpkgs.du-dust
+  nixpkgs.exa
+  nixpkgs.fd
+  nixpkgs.gh
+  nixpkgs.glibcLocales
+  nixpkgs.glow
+  nixpkgs.grex
+  nixpkgs.hyperfine
+  nixpkgs.jless
+  nixpkgs.minio-client
+  nixpkgs.monolith
+  nixpkgs.moreutils
+  nixpkgs.neovim
+  nixpkgs.ngrok
+  nixpkgs.nix-bash-completions
+  nixpkgs.nix-zsh-completions
+  nixpkgs.pastel
+  nixpkgs.rclone
+  nixpkgs.ripgrep
+  nixpkgs.skate
+  nixpkgs.starship
+  nixpkgs.steampipe
+  nixpkgs.terragrunt
+  nixpkgs.tidy-viewer
+  nixpkgs.tmux
+  nixpkgs.tre
+  nixpkgs.wdiff
+  nixpkgs.yq-go
+  nixpkgs.zola
+  nixpkgs.zoxide
+)
