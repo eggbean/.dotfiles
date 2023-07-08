@@ -13,21 +13,19 @@ touch ~/.ssh/.stow-no-folding
 
 # Move existing shell configuration files into a directory
 pushd ~ >/dev/null
-shellfiles=( .bash_aliases .bash_login .bash_logout .bash_profile .bashrc .inputrc )
+shellfiles=( .bash_aliases .bash_login .bash_logout \
+  .bash_profile .bashrc .inputrc .zcompdump .zshrc )
 for file in "${shellfiles[@]}"; do
-  if [ -e "$file" ] && [ ! -L "$file" ]; then
-    if [ ! -d "${TMPDIR:-/tmp}/existing_files" ]; then
-      mkdir "${TMPDIR:-/tmp}/existing_files"
-    fi
-    mv "$file" "${TMPDIR:-/tmp}/existing_files"
+  if [ -e $file ] && [ ! -L $file ]; then
+    rm $file
   fi
 done
 
 pushd ~/.dotfiles >/dev/null
 
-if [[ -e ${TMPDIR:-/tmp}/stow-dotfiles.sh.log ]]; then
-  rm ${TMPDIR:-/tmp}/stow-dotfiles.sh.log
+if [[ -e ${TMPDIR:-/tmp}/stow-dotfiles.$USER.log ]]; then
+  rm ${TMPDIR:-/tmp}/stow-dotfiles.$USER.log
 fi
 
 stow --adopt -Rv -d ~/.dotfiles -t ~ config \
-  2> >(tee -a ${TMPDIR:-/tmp}/stow-dotfiles.sh.log >&2)
+  2> >(tee -a ${TMPDIR:-/tmp}/stow-dotfiles.$USER.log >&2)

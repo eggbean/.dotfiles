@@ -28,7 +28,7 @@ while true; do
   shift
 done
 
-if [[ $(id -u) = 0 ]]; then
+if [[ $(id -u) == 0 ]]; then
   if [[ -n $SUDO_USER ]]; then
     USER="$SUDO_USER"
   else
@@ -57,7 +57,7 @@ if [[ -n $nosudo ]]; then
   zshcompdir="$HOME/.local/share/zsh/site-functions"
   fontdir="$HOME/.local/share/fonts"
 else
-  if [[ $(id -u) -ne 0 ]]; then
+  if [[ $(id -u) != 0 ]]; then
     echo "This script must be run as root to stow in /usr,\
  or use the --nosudo option to stow in ~/.local." >&2
     exit 1
@@ -134,7 +134,7 @@ fi
 
 # Create/remove state marker
 if [[ -n $unstow ]]; then
-  rm "$XDG_STATE_HOME"/binaries_stowed
+  rm -f "$XDG_STATE_HOME"/binaries_stowed
 else
   if [[ ! -d $XDG_STATE_HOME ]]; then mkdir -p "$XDG_STATE_HOME"; fi
   touch "$XDG_STATE_HOME"/binaries_stowed
