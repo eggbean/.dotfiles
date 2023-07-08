@@ -71,12 +71,15 @@ goto() {
   local CDPATH="$XDG_CACHE_HOME/bookmarks"
   pushd -qP "$@"
 }
-complete -W "$(builtin cd "$XDG_CACHE_HOME/bookmarks" && printf '%s\n' *)" goto
 bookmark() {
   pushd -q "$XDG_CACHE_HOME/bookmarks"
   ln -s "$OLDPWD" "$@"
   popd -q
 }
+if [[ ! -L $XDG_CACHE_HOME/bookmarks/@dotfiles ]]; then
+  ln -s ~/.dotfiles $XDG_CACHE_HOME/bookmarks/@dotfiles
+fi
+complete -W "$(builtin cd "$XDG_CACHE_HOME/bookmarks" && printf '%s\n' *)" goto
 
 # Combine goto and cdd functions to replace cd
 # (this is to avoid having to remember to type goto before I even
