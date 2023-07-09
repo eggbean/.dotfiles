@@ -12,18 +12,18 @@ fi
 if [[ ! -d $XDG_STATE_HOME ]]; then
   mkdir -p $XDG_STATE_HOME
 fi
-if ! command -v gum >/dev/null; then
+if [[ ! $(command -v gum) ]]; then
   alias gum='~/.dotfiles/bin/$(arch)/gum'
 fi
 
 # Update packages
-eval "$(. /etc/os-release && typeset -p ID)"
-if [[ $ID =~ ^(fedora|amzn|ol)$ ]]; then
+eval "$(source /etc/os-release && typeset -p ID)"
+if [[ $ID =~ ^(rhel|fedora|amzn|ol|rocky)$ ]]; then
   [[ $ID == ol ]] && repo=ol9_developer_EPEL
   sudo dnf config-manager --set-enabled $repo
   sudo dnf upgrade -y || \
     { echo "${redc}Failed: packages update${norm}" >&2; return 1; }
-elif [[ $ID =~ ^(debian|ubuntu)$ ]]; then
+elif [[ $ID =~ ^(debian|ubuntu|pop|raspbian)$ ]]; then
   gum spin --spinner.width=1 --title "Updating package information from sources" -- \
     sudo apt-get update -qq && sudo apt-get upgrade -y || \
     { echo "${redc}Failed: packages update${norm}" >&2; return 1; }
@@ -43,8 +43,8 @@ git -C ~/.dotfiles remote update
   }
 
 # Install/uninstall some native packages
-[[ $ID =~ ^(fedora|amzn|ol)$ ]] && pkmngcmd='dnf'
-[[ $ID =~ ^(debian|ubuntu)$ ]] && pkmngcmd='apt-get'
+[[ $ID =~ ^(rhel|fedora|amzn|ol|rocky)$ ]] && pkmngcmd='dnf'
+[[ $ID =~ ^(debian|ubuntu|pop|raspbian)$ ]] && pkmngcmd='apt-get'
 if [[ $pkmngcmd ]]; then
   if ! cmp --silent ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages; then
     source ~/.dotfiles/packages; sudo $pkmngcmd install -y -- "${packages[@]}" || \
@@ -64,21 +64,17 @@ fi
 
 # Install/update nix package manager
 # and install/uninstall packages, but not on Android
-if ! command -v nix  >/dev/null && [[ $(uname -o) != Android ]]; then
+if [[ ! $(command -v nix) ]] && [[ $(uname -o) != Android ]]; then
+  sudo mkdir /etc/nix
+  sudo sh -c 'printf "%s\n%s\n" \
+    "use-xdg-base-directories = true" \
+    "experimental-features = nix-command flakes" \
+    > /etc/nix/nix.conf'
   { gum spin --spinner.width=1 --title "Installing nix package manager" -- \
     sh <(curl -sL https://nixos.org/nix/install) --yes --no-modify-profile && \
     echo Nix package manager installed; } && \
-    source ~/.nix-profile/etc/profile.d/nix.sh || \
+    source $XDG_STATE_HOME/nix/profile/etc/profile.d/nix.sh || \
     { echo "${redc}Failed: nix package manager installation${norm}" >&2; return 1; }
-  unset stash
-  if [[ -f /etc/nix/nix.conf ]]; then
-    if grep -v 'experimental-features = nix-command flakes' /etc/nix/nix.conf; then
-      sudo sh -c "echo 'experimental-features = nix-command flakes' >> /etc/nix/nix.conf"
-    fi
-  else
-    sudo mkdir /etc/nix
-    sudo sh -c "echo 'experimental-features = nix-command flakes' > /etc/nix/nix.conf"
-  fi
 fi
 nix-channel --update
 if ! cmp --silent ~/.dotfiles/nix.pkgs $XDG_STATE_HOME/nix_packages; then

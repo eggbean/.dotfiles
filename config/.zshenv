@@ -12,6 +12,6 @@ if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; t
 fi
 
 # Nix package manager
-if [ -e "$HOME"/.nix-profile/etc/profile.d/nix.sh ]; then
-  source "$HOME"/.nix-profile/etc/profile.d/nix.sh
+if [ -e "$XDG_STATE_HOME"/nix/profile/etc/profile.d/nix.sh ]; then
+  source "$XDG_STATE_HOME"/nix/profile/etc/profile.d/nix.sh
 fi
