@@ -10,7 +10,6 @@ nixpkgs=(
   nixpkgs.delta
   nixpkgs.direnv
   nixpkgs.du-dust
-  nixpkgs.exa
   nixpkgs.fd
   nixpkgs.gh
   nixpkgs.glibcLocales
@@ -39,4 +38,5 @@ nixpkgs=(
   nixpkgs.yq-go
   nixpkgs.zola
   nixpkgs.zoxide
+  stbpkgs.exa
 )

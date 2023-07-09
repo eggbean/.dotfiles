@@ -76,6 +76,7 @@ if [[ ! $(command -v nix) ]] && [[ $(uname -o) != Android ]]; then
     source $XDG_STATE_HOME/nix/profile/etc/profile.d/nix.sh || \
     { echo "${redc}Failed: nix package manager installation${norm}" >&2; return 1; }
 fi
+nix-channel --add https://nixos.org/channels/nixos-23.05 stbpkgs
 nix-channel --update
 if ! cmp --silent ~/.dotfiles/nix.pkgs $XDG_STATE_HOME/nix_packages; then
   source ~/.dotfiles/nix.pkgs
