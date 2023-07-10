@@ -109,6 +109,9 @@ if ! cmp --silent ~/.dotfiles/nix.pkgs $XDG_STATE_HOME/nix_packages; then
   command cp ~/.dotfiles/nix.pkgs $XDG_STATE_HOME/nix_packages
 fi
 
+# Install Hashicorp repository
+sudo ~/.dotfiles/bin/scripts/repo-add-hashcorp.sh
+
 # Setup/update antidote
 if [[ $ZSH_VERSION ]]; then
   if [[ ! -d ~/.cache/antidote ]]; then
