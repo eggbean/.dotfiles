@@ -5,6 +5,9 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# Set prompt
+PS1='[\u@\h \W]\$ '
+
 # Shell options
 shopt -s direxpand
 shopt -s globstar
