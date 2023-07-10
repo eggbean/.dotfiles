@@ -14,6 +14,7 @@ autoload -U select-word-style
 select-word-style bash
 
 # Completion system
+typeset -gaU fpath=($fpath $XDG_STATE_HOME/nix/profile/share/zsh/site-functions)
 typeset -gaU fpath=($fpath /usr/local/share/bash-completion/completions)
 zmodload zsh/complist
 autoload -Uz compinit bashcompinit
