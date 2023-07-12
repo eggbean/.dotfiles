@@ -78,34 +78,49 @@ if [[ ! $(command -v nix) ]] && [[ $(uname -o) != Android ]]; then
 fi
 nix-channel --add https://nixos.org/channels/nixos-23.05 stbpkgs
 nix-channel --update
+# Intall & uninstall nix packages
 if ! cmp --silent ~/.dotfiles/nix.pkgs $XDG_STATE_HOME/nix_packages; then
   source ~/.dotfiles/nix.pkgs
   newpkgs=("${nixpkgs[@]}") && unset nixpkgs
   if [[ -e $XDG_STATE_HOME/nix_packages ]]; then
     source $XDG_STATE_HOME/nix_packages
-    for i in "${nixpkgs[@]}"; do newpkgs=("${newpkgs[@]//*$i*}"); done
+    oldpkgs=("${nixpkgs[@]}") && unset nixpkgs
+    declare -A drop
+    for x in "${oldpkgs[@]}"; do drop[$x]=1; done
+    for i in "${!newpkgs[@]}"; do
+      val=${newpkgs[i]}
+      [[ ${drop[$val]} ]] && unset -v 'newpkgs[i]'
+    done
+    unset -v drop
   fi
+  export NIXPKGS_ALLOW_UNFREE=1
   for addpkg in "${newpkgs[@]}"; do
-    export NIXPKGS_ALLOW_UNFREE=1
     nix-env -iA $addpkg \
       && echo "${gren}${addpkg#nixpkgs.} installed${norm}" || \
       { echo "${redc}Failed: ${addpkg#nixpkgs.} nix package installation${norm}" >&2
       return 1; }
   done
-  unset nixpkgs newpkgs
-  source ~/.dotfiles/nix.pkgs
-  current=("${nixpkgs[@]}") && unset nixpkgs
+  unset newpkgs
   if [[ -e $XDG_STATE_HOME/nix_packages ]]; then
     source $XDG_STATE_HOME/nix_packages
-    for i in "${current[@]}"; do nixpkgs=("${nixpkgs[@]//*$i*}"); done
-    for rempkg in "${nixpkgs[@]}"; do
+    oldpkgs=("${nixpkgs[@]}") && unset nixpkgs
+    source ~/.dotfiles/nix.pkgs
+    newpkgs=("${nixpkgs[@]}") && unset nixpkgs
+    declare -A drop
+    for x in "${newpkgs[@]}"; do drop[$x]=1; done
+    for i in "${!oldpkgs[@]}"; do
+      val=${oldpkgs[i]}
+      [[ ${drop[$val]} ]] && unset -v 'oldpkgs[i]'
+    done
+    unset -v drop
+    for rempkg in "${oldpkgs[@]}"; do
       nix-env --uninstall ${rempkg#nixpkgs.} \
         && echo "${yelw}${rempkg#nixpkgs.} uninstalled${norm}" || \
         { echo "${redc}Failed: ${rempkg#nixpkgs.} nix package removal${norm}" >&2
         return 1; }
     done
+    unset oldpkgs
   fi
-  unset nixpkgs current
   command cp ~/.dotfiles/nix.pkgs $XDG_STATE_HOME/nix_packages
 fi
 
