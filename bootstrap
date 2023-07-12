@@ -95,10 +95,17 @@ if ! cmp --silent ~/.dotfiles/nix.pkgs $XDG_STATE_HOME/nix_packages; then
   fi
   export NIXPKGS_ALLOW_UNFREE=1
   for addpkg in "${newpkgs[@]}"; do
-    nix-env -iA $addpkg \
-      && echo "${gren}${addpkg#nixpkgs.} installed${norm}" || \
-      { echo "${redc}Failed: ${addpkg#nixpkgs.} nix package installation${norm}" >&2
-      return 1; }
+    if [[ $addpkg != ${addpkg#nixpkgs.} ]]; then
+      nix-env -iA $addpkg \
+        && echo "${gren}${addpkg#nixpkgs.} installed${norm}" || \
+        { echo "${redc}Failed: ${addpkg#nixpkgs.} nix package installation${norm}" >&2
+        return 1; }
+    elif [[ $addpkg != ${addpkg#stbpkgs.} ]]; then
+      nix-env -iA $addpkg \
+        && echo "${gren}${addpkg#stbpkgs.} installed${norm}" || \
+        { echo "${redc}Failed: ${addpkg#stbpkgs.} nix package installation${norm}" >&2
+        return 1; }
+    fi
   done
   unset newpkgs
   if [[ -e $XDG_STATE_HOME/nix_packages ]]; then
@@ -114,10 +121,17 @@ if ! cmp --silent ~/.dotfiles/nix.pkgs $XDG_STATE_HOME/nix_packages; then
     done
     unset -v drop
     for rempkg in "${oldpkgs[@]}"; do
-      nix-env --uninstall ${rempkg#nixpkgs.} \
-        && echo "${yelw}${rempkg#nixpkgs.} uninstalled${norm}" || \
-        { echo "${redc}Failed: ${rempkg#nixpkgs.} nix package removal${norm}" >&2
-        return 1; }
+      if [[ $rempkg != ${rempkg#nixpkgs.} ]]; then
+        nix-env --uninstall ${rempkg#nixpkgs.} \
+          && echo "${yelw}${rempkg#nixpkgs.} uninstalled${norm}" || \
+          { echo "${redc}Failed: ${rempkg#nixpkgs.} nix package removal${norm}" >&2
+          return 1; }
+      elif [[ $rempkg != ${rempkg#stbpkgs.} ]]; then
+        nix-env --uninstall ${rempkg#stbpkgs.} \
+          && echo "${yelw}${rempkg#stbpkgs.} uninstalled${norm}" || \
+          { echo "${redc}Failed: ${rempkg#stbpkgs.} nix package removal${norm}" >&2
+          return 1; }
+      fi
     done
     unset oldpkgs
   fi
