@@ -10,3 +10,8 @@ export GIT_SSH_COMMAND=sga-ssh
 # For tools not providing environment variables, set aliases
 alias mosh="mosh --ssh=sga-ssh"
 alias scp="scp -S sga-ssh"
+
+# === ssh-agent on mosh connection ===
+if [[ ! -S $SSH_AUTH_SOCK ]]; then
+  export SSH_AUTH_SOCK=~/.ssh/agent.sock
+fi
