@@ -1,4 +1,5 @@
 # This script should be sourced, not executed
+# Can be sourced in bash or zsh
 # vim: filetype=bash
 
 SECONDS=0
@@ -24,8 +25,11 @@ if [[ $ID =~ ^(rhel|fedora|amzn|ol|rocky)$ ]]; then
   sudo dnf upgrade -y || \
     { echo "${redc}Failed: packages update${norm}" >&2; return 1; }
 elif [[ $ID =~ ^(debian|ubuntu|pop|raspbian)$ ]]; then
-  gum spin --spinner.width=1 --title "Updating package information from sources" -- \
-    sudo apt-get update -qq && sudo apt-get upgrade -y || \
+  gum spin --spinner.width=1 \
+    --title "Updating package information from sources" --show-output -- \
+    sudo apt-get update -qq && \
+    sudo apt-get upgrade -y && \
+    sudo apt autoremove -y || \
     { echo "${redc}Failed: packages update${norm}" >&2; return 1; }
 fi
 
@@ -85,13 +89,8 @@ if ! cmp --silent ~/.dotfiles/nix.pkgs $XDG_STATE_HOME/nix_packages; then
   if [[ -e $XDG_STATE_HOME/nix_packages ]]; then
     source $XDG_STATE_HOME/nix_packages
     oldpkgs=("${nixpkgs[@]}") && unset nixpkgs
-    declare -A drop
-    for x in "${oldpkgs[@]}"; do drop[$x]=1; done
-    for i in "${!newpkgs[@]}"; do
-      val=${newpkgs[i]}
-      [[ ${drop[$val]} ]] && unset -v 'newpkgs[i]'
-    done
-    unset -v drop
+    newpkgs=($(comm -2 -3 <(printf "%s\n" "${newpkgs[@]}" | sort) \
+      <(printf "%s\n" "${oldpkgs[@]}" | sort) | sort -n))
   fi
   export NIXPKGS_ALLOW_UNFREE=1
   for addpkg in "${newpkgs[@]}"; do
@@ -102,7 +101,7 @@ if ! cmp --silent ~/.dotfiles/nix.pkgs $XDG_STATE_HOME/nix_packages; then
         return 1; }
     elif [[ $addpkg != ${addpkg#stbpkgs.} ]]; then
       nix-env -iA $addpkg \
-        && echo "${gren}${addpkg#stbpkgs.} installed${norm}" || \
+        && echo "${gren}${addpkg#stbpkgs.} (stable channel) installed${norm}" || \
         { echo "${redc}Failed: ${addpkg#stbpkgs.} nix package installation${norm}" >&2
         return 1; }
     fi
@@ -113,13 +112,8 @@ if ! cmp --silent ~/.dotfiles/nix.pkgs $XDG_STATE_HOME/nix_packages; then
     oldpkgs=("${nixpkgs[@]}") && unset nixpkgs
     source ~/.dotfiles/nix.pkgs
     newpkgs=("${nixpkgs[@]}") && unset nixpkgs
-    declare -A drop
-    for x in "${newpkgs[@]}"; do drop[$x]=1; done
-    for i in "${!oldpkgs[@]}"; do
-      val=${oldpkgs[i]}
-      [[ ${drop[$val]} ]] && unset -v 'oldpkgs[i]'
-    done
-    unset -v drop
+    oldpkgs=($(comm -1 -3 <(printf "%s\n" "${newpkgs[@]}" | sort) \
+      <(printf "%s\n" "${oldpkgs[@]}" | sort) | sort -n))
     for rempkg in "${oldpkgs[@]}"; do
       if [[ $rempkg != ${rempkg#nixpkgs.} ]]; then
         nix-env --uninstall ${rempkg#nixpkgs.} \
@@ -128,7 +122,7 @@ if ! cmp --silent ~/.dotfiles/nix.pkgs $XDG_STATE_HOME/nix_packages; then
           return 1; }
       elif [[ $rempkg != ${rempkg#stbpkgs.} ]]; then
         nix-env --uninstall ${rempkg#stbpkgs.} \
-          && echo "${yelw}${rempkg#stbpkgs.} uninstalled${norm}" || \
+          && echo "${yelw}${rempkg#stbpkgs.} (stable channel) uninstalled${norm}" || \
           { echo "${redc}Failed: ${rempkg#stbpkgs.} nix package removal${norm}" >&2
           return 1; }
       fi
@@ -175,6 +169,7 @@ if ! grep -qi microsoft /proc/version; then
   ~/.dotfiles/bin/scripts/kernel-update-check.sh
 fi
 
+# Print time taken
 printf 'Time taken %d:%02d:%02d\n' \
   $((SECONDS/3600)) $(((SECONDS/60)%60)) $((SECONDS%60))
 
