@@ -11,7 +11,7 @@ touch ~/.local/share/.stow-no-folding
 [ ! -d ~/.ssh ] && mkdir ~/.ssh
 touch ~/.ssh/.stow-no-folding
 
-# Move existing shell configuration files into a directory
+# Delete existing shell configuration files
 pushd ~ >/dev/null
 shellfiles=( .bash_aliases .bash_login .bash_logout \
   .bash_profile .bashrc .inputrc .zcompdump .zshrc )
