@@ -29,6 +29,7 @@ elseif has('win32') | call plug#begin() | endif
     Plug 'hashivim/vim-vagrant'
     Plug 'hashivim/vim-vaultproject'
     " EVALUATING ...
+    Plug 'roxma/vim-tmux-clipboard'
     Plug 'EinfachToll/DidYouMean'
     Plug 'juliosueiras/vim-terraform-completion'
     Plug 'ojroques/vim-oscyank'
