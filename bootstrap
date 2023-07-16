@@ -169,6 +169,10 @@ if ! grep -qi microsoft /proc/version; then
   ~/.dotfiles/bin/scripts/kernel-update-check.sh
 fi
 
+# Check if repository is encryption locked
+git config -f ~/.dotfiles/.git/config --get filter.git-crypt.smudge >/dev/null || \
+  echo "${yelw}Repository is locked${norm}"
+
 # Print time taken
 printf 'Time taken %d:%02d:%02d\n' \
   $((SECONDS/3600)) $(((SECONDS/60)%60)) $((SECONDS%60))
