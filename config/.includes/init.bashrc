@@ -2,8 +2,10 @@
 # vim: filetype=bash
 
 # GitHub CLI bash completion
+# (first check if not encrypted to avoid error)
 if command -v gh >/dev/null; then
-  eval "$(gh completion -s bash 2>/dev/null)"
+  git config -f ~/.dotfiles/.git/config --get filter.git-crypt.smudge >/dev/null && \
+    eval "$(gh completion -s bash 2>/dev/null)"
 fi
 
 # MinIO Client command completion

@@ -2,8 +2,10 @@
 # vim: filetype=zsh
 
 # GitHub CLI zsh completion update
+# (first check if not encrypted to avoid error)
 if [ $commands[gh] ]; then
-  gh completion -s zsh > ~/.dotfiles/bin/zsh-completions/_gh
+  git config -f ~/.dotfiles/.git/config --get filter.git-crypt.smudge >/dev/null && \
+    gh completion -s zsh > ~/.dotfiles/bin/zsh-completions/_gh
 fi
 
 # nginx site symlinker (lazy-loading)
