@@ -1,48 +1,76 @@
 # Conditionally set array of packages to install
 # vim: filetype=bash
 
-eval "$(. /etc/os-release && typeset -p ID)"
 packages=()
+removepkg=()
+eval "$(. /etc/os-release && typeset -p ID)"
 
 # Always install
 packages+=(
-  zsh
-  git
   curl
+  expect
+  extundelete
   gawk
-  tree
+  git
   htop
-  stow
-  shellcheck
+  jq
   ranger
+  shellcheck
+  stow
+  tree
   w3m
+  zsh
 )
 
 # Debian-based only (apt)
-[[ $ID =~ ^(debian|ubuntu)$ ]] && packages+=(
+[[ $ID =~ ^(debian|ubuntu|pop|raspbian)$ ]] && packages+=(
+  wbritish
   wget2
 )
 
-# Mosh dependencies
+# RHEL-related only (rpm)
+[[ $ID =~ ^(rhel|fedora|amzn|ol|rocky)$ ]] && packages+=(
+  words
+)
+
+# Guardian-agent dependencies
 # - bastion hosts and laptop/desktop clients (name starts with h)
 if [[ $(hostname -s) =~ ^(bastet|h.+)$ ]]; then
   # Debian-based
-  [[ $ID =~ ^(debian|ubuntu)$ ]] && packages+=(
+  [[ $ID =~ ^(debian|ubuntu|pop|raspbian)$ ]] && packages+=(
+    autossh
     openssh-client
     ssh-askpass
-    autossh
   )
-  # RHEL-based
-  [[ $ID =~ ^(fedora|amzn|ol)$ ]] && packages+=(
-    openssh-clients
-    openssh-askpass
+  # RHEL-related
+  [[ $ID =~ ^(rhel|fedora|amzn|ol|rocky)$ ]] && packages+=(
     autossh
+    openssh-askpass
+    openssh-clients
   )
 fi
 
 # Linux desktop/laptop clients (not WSL)
 if [[ -n $DISPLAY ]] && grep -vqi microsoft /proc/version; then
   packages+=(
+    alacritty
     copyq
+    feh
+    nsxiv
+    qutebrowser
   )
 fi
+
+# WSL clients
+if grep -qi microsoft /proc/version; then
+  packages+=(
+    alacritty
+    nsxiv
+    qutebrowser
+  )
+fi
+
+# Always remove
+removepkg+=(
+  xterm
+)

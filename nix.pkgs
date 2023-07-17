@@ -9,6 +9,7 @@ nixpkgs=(
   nixpkgs.chezmoi
   nixpkgs.delta
   nixpkgs.direnv
+  nixpkgs.dogdns
   nixpkgs.du-dust
   nixpkgs.fd
   nixpkgs.gh
