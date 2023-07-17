@@ -4,7 +4,7 @@ window:
   # Window dimensions (changes require restart)
   dimensions:
     columns: 85
-    lines: 40
+    lines: 33
 
   # Window padding (changes require restart)
   padding:
