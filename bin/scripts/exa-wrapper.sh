@@ -114,6 +114,10 @@ shift "$((OPTIND - 1))"
 (( git == 1 )) && \
   [[ $(git -C ${*:-.} rev-parse --is-inside-work-tree) == true ]] 2>/dev/null && exa_opts+=(--git)
 
+# Test for variable set by direnv to ignore desktop.ini
+# and registry files on NTFS shared partitions
+[[ $exa_ignore =~ true ]] && exa_opts+=(-I "desktop.ini|ntuser.*|NTUSER.*")
+
 # Use my patched version of exa on NTFS drives so that files
 # aren't all seen as executables, so appear in $LS_COLORS.
 if grep -qi microsoft /proc/version; then
