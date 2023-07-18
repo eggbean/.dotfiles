@@ -8,7 +8,7 @@ import:
 font:
   # Normal (roman) font face
   normal:
-    family: "Iosevka Term"
+    family: "iMWritingMono Nerd Font"
     style: Regular
 
   # Bold font face
@@ -24,4 +24,4 @@ font:
     style: Bold Italic
 
   # Point size
-  size: 12.0
+  size: 11.0
