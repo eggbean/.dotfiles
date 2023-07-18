@@ -164,6 +164,14 @@ gum spin --spinner.width=1 --title "Stowing dotfiles" -- \
   echo "Dotfiles stowed" || \
   { echo "${redc}Failed: stow-dotfiles.sh${norm}" >&2; return 1; }
 
+# On WSL do all sorts of other stuff
+if grep -qi microsoft /proc/version; then
+  gum spin --spinner.width=1 --title "Configuring Windows" -- \
+    ~/.dotfiles/bin/scripts/dotfiles2appdata.sh && \
+    echo "Windows configured" || \
+    { echo "${redc}Failed: Windows configuration${norm}" >&2; return 1; }
+fi
+
 # Check for new kernel
 if ! grep -qi microsoft /proc/version; then
   ~/.dotfiles/bin/scripts/kernel-update-check.sh
