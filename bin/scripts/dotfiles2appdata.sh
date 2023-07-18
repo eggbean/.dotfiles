@@ -109,3 +109,21 @@ fi
 if [ ! -L /usr/local/bin/arp ]; then
   sudo ln -s $(which arp.exe) /usr/local/bin/arp
 fi
+
+# Set xdg-user-dirs
+xdg-user-dirs-update \
+  --dummy-output ~/.dotfiles/config/.config/user-dirs.dirs \
+  --set DOCUMENTS $WIN_HOME/Documents
+xdg-user-dirs-update \
+  --dummy-output ~/.dotfiles/config/.config/user-dirs.dirs \
+  --set DOWNLOAD $WIN_HOME/Downloads
+xdg-user-dirs-update \
+  --dummy-output ~/.dotfiles/config/.config/user-dirs.dirs \
+  --set MUSIC $WIN_HOME/Music
+xdg-user-dirs-update \
+  --dummy-output ~/.dotfiles/config/.config/user-dirs.dirs \
+  --set PICTURES $WIN_HOME/Pictures
+xdg-user-dirs-update \
+  --dummy-output ~/.dotfiles/config/.config/user-dirs.dirs \
+  --set VIDEOS $WIN_HOME/Videos
+git update-index --skip-worktree ~/.dotfiles/config/.config/user-dirs.dirs
