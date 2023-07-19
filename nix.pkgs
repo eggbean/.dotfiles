@@ -25,6 +25,7 @@ nixpkgs=(
   nixpkgs.ngrok
   nixpkgs.nix-bash-completions
   nixpkgs.nix-zsh-completions
+  nixpkgs.oci-cli
   nixpkgs.pastel
   nixpkgs.rclone
   nixpkgs.ripgrep
