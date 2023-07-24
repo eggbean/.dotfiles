@@ -26,11 +26,13 @@ packages+=(
 [[ $ID =~ ^(debian|ubuntu|pop|raspbian)$ ]] && packages+=(
   wbritish
   wget2
+  xz-utils
 )
 
 # RHEL-related only (rpm)
 [[ $ID =~ ^(rhel|fedora|amzn|ol|rocky)$ ]] && packages+=(
   words
+  xz
 )
 
 # Guardian-agent dependencies
