@@ -2,7 +2,7 @@
 # vim: filetype=bash
 
 packages=()
-removepkg=()
+rmmvpkgs=()
 eval "$(. /etc/os-release && typeset -p ID)"
 
 # Always install
@@ -24,6 +24,7 @@ packages+=(
 
 # Debian-based only (apt)
 [[ $ID =~ ^(debian|ubuntu|pop|raspbian)$ ]] && packages+=(
+  dnsutils
   wbritish
   wget2
   xz-utils
@@ -31,6 +32,7 @@ packages+=(
 
 # RHEL-related only (rpm)
 [[ $ID =~ ^(rhel|fedora|amzn|ol|rocky)$ ]] && packages+=(
+  bind-utils
   words
   xz
 )
@@ -73,6 +75,7 @@ if grep -qi microsoft /proc/version; then
 fi
 
 # Always remove
-removepkg+=(
+rmmvpkgs+=(
+  xfce4-terminal
   xterm
 )
