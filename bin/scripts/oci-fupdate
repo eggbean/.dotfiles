@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# Oracle firewall update script
+# Usage:  oci-fupdate [ <source-CIDR> ]
+#
+# Updates an existing Network Security Group to allow SSH access through the
+# OCI firewall to reach instances in a public subnet, like bastion hosts. With
+# no argument your current public IP address is used, or you can add a source
+# address block in CIDR format.
+#
+# Add your variables below. To find the values, first find the ocid for your NSG:
+#
+# $ oci network nsg list \
+#   --compartment-id <compartment-ocid> \
+#   --query 'data[].{id:id,"display-name":"display-name" }' \
+#   --output table
+#
+# Then get the rule id:
+#
+# $ oci network nsg rules list \
+#   --nsg-id <nsg-ocid>
+
+# Variables
+compartment_id='ocid1.compartment.oc1..aaaaaaaacvben...'
+nsg_id='ocid1.networksecuritygroup.oc1.uk-london-1.aaaaaaaa3mhk...'
+rule_id='6DF56F'
+port=22
+
+# Or, source variables file if it exists so
+# that they can be left out of git repository
+if [[ -e $(dirname "$0")/${0##*/}.env ]]; then
+  source "$(dirname "$0")/${0##*/}.env"
+fi
+
+# Update rule definition
+if [[ -z $1 ]]; then
+  source_cidr="$(curl -s ipv4.icanhazip.com)/32"
+else
+  source_cidr="$1"
+fi
+
+echo Modifying an existing NSG rule
+echo ==============================
+json_update_rule_file=$(mktemp)
+cat > "${json_update_rule_file}" << EOF
+  [
+    {
+      "description": "Allow SSH in",
+      "direction": "INGRESS",
+      "id": "$rule_id",
+      "is-stateless": false,
+      "protocol": "6",
+      "source": "$source_cidr",
+      "source-type": "CIDR_BLOCK",
+      "tcp-options": {
+        "destination-port-range": {
+          "max": $port,
+          "min": $port
+        }
+      }
+    }
+  ]
+EOF
+
+oci network nsg rules update --nsg-id $nsg_id \
+  --security-rules file://"$json_update_rule_file"
