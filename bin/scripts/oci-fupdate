@@ -23,7 +23,8 @@
 # Variables
 compartment_id='ocid1.compartment.oc1..aaaaaaaacvben...'
 nsg_id='ocid1.networksecuritygroup.oc1.uk-london-1.aaaaaaaa3mhk...'
-rule_id='6DF56F'
+rule_id_1='6DF56F'
+rule_id_2='31DA1A'
 port=22
 
 # Or, source variables file if it exists so
@@ -47,7 +48,7 @@ cat > "${json_update_rule_file}" << EOF
     {
       "description": "Allow SSH in",
       "direction": "INGRESS",
-      "id": "$rule_id",
+      "id": "$rule_id_1",
       "is-stateless": false,
       "protocol": "6",
       "source": "$source_cidr",
@@ -58,6 +59,16 @@ cat > "${json_update_rule_file}" << EOF
           "min": $port
         }
       }
+    },
+    {
+      "description": "Allow all ICMP in",
+      "direction": "INGRESS",
+      "icmp-options": null,
+      "id": "$rule_id_2",
+      "is-stateless": false,
+      "protocol": "1",
+      "source": "$source_cidr",
+      "source-type": "CIDR_BLOCK"
     }
   ]
 EOF
