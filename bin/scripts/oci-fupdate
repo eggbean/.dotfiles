@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Oracle firewall update script
-# Usage:  oci-fupdate [ <source-CIDR> ]
+# Usage:  oci-fupdate [ <source-CIDR> ] [ --query ]
 #
-# Updates an existing Network Security Group to allow SSH access through the
-# OCI firewall to reach instances in a public subnet, like bastion hosts. With
-# no argument your current public IP address is used, or you can add a source
-# address block in CIDR format.
+# Updates an existing Network Security Group to allow SSH access through the OCI
+# firewall to reach instances in a public subnet, like bastion hosts. With no
+# argument your current public IP address is used, or you can add a source address
+# block in CIDR format. The --query option returns the current source address.
 #
 # Add your variables below. To find the values, first find the ocid for your NSG:
 #
@@ -15,7 +15,7 @@
 #   --query 'data[].{id:id,"display-name":"display-name" }' \
 #   --output table
 #
-# Then get the rule id:
+# ...then get the rule id:
 #
 # $ oci network nsg rules list \
 #   --nsg-id <nsg-ocid>
@@ -25,12 +25,21 @@ compartment_id='ocid1.compartment.oc1..aaaaaaaacvben...'
 nsg_id='ocid1.networksecuritygroup.oc1.uk-london-1.aaaaaaaa3mhk...'
 rule_id_1='6DF56F'
 rule_id_2='31DA1A'
+rule_id_3='8DFF61'
 port=22
 
 # Or, source variables file if it exists so
 # that they can be left out of git repository
 if [[ -e $(dirname "$0")/${0##*/}.env ]]; then
   source "$(dirname "$0")/${0##*/}.env"
+fi
+
+# Query current rule source block
+if [[ $* =~ --query ]]; then
+  printf "%s%s\n" "Current source block CIDR: " \
+    "$(oci network nsg rules list \
+    --nsg-id $nsg_id | jq -r 'first(.data[]) | .source')"
+  exit
 fi
 
 # Update rule definition
@@ -46,7 +55,7 @@ json_update_rule_file=$(mktemp)
 cat > "${json_update_rule_file}" << EOF
   [
     {
-      "description": "Allow SSH in",
+      "description": "Allow ssh in",
       "direction": "INGRESS",
       "id": "$rule_id_1",
       "is-stateless": false,
@@ -61,7 +70,7 @@ cat > "${json_update_rule_file}" << EOF
       }
     },
     {
-      "description": "Allow all ICMP in",
+      "description": "Allow all icmp in",
       "direction": "INGRESS",
       "icmp-options": null,
       "id": "$rule_id_2",
@@ -69,6 +78,21 @@ cat > "${json_update_rule_file}" << EOF
       "protocol": "1",
       "source": "$source_cidr",
       "source-type": "CIDR_BLOCK"
+    },
+    {
+      "description": "Allow mosh in",
+      "direction": "INGRESS",
+      "id": "$rule_id_3",
+      "is-stateless": false,
+      "protocol": "17",
+      "source": "$source_cidr",
+      "source-type": "CIDR_BLOCK",
+      "udp-options": {
+        "destination-port-range": {
+          "max": 61000,
+          "min": 60000
+        }
+      }
     }
   ]
 EOF
