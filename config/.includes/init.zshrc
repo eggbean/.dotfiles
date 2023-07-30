@@ -25,12 +25,19 @@ nginx_dissite() {
 complete -o nospace -C mc mc
 
 # broot function
-[ -f ~/.config/broot/launcher/bash/br ] && source ~/.config/broot/launcher/bash/br
+[ -f ~/.config/broot/launcher/bash/br ] && \
+  source ~/.config/broot/launcher/bash/br
 
 # Hashicorp bash tab completion
 complete -o nospace -C terraform terraform
 complete -o nospace -C packer packer
 complete -o nospace -C vault vault
+
+# Oracle Cloud CLI autocompletion (this is very cool!)
+if command -v oci >/dev/null; then
+  var="$(realpath $(which oci))"; var="${var%/*}"
+  source ${var%/*}/lib/*/site-packages/oci_cli/bin/oci_autocomplete.sh
+fi
 
 # Don't initialise these tools a second time, as it causes
 # starship to show a background job when changing directories
