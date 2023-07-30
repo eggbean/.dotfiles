@@ -137,6 +137,12 @@ fi
 # Install Hashicorp repository
 sudo ~/.dotfiles/bin/scripts/repo-add-hashcorp.sh
 
+# Change default shell to zsh if it is not
+if [[ $(basename "$(grep $(whoami) /etc/passwd)") != zsh ]]; then
+  sudo chsh --shell /bin/zsh $(whoami)
+  echo "${yelw}Default shell changed to z-shell${norm}"
+fi
+
 # Setup/update antidote
 if [[ $ZSH_VERSION ]]; then
   if [[ ! -d ~/.cache/antidote ]]; then
