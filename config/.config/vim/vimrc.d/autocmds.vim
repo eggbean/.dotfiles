@@ -36,6 +36,12 @@ if has('nvim')
   augroup END
 endif
 
+" ---------------------
+" Some custom commands:
+
+" Send selection to my ix.io pastebin account
+command! -range=% IX '<,'>!curl -snF 'f:1=<-' ix.io
+
 " Highlight Repeated Lines
 function! HighlightRepeats() range
   let lineCounts = {}
