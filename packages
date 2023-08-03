@@ -60,6 +60,7 @@ if [[ -n $DISPLAY ]] && grep -vqi microsoft /proc/version; then
     alacritty
     copyq
     feh
+    vim-gtk3
     nsxiv
     qutebrowser
   )
@@ -67,8 +68,10 @@ fi
 
 # WSL clients
 if grep -qi microsoft /proc/version; then
-  packages+=(
+  # Debian-based
+  [[ $ID =~ ^(debian|ubuntu)$ ]] && packages+=(
     alacritty
+    vim-gtk3
     nsxiv
     qutebrowser
   )
