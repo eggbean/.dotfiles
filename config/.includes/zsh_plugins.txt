@@ -2,6 +2,7 @@ Tarrasch/zsh-bd
 jirutka/zsh-shift-select
 romkatv/windows-terminal-zsh-integration
 spwhitt/nix-zsh-completions
+pierpo/fzf-docker
 zsh-users/zsh-autosuggestions
 zsh-users/zsh-completions
 zsh-users/zsh-syntax-highlighting
