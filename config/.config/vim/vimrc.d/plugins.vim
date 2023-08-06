@@ -20,17 +20,18 @@ elseif has('win32') | call plug#begin() | endif
     Plug 'MattesGroeger/vim-bookmarks'
     Plug 'junegunn/fzf'
     Plug 'dhruvasagar/vim-zoom'
+    Plug 'azabiong/vim-highlighter'
     Plug 'ap/vim-css-color'
     Plug 'dense-analysis/ale'
     Plug 'eggbean/vim-toggle-bool', { 'branch': 'boolean' }
     Plug 'eggbean/vim-tmux', { 'branch': 'missing-commands' }
+    Plug 'EinfachToll/DidYouMean'
     Plug 'dstein64/vim-startuptime'
     Plug 'hashivim/vim-terraform'
     Plug 'hashivim/vim-vagrant'
     Plug 'hashivim/vim-vaultproject'
     " EVALUATING ...
     Plug 'roxma/vim-tmux-clipboard'
-    Plug 'EinfachToll/DidYouMean'
     Plug 'juliosueiras/vim-terraform-completion'
     Plug 'ojroques/vim-oscyank'
     Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
@@ -61,9 +62,11 @@ elseif has('win32') | call plug#begin() | endif
   if has('gui_running')
     Plug 'tpope/vim-rsi'
     Plug 'machakann/vim-highlightedyank'
+    Plug 'azabiong/vim-highlighter'
     Plug 'ntpeters/vim-better-whitespace'
     Plug 'machakann/vim-sandwich'
     Plug 'dhruvasagar/vim-zoom'
+    Plug 'chrisbra/Recover.vim'
     Plug 'AndrewRadev/typewriter.vim'
     if has('win32')
       Plug 'kkoenig/wimproved.vim'
