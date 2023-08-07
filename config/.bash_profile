@@ -62,4 +62,5 @@ export PATH
 # Nix package manager
 if [ -e "$XDG_STATE_HOME"/nix/profile/etc/profile.d/nix.sh ]; then
   source "$XDG_STATE_HOME"/nix/profile/etc/profile.d/nix.sh
+  XDG_DATA_DIRS="$XDG_STATE_HOME/nix/profile/share:$XDG_DATA_DIRS"
 fi

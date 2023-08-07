@@ -14,4 +14,5 @@ fi
 # Nix package manager
 if [ -e "$XDG_STATE_HOME"/nix/profile/etc/profile.d/nix.sh ]; then
   source "$XDG_STATE_HOME"/nix/profile/etc/profile.d/nix.sh
+  typeset -gaU fpath=($fpath $XDG_STATE_HOME/nix/profile/share/zsh/site-functions)
 fi
