@@ -25,6 +25,7 @@ export LC_ALL="en_GB.UTF-8" 2>/dev/null
 export LS_OPTIONS='-hv --color=always'
 export CLICOLOR=1
 export CLICOLOR_FORCE=1
+export NCURSES_NO_UTF8_ACS=1
 export MOSH_TITLE_NOPREFIX=
 export PAGER='less -r'
 export LESS='-MRQx4FX#10'
