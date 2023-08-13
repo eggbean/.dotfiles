@@ -84,6 +84,7 @@ if [[ ! $(command -v nix) ]] && [[ $(uname -o) != Android ]]; then
 fi
 nix-channel --add https://nixos.org/channels/nixos-23.05 stbpkgs
 nix-channel --update
+nix-collect-garbage --delete-old
 # Intall & uninstall nix packages
 if ! cmp --silent ~/.dotfiles/nix.pkgs $XDG_STATE_HOME/nix_packages; then
   source ~/.dotfiles/nix.pkgs
