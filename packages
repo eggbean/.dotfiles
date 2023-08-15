@@ -56,8 +56,8 @@ if [[ $(hostname -s) =~ ^(bastet|h.+)$ ]]; then
   )
 fi
 
-# Linux desktop/laptop clients (not WSL)
-if [[ -n $DISPLAY ]] && grep -vqi microsoft /proc/version; then
+# Linux desktop/laptop clients (name starts with h) - not WSL
+if [[ $(hostname -s) =~ ^(h.+)$ ]] && grep -vqi microsoft /proc/version; then
   packages+=(
     alacritty
     copyq
