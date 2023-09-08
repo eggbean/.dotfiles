@@ -1,4 +1,4 @@
-# Alias definitiions (for bash and zsh)
+# Alias definitions (for bash and zsh)
 
 # Command defaults and aliases
 alias l='ls'
@@ -32,9 +32,8 @@ alias mv='mv -iv'
 alias rm='rm -Iv --one-file-system'
 
 # Replace ls with exa
-if command -v eza >/dev/null && \
-  command -v exa-wrapper.sh >/dev/null; then
-  alias ls='exa-wrapper.sh'
+if command -v eza >/dev/null; then
+  alias ls='eza-wrapper.sh'
 else
   alias ls="command ls $LS_OPTIONS"
 fi

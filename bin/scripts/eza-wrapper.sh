@@ -122,7 +122,7 @@ shift "$((OPTIND - 1))"
 # aren't all seen as executables, so appear in $LS_COLORS.
 if grep -qi microsoft /proc/version; then
   shopt -s extglob
-  [[ $(realpath ${*:-.}) == /@(mnt|?)/* ]] 2>/dev/null && ezabin=eza-ntfs || ezabin=eza
+  [[ $(realpath ${*:-.}) == /@(mnt|?)/* ]] 2>/dev/null && ezabin=exa-ntfs || ezabin=eza
 fi
 
 ${ezabin:-eza} --color-scale "${eza_opts[@]}" "$@"
