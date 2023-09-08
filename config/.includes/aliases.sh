@@ -32,7 +32,7 @@ alias mv='mv -iv'
 alias rm='rm -Iv --one-file-system'
 
 # Replace ls with exa
-if command -v exa >/dev/null && \
+if command -v eza >/dev/null && \
   command -v exa-wrapper.sh >/dev/null; then
   alias ls='exa-wrapper.sh'
 else

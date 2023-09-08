@@ -11,6 +11,7 @@ nixpkgs=(
   nixpkgs.direnv
   nixpkgs.dogdns
   nixpkgs.du-dust
+  nixpkgs.eza
   nixpkgs.fd
   nixpkgs.gh
   nixpkgs.glibcLocales
@@ -40,5 +41,4 @@ nixpkgs=(
   nixpkgs.yq-go
   nixpkgs.zola
   nixpkgs.zoxide
-  stbpkgs.exa
 )
