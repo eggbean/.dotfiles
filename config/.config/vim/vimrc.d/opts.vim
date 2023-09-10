@@ -39,6 +39,7 @@ set mousemodel=popup
 set hidden
 set backup
 set writebackup
+set backupcopy=yes
 set swapfile
 set undofile
 set noshowmode
