@@ -1,0 +1,96 @@
+#!/bin/bash -e
+# vim: filetype=bash
+
+# deps: curl gawk gum jq
+
+# To-do:
+# * Remove gum dependency
+# * Add help
+# * Replace hardcoded wsl_hostname with variable
+# * Clean up STDOUT stuff
+# * Tidy up and shorten lines
+# * Add switch for adding network
+# * Add ability to update DNS on Pi-Holes
+
+wsl_hostname=''
+apikey=''
+network=''   # optional - otherwise will be asked if multiple networks available
+domain=''
+windows_hostfile='/mnt/c/Windows/System32/drivers/etc/hosts'
+linux_hostfile='/etc/hosts'
+
+# Source variables file if it exists (same name as script with .env extension),
+# so that they can be left out of git repository
+if [[ -e $(dirname "$0")/${0##*/}.env ]]; then
+  source "$(dirname "$0")/${0##*/}.env"
+fi
+
+if grep -qi microsoft /proc/version; then
+  wsl=true
+fi
+
+networkls() {
+  curl -s -H "Authorization: Bearer $apikey" \
+    -H "Content-Type: application/json" \
+    https://my.zerotier.com/api/network | \
+    jq -r '.[] | "\(.config.name)***\(.id)"' | column -t -s "***"
+}
+
+members() {
+  curl -s -H "Authorization: Bearer $apikey" \
+    -H "Content-Type: application/json" \
+    https://my.zerotier.com/api/network/$network/member | \
+    jq -r '.[] | "\(.name)***\(.config.id)***\(.config.ipAssignments[0])"' | \
+    column -t -s "***" | sort
+}
+
+hosts() {
+  curl -s -H "Authorization: Bearer $apikey" \
+    -H "Content-Type: application/json" \
+    https://my.zerotier.com/api/network/$network/member | \
+    jq --arg domain $domain -r '.[] | "\(.config.ipAssignments[0])***\(.name).\($domain)***\(.name)***#ZeroTier"' | \
+    column -t -s "***" | sort
+}
+
+eth0_ip=$(ip a | grep -Ew '^\s*inet.*eth0$' | awk '{print $2}' | cut -d"/" -f1)
+
+if [[ $wsl ]]; then
+  if grep -wq $wsl_hostname $windows_hostfile; then
+    linux_host=$(awk 'BEGIN { p=1; prev_blank=0 } NF { p=1; prev_blank=0 } /^$/ { prev_blank=1 } /wlinux.wsl/ { if (prev_blank == 0) p=0 } p' < $linux_hostfile)
+    printf "%s\n" "$linux_host" > $linux_hostfile
+    if [[ $wsl ]]; then
+      windows_host=$(awk -v RS='\r\n' -v ORS='\r\n' 'BEGIN { p=1; prev_blank=0 } NF { p=1; prev_blank=0 } /^$/ { prev_blank=1 } /wlinux.wsl/ { if (prev_blank == 0) p=0 } p' < $windows_hostfile)
+      printf "%s\r\n" "$windows_host" > $windows_hostfile
+    fi
+  fi
+  printf "\n%s\n%s\n" "# WSL2 $wsl_hostname host" "$eth0_ip  $wsl_hostname  #WSL" >> $linux_hostfile
+  if [[ $wsl ]]; then
+    printf "\r\n%s\r\n%s\r\n" "# WSL2 $wsl_hostname host" "$eth0_ip  $wsl_hostname  #WSL" >> $windows_hostfile
+  fi
+fi
+
+if [[ -z $network ]]; then
+  network=$(networkls | gum filter --placeholder='Which network?' | awk '{print $2}')
+fi
+
+mapfile -t hostentries < <(hosts)
+for k in "${!hostentries[@]}"; do [[ " ${hostentries[k]} " == *' null '* ]] && unset -v 'hostentries[k]'; done
+for h in "${!hostentries[@]}"; do [[ " ${hostentries[h]} " == *" $(hostname -s) "* ]] && unset -v 'hostentries[h]'; done
+if grep -wq ZeroTier $linux_hostfile; then
+  linux_zthosts=$(awk 'BEGIN { p=1; prev_blank=0 } NF { p=1; prev_blank=0 } /^$/ { prev_blank=1 } /ZeroTier/ { if (prev_blank == 0) p=0 } p' < $linux_hostfile)
+  printf "%s\n" "$linux_zthosts" > $linux_hostfile
+  if [[ $wsl ]]; then
+    windows_zthosts=$(awk -v RS='\r\n' -v ORS='\r\n' 'BEGIN { p=1; prev_blank=0 } NF { p=1; prev_blank=0 } /^$/ { prev_blank=1 } /ZeroTier/ { if (prev_blank == 0) p=0 } p' < $windows_hostfile)
+    printf "%s\n" "$windows_zthosts" > $windows_hostfile
+  fi
+fi
+printf "\n%s\n" "# ZeroTier Network" >> $linux_hostfile
+for e in "${hostentries[@]}"; do { printf "%s\n" "$e" | column -t >> $linux_hostfile; }; done
+if [[ $wsl ]]; then
+  printf "\r\n%s\r\n" "# ZeroTier Network" >> $windows_hostfile
+  for e in "${hostentries[@]}"; do { printf "%s\r\n" "$e" | column -t >> $windows_hostfile; }; done
+fi
+
+echo $network
+echo $eth0_ip
+members
