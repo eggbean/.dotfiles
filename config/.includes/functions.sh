@@ -89,9 +89,18 @@ take() { mkdir -p "$@" && eval pushd "\"\$$#\"" >/dev/null || return; }
 whichdisk() { realpath "$(df "${1:-.}" | command grep '^/' | cut -d' ' -f1)" ; }
 
 # Age of files
-agem() { echo $((($(date +%s) - $(date +%s -r "$1")) / 60)) minutes; }
-ageh() { echo $((($(date +%s) - $(date +%s -r "$1")) / 3600)) hours; }
-aged() { echo $((($(date +%s) - $(date +%s -r "$1")) / 86400)) days; }
+age() {
+  local t=$(($(date +%s) - $(date +%s -r "$1")))
+  local d=$((t/60/60/24))
+  local h=$((t/60/60%24))
+  local m=$((t/60%60))
+  local s=$((t%60))
+  (( $d > 0 )) && printf '%d days ' $d
+  (( $h > 0 )) && printf '%d hours ' $h
+  (( $m > 0 )) && printf '%d minutes ' $m
+  (( $d > 0 || $h > 0 || $m > 0 )) && printf 'and '
+  printf '%d seconds\n' $s
+}
 
 # fzf
 if command -v fzf >/dev/null; then
