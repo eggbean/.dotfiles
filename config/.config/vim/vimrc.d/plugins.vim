@@ -67,6 +67,7 @@ elseif has('win32') | call plug#begin() | endif
     Plug 'machakann/vim-sandwich'
     Plug 'dhruvasagar/vim-zoom'
     Plug 'chrisbra/Recover.vim'
+    Plug 'iamcco/markdown-preview.nvim', { 'for': 'markdown' }
     Plug 'AndrewRadev/typewriter.vim'
     if has('win32')
       Plug 'kkoenig/wimproved.vim'
