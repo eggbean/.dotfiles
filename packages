@@ -65,6 +65,7 @@ if [[ $(hostname -s) =~ ^(h.+)$ ]] && grep -vqi microsoft /proc/version; then
     vim-gtk3
     nsxiv
     qutebrowser
+    zathura
   )
 fi
 
@@ -76,6 +77,7 @@ if grep -qi microsoft /proc/version; then
     vim-gtk3
     nsxiv
     qutebrowser
+    zathura
   )
 fi
 
