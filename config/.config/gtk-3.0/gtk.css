@@ -1,0 +1,4 @@
+.view, iconview {
+  -XfdesktopIconView-cell-padding: 1px;
+  -XfdesktopIconView-cell-spacing: 1px;
+}
