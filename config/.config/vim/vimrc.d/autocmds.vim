@@ -37,12 +37,12 @@ if has('nvim')
 endif
 
 " ---------------------
-" Some custom commands:
+" Some custom commands and functions:
 
 " Send selection to my ix.io pastebin account
 command! -range=% IX '<,'>!curl -snF 'f:1=<-' ix.io
 
-" Highlight Repeated Lines
+" Highlight repeated lines
 function! HighlightRepeats() range
   let lineCounts = {}
   let lineNum = a:firstline
@@ -74,3 +74,14 @@ function! WipeReg()
   endif
 endfunction
 command! WipeReg call WipeReg()
+
+" For WSL conditionals
+function! IsWSL()
+  if has("unix")
+    let lines = readfile("/proc/version")
+    if lines[0] =~ "microsoft"
+      return 1
+    endif
+  endif
+  return 0
+endfunction

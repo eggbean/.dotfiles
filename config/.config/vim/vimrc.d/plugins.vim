@@ -2,25 +2,25 @@
 
 if has('unix') | call plug#begin('$XDG_DATA_HOME/vim/plugged')
 elseif has('win32') | call plug#begin() | endif
+  Plug 'tpope/vim-rsi'
+  Plug 'azabiong/vim-highlighter'
+  Plug 'ntpeters/vim-better-whitespace'
+  Plug 'machakann/vim-sandwich'
+  Plug 'dhruvasagar/vim-zoom'
+  Plug 'chrisbra/Recover.vim'
+  Plug 'iamcco/markdown-preview.nvim', { 'for': 'markdown' }
   if !has('gui_running')
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-fugitive'
-    Plug 'tpope/vim-rsi'
-    Plug 'machakann/vim-sandwich'
     Plug 'christoomey/vim-tmux-navigator'
-    Plug 'iamcco/markdown-preview.nvim', { 'for': 'markdown' }
-    Plug 'ntpeters/vim-better-whitespace'
     Plug 'airblade/vim-gitgutter'
     Plug 'nanotee/zoxide.vim'
     Plug 'AndrewRadev/sideways.vim'
     Plug 'AndrewRadev/switch.vim'
-    Plug 'chrisbra/Recover.vim'
     Plug 'chrisbra/csv.vim'
     Plug 'frazrepo/vim-rainbow'
     Plug 'MattesGroeger/vim-bookmarks'
     Plug 'junegunn/fzf'
-    Plug 'dhruvasagar/vim-zoom'
-    Plug 'azabiong/vim-highlighter'
     Plug 'ap/vim-css-color'
     Plug 'dense-analysis/ale'
     Plug 'eggbean/vim-toggle-bool', { 'branch': 'boolean' }
@@ -60,14 +60,7 @@ elseif has('win32') | call plug#begin() | endif
     Plug 'ron89/thesaurus_query.vim'
   endif
   if has('gui_running')
-    Plug 'tpope/vim-rsi'
     Plug 'machakann/vim-highlightedyank'
-    Plug 'azabiong/vim-highlighter'
-    Plug 'ntpeters/vim-better-whitespace'
-    Plug 'machakann/vim-sandwich'
-    Plug 'dhruvasagar/vim-zoom'
-    Plug 'chrisbra/Recover.vim'
-    Plug 'iamcco/markdown-preview.nvim', { 'for': 'markdown' }
     Plug 'AndrewRadev/typewriter.vim'
     if has('win32')
       Plug 'kkoenig/wimproved.vim'
@@ -134,6 +127,13 @@ call plug#end()
   let g:mkdp_echo_preview_url = 1
   let g:mkdp_theme = 'light'
   nmap <leader>m <Plug>MarkdownPreviewToggle
+  if has('unix') && IsWSL()==0
+    let g:mkdp_browser = 'qutebrowser'
+  elseif has('win32')
+    let g:mkdp_browser = 'C:\Program Files\qutebrowser\qutebrowser.exe'
+  elseif IsWSL()==1
+    let g:mkdp_browser = 'C:\Program Files\qutebrowser\qutebrowser.exe'
+  endif
 " lightline.vim
   let g:lightline = { 'colorscheme': 'dracula' }
 " bullets.vim
