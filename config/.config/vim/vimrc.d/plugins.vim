@@ -127,6 +127,7 @@ call plug#end()
   let g:mkdp_echo_preview_url = 1
   let g:mkdp_theme = 'light'
   nmap <leader>m <Plug>MarkdownPreviewToggle
+  let g:mkdp_markdown_css = expand('~/.config/vim/css/github-markdown.css')
   if has('unix') && IsWSL()==0
     let g:mkdp_browser = 'qutebrowser'
   elseif has('win32')
