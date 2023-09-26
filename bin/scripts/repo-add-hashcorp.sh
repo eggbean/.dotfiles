@@ -13,7 +13,7 @@ fi
 [[ -e $XDG_STATE_HOME/hashicorp_repo_installed ]] && exit 1
 
 eval "$(source /etc/os-release && typeset -p ID)"
-if [[ $ID =~ ^(rhel|fedora|amzn|ol|rocky)$ ]]; then
+if [[ $ID =~ ^(rhel|fedora.*|amzn|ol|rocky)$ ]]; then
   { dnf install -y dnf-plugins-core && \
     dnf config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo; } || \
     { echo Adding Hashicorp repository failed >&2; exit 1; }

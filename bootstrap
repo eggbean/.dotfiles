@@ -19,7 +19,7 @@ fi
 
 # Update packages
 eval "$(source /etc/os-release && typeset -p ID)"
-if [[ $ID =~ ^(rhel|fedora|amzn|ol|rocky)$ ]]; then
+if [[ $ID =~ ^(rhel|fedora.*|amzn|ol|rocky)$ ]]; then
   [[ $ID == ol ]] && repo=ol9_developer_EPEL
   sudo dnf config-manager --set-enabled $repo
   sudo dnf upgrade -y || \
@@ -47,7 +47,7 @@ git -C ~/.dotfiles remote update
   }
 
 # Install/uninstall some native packages
-[[ $ID =~ ^(rhel|fedora|amzn|ol|rocky)$ ]] && pkmngcmd='dnf'
+[[ $ID =~ ^(rhel|fedora.*|amzn|ol|rocky)$ ]] && pkmngcmd='dnf'
 [[ $ID =~ ^(debian|ubuntu|pop|raspbian)$ ]] && pkmngcmd='apt-get'
 if [[ $pkmngcmd ]]; then
   if ! cmp --silent ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages; then

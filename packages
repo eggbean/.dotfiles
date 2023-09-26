@@ -33,7 +33,7 @@ packages+=(
 )
 
 # RHEL-related only (rpm)
-[[ $ID =~ ^(rhel|fedora|amzn|ol|rocky)$ ]] && packages+=(
+[[ $ID =~ ^(rhel|fedora.*|amzn|ol|rocky)$ ]] && packages+=(
   bind-utils
   words
   xz
@@ -49,7 +49,7 @@ if [[ $(hostname -s) =~ ^(bastet|h.+)$ ]]; then
     ssh-askpass
   )
   # RHEL-related
-  [[ $ID =~ ^(rhel|fedora|amzn|ol|rocky)$ ]] && packages+=(
+  [[ $ID =~ ^(rhel|fedora.*|amzn|ol|rocky)$ ]] && packages+=(
     autossh
     openssh-askpass
     openssh-clients
