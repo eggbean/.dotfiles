@@ -11,6 +11,12 @@ fi
 WIN_HOME_RAW="$(cmd.exe /c "<nul set /p=%UserProfile%" 2>/dev/null)"
 WIN_HOME="$(wslpath "$WIN_HOME_RAW")"
 
+# Install some missing packages on Fedora Remix
+eval "$(source /etc/os-release && typeset -p ID)"
+if [[ $ID == fedoraremixforwsl ]]; then
+  sudo dnf install -y dos2unix socat xdg-user-dirs
+fi
+
 # qutebrowser
 [ ! -d "$WIN_HOME"/AppData/Roaming/qutebrowser/config ] \
   && mkdir -p "$WIN_HOME"/AppData/Roaming/qutebrowser/config
