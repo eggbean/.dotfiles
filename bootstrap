@@ -41,6 +41,9 @@ elif [[ $ID =~ ^(debian|ubuntu|pop|raspbian)$ ]]; then
     sudo apt autoremove -y || \
     { echo "${redc}Failed: packages update${norm}" >&2; return 1; }
 fi
+if [[ $(git -C ~/.dotfiles remote -v) =~ https ]] && ssh-add -l >/dev/null; then
+  git remote set-url origin git@github.com:eggbean/.dotfiles.git
+fi
 
 # Pull dotfiles origin/master
 git -C ~/.dotfiles remote update
