@@ -140,6 +140,15 @@ fi
 # Install Hashicorp repository
 sudo ~/.dotfiles/bin/scripts/repo-add-hashcorp.sh
 
+# Enable passwordless sudo
+# (I have this already enabled using on cloud instances
+# using cloud-init, but this is good for local clients)
+if ! sudo grep -Eqr "$USER +ALL" /etc/sudoers.d/; then
+  printf "$USER ALL=(ALL:ALL) NOPASSWD: ALL\n" | sudo tee /etc/sudoers.d/$USER
+  sudo chmod 440 /etc/sudoers.d/$USER
+  echo "${yelw}Passwordless sudo enabled${norm}"
+fi
+
 # Change default shell to zsh if it is not
 if [[ $(basename "$(grep $(whoami) /etc/passwd)") != zsh ]]; then
   sudo chsh --shell /bin/zsh $(whoami)
