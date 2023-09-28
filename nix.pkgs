@@ -30,6 +30,7 @@ nixpkgs=(
   nixpkgs.pastel
   nixpkgs.rclone
   nixpkgs.ripgrep
+  nixpkgs.sipcalc
   nixpkgs.skate
   nixpkgs.starship
   nixpkgs.steampipe
