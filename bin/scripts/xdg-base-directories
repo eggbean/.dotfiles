@@ -1,0 +1,18 @@
+# Define the XDG environment variables and their default values, if undefined
+xdg_vars=("XDG_CONFIG_HOME" "XDG_CACHE_HOME" "XDG_DATA_HOME" "XDG_STATE_HOME")
+
+default_paths=("$HOME/.config" "$HOME/.cache" "$HOME/.local/share" "$HOME/.local/state")
+
+for ((i=0; i<${#xdg_vars[@]}; i++)); do
+  var_name=${xdg_vars[i]}
+  default_path=${default_paths[i]}
+  current_value="${!var_name}"
+
+  if [[ -z "$current_value" ]]; then
+    export "$var_name=$default_path"
+  fi
+
+  if [[ ! -d "${!var_name}" ]]; then
+    mkdir -p "${!var_name}"
+  fi
+done

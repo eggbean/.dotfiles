@@ -3,27 +3,33 @@
 # vim: filetype=bash
 
 SECONDS=0
+
+# Functions for coloured echo
 redc=$(tput setaf 1)
 gren=$(tput setaf 2)
 yelw=$(tput setaf 3)
 norm=$(tput sgr0)
-if [[ -z $XDG_CONFIG_HOME ]]; then
-  export XDG_CONFIG_HOME="/home/$USER/.config"
+red_echo() {
+  echo "${redc}$1${norm}"
+}
+green_echo() {
+  echo "${gren}$1${norm}"
+}
+yellow_echo() {
+  echo "${yelw}$1${norm}"
+}
+
+# Define xdg base directories if first run
+# (sourcing separate file as it's difficult to
+# make this to work on both bash and zsh and
+# it only needs to be run on bash anyway)
+if [[ -n $BASH_VERSION ]] && [[ -z $VIMINIT ]]; then
+  source ~/.dotfiles/bin/scripts/xdg-base-directories
 fi
-if [[ -z $XDG_CACHE_HOME ]]; then
-  export XDG_CACHE_HOME="/home/$USER/.cache"
-fi
-if [[ -z $XDG_DATA_HOME ]]; then
-  export XDG_DATA_HOME="/home/$USER/.local/share"
-fi
-if [[ -z $XDG_STATE_HOME ]]; then
-  export XDG_STATE_HOME="/home/$USER/.local/state"
-fi
-if [[ ! -d $XDG_STATE_HOME ]]; then
-  mkdir -p $XDG_STATE_HOME
-fi
-if [[ ! $(command -v gum) ]]; then
-  alias gum='~/.dotfiles/bin/$(arch)/gum'
+
+# Alias gum for first run
+if ! command -v gum > /dev/null; then
+  alias gum=~/.dotfiles/bin/$(arch)/gum
 fi
 
 # Update packages
@@ -32,14 +38,14 @@ if [[ $ID =~ ^(rhel|fedora.*|amzn|ol|rocky)$ ]]; then
   [[ $ID == ol ]] && repo=ol9_developer_EPEL
   sudo dnf config-manager --set-enabled $repo
   sudo dnf upgrade -y || \
-    { echo "${redc}Failed: packages update${norm}" >&2; return 1; }
+    { red_echo "Failed: packages update" >&2; return 1; }
 elif [[ $ID =~ ^(debian|ubuntu|pop|raspbian)$ ]]; then
   gum spin --spinner.width=1 \
     --title "Updating package information from sources" --show-output -- \
     sudo apt-get update -qq && \
     sudo apt-get upgrade -y && \
     sudo apt autoremove -y || \
-    { echo "${redc}Failed: packages update${norm}" >&2; return 1; }
+    { red_echo "Failed: packages update" >&2; return 1; }
 fi
 if [[ $(git -C ~/.dotfiles remote -v) =~ https ]] && ssh-add -l >/dev/null; then
   git remote set-url origin git@github.com:eggbean/.dotfiles.git
@@ -64,7 +70,7 @@ git -C ~/.dotfiles remote update
 if [[ $pkmngcmd ]]; then
   if ! cmp --silent ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages; then
     source ~/.dotfiles/packages; sudo $pkmngcmd install -y -- "${packages[@]}" || \
-      { echo "${redc}Failed: package installation${norm}" >&2; return 1; }
+      { red_echo "Failed: package installation" >&2; return 1; }
     installed=("${packages[@]}") && unset packages
     removed=("${rmmvpkgs[@]}") && unset rmmvpkgs
     if [[ -e $XDG_STATE_HOME/bootstrap_packages ]]; then
@@ -72,7 +78,7 @@ if [[ $pkmngcmd ]]; then
       for i in "${installed[@]}"; do packages=("${packages[@]//*$i*}"); done
       for k in "${removed[@]}"; do rmmvpkgs=("${rmmvpkgs[@]//*$k*}"); done
       sudo $pkmngcmd remove -y -- "${packages[@]}" "${rmmvpkgs[@]}" || \
-        { echo "${redc}Failed: package removal${norm}" >&2; return 1; }
+        { red_echo "Failed: package removal" >&2; return 1; }
     fi
     command cp ~/.dotfiles/packages $XDG_STATE_HOME/bootstrap_packages
     unset packages rmmvpkgs installed removed
@@ -92,14 +98,14 @@ if [[ ! $(command -v nix) ]] && [[ $(uname -o) != Android ]]; then
     sh <(curl -sL https://nixos.org/nix/install) --yes --no-modify-profile && \
     echo Nix package manager installed; } && \
     source $XDG_STATE_HOME/nix/profile/etc/profile.d/nix.sh || \
-    { echo "${redc}Failed: nix package manager installation${norm}" >&2; return 1; }
+    { red_echo "Failed: nix package manager installation" >&2; return 1; }
 fi
 nix-channel --add https://nixos.org/channels/nixos-23.05 stbpkgs
 nix-channel --update
 { gum spin --spinner.width=1 --title "Nix garbage collecting" --show-output -- \
   nix-collect-garbage --delete-old && \
   echo Nix garbage collected; }
-# Intall & uninstall nix packages
+# Install & uninstall nix packages
 if ! cmp --silent ~/.dotfiles/nix.pkgs $XDG_STATE_HOME/nix_packages; then
   source ~/.dotfiles/nix.pkgs
   newpkgs=("${nixpkgs[@]}") && unset nixpkgs
@@ -113,13 +119,13 @@ if ! cmp --silent ~/.dotfiles/nix.pkgs $XDG_STATE_HOME/nix_packages; then
   for addpkg in "${newpkgs[@]}"; do
     if [[ $addpkg != ${addpkg#nixpkgs.} ]]; then
       nix-env -iA $addpkg \
-        && echo "${gren}${addpkg#nixpkgs.} installed${norm}" || \
-        { echo "${redc}Failed: ${addpkg#nixpkgs.} nix package installation${norm}" >&2
+        && green_echo "${addpkg#nixpkgs.} installed" || \
+        { red_echo "Failed: ${addpkg#nixpkgs.} nix package installation" >&2
         return 1; }
     elif [[ $addpkg != ${addpkg#stbpkgs.} ]]; then
       nix-env -iA $addpkg \
-        && echo "${gren}${addpkg#stbpkgs.} (stable channel) installed${norm}" || \
-        { echo "${redc}Failed: ${addpkg#stbpkgs.} nix package installation${norm}" >&2
+        && green_echo "${addpkg#stbpkgs.} (stable channel) installed" || \
+        { red_echo "Failed: ${addpkg#stbpkgs.} nix package installation" >&2
         return 1; }
     fi
   done
@@ -134,13 +140,13 @@ if ! cmp --silent ~/.dotfiles/nix.pkgs $XDG_STATE_HOME/nix_packages; then
     for rempkg in "${oldpkgs[@]}"; do
       if [[ $rempkg != ${rempkg#nixpkgs.} ]]; then
         nix-env --uninstall ${rempkg#nixpkgs.} \
-          && echo "${yelw}${rempkg#nixpkgs.} uninstalled${norm}" || \
-          { echo "${redc}Failed: ${rempkg#nixpkgs.} nix package removal${norm}" >&2
+          && yellow_echo "${rempkg#nixpkgs.} uninstalled" || \
+          { red_echo "Failed: ${rempkg#nixpkgs.} nix package removal" >&2
           return 1; }
       elif [[ $rempkg != ${rempkg#stbpkgs.} ]]; then
         nix-env --uninstall ${rempkg#stbpkgs.} \
-          && echo "${yelw}${rempkg#stbpkgs.} (stable channel) uninstalled${norm}" || \
-          { echo "${redc}Failed: ${rempkg#stbpkgs.} nix package removal${norm}" >&2
+          && yellow_echo "${rempkg#stbpkgs.} (stable channel) uninstalled" || \
+          { red_echo "Failed: ${rempkg#stbpkgs.} nix package removal" >&2
           return 1; }
       fi
     done
@@ -150,7 +156,8 @@ if ! cmp --silent ~/.dotfiles/nix.pkgs $XDG_STATE_HOME/nix_packages; then
 fi
 
 # Install Hashicorp repository
-sudo ~/.dotfiles/bin/scripts/repo-add-hashcorp.sh
+sudo ~/.dotfiles/bin/scripts/repo-add-hashcorp.sh && \
+  yellow_echo "Hashicorp repository added"
 
 # Enable passwordless sudo
 # (I have this already enabled using on cloud instances
@@ -158,13 +165,13 @@ sudo ~/.dotfiles/bin/scripts/repo-add-hashcorp.sh
 if ! sudo grep -Eqr "$USER +ALL" /etc/sudoers.d/; then
   printf "$USER ALL=(ALL:ALL) NOPASSWD: ALL\n" | sudo tee /etc/sudoers.d/$USER
   sudo chmod 440 /etc/sudoers.d/$USER
-  echo "${yelw}Passwordless sudo enabled${norm}"
+  yellow_echo "Passwordless sudo enabled"
 fi
 
 # Change default shell to zsh if it is not
 if [[ $(basename "$(grep $(whoami) /etc/passwd)") != zsh ]]; then
   sudo chsh --shell /bin/zsh $(whoami)
-  echo "${yelw}Default shell changed to z-shell${norm}"
+  yellow_echo "Default shell changed to z-shell"
 fi
 
 # Setup/update antidote
@@ -182,26 +189,26 @@ if [[ $UID -ne 0 ]] && [[ $EUID -ne 0 ]]; then
   gum spin --spinner.width=1 --title "Stowing binaries" -- \
     sudo ~/.dotfiles/bin/scripts/stow-bin.sh && \
     echo "Binaries stowed" || \
-    { echo "${redc}Failed: stow-bin.sh${norm}" >&2; return 1; }
+    { red_echo "Failed: stow-bin.sh" >&2; return 1; }
 else
   gum spin --spinner.width=1 --title "Stowing binaries" -- \
     ~/.dotfiles/bin/scripts/stow-bin.sh --nosudo && \
     echo "Binaries stowed" || \
-    { echo "${redc}Failed: stow-bin.sh${norm}" >&2; return 1; }
+    { red_echo "Failed: stow-bin.sh" >&2; return 1; }
 fi
 
 # Stow dotfiles
 gum spin --spinner.width=1 --title "Stowing dotfiles" -- \
   ~/.dotfiles/bin/scripts/stow-dotfiles.sh && \
   echo "Dotfiles stowed" || \
-  { echo "${redc}Failed: stow-dotfiles.sh${norm}" >&2; return 1; }
+  { red_echo "Failed: stow-dotfiles.sh" >&2; return 1; }
 
 # On WSL do all sorts of other stuff
 if grep -qi microsoft /proc/version; then
   gum spin --spinner.width=1 --title "Configuring Windows" -- \
     ~/.dotfiles/bin/scripts/dotfiles2appdata.sh && \
     echo "Windows configured" || \
-    { echo "${redc}Failed: Windows configuration${norm}" >&2; return 1; }
+    { red_echo "Failed: Windows configuration" >&2; return 1; }
 fi
 
 # Check for new kernel
@@ -211,7 +218,7 @@ fi
 
 # Check if repository is encryption locked
 git config -f ~/.dotfiles/.git/config --get filter.git-crypt.smudge >/dev/null || \
-  echo "${yelw}Repository is locked${norm}"
+  yellow_echo "Repository is locked"
 
 # Print time taken
 printf 'Time taken %d:%02d:%02d\n' \
