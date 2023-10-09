@@ -46,13 +46,13 @@ eval "$(dircolors -b ~/.dotfiles/config/.includes/dir_colors)"
 export HOSTFILE="~/.dotfiles/config/.includes/hosts"
 
 # Alias definitions
-source ~/.dotfiles/config/.includes/aliases.sh
+source ~/.dotfiles/config/.includes/aliases
 
 # Functions
-source ~/.dotfiles/config/.includes/functions.sh
+source ~/.dotfiles/config/.includes/functions
 
 # Environment variables
-source ~/.dotfiles/config/.includes/envars.sh
+source ~/.dotfiles/config/.includes/envars
 
 # Setup cache directories
 if [[ ! -d ~/.cache/bash ]]; then

@@ -93,13 +93,13 @@ setopt AUTO_PUSHD PUSHD_SILENT PUSHD_IGNORE_DUPS
 eval "$(dircolors -b ~/.dotfiles/config/.includes/dir_colors)"
 
 # Alias definitions
-source ~/.dotfiles/config/.includes/aliases.sh
+source ~/.dotfiles/config/.includes/aliases
 
 # Functions
-source ~/.dotfiles/config/.includes/functions.sh
+source ~/.dotfiles/config/.includes/functions
 
 # Environment variables
-source ~/.dotfiles/config/.includes/envars.sh
+source ~/.dotfiles/config/.includes/envars
 
 # Load antidote
 if [[ -d ~/.cache/antidote ]]; then
