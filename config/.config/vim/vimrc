@@ -24,6 +24,15 @@ endif
 
 source $VIMFILES/vimrc.d/plugins.vim    " Plugins and plugin configuration
 
+" Enable Alt-. readline shortcut in cmd/clink terminal
+if has('win32')
+  tmap <expr> ® SendToTerm("\<Esc>.")
+  func SendToTerm(what)
+    call term_sendkeys('', a:what)
+    return ''
+  endfunc
+endif
+
 " Map Alt+[key] to terminal-like behaviour
 " so that I don't have to use ESC in gvim and vim for Windows
 if has('win32') || has('gui_running')
