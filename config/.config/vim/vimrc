@@ -3,9 +3,9 @@
 " Modularised configuration
 " shared between Linux, Windows, vim, gvim and nvim.
 if has('unix')
-  let $VIMFILES = "$HOME/.config/vim"
+  let $VIMFILES = $HOME . '/.config/vim'
 elseif has('win32')
-  let $VIMFILES = "$HOME/vimfiles"
+  let $VIMFILES = $HOME . '/vimfiles'
 endif
 source $VIMFILES/vimrc.d/xdg.vim        " Add XDG directories to vim and share with nvim
 source $VIMFILES/vimrc.d/opts.vim       " Setting options
