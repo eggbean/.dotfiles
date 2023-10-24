@@ -57,26 +57,30 @@ if [[ $(hostname -s) =~ ^(bastet|h.+)$ ]]; then
 fi
 
 # Linux desktop/laptop clients (name starts with h) - not WSL
+# (cant't test for existence of $DISPLAY as now using X-forwarding)
 if [[ $(hostname -s) =~ ^(h.+)$ ]] && grep -vqi microsoft /proc/version; then
-  packages+=(
+  [[ $ID =~ ^(debian|ubuntu)$ ]] && packages+=(
     alacritty
     copyq
     feh
-    vim-gtk3
     nsxiv
     qutebrowser
+    vim-gtk3
     zathura
   )
 fi
 
 # WSL clients
 if grep -qi microsoft /proc/version; then
+  packages+=(
+    dos2unix
+  )
   # Debian-based
   [[ $ID =~ ^(debian|ubuntu)$ ]] && packages+=(
     alacritty
-    vim-gtk3
     nsxiv
     qutebrowser
+    vim-gtk3
     zathura
   )
 fi
