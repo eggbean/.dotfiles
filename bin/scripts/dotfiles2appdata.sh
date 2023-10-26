@@ -23,21 +23,9 @@ fi
 cp -r "$HOME"/.dotfiles/config/.config/qutebrowser/* "$WIN_HOME"/AppData/Roaming/qutebrowser/config
 
 # vim/gvim
-# added words from Windows vim spelling file added to the local spelling file in repository
-# config files made read-only to avoid me accidentally editing them in Windows
 cd "$WIN_HOME" || { echo "ERROR" >&2; exit 1; }
 [ ! -d vimfiles/vimrc.d ] && mkdir -p vimfiles/vimrc.d && attrib.exe +H vimfiles
 cd vimfiles || { echo "ERROR" >&2; exit 1; }
-winspell="spell/en.utf-8.add"
-localspell="$HOME"/.dotfiles/config/.config/vim/spell/en.utf-8.add
-if [ -e "$winspell" ]; then
-  comm -1 -3 <(sort -u "$localspell") <(sort -u "$winspell") > /tmp/difference
-  cat "$localspell" /tmp/difference | awk "!a[\$0]++{print}" > /tmp/concatenated
-  if ! cmp --silent /tmp/concatenated "$localspell"; then
-    cp /tmp/concatenated "$localspell"
-  fi
-  rm /tmp/{difference,concatenated}
-fi
 files=('gvimrc' 'vimrc' 'vimrc.d/autocmds.vim' 'vimrc.d/distraction_free_mode.vim' 'vimrc.d/mappings.vim' \
   'vimrc.d/opts.vim' 'vimrc.d/plugins.vim' 'vimrc.d/restore_position.vim' 'vimrc.d/xdg.vim')
 for f in "${files[@]}"; do
@@ -45,15 +33,32 @@ for f in "${files[@]}"; do
 done
 cp -r "$HOME"/.dotfiles/config/.config/vim/{vimrc,gvimrc} .
 vimdirs=('after' 'autoload' 'colors' 'compiler' 'doc' 'ftdetect' 'ftplugin' \
-  'indent' 'keymap' 'plugin' 'spell' 'syntax' 'templates' 'UltiSnips' 'vimrc.d')
+  'indent' 'keymap' 'plugin' 'syntax' 'templates' 'UltiSnips' 'vimrc.d')
 for d in "${vimdirs[@]}"; do
   if [ -d "$HOME/.dotfiles/config/.config/vim/$d" ]; then
     rsync --links --recursive --delete "$HOME/.dotfiles/config/.config/vim/$d/" "$d"
   fi
 done
+# config files made read-only to avoid me accidentally editing them in Windows
 for f in "${files[@]}"; do
   attrib.exe +R "$f"
 done
+# added words from Windows vim spelling file added to the local spelling file in repository
+# (only if file is encryption unlocked, as otherwise things get messed up)
+syncdict() {
+  local winspell="spell/en.utf-8.add"
+  local localspell="$HOME"/.dotfiles/config/.config/vim/spell/en.utf-8.add
+  if [ -e "$winspell" ]; then
+    comm -1 -3 <(sort -u "$localspell") <(sort -u "$winspell") > /tmp/difference
+    cat "$localspell" /tmp/difference | awk "!a[\$0]++{print}" > /tmp/concatenated
+    if ! cmp --silent /tmp/concatenated "$localspell"; then
+      cp /tmp/concatenated "$localspell"
+    fi
+    rm /tmp/{difference,concatenated}
+  fi
+  rsync --recursive --delete "$HOME/.dotfiles/config/.config/vim/spell" "$WIN_HOME/vimfiles"
+}
+git config -f ~/.dotfiles/.git/config --get filter.git-crypt.smudge >/dev/null && syncdict
 
 # mpv
 [ ! -d "$WIN_HOME"/AppData/Roaming/mpv ] \
