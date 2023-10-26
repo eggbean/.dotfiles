@@ -26,9 +26,8 @@ function! ToggleDistractionFreeMode()
     for key in keys(l:margins)
       execute l:margins[key] . " | wincmd " . key
     endfor
-    colorscheme summerfruit256
     for key in ['NonText', 'VertSplit', 'StatusLine', 'StatusLineNC']
-      execute 'hi ' . key . ' guifg=white guibg=white'
+      execute 'hi ' . key . ' guifg=#eeeeee guibg=#eeeeee'
     endfor
     highlight Cursor guifg=white guibg=gray55
     highlight iCursor guifg=white guibg=gray55
