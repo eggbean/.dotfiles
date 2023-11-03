@@ -85,8 +85,12 @@ fi
 
 # Use the correct binaries for CPU architecture
 if [[ $(uname -o) == Android ]]; then
-  [[ $(dpkg --print-architecture) == aarch64 ]] && arch='android' || \
+  if [[ $(dpkg --print-architecture) == aarch64 ]]; then
+    arch='android'
+    XDG_STATE_HOME="$HOME/.local/state"
+  else
     { echo "CPU architecture unknown" >&2; exit 1; }
+  fi
 else
   [[ $(arch) == armv7l ]] && arch='armv7l'
   [[ $(arch) == aarch64 ]] && arch='aarch64'
