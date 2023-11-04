@@ -120,7 +120,7 @@ shift "$((OPTIND - 1))"
 
 # Use my patched version of eza on NTFS drives so that files
 # aren't all seen as executables, so appear in $LS_COLORS.
-if grep -qi microsoft /proc/version; then
+if grep -qi microsoft /proc/version 2>/dev/null; then
   shopt -s extglob
   [[ $(realpath ${*:-.}) == /@(mnt|?)/* ]] 2>/dev/null && ezabin=exa-ntfs || ezabin=eza
 fi
