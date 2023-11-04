@@ -78,9 +78,11 @@ command! WipeReg call WipeReg()
 " For WSL conditionals
 function! IsWSL()
   if has("unix")
-    let lines = readfile("/proc/version")
-    if lines[0] =~ "microsoft"
-      return 1
+    if filereadable("/proc/version") " avoid error on Android
+      let lines = readfile("/proc/version")
+      if lines[0] =~ "microsoft"
+        return 1
+      endif
     endif
   endif
   return 0
