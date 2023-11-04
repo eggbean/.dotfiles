@@ -8,4 +8,33 @@ unset LANG
 unset LC_ALL
 
 # Start ssh-agent
-. source-ssh-agent
+source-ssh-agent
+
+# Don't initialise these tools a second time, as it causes
+# starship to show a background job when changing directories
+if [[ $HISTFILE =~ zsh ]] && [[ ! $init_zshrc_sourced == true ]]; then
+
+  # Direnv hook
+  eval "$(direnv hook zsh)"
+
+  # Add zoxide to shell
+  # workaround to retain caseless tab completion on latest version (0.9.1)
+  eval "$(zoxide init --no-cmd zsh)"
+  z() {
+    __zoxide_z "$@"
+  }
+  zi() {
+    __zoxide_zi "$@"
+  }
+
+  # Starship prompt (copy bash config)
+  command cp ~/.config/starship.toml ~/.config/starship-zsh.toml >/dev/null
+  export STARSHIP_CONFIG="$HOME/.config/starship-zsh.toml"
+  starship config character.success_symbol "[%](white)"
+  starship config character.error_symbol "[%](bold red)"
+  eval "$(starship init zsh)"
+
+  # Set marker to say that these have already been initialised
+  init_zshrc_sourced=true
+
+fi
