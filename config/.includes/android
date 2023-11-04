@@ -10,6 +10,11 @@ unset LC_ALL
 # Start ssh-agent
 source-ssh-agent
 
+# Set PATH so it includes user's local bin if it exists
+if [ -d "$HOME/.local/bin" ]; then
+  PATH="$HOME/.local/bin:$PATH"
+fi
+
 # Don't initialise these tools a second time, as it causes
 # starship to show a background job when changing directories
 if [[ $HISTFILE =~ zsh ]] && [[ ! $init_zshrc_sourced == true ]]; then
