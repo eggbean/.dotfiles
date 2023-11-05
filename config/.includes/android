@@ -8,7 +8,8 @@ unset LANG
 unset LC_ALL
 
 # Aliases
-alias battery=termux-battery-status
+alias battery='termux-battery-status'
+alias clip='nocolour | termux-clipboard-set'
 
 # Start ssh-agent
 source-ssh-agent
