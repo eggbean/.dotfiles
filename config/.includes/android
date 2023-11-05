@@ -7,6 +7,9 @@ unset LANGUAGE
 unset LANG
 unset LC_ALL
 
+# Aliases
+alias battery=termux-battery-status
+
 # Start ssh-agent
 source-ssh-agent
 
