@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-
 # From https://stackoverflow.com/a/55397993/140872
+
+# Don't do anything on Android as it causes  errors
+if [[ $(uname -o) == Android ]]; then exit 0; fi
 
 if [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]  || [[ "$1" == "" ]] ; then
   printf "Usage:\n\tonsubnet [ --not ] partial-ip-address\n\n"
