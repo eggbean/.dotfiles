@@ -18,6 +18,7 @@ config/.mc/config.json filter=git-crypt diff=git-crypt
 config/.netrc filter=git-crypt diff=git-crypt
 config/.oci/* filter=git-crypt diff=git-crypt
 config/.oci/.gitignore !filter !diff
+config/.ssh/id_android.pub filter=git-crypt diff=git-crypt
 config/.ssh/sga_policy filter=git-crypt diff=git-crypt
 config/.steampipe/config/*.spc filter=git-crypt diff=git-crypt
 config/.terraform.d/credentials.tfrc.json filter=git-crypt diff=git-crypt
