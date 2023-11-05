@@ -12,7 +12,18 @@ alias battery='termux-battery-status'
 alias clip='nocolour | termux-clipboard-set'
 
 # Start ssh-agent
-source-ssh-agent
+if [[ -z $SSH_AGENT_PID ]]; then
+  eval $(ssh-agent -s)
+  ssh-add
+  ssh-add -s $PREFIX/lib/libtergent.so
+fi
+
+# Symlink ssh-agent socket for tmux
+if [[ -z $TMUX ]]; then
+  if [ -S "$SSH_AUTH_SOCK" ]; then
+      ln -sf $SSH_AUTH_SOCK ~/.ssh/agent.sock
+  fi
+fi
 
 # Set PATH so it includes user's local bin if it exists
 if [ -d "$HOME/.local/bin" ]; then
