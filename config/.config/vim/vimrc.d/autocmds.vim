@@ -11,7 +11,7 @@ endif
 " Skeleton templates
 augroup skeleton
   autocmd!
-  autocmd BufNewFile *.* silent! execute '0r $VIMFILES/templates/skeleton.'.expand("<afile>:e")
+  autocmd BufNewFile *.* silent! execute '0r $VIMFILES/templates/skeleton.'.expand("<afile>:e") | $
 augroup END
 
 " Rename tmux windows with filename
