@@ -57,7 +57,7 @@ if [[ $TMUX ]]; then alias fzf='fzfp-tmux --width=50% --height=60%'; fi
 # Extras
 alias fzfp='command fzf --preview "bat --color=always --style=numbers --line-range=:500 {}"'
 alias batlog='bat --paging=never -l log'
-alias decomment='egrep -v "[\s]*([#;].*|^$)"'
+alias decomment='grep -Ev "[\s]*([#;].*|^$)"'
 alias nocolour="sed 's/\x1b\[[0-9;]*m//g'"
 alias unicat='awk "!a[\$0]++{print}"'
 alias termcolours='/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/gawin/bash-colors-256/master/colors)"'
