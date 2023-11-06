@@ -1,0 +1,7 @@
+#!/data/data/com.termux/files/usr/bin/expect
+
+log_user 0
+spawn ssh-add -s /data/data/com.termux/files/usr/lib/libtergent.so
+expect -exact "Enter passphrase for PKCS\#11:"
+send -- "foobar\r"
+expect eof

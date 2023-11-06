@@ -10,6 +10,7 @@ yes | pkg install \
   direnv \
   dnsutils \
   dust \
+  expect \
   eza \
   file \
   fzf \

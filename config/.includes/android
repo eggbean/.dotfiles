@@ -13,9 +13,9 @@ alias clip='nocolour | termux-clipboard-set'
 
 # Start ssh-agent
 if [[ -z $SSH_AGENT_PID ]]; then
-  eval $(ssh-agent -s)
+  eval $(ssh-agent -s) >/dev/null
   ssh-add
-  ssh-add -s $PREFIX/lib/libtergent.so
+  expect ~/.dotfiles/bin/android/ssh-agent-tergent.exp
 fi
 
 # Symlink ssh-agent socket for tmux
