@@ -1,4 +1,5 @@
 # Shell functions (for bash and zsh)
+# vim: filetype=bash
 
 [[ $BASH_VERSION ]] && shell=bash
 [[ $ZSH_VERSION ]] && shell=zsh
