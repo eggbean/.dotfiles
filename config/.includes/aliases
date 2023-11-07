@@ -15,6 +15,7 @@ alias qb='qutebrowser'
 alias tv='tidy-viewer'
 alias cm='cmatrix -au 2'
 alias w3m='w3m -config "$XDG_CONFIG_HOME"/w3m/config'
+alias za='zoxide add'
 
 # Add colours when piping as I like colour
 # Can always use disable switch when required
