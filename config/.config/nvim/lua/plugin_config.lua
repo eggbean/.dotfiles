@@ -103,7 +103,7 @@ map('n', '<Space>bw', '<Cmd>BufferOrderByWindowNumber<CR>', opts)
 -- :BarbarDisable - very bad command, should never be used
 
 -- Set barbar's options
-require'bufferline'.setup {
+require('bufferline').setup {
   -- Enable/disable animations
   animation = true,
 
@@ -112,9 +112,6 @@ require'bufferline'.setup {
 
   -- Enable/disable current/total tabpages indicator (top right corner)
   tabpages = false,
-
-  -- Enable/disable close button
-  closable = false,
 
   -- Enables/disable clickable tabs
   --  - left-click: go to buffer
@@ -128,7 +125,7 @@ require'bufferline'.setup {
   -- Enable/disable icons
   -- if set to 'numbers', will show buffer index in the tabline
   -- if set to 'both', will show buffer index and icons in the tabline
-  icons = true,
+  icons = { filetype = { enabled = true } },
 
   -- If set, the icon color will follow its corresponding buffer
   -- highlight group. By default, the Buffer*Icon group is linked to the
@@ -137,11 +134,23 @@ require'bufferline'.setup {
   icon_custom_colors = false,
 
   -- Configure icons on the bufferline.
-  icon_separator_active = '▎',
-  icon_separator_inactive = '▎',
-  icon_close_tab = '',
-  icon_close_tab_modified = '●',
-  icon_pinned = '車',
+  icons = {
+      separator = {
+          left = '▎',
+      },
+      inactive = {
+          separator = {
+              left = '▎',
+          },
+      },
+      button = ' ',
+      modified = {
+          button = '●',
+      },
+      pinned = {
+          button = '車',
+      },
+  },
 
   -- If true, new buffers will be inserted at the start/end of the list.
   -- Default is to insert after current buffer.
