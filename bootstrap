@@ -31,23 +31,25 @@ if [[ $ID != android ]]; then
 fi
 
 # Update packages
-if [[ $ID =~ ^(rhel|fedora.*|amzn|ol|rocky)$ ]]; then
-  [[ $ID == ol ]] && repo=ol9_developer_EPEL
-  sudo dnf config-manager --set-enabled $repo
-  sudo dnf upgrade -y || \
-    { red_echo "Failed: packages update" >&2; return 1; }
-elif [[ $ID =~ ^(debian|ubuntu|pop|raspbian)$ ]]; then
-  gum spin --spinner.width=1 \
-    --title "Updating packages" --show-output -- \
-    sudo apt-get update -qq && \
-    sudo apt-get upgrade -y && \
-    sudo apt autoremove -y || \
-    { red_echo "Failed: packages update" >&2; return 1; }
-elif [[ $ID == android ]]; then
-  gum spin --spinner.width=1 \
-    --title "Updating packages" --show-output -- \
-    sh -c "yes | pkg upgrade" || \
-    { red_echo "Failed: packages update" >&2; return 1; }
+if [[ $1 != --skip-update ]]; then
+  if [[ $ID =~ ^(rhel|fedora.*|amzn|ol|rocky)$ ]]; then
+    [[ $ID == ol ]] && repo=ol9_developer_EPEL
+    sudo dnf config-manager --set-enabled $repo
+    sudo dnf upgrade -y || \
+      { red_echo "Failed: packages update" >&2; return 1; }
+  elif [[ $ID =~ ^(debian|ubuntu|pop|raspbian)$ ]]; then
+    gum spin --spinner.width=1 \
+      --title "Updating packages" --show-output -- \
+      sudo apt-get update -qq && \
+      sudo apt-get upgrade -y && \
+      sudo apt autoremove -y || \
+      { red_echo "Failed: packages update" >&2; return 1; }
+  elif [[ $ID == android ]]; then
+    gum spin --spinner.width=1 \
+      --title "Updating packages" --show-output -- \
+      sh -c "yes | pkg upgrade" || \
+      { red_echo "Failed: packages update" >&2; return 1; }
+  fi
 fi
 
 # Pull dotfiles origin/master
