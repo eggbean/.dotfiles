@@ -1,10 +1,9 @@
 " Distraction-free mode
-" based on: https://zserge.com/posts/vim-distraction-free/
+" Originally based on: https://zserge.com/posts/vim-distraction-free/
+
 let g:dfm_width = 80 "absolute width or percentage, like 0.7
 let g:dfm_height = 0.8
-
 let s:dfm_enabled = 0
-
 
 function! ToggleDistractionFreeMode()
   let l:w = g:dfm_width > 1 ? g:dfm_width : (winwidth('%') * g:dfm_width)
@@ -32,13 +31,14 @@ function! ToggleDistractionFreeMode()
     highlight Cursor guifg=white guibg=gray55
     highlight iCursor guifg=white guibg=gray55
     set linebreak | syntax off
-    if has('gui_gtk2')
-      set guifont=Iosevka\ Term\ 12
+    if has('gui_gtk2') || has('gui_gtk3')
+      set guifont=Iosevka\ Term\ Medium\ 12
     elseif has('gui_win32')
       set guifont=Iosevka_NF:h12:W500
     endif
     map j gj
     map k gk
+    cnoremap q qa
   else
     let s:dfm_enabled = 0
     if (s:sigcol == 1)
@@ -53,12 +53,13 @@ function! ToggleDistractionFreeMode()
     hi StatusLine guibg=grey70 guifg=#eeeeee
     highlight Cursor guifg=white guibg=red
     highlight iCursor guifg=white guibg=steelblue
-    if has('gui_gtk2')
+    if has('gui_gtk2') || has('gui_gtk3')
       set guifont=Iosevka\ Term\ 12
     elseif has('gui_win32')
       set guifont=Iosevka_NF:h12
     endif
     unmap j
     unmap k
+    cnoremap q q
   endif
 endfunction
