@@ -6,6 +6,7 @@ let g:dfm_height = 0.8
 let s:dfm_enabled = 0
 
 function! ToggleDistractionFreeMode()
+  let l:gf_orig = &guifont
   let l:w = g:dfm_width > 1 ? g:dfm_width : (winwidth('%') * g:dfm_width)
   let l:margins = {
     \ "l": ("silent leftabove " . float2nr((winwidth('%') - l:w) / 2 - 1) . " vsplit new"),
@@ -32,9 +33,13 @@ function! ToggleDistractionFreeMode()
     highlight iCursor guifg=white guibg=gray55
     set linebreak | syntax off
     if has('gui_gtk2') || has('gui_gtk3')
-      set guifont=Iosevka\ Term\ Medium\ 12
+      let l:gf_size_current = matchstr(&guifont, '\( \)\@<=\d\+$')
+      let l:gf_font_setting = "Iosevka Term Medium " . l:gf_size_current
+      let &guifont = l:gf_font_setting
     elseif has('gui_win32')
-      set guifont=Iosevka_NF:h12:W500
+      let l:gf_size_current = matchstr(&guifont, '\(:h\)\@<=\d\+$')
+      let l:gf_font_setting = "Iosevka_NF:h" . l:gf_size_current . ":W500"
+      let &guifont = l:gf_font_setting
     endif
     map j gj
     map k gk
@@ -53,11 +58,7 @@ function! ToggleDistractionFreeMode()
     hi StatusLine guibg=grey70 guifg=#eeeeee
     highlight Cursor guifg=white guibg=red
     highlight iCursor guifg=white guibg=steelblue
-    if has('gui_gtk2') || has('gui_gtk3')
-      set guifont=Iosevka\ Term\ 12
-    elseif has('gui_win32')
-      set guifont=Iosevka_NF:h12
-    endif
+    let &guifont = l:gf_orig
     unmap j
     unmap k
     cnoremap q q
