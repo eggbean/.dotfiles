@@ -68,8 +68,10 @@ nmap <silent> <F10> :call SetScreenSize()<CR>
 " Fullscreen (F11/Alt-Enter)
 function! ToggleFullScreen()
   if has('gui_gtk2') || has('gui_gtk3')
+  " requires wmctrl installed
     call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")
   elseif has('gui_win32')
+  " requires kkoenig/wimproved.vim plugin
     if !exists("s:fullscr")
       let s:fullscr = 0
     endif
@@ -116,25 +118,28 @@ if has('gui_gtk2') || has('gui_gtk3')
     let &guifont = substitute(&guifont, ' \d\+$', ' '.g:gf_size_orig, '')
   endfunction
 elseif has('gui_win32')
-  let g:gf_size_orig = matchstr(&guifont, '\(:h\)\@<=\d\+$')
+  let g:gf_size_orig = matchstr(&guifont, '\(:h\)\@<=\d\+\(:W\d\+\)\?$')
   function! FontSizePlus()
-    let l:gf_size_whole = matchstr(&guifont, '\(:h\)\@<=\d\+$')
+    let l:gf_size_whole = matchstr(&guifont, '\(:h\)\@<=\d\+\(:W\d\+\)\?$')
+    let l:gf_weight = matchstr(&guifont, '\(:W\d\+\)\?$')
     if l:gf_size_whole < 28
       let l:gf_size_whole = l:gf_size_whole + 1
       let l:new_font_size = ':h'.l:gf_size_whole
-      let &guifont = substitute(&guifont, ':h\d\+$', l:new_font_size, '')
+      let &guifont = substitute(&guifont, '\(:h\d\+\)\(:W\d\+\)\?$', l:new_font_size.l:gf_weight, '')
     endif
   endfunction
   function! FontSizeMinus()
-    let l:gf_size_whole = matchstr(&guifont, '\(:h\)\@<=\d\+$')
+    let l:gf_size_whole = matchstr(&guifont, '\(:h\)\@<=\d\+\(:W\d\+\)\?$')
+    let l:gf_weight = matchstr(&guifont, '\(:W\d\+\)\?$')
     if l:gf_size_whole > 1
       let l:gf_size_whole = l:gf_size_whole - 1
       let l:new_font_size = ':h'.l:gf_size_whole
-      let &guifont = substitute(&guifont, ':h\d\+$', l:new_font_size, '')
+      let &guifont = substitute(&guifont, '\(:h\d\+\)\(:W\d\+\)\?$', l:new_font_size.l:gf_weight, '')
     endif
   endfunction
   function! FontSizeOriginal()
-    let &guifont = substitute(&guifont, ':h\d\+$', ':h'.g:gf_size_orig, '')
+    let l:gf_weight = matchstr(&guifont, '\(:W\d\+\)\?$')
+    let &guifont = substitute(&guifont, '\(:h\d\+\)\(:W\d\+\)\?$', ':h'.g:gf_size_orig.l:gf_weight, '')
   endfunction
 endif
 if has('gui_running')

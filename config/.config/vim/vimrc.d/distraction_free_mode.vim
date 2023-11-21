@@ -3,10 +3,11 @@
 
 let g:dfm_width = 80 "absolute width or percentage, like 0.7
 let g:dfm_height = 0.8
+
 let s:dfm_enabled = 0
+let g:gf_orig = &guifont
 
 function! ToggleDistractionFreeMode()
-  let l:gf_orig = &guifont
   let l:w = g:dfm_width > 1 ? g:dfm_width : (winwidth('%') * g:dfm_width)
   let l:margins = {
     \ "l": ("silent leftabove " . float2nr((winwidth('%') - l:w) / 2 - 1) . " vsplit new"),
@@ -58,7 +59,20 @@ function! ToggleDistractionFreeMode()
     hi StatusLine guibg=grey70 guifg=#eeeeee
     highlight Cursor guifg=white guibg=red
     highlight iCursor guifg=white guibg=steelblue
-    let &guifont = l:gf_orig
+    if has('gui_gtk2') || has('gui_gtk3')
+      let l:current_size = matchstr(&guifont, '\d\+$')
+      let &guifont = substitute(g:gf_orig, '\s*\d\+$', '', '')
+      let &guifont .= ' ' . l:current_size
+    elseif has('gui_win32')
+      let l:gf_size = matchstr(&guifont, '\(:h\)\@<=\d\+')
+      let l:gf_weight = matchstr(g:gf_orig, ':\(W\d\+\)\?$')
+      if empty(l:gf_weight)
+        let &guifont = substitute(&guifont, ':\(W\d\+\)\?$', '', '')
+      else
+        let &guifont = substitute(&guifont, '\(:W\d\+\)\?$', ':'.l:gf_weight, '')
+      endif
+      let &guifont = substitute(&guifont, '\(:h\d\+\)\?$', ':h' . l:gf_size, '')
+    endif
     unmap j
     unmap k
     cnoremap q q
