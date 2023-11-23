@@ -1,7 +1,7 @@
 " VIM OPTIONS
 "
 " Some options are explicitly set to harmonise between different
-" versions/platforms/gvim/vim/nvim.
+" versions/platforms/gvim/vim and especially nvim.
 
 syntax on
 scriptencoding utf-8
@@ -21,11 +21,14 @@ set ignorecase
 set smartcase
 set autochdir
 set wildmenu wildmode=list:longest,full
+set wildoptions=pum,tagfile
 set splitright
 set splitbelow
 set lazyredraw
 set scrolloff=3
+set sidescroll=1
 set sidescrolloff=5
+set nostartofline
 set cdpath=,.,~/,~/.config/vim
 set formatoptions=jtcroqln
 set autoread
@@ -33,6 +36,25 @@ set nowrapscan
 set history=1000
 set belloff=all
 set title
+set tags=./tags;,tags
+set tabpagemax=10
+set switchbuf=uselast
+set showcmd
+set shortmess=filnxtToOF
+set viewoptions+=options
+set sessionoptions+=options
+set path=.,,
+set nrformats=bin,hex
+set nolangremap
+set langnoremap
+set nojoinspaces
+set incsearch
+set include=
+set commentstring=
+set complete=.,w,b,u,t,i
+set define=
+set display=lastline
+set fillchars=
 set listchars=tab:··,extends:>,precedes:<,nbsp:+
 set mouse=a
 set mousemodel=popup
