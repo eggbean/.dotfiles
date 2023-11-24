@@ -51,7 +51,7 @@ set nojoinspaces
 set incsearch
 set include=
 set commentstring=
-set complete=.,w,b,u,t,i
+set complete=.,w,b,u,t,i,k
 set define=
 set display=lastline
 set fillchars=
@@ -88,16 +88,13 @@ if has('termguicolors')
 endif
 
 " Set dictionary and regenerate spl files on startup
-set spelllang=en_gb
 set thesaurus=$VIMFILES/spell/mthesaur.txt
+let g:tq_mthesaur_file = $VIMFILES . '/spell/mthesaur.txt'
+set spelllang=en_gb
 if has('unix')
   set dictionary+=/usr/share/dict/words
-  set spellfile=$HOME/.config/vim/spell/en.utf-8.add
-  let g:tq_mthesaur_file="~/.config/vim/spell/mthesaur.txt"
-elseif has('win32')
-  set spellfile=$HOME/vimfiles/spell/en.utf-8.add
-  let g:tq_mthesaur_file="~/vimfiles/spell/mthesaur.txt"
 endif
+set spellfile=$VIMFILES/spell/en.utf-8.add
 for d in glob('spell/*.add', 1, 1)
   if filereadable(d) && (!filereadable(d . '.spl') || getftime(d) > getftime(d . '.spl'))
     exec 'mkspell! ' . fnameescape(d)
