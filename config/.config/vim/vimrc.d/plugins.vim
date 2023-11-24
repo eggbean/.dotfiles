@@ -3,6 +3,7 @@
 if has('unix') | call plug#begin('$XDG_DATA_HOME/vim/plugged')
 elseif has('win32') | call plug#begin() | endif
   Plug 'tpope/vim-rsi'
+  Plug 'tpope/vim-commentary'
   Plug 'azabiong/vim-highlighter'
   Plug 'ntpeters/vim-better-whitespace'
   Plug 'machakann/vim-sandwich'
@@ -10,7 +11,6 @@ elseif has('win32') | call plug#begin() | endif
   Plug 'chrisbra/Recover.vim'
   Plug 'iamcco/markdown-preview.nvim', { 'for': 'markdown' }
   if !has('gui_running')
-    Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-fugitive'
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'airblade/vim-gitgutter'
@@ -27,24 +27,20 @@ elseif has('win32') | call plug#begin() | endif
     Plug 'eggbean/vim-tmux', { 'branch': 'missing-commands' }
     Plug 'EinfachToll/DidYouMean'
     Plug 'dstein64/vim-startuptime'
-    Plug 'hashivim/vim-terraform'
-    Plug 'hashivim/vim-vagrant'
-    Plug 'hashivim/vim-vaultproject'
+    Plug 'LnL7/vim-nix'
+    " Plug 'hashivim/vim-terraform'
+    " Plug 'hashivim/vim-vagrant'
+    " Plug 'hashivim/vim-vaultproject'
     " EVALUATING ...
     Plug 'roxma/vim-tmux-clipboard'
     Plug 'juliosueiras/vim-terraform-completion'
     Plug 'ojroques/vim-oscyank'
-    Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
+    " Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
     Plug 'ctrlpvim/ctrlp.vim'
     Plug 'dkarter/bullets.vim'
     " Plug 'neoclide/coc.nvim', { 'branch': 'release' }
     " Plug 'mattn/emmet-vim'
     " Plug 'pearofducks/ansible-vim'
-    if !has('nvim')
-      Plug 'machakann/vim-highlightedyank'
-      Plug 'dracula/vim', { 'as': 'dracula' }
-      Plug 'itchyny/lightline.vim'
-    endif
     if has('nvim')
       Plug 'EdenEast/nightfox.nvim'
       Plug 'nvim-lualine/lualine.nvim'
@@ -54,10 +50,11 @@ elseif has('win32') | call plug#begin() | endif
       " EVALUATING ...
       Plug 'phelipetls/jsonpath.nvim'
     endif
-  endif
-  if !has('gui_running') && has('python3')
-    Plug 'SirVer/ultisnips'
-    Plug 'ron89/thesaurus_query.vim'
+    if !has('nvim')
+      Plug 'machakann/vim-highlightedyank'
+      Plug 'dracula/vim', { 'as': 'dracula' }
+      Plug 'itchyny/lightline.vim'
+    endif
   endif
   if has('gui_running')
     Plug 'machakann/vim-highlightedyank'
@@ -65,6 +62,10 @@ elseif has('win32') | call plug#begin() | endif
     if has('win32')
       Plug 'kkoenig/wimproved.vim'
     endif
+  endif
+  if !has('gui_running') && has('python3')
+    Plug 'SirVer/ultisnips'
+    Plug 'ron89/thesaurus_query.vim'
   endif
 call plug#end()
 
