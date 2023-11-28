@@ -12,7 +12,7 @@ set softtabstop=4
 set autoindent
 set expandtab
 set list
-set smartindent
+set nosmartindent
 set backspace=eol,start
 set smarttab
 set numberwidth=4
