@@ -1,38 +1,63 @@
 " GVIM CONFIGURATION
 " Only sourced by gvim, after sourcing vimrc
 
-set t_Co=256
-color PaperColor
-set background=light
-if has('gui_gtk2') || has('gui_gtk3')
-  set guifont=Iosevka\ Term\ 12
-elseif has('gui_win32')
-  set guifont=Iosevka_NF:h12
+if filereadable(expand('$VIMFILES/vimrc.d/guifont.gvim'))
+  source $VIMFILES/vimrc.d/guifont.gvim
+else
+  if has('gui_gtk2') || has('gui_gtk3')
+    set guifont=Iosevka\ Term\ 12
+  elseif has('gui_win32')
+    set guifont=Iosevka_NF:h12
+  endif
 endif
-highlight Cursor guifg=white guibg=red
-highlight iCursor guifg=black guibg=steelblue
-set guicursor=n-v-c:block-Cursor
-set guicursor+=i:ver20-iCursor
+
+" See https://gist.github.com/romainl/379904f91fa40533175dfaec4c833f2f
+function! MyHighlights() abort
+  highlight clear SignColumn
+  set guicursor=n-v-c:block-Cursor
+  set guicursor+=i:ver20-iCursor
+  highlight Cursor guifg=white guibg=red
+  highlight iCursor guifg=black guibg=steelblue
+  highlight Normal guibg=#eeeeee
+  highlight StatusLine guibg=#b2b2b2 guifg=#eeeeee
+  highlight StatusLineNC guibg=#d0d0d0 guifg=#eeeeee
+  highlight Terminal guifg='#282c34'
+  highlight Terminal guibg='#eeeeee'
+  highlight StatusLineTerm ctermbg=24 ctermfg=254 guibg=#eeeeee guifg=#b2b2b2
+  highlight StatusLineTermNC ctermbg=252 ctermfg=238 guibg=#eeeeee guifg=#d0d0d0
+  if exists('g:terminal_ansi_colors')
+    unlet g:terminal_ansi_colors
+  endif
+endfunction
+
+augroup MyColors
+  autocmd!
+  autocmd ColorScheme * call MyHighlights()
+augroup END
+
+if filereadable(expand('$VIMFILES/vimrc.d/colorscheme.gvim'))
+  source $VIMFILES/vimrc.d/colorscheme.gvim
+else
+  color PaperColor
+endif
+set background=light
+
+set belloff=
+set visualbell
+set signcolumn=yes
+set lines=35 columns=90
 set statusline=
 set statusline+=\ \ %f
 set statusline+=\ %m
 set statusline+=%=
-set statusline+=%l:%c\ \ %p%%\ \ 
-hi StatusLine guibg=grey70 guifg=#eeeeee
-set lines=35 columns=90
+set statusline+=%l:%c\ \ %p%%\ \ "
 set guioptions -=L
 set guioptions -=r
 set guioptions -=m
 set guioptions -=T
 set winaltkeys=no
-set belloff=
-set visualbell
-set signcolumn=yes
-unlet g:terminal_ansi_colors
-highlight Terminal guifg='#282C34'
-highlight Terminal guibg='#EEEEEE'
 
-" Function to toggle window menu (F9)
+" Toggle window menu (F9)
 function ToggleWindowMenu()
   if (&winaltkeys == 'yes')
     set winaltkeys=no   "turn off menu keys
@@ -47,6 +72,8 @@ endfunction
 map <silent> <F9> :call ToggleWindowMenu()<CR>
 
 " Restore window positions
+" (this needs to be sourced before
+" the following two functions)
 source $VIMFILES/vimrc.d/restore_position.vim
 
 " Set window to certain size (F10)
@@ -93,69 +120,3 @@ map <silent> <M-CR> <F11><CR>
 " Distraction-free mode (F12)
 source $VIMFILES/vimrc.d/distraction_free_mode.vim
 map <silent> <F12> :call ToggleDistractionFreeMode()<CR>
-
-" Change font/window size using Ctrl+/-
-" return to original size with Ctrl-0
-" also works with Ctrl+mousewheel
-if has('gui_gtk2') || has('gui_gtk3')
-  let g:gf_size_orig = matchstr(&guifont, '\( \)\@<=\d\+$')
-  function! FontSizePlus()
-    let l:gf_size_whole = matchstr(&guifont, '\( \)\@<=\d\+$')
-    if l:gf_size_whole < 28
-      let l:gf_size_whole = l:gf_size_whole + 1
-      let l:new_font_size = ' '.l:gf_size_whole
-      let &guifont = substitute(&guifont, ' \d\+$', l:new_font_size, '')
-    endif
-  endfunction
-  function! FontSizeMinus()
-    let l:gf_size_whole = matchstr(&guifont, '\( \)\@<=\d\+$')
-    if l:gf_size_whole > 1
-      let l:gf_size_whole = l:gf_size_whole - 1
-      let l:new_font_size = ' '.l:gf_size_whole
-      let &guifont = substitute(&guifont, ' \d\+$', l:new_font_size, '')
-    endif
-  endfunction
-  function! FontSizeOriginal()
-    let &guifont = substitute(&guifont, ' \d\+$', ' '.g:gf_size_orig, '')
-  endfunction
-elseif has('gui_win32')
-  let g:gf_size_orig = matchstr(&guifont, '\(:h\)\@<=\d\+\(:W\d\+\)\?\(:b\)\?\(:cANSI\)\?\(:qDRAFT\)\?$')
-  function! FontSizePlus()
-    let l:gf_size_whole = matchstr(&guifont, '\(:h\)\@<=\d\+\(:W\d\+\)\?\(:b\)\?\(:cANSI\)\?\(:qDRAFT\)\?$')
-    let l:gf_weight = matchstr(&guifont, '\(:W\d\+\)\?$')
-    let l:gf_bold = matchstr(&guifont, '\(:b\)\?$')
-    let l:gf_cansi = matchstr(&guifont, '\(:cANSI\)\?$')
-    let l:gf_qdraft = matchstr(&guifont, '\(:qDRAFT\)\?$')
-    if l:gf_size_whole < 28
-      let l:gf_size_whole = l:gf_size_whole + 1
-      let l:new_font_size = ':h'.l:gf_size_whole
-      let &guifont = substitute(&guifont, '\(:h\d\+\)\(:W\d\+\)\?\(:b\)\?\(:cANSI\)\?\(:qDRAFT\)\?$', l:new_font_size.l:gf_weight.l:gf_bold.l:gf_cansi.l:gf_qdraft, '')
-    endif
-  endfunction
-  function! FontSizeMinus()
-    let l:gf_size_whole = matchstr(&guifont, '\(:h\)\@<=\d\+\(:W\d\+\)\?\(:b\)\?\(:cANSI\)\?\(:qDRAFT\)\?$')
-    let l:gf_weight = matchstr(&guifont, '\(:W\d\+\)\?$')
-    let l:gf_bold = matchstr(&guifont, '\(:b\)\?$')
-    let l:gf_cansi = matchstr(&guifont, '\(:cANSI\)\?$')
-    let l:gf_qdraft = matchstr(&guifont, '\(:qDRAFT\)\?$')
-    if l:gf_size_whole > 1
-      let l:gf_size_whole = l:gf_size_whole - 1
-      let l:new_font_size = ':h'.l:gf_size_whole
-      let &guifont = substitute(&guifont, '\(:h\d\+\)\(:W\d\+\)\?\(:b\)\?\(:cANSI\)\?\(:qDRAFT\)\?$', l:new_font_size.l:gf_weight.l:gf_bold.l:gf_cansi.l:gf_qdraft, '')
-    endif
-  endfunction
-  function! FontSizeOriginal()
-    let l:gf_weight = matchstr(&guifont, '\(:W\d\+\)\?$')
-    let l:gf_bold = matchstr(&guifont, '\(:b\)\?$')
-    let l:gf_cansi = matchstr(&guifont, '\(:cANSI\)\?$')
-    let l:gf_qdraft = matchstr(&guifont, '\(:qDRAFT\)\?$')
-    let &guifont = substitute(&guifont, '\(:h\d\+\)\(:W\d\+\)\?\(:b\)\?\(:cANSI\)\?\(:qDRAFT\)\?$', ':h'.g:gf_size_orig.l:gf_weight.l:gf_bold.l:gf_cansi.l:gf_qdraft, '')
-  endfunction
-endif
-if has('gui_running')
-  nmap <C-=> :call FontSizePlus()<CR>
-  nmap     :call FontSizeMinus()<CR>
-  nmap <C-0> :call FontSizeOriginal()<CR>
-  map <silent> <C-ScrollWheelUp>   :call FontSizePlus()<CR>
-  map <silent> <C-ScrollWheelDown> :call FontSizeMinus()<CR>
-endif

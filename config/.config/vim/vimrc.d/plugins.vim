@@ -58,6 +58,7 @@ elseif has('win32') | call plug#begin() | endif
   endif
   if has('gui_running')
     Plug 'machakann/vim-highlightedyank'
+    Plug 'eggbean/resize-font.gvim'
     Plug 'AndrewRadev/typewriter.vim'
     if has('win32')
       Plug 'kkoenig/wimproved.vim'

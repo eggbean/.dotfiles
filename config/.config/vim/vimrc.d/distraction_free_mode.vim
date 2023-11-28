@@ -6,6 +6,7 @@ let g:dfm_height = 0.8
 
 let s:dfm_enabled = 0
 let g:gf_orig = &guifont
+let g:current_colorscheme = g:colors_name
 
 function! ToggleDistractionFreeMode()
   let l:w = g:dfm_width > 1 ? g:dfm_width : (winwidth('%') * g:dfm_width)
@@ -55,10 +56,7 @@ function! ToggleDistractionFreeMode()
       execute "wincmd " . key . " | close "
     endfor
     set nolinebreak | syntax on
-    colorscheme PaperColor
-    hi StatusLine guibg=grey70 guifg=#eeeeee
-    highlight Cursor guifg=white guibg=red
-    highlight iCursor guifg=white guibg=steelblue
+    execute 'colorscheme ' . g:current_colorscheme
     if has('gui_gtk2') || has('gui_gtk3')
       let l:current_size = matchstr(&guifont, '\d\+$')
       let &guifont = substitute(g:gf_orig, '\s*\d\+$', '', '')
