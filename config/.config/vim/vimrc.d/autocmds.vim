@@ -1,4 +1,4 @@
-" VIM AUTOCMDS
+" VIM AUTOCMDS & FUNCTIONS
 
 " Enable syntax completion
 if has('autocmd') && exists('+omnifunc')
@@ -25,7 +25,7 @@ if exists('$TMUX')
     autocmd VimLeave * call system(printf('tmux set automatic-rename on\;
       \ set -a window-status-current-style "fg=#{@white}"\;
       \ set -a window-status-style "fg=#{@black}"'))
-  augroup end
+  augroup END
   autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
 endif
 
@@ -41,6 +41,20 @@ endif
 
 " Send selection to my ix.io pastebin account
 command! -range=% IX '<,'>!curl -snF 'f:1=<-' ix.io
+
+" Toggle UPPERCASE/lowercase/Titlecase
+" of selection with ~
+function! TwiddleCase(str)
+  if a:str ==# toupper(a:str)
+    let result = tolower(a:str)
+  elseif a:str ==# tolower(a:str)
+    let result = substitute(a:str,'\(\<\w\+\>\)', '\u\1', 'g')
+  else
+    let result = toupper(a:str)
+  endif
+  return result
+endfunction
+vnoremap ~ y:call setreg('', TwiddleCase(@"), getregtype(''))<CR>gv""Pgv
 
 " Highlight repeated lines
 function! HighlightRepeats() range
