@@ -36,6 +36,17 @@ if has('nvim')
   augroup END
 endif
 
+" Disable statusline in gvim terminal window (when active)
+" (set splitbelow and splitright for this to work)
+if has('gui_running')
+  augroup TerminalStatusline
+    autocmd!
+    autocmd TerminalOpen * set laststatus=0
+    autocmd BufEnter     * if &buftype != 'terminal' | set laststatus=2 | endif
+    autocmd BufEnter     * if &buftype == 'terminal' | set laststatus=0 | endif
+  augroup END
+endif
+
 " ---------------------
 " Some custom commands and functions:
 
