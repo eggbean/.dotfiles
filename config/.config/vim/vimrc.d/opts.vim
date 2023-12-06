@@ -20,8 +20,6 @@ set hlsearch
 set ignorecase
 set smartcase
 set autochdir
-set wildmenu wildmode=list:longest,full
-set wildoptions=pum,tagfile
 set splitright
 set splitbelow
 set lazyredraw
@@ -67,6 +65,11 @@ set undofile
 set noshowmode
 set laststatus=2
 set timeoutlen=600
+set wildmenu wildmode=list:longest,full
+set wildoptions=tagfile
+if has('nvim') || v:version > 802
+  set wildoptions+=pum
+endif
 
 " Save uppercase global variables and limit oldfiles to 20
 if !empty(&viminfo)
