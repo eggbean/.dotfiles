@@ -196,6 +196,11 @@ if [[ $ID != android ]]; then
     fi
   fi
 
+  # Install and configure fail2ban on bastion hosts
+  if [[ $(hostname -s) =~ ^(bastet|baal|jump|gateway|firewall)$ ]]; then
+    sudo ~/.dotfiles/bin/scripts/install_fail2ban.sh
+  fi
+
   # Add Hashicorp repository
   sudo ~/.dotfiles/bin/scripts/repo-add-hashcorp.sh && \
     yellow_echo "Hashicorp repository added"

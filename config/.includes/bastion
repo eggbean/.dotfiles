@@ -1,6 +1,9 @@
 ## Host specific stuff for bastion hosts
 # vim: filetype=bash
 
+[[ $(arch) == aarch64 ]] && source ~/.dotfiles/config/.includes/aarch64_instances
+[[ $(arch) == x86_64 ]] && source ~/.dotfiles/config/.includes/x86_64_instances
+
 # === sga-guardian ===
 if [[ $(who -m) =~ mosh ]]; then
 
