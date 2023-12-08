@@ -2,16 +2,20 @@
 # vim: filetype=bash
 
 # === sga-guardian ===
+if [[ $(who -m) =~ mosh ]]; then
 
-# Set environment variables overriding the ssh program
-export RSYNC_RSH=sga-ssh
-export GIT_SSH_COMMAND=sga-ssh
+  # Set environment variables overriding the ssh program
+  export RSYNC_RSH=sga-ssh
+  export GIT_SSH_COMMAND=sga-ssh
 
-# For tools not providing environment variables, set aliases
-alias mosh="mosh --ssh=sga-ssh"
-alias scp="scp -S sga-ssh"
+  # For tools not providing environment variables, set aliases
+  alias ssh="sga-ssh"
+  alias mosh="mosh --ssh=sga-ssh"
+  alias scp="scp -S sga-ssh"
 
-# === ssh-agent on mosh connection ===
-if [[ ! -S $SSH_AUTH_SOCK ]]; then
-  export SSH_AUTH_SOCK=~/.ssh/agent.sock
 fi
+
+# # === ssh-agent on mosh connection ===
+# if [[ ! -S $SSH_AUTH_SOCK ]]; then
+#   export SSH_AUTH_SOCK=~/.ssh/agent.sock
+# fi
