@@ -4,6 +4,7 @@ if has('unix') | call plug#begin('$XDG_DATA_HOME/vim/plugged')
 elseif has('win32') | call plug#begin() | endif
   Plug 'tpope/vim-rsi'
   Plug 'tpope/vim-commentary'
+  Plug 'tpope/vim-eunuch'
   Plug 'azabiong/vim-highlighter'
   Plug 'ntpeters/vim-better-whitespace'
   Plug 'machakann/vim-sandwich'
@@ -28,6 +29,7 @@ elseif has('win32') | call plug#begin() | endif
     Plug 'EinfachToll/DidYouMean'
     Plug 'dstein64/vim-startuptime'
     Plug 'LnL7/vim-nix'
+    Plug 'github/copilot.vim'
     " Plug 'hashivim/vim-terraform'
     " Plug 'hashivim/vim-vagrant'
     " Plug 'hashivim/vim-vaultproject'
@@ -125,8 +127,9 @@ call plug#end()
   omap ia <Plug>SidewaysArgumentTextobjI
   xmap ia <Plug>SidewaysArgumentTextobjI
 " vim-oscyank
-  vnoremap <leader>y :OSCYank<CR>
-  nmap     <leader>y :OSCYank<CR>
+  nmap <leader>y <Plug>OSCYankOperator
+  nmap <leader>yy <leader>c_
+  vmap <leader>y <Plug>OSCYankVisual
 " markdown-preview
   let g:mkdp_echo_preview_url = 1
   let g:mkdp_theme = 'light'
