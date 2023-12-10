@@ -8,8 +8,8 @@ notify-send() {
 }
 
 # Function to change directory using Windows path
-gotopath() {
-  command cd "$(wslpath -u "$@")"
+cdwin() {
+  cd "$(wslpath -u "$@")"
 }
 
 # Aliases
