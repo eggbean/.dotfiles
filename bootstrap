@@ -107,7 +107,7 @@ if [[ $ID != android ]]; then
       > /etc/nix/nix.conf'
     { gum spin --spinner.width=1 --title "Installing nix package manager" -- \
       sh <(curl -sL https://nixos.org/nix/install) --yes --no-modify-profile && \
-      echo Nix package manager installed; } && \
+      yellow_echo Nix package manager installed; } && \
       source $XDG_STATE_HOME/nix/profile/etc/profile.d/nix.sh || \
       { red_echo "Failed: nix package manager installation" >&2; return 1; }
   fi
@@ -200,6 +200,9 @@ if [[ $ID != android ]]; then
   if [[ $(hostname -s) =~ ^(bastet|baal|jump|gateway|firewall)$ ]]; then
     sudo ~/.dotfiles/bin/scripts/install_fail2ban.sh
   fi
+
+  # Install or update golang
+  sudo ~/.dotfiles/bin/scripts/install_golang.sh
 
   # Add Hashicorp repository
   sudo ~/.dotfiles/bin/scripts/repo-add-hashcorp.sh && \
