@@ -4,14 +4,18 @@
 # Multi-platform (Linux and macOS)
 # Multi-architecture (amd64, arm64, arm) support
 
+green_echo() {
+  echo "$(tput setaf 2)${1}$(tput sgr0)"
+}
+
 error_string=("Error: This command has to be run with superuser"
   "privileges (under the root user on most systems).")
 if [[ $(id -u) -ne 0 ]]; then echo "${error_string[@]}" >&2; exit 1; fi
 
-deps=( curl jq )
+deps=( awk curl jq tar )
 unset bail
-for i in "${deps[@]}"; do command -v "$i" >/dev/null 2>&1 || { bail="$?"; echo "$i" is not available; }; done
-if [ "$bail" ]; then exit "$bail"; fi
+for i in "${deps[@]}"; do command -v "$i" >/dev/null 2>&1 || { bail="$?"; echo "$i" is not available >&2; }; done
+if [[ $bail ]]; then exit "$bail"; fi
 
 version="$(curl -s 'https://go.dev/dl/?mode=json' | jq -r '.[0].version')"
 current="$(/usr/local/go/bin/go version 2>/dev/null | awk '{print $3}')"
@@ -30,7 +34,7 @@ update_go() {
     rm -rf /usr/local/go && tar -C /usr/local -xzf /tmp/${version}.${os}-${arch}.tar.gz
 
   tar -C /usr/local -xzf "/tmp/${version}.${os}-${arch}.tar.gz" && \
-    echo "Go updated to version ${version}"
+    green_echo "Go updated to version ${version}"
 
   rm "/tmp/${version}.${os}-${arch}.tar.gz"
 }
