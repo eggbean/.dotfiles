@@ -1,0 +1,7 @@
+_vimsize
+backup/
+plugged/
+swap/
+undo/
+vim-bookmarks
+viminfo
