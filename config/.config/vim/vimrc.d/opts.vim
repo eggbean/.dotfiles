@@ -74,9 +74,9 @@ endif
 " Save uppercase global variables and limit oldfiles to 20
 if !empty(&viminfo)
   if has('unix')
-    set viminfo=!,'20,<50,s10,h
+    set viminfo=!,'30,<50,s10,h
   elseif has('win32')
-    set viminfo=!,'20,<50,s10,h,rA:,rB:
+    set viminfo=!,'30,<50,s10,h,rA:,rB:
   endif
 endif
 
