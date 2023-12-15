@@ -19,9 +19,9 @@ vim.api.nvim_exec([[
 
 -- Source Vimscript files from vim configuration
 vim.cmd('source ' .. vimfiles .. '/vimrc.d/xdg.vim')      -- Change XDG directories to the same as vim
+vim.cmd('source ' .. vimfiles .. '/vimrc.d/autocmds.vim') -- Auto commands dependent on filetype
 vim.cmd('source ' .. vimfiles .. '/vimrc.d/opts.vim')     -- Setting options
 vim.cmd('source ' .. vimfiles .. '/vimrc.d/mappings.vim') -- Key mappings
-vim.cmd('source ' .. vimfiles .. '/vimrc.d/autocmds.vim') -- Auto commands dependent on filetype
 vim.cmd('source ' .. vimfiles .. '/vimrc.d/plugins.vim')  -- Plugins and plugin configuration
 
 -- Highlight on yank

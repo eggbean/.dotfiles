@@ -114,3 +114,19 @@ let g:loaded_python_provider = 0
 let g:loaded_ruby_provider = 0
 let g:loaded_perl_provider = 0
 let g:loaded_node_provider = 0
+
+" Set clipboard on WSL
+if has('unix') && IsWSL()==1
+  let g:clipboard = {
+                  \   'name': 'WslClipboard',
+                  \   'copy': {
+                  \      '+': 'clip.exe',
+                  \      '*': 'clip.exe',
+                  \    },
+                  \   'paste': {
+                  \      '+': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+                  \      '*': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+                  \    },
+                  \   'cache_enabled': 0,
+                  \ }
+endif
