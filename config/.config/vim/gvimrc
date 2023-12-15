@@ -89,6 +89,7 @@ function! SetScreenSize()
     endif
   endif
   set lines=35 columns=90
+  WCenter
 endfunction
 nmap <silent> <F10> :call SetScreenSize()<CR>
 
