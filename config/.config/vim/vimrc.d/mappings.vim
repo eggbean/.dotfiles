@@ -73,6 +73,9 @@ if has('win32')
   endfunc
 endif
 
+" Y to yank to end of line, like nvim
+nmap Y y$
+
 " Reselect pasted text
 nnoremap gp `[v`]
 
