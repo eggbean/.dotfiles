@@ -41,6 +41,15 @@ if [ -d "/usr/local/go/bin" ]; then
   PATH=$PATH:/usr/local/go/bin
 fi
 
+# pnpm
+if command -v pnpm >/dev/null 2>&1; then
+  export PNPM_HOME="$HOME/.local/share/pnpm"
+  case ":$PATH:" in
+    *":$PNPM_HOME:"*) ;;
+    *) export PATH="$PNPM_HOME:$PATH" ;;
+  esac
+fi
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('${HOME}/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"

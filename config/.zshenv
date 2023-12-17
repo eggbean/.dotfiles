@@ -11,6 +11,15 @@ if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; t
   source "${ZDOTDIR:-$HOME}/.zprofile"
 fi
 
+# pnpm
+if command -v pnpm >/dev/null 2>&1; then
+  export PNPM_HOME="$HOME/.local/share/pnpm"
+  case ":$PATH:" in
+    *":$PNPM_HOME:"*) ;;
+    *) export PATH="$PNPM_HOME:$PATH" ;;
+  esac
+fi
+
 # Nix package manager
 if [ -e "$XDG_STATE_HOME"/nix/profile/etc/profile.d/nix.sh ]; then
   source "$XDG_STATE_HOME"/nix/profile/etc/profile.d/nix.sh
