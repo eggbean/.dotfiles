@@ -1,7 +1,6 @@
 .gitattributes !filter !diff
 *.env filter=git-crypt diff=git-crypt
 *.key filter=git-crypt diff=git-crypt
-bin/scripts/bootstrap*.sh filter=git-crypt diff=git-crypt
 config/.config/aws/config filter=git-crypt diff=git-crypt
 config/.config/aws/credentials filter=git-crypt diff=git-crypt
 config/.config/docker/config.json filter=git-crypt diff=git-crypt
