@@ -15,6 +15,8 @@ packages+=(
   htop
   jq
   ncdu
+  net-tools
+  nmap
   ranger
   shellcheck
   stow
@@ -67,6 +69,7 @@ if [[ $(hostname -s) =~ ^(h.+)$ ]] && grep -vqi microsoft /proc/version; then
     nsxiv
     qutebrowser
     vim-gtk3
+    wmctrl
     zathura
   )
 fi
@@ -75,13 +78,16 @@ fi
 if grep -qi microsoft /proc/version; then
   packages+=(
     dos2unix
+    socat
+    xdg-user-dirs
   )
-  # Debian-based
+  # Debian-based (with graphical desktop)
   [[ $ID =~ ^(debian|ubuntu)$ ]] && packages+=(
     alacritty
     nsxiv
     qutebrowser
     vim-gtk3
+    wmctrl
     zathura
   )
 fi
