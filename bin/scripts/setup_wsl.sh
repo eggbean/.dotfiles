@@ -1,108 +1,18 @@
 #!/bin/bash
 
-# Does various things to setup/update the Windows partition
+# Does various things to setup Windows Subsystem for Linux
 
+# Check if this is a WSL system
 if ! grep -qi microsoft /proc/version; then
   { echo "This isn't a Windows WSL system" >&2; exit 1; }
 fi
 
+# Check if superuser
 [[ $(id -u) == 0 ]] && { echo "This script is not supposed to be run as root" >&2; exit 1; }
 
+# Set variable for Windows home directory
 WIN_HOME_RAW="$(cmd.exe /c "<nul set /p=%UserProfile%" 2>/dev/null)"
 WIN_HOME="$(wslpath "$WIN_HOME_RAW")"
-
-# Copy qutebrowser config to Windows
-[[ ! -d $WIN_HOME/AppData/Roaming/qutebrowser/config ]] \
-  && mkdir -p "$WIN_HOME"/AppData/Roaming/qutebrowser/config
-cp -r "$HOME"/.dotfiles/config/.config/qutebrowser/* "$WIN_HOME"/AppData/Roaming/qutebrowser/config
-
-# Copy vim/gvim config to Windows
-# added words from Windows vim spelling file added to the local spelling file in repository
-# config files made read-only to avoid me accidentally editing them in Windows
-cd "$WIN_HOME" || { echo "ERROR" >&2; exit 1; }
-[[ ! -d vimfiles/vimrc.d ]] && mkdir -p vimfiles/vimrc.d
-cd vimfiles || { echo "ERROR" >&2; exit 1; }
-winspell="spell/en.utf-8.add"
-localspell="$HOME"/.dotfiles/config/.config/vim/spell/en.utf-8.add
-if [[ -e $winspell ]]; then
-  comm -1 -3 <(sort -u "$localspell") <(sort -u "$winspell") > /tmp/difference
-  cat "$localspell" /tmp/difference | awk "!a[\$0]++{print}" > /tmp/concatenated
-  if ! cmp --silent /tmp/concatenated "$localspell"; then
-    cp /tmp/concatenated "$localspell"
-  fi
-  rm /tmp/{difference,concatenated}
-fi
-files=('gvimrc' 'vimrc' 'vimrc.d/autocmds.vim' 'vimrc.d/distraction_free_mode.vim' 'vimrc.d/mappings.vim' \
-  'vimrc.d/opts.vim' 'vimrc.d/plugins.vim' 'vimrc.d/restore_position.vim' 'vimrc.d/xdg.vim')
-for f in "${files[@]}"; do
-  if [[ -f $f ]]; then attrib.exe -R "$f" >/dev/null; fi
-done
-cp -r "$HOME"/.dotfiles/config/.config/vim/{vimrc,gvimrc} .
-vimdirs=('after' 'autoload' 'colors' 'compiler' 'css' 'doc' 'ftdetect' 'ftplugin' \
-  'indent' 'keymap' 'plugin' 'spell' 'syntax' 'templates' 'UltiSnips' 'vimrc.d')
-for d in "${vimdirs[@]}"; do
-  if [[ -d $HOME/.dotfiles/config/.config/vim/$d ]]; then
-    rsync --links --recursive --delete "$HOME/.dotfiles/config/.config/vim/$d/" "$d"
-  fi
-done
-# config files made read-only to avoid me accidentally editing them in Windows
-for f in "${files[@]}"; do
-  attrib.exe +R "$f"
-done
-# added words from Windows vim spelling file added to the local spelling file in repository
-# (only if file is encryption unlocked, as otherwise things get messed up)
-syncdict() {
-  local winspell="spell/en.utf-8.add"
-  local localspell="$HOME"/.dotfiles/config/.config/vim/spell/en.utf-8.add
-  if [ -e "$winspell" ]; then
-    comm -1 -3 <(sort -u "$localspell") <(sort -u "$winspell") > /tmp/difference
-    cat "$localspell" /tmp/difference | awk "!a[\$0]++{print}" > /tmp/concatenated
-    if ! cmp --silent /tmp/concatenated "$localspell"; then
-      cp /tmp/concatenated "$localspell"
-    fi
-    rm /tmp/{difference,concatenated}
-  fi
-  rsync --recursive --delete "$HOME/.dotfiles/config/.config/vim/spell" "$WIN_HOME/vimfiles"
-}
-git config -f ~/.dotfiles/.git/config --get filter.git-crypt.smudge >/dev/null && syncdict
-
-# Copy mpv config to Windows
-[[ ! -d $WIN_HOME/AppData/Roaming/mpv ]] \
-  && mkdir "$WIN_HOME"/AppData/Roaming/mpv
-cp -r "$HOME"/.dotfiles/config/.config/mpv/* "$WIN_HOME"/AppData/Roaming/mpv
-
-# Copy GitHub CLI config to Windows
-[[ ! -d $WIN_HOME/AppData/Roaming/"GitHub CLI" ]] \
-  && mkdir "$WIN_HOME/AppData/Roaming/GitHub CLI"
-cp -r "$HOME"/.dotfiles/config/.config/gh/{config,hosts}.yml "$WIN_HOME/AppData/Roaming/GitHub CLI"
-
-# Modify ranger config to work in Windows
-# rifle.conf file swapped over with one that works with Windows and change ignored by git
-cd "$HOME"/.dotfiles || { echo "ERROR" >&2; exit 1; }
-if [[ ! -L config/.config/ranger/rifle.conf ]]; then
-  rm config/.config/ranger/rifle.conf
-  ln -s config/.config/ranger/rifle.conf.windows config/.config/ranger/rifle.conf
-  git update-index --skip-worktree config/.config/ranger/rifle.conf
-fi
-
-# Copy alacritty config to Windows
-# the Windows base file is renamed when copied to %APPDATA%
-[[ ! -d $WIN_HOME/AppData/Roaming/alacritty ]] \
-  && mkdir "$WIN_HOME"/AppData/Roaming/alacritty
-cp "$HOME"/.dotfiles/config/.config/alacritty/alacritty.windows.yml "$WIN_HOME"/AppData/Roaming/alacritty/alacritty.yml
-cp "$HOME"/.dotfiles/config/.config/alacritty/alacritty.main.yml "$WIN_HOME"/AppData/Roaming/alacritty/alacritty.main.yml
-
-# Copy Windows Terminal config from winfiles repository to $WIN_HOME/AppData/Local
-# includes hacky way to get a copy of any changed settings back to the repository
-if [[ -d $WIN_HOME/winfiles/Windows_Terminal ]]; then
-  [[ ! -d $WIN_HOME/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState ]] \
-    && mkdir -p "$WIN_HOME"/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState
-  cp "$WIN_HOME"/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json \
-    "$WIN_HOME"/winfiles/Windows_Terminal/settings.json.bak
-  unix2dos -q "$WIN_HOME"/winfiles/Windows_Terminal/settings.json.bak
-  cp "$WIN_HOME"/winfiles/Windows_Terminal/settings.json \
-    "$WIN_HOME"/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState
-fi
 
 # Using the PuTTY ssh agent with WSL through wsl2-ssh-pageant.exe
 if [[ ! -L $HOME/.ssh/wsl2-ssh-pageant.exe ]]; then
@@ -127,6 +37,85 @@ fi
 if [[ ! -L /usr/local/bin/arp ]]; then
   sudo ln -s $(which arp.exe) /usr/local/bin/arp
 fi
+
+# Set wsl.conf
+cat <<-EOF | sudo tee /etc/wsl.conf > /dev/null
+	[automount]
+	enabled = true
+	options = "metadata,uid=1000,gid=1000,umask=0022,fmask=11,case=off"
+	mountFsTab = true
+
+	[network]
+	generateHosts = false
+	generateResolvConf = false
+	hostname = $(hostname -s)
+
+	[filesystem]
+	umask = 0022
+
+	[user]
+	default=$(whoami)
+
+	[boot]
+	systemd=true
+EOF
+
+# Set /etc/resolv.conf
+cat <<-EOF | sudo tee /etc/resolv.conf > /dev/null
+	nameserver 1.1.1.1
+EOF
+
+# Set /etc/hosts
+cat <<-EOF | sudo tee /etc/hosts > /dev/null
+	127.0.0.1   localhost
+	127.0.1.1   $(hostname -s).jinkosystems.co.uk  $(hostname -s)
+
+	# The following lines are desirable for IPv6 capable hosts
+	::1     ip6-localhost ip6-loopback
+	fe00::0 ip6-localnet
+	ff00::0 ip6-mcastprefix
+	ff02::1 ip6-allnodes
+	ff02::2 ip6-allrouters
+EOF
+
+# Set gtk3 settings for xfce4
+cat <<-'EOF' > ~/.dotfiles/config/.config/gtk-3.0/settings.ini
+	[Settings]
+	gtk-application-prefer-dark-theme=0
+	gtk-theme-name=windows-10-dark
+	gtk-icon-theme-name=windows-10
+	gtk-font-name=Sans 10
+	gtk-cursor-theme-name=Adwaita
+	gtk-cursor-theme-size=0
+	gtk-toolbar-style=GTK_TOOLBAR_BOTH
+	gtk-toolbar-icon-size=GTK_ICON_SIZE_LARGE_TOOLBAR
+	gtk-button-images=1
+	gtk-menu-images=1
+	gtk-enable-event-sounds=1
+	gtk-enable-input-feedback-sounds=1
+	gtk-xft-antialias=1
+	gtk-xft-hinting=1
+	gtk-xft-hintstyle=hintfull
+EOF
+# Make git ignore these changes
+git update-index --skip-worktree ~/.dotfiles/config/.config/gtk-3.0/settings.ini
+
+# Fix xfce "authentication is required to create a colour managed device" problem
+if [[ ! -e /etc/polkit-1/localauthority/50-local.d/45-allow-colord.pkla ]]; then
+	sudo tee /etc/polkit-1/localauthority/50-local.d/45-allow-colord.pkla > /dev/null <<-'EOF'
+	[Allow Colord all Users]
+	Identity=unix-user:*
+	Action=org.freedesktop.color-manager.create-device;org.freedesktop.color-manager.create-profile;org.freedesktop.color-manager.delete-device;org.freedesktop.color-manager.delete-profile;org.freedesktop.color-manager.modify-device;org.freedesktop.color-manager.modify-profile
+	ResultAny=no
+	ResultInactive=no
+	ResultActive=yes
+	EOF
+fi
+
+# --------------------
+# exit now as currently my laptop's Windows Shell folders are not
+# in the standard locations, so the rest of this script won't work
+exit 0
 
 # Set some xdg-user-dirs to NTFS locations
 xdg-user-dirs-update \
@@ -165,15 +154,3 @@ for dir in "${dirs[@]}"; do
   windir="$(wslpath -w "$dir")"
   powershell.exe -File F:\\Users\\jason\\winfiles\\scripts\\make-hidden.ps1 "$windir"
 done
-
-# Fix xfce "authentication is required to create a colour managed device" problem
-if [[ ! -e /etc/polkit-1/localauthority/50-local.d/45-allow-colord.pkla ]]; then
-	sudo tee /etc/polkit-1/localauthority/50-local.d/45-allow-colord.pkla > /dev/null <<-'EOF'
-	[Allow Colord all Users]
-	Identity=unix-user:*
-	Action=org.freedesktop.color-manager.create-device;org.freedesktop.color-manager.create-profile;org.freedesktop.color-manager.delete-device;org.freedesktop.color-manager.delete-profile;org.freedesktop.color-manager.modify-device;org.freedesktop.color-manager.modify-profile
-	ResultAny=no
-	ResultInactive=no
-	ResultActive=yes
-	EOF
-fi
