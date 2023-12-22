@@ -180,12 +180,12 @@ if [[ $ID != android ]]; then
     yellow_echo "Default shell changed to z-shell"
   fi
 
-  # On WSL do all sorts of other stuff
+  # On WSL do some stuff to set it up
   if grep -qi microsoft /proc/version; then
     gum spin --spinner.width=1 --title "Configuring Windows" -- \
-      ~/.dotfiles/bin/scripts/dotfiles2appdata.sh && \
-      echo "Windows configured" || \
-      { red_echo "Failed: Windows configuration" >&2; return 1; }
+      ~/.dotfiles/bin/scripts/setup_wsl.sh && \
+      echo "Windows Subsystem for Linux configured" || \
+      { red_echo "Failed: Windows Subsystem for Linux setup" >&2; return 1; }
   fi
 
   # Generate British locale if not available
