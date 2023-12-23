@@ -77,6 +77,7 @@ fi
 # WSL clients
 if grep -qi microsoft /proc/version; then
   packages+=(
+    dnsmasq
     dos2unix
     socat
     xdg-user-dirs

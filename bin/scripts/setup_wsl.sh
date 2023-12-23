@@ -78,6 +78,23 @@ cat <<-EOF | sudo tee /etc/hosts > /dev/null
 	ff02::2 ip6-allrouters
 EOF
 
+# Configure dnsmasq
+cat <<-EOF | sudo tee /etc/dnsmasq.d/split-dns > /dev/null
+	no-dhcp-interface=lo
+	interface=lo
+	listen-address=127.0.0.1
+	no-resolv
+	server=/jinkosystems.co.uk/192.168.192.131
+	server=1.1.1.1
+	server=1.0.0.1
+	bind-interfaces
+	all-servers
+EOF
+
+if ! systemctl is-active --quiet dnsmasq.service; then
+  sudo systemctl start dnsmasq.service
+fi
+
 # Set gtk3 settings for xfce4
 cat <<-'EOF' > ~/.dotfiles/config/.config/gtk-3.0/settings.ini
 	[Settings]
