@@ -22,7 +22,7 @@ function! MyHighlights() abort
   highlight StatusLine guibg=#b2b2b2 guifg=#eeeeee
   highlight StatusLineNC guibg=#d0d0d0 guifg=#eeeeee
   highlight Terminal guifg='#282c34'
-  highlight Terminal guibg='#eeeeee'
+  highlight Terminal guibg='#e2e2e2'
   highlight StatusLineTerm ctermbg=24 ctermfg=254 guibg=#eeeeee guifg=#b2b2b2
   highlight StatusLineTermNC ctermbg=252 ctermfg=238 guibg=#eeeeee guifg=#d0d0d0
   if exists('g:terminal_ansi_colors')
