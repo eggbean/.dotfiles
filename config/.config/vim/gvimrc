@@ -57,6 +57,9 @@ set guioptions -=m
 set guioptions -=T
 set winaltkeys=no
 
+" Easier pasting in terminal
+tmap <S-Insert> <C-W>"+
+
 " Toggle window menu (F9)
 function ToggleWindowMenu()
   if (&winaltkeys == 'yes')
