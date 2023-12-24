@@ -235,7 +235,8 @@ c.scrolling.smooth = True
 #   - tr-TR: Turkish (Turkey)
 #   - uk-UA: Ukrainian (Ukraine)
 #   - vi-VN: Vietnamese (Viet Nam)
-c.spellcheck.languages = ['en-GB']
+if not sys.platform == "win32":
+    c.spellcheck.languages = ['en-GB']
 
 # When to show the statusbar.
 # Type: String
