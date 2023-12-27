@@ -129,11 +129,6 @@ if [[ ! -e /etc/polkit-1/localauthority/50-local.d/45-allow-colord.pkla ]]; then
 	EOF
 fi
 
-# --------------------
-# exit now as currently my laptop's Windows Shell folders are not
-# in the standard locations, so the rest of this script won't work
-exit 0
-
 # Set some xdg-user-dirs to NTFS locations
 xdg-user-dirs-update \
   --dummy-output ~/.dotfiles/config/.config/user-dirs.dirs \
@@ -159,7 +154,6 @@ git update-index --skip-worktree ~/.dotfiles/config/.config/user-dirs.dirs
 # Make .hidden files in every NTFS xdg-user-dir and subdirectory
 # to hide files in Thunar/Nautilus that are hidden in Windows
 dirs=( \
-  "$WIN_HOME" \
   "$(xdg-user-dir DESKTOP)" \
   "$(xdg-user-dir DOWNLOAD)" \
   "$(xdg-user-dir DOCUMENTS)" \
