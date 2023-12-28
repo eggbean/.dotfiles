@@ -89,6 +89,13 @@ tnoremap <ESC> <C-\><C-n>
 " Write after forgetting sudo
 cnoremap w!! w !sudo tee % >/dev/null
 
+" Ctrl+Ins to yank to system clipboard
+" like with gvim for Windows (quicker)
+" from the IBM Common User Access (CUA '97)
+if has('unix') || has('win32') && !has('gui_running')
+  vnoremap <C-Insert> "+y
+endif
+
 " Map Alt+[key] to terminal-like behaviour
 " so that I don't have to use ESC in gvim and vim for Windows
 if has('win32') || has('gui_running')
