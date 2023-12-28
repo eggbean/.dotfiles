@@ -17,7 +17,6 @@ packages+=(
   ncdu
   net-tools
   nmap
-  ranger
   shellcheck
   stow
   tree

@@ -19,6 +19,7 @@ nixpkgs=(
   nixpkgs.grex
   nixpkgs.hyperfine
   nixpkgs.jless
+  nixpkgs.lf
   nixpkgs.minio-client
   nixpkgs.monolith
   nixpkgs.moreutils
