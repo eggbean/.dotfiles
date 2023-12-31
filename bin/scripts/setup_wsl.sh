@@ -2,6 +2,9 @@
 
 # Does various things to setup Windows Subsystem for Linux
 
+domain=jinkosystems.co.uk
+dns_server=192.168.192.131
+
 # Check if this is a WSL system
 if ! grep -qi microsoft /proc/version; then
   { echo "This isn't a Windows WSL system" >&2; exit 1; }
@@ -11,7 +14,7 @@ fi
 [[ $(id -u) == 0 ]] && { echo "This script is not supposed to be run as root" >&2; exit 1; }
 
 # Set variable for Windows home directory
-WIN_HOME_RAW="$(cmd.exe /c "<nul set /p=%UserProfile%" 2>/dev/null)"
+WIN_HOME_RAW="$(cmd.exe /c "<nul set /p=%USERPROFILE%" 2>/dev/null)"
 WIN_HOME="$(wslpath "$WIN_HOME_RAW")"
 
 # Using the PuTTY ssh agent with WSL through wsl2-ssh-pageant.exe
@@ -60,7 +63,7 @@ cat <<-EOF | sudo tee /etc/wsl.conf > /dev/null
 	systemd=true
 EOF
 
-# Set /etc/resolv.conf
+# Set /etc/resolv.conf (dnsmasq overrides this)
 cat <<-EOF | sudo tee /etc/resolv.conf > /dev/null
 	nameserver 1.1.1.1
 EOF
@@ -68,7 +71,7 @@ EOF
 # Set /etc/hosts
 cat <<-EOF | sudo tee /etc/hosts > /dev/null
 	127.0.0.1   localhost
-	127.0.1.1   $(hostname -s).jinkosystems.co.uk  $(hostname -s)
+	127.0.1.1   $(hostname -s).$domain  $(hostname -s)
 
 	# The following lines are desirable for IPv6 capable hosts
 	::1     ip6-localhost ip6-loopback
@@ -84,7 +87,7 @@ cat <<-EOF | sudo tee /etc/dnsmasq.d/split-dns > /dev/null
 	interface=lo
 	listen-address=127.0.0.1
 	no-resolv
-	server=/jinkosystems.co.uk/192.168.192.131
+	server=/$domain/$dns_server
 	server=1.1.1.1
 	server=1.0.0.1
 	bind-interfaces
@@ -115,7 +118,7 @@ cat <<-'EOF' > ~/.dotfiles/config/.config/gtk-3.0/settings.ini
 	gtk-xft-hintstyle=hintfull
 EOF
 # Make git ignore these changes
-git update-index --skip-worktree ~/.dotfiles/config/.config/gtk-3.0/settings.ini
+git -C ~/.dotfiles update-index --skip-worktree ~/.dotfiles/config/.config/gtk-3.0/settings.ini
 
 # Fix xfce "authentication is required to create a colour managed device" problem
 if [[ ! -e /etc/polkit-1/localauthority/50-local.d/45-allow-colord.pkla ]]; then
@@ -129,34 +132,65 @@ if [[ ! -e /etc/polkit-1/localauthority/50-local.d/45-allow-colord.pkla ]]; then
 	EOF
 fi
 
+# Get NTFS user shell directory paths using PowerShell
+get_user_shell_dir() {
+  local win_path
+  case "$1" in
+    DESKTOP)
+      win_path=$(powershell.exe -Command "[Environment]::GetFolderPath('Desktop')" | tr -d '\r')
+      ;;
+    DOCUMENTS)
+      win_path=$(powershell.exe -Command "[Environment]::GetFolderPath('MyDocuments')" | tr -d '\r')
+      ;;
+    DOWNLOAD)   # See https://stackoverflow.com/a/57950443/140872
+      win_path=$(powershell.exe -Command "(New-Object -ComObject Shell.Application).NameSpace('shell:Downloads').Self.Path" | tr -d '\r')
+      ;;
+    MUSIC)
+      win_path=$(powershell.exe -Command "[Environment]::GetFolderPath('MyMusic')" | tr -d '\r')
+      ;;
+    PICTURES)
+      win_path=$(powershell.exe -Command "[Environment]::GetFolderPath('MyPictures')" | tr -d '\r')
+      ;;
+    VIDEOS)
+      win_path=$(powershell.exe -Command "[Environment]::GetFolderPath('MyVideos')" | tr -d '\r')
+      ;;
+    *)
+      echo "Unknown directory"
+      return
+      ;;
+  esac
+  echo "$(wslpath "$win_path")"
+}
+
 # Set some xdg-user-dirs to NTFS locations
 xdg-user-dirs-update \
   --dummy-output ~/.dotfiles/config/.config/user-dirs.dirs \
-  --set DESKTOP $WIN_HOME/Desktop
+  --set DESKTOP "$(get_user_shell_dir DESKTOP)"
 xdg-user-dirs-update \
   --dummy-output ~/.dotfiles/config/.config/user-dirs.dirs \
-  --set DOWNLOAD $WIN_HOME/Downloads
+  --set DOCUMENTS "$(get_user_shell_dir DOCUMENTS)"
 xdg-user-dirs-update \
   --dummy-output ~/.dotfiles/config/.config/user-dirs.dirs \
-  --set DOCUMENTS $WIN_HOME/Documents
+  --set DOWNLOAD "$(get_user_shell_dir DOWNLOAD)"
 xdg-user-dirs-update \
   --dummy-output ~/.dotfiles/config/.config/user-dirs.dirs \
-  --set MUSIC $WIN_HOME/Music
+  --set MUSIC "$(get_user_shell_dir MUSIC)"
 xdg-user-dirs-update \
   --dummy-output ~/.dotfiles/config/.config/user-dirs.dirs \
-  --set PICTURES $WIN_HOME/Pictures
+  --set PICTURES "$(get_user_shell_dir PICTURES)"
 xdg-user-dirs-update \
   --dummy-output ~/.dotfiles/config/.config/user-dirs.dirs \
-  --set VIDEOS $WIN_HOME/Videos
+  --set VIDEOS "$(get_user_shell_dir VIDEOS)"
 # Make git ignore these changes
-git update-index --skip-worktree ~/.dotfiles/config/.config/user-dirs.dirs
+git -C ~/.dotfiles update-index --skip-worktree ~/.dotfiles/config/.config/user-dirs.dirs
 
 # Make .hidden files in every NTFS xdg-user-dir and subdirectory
 # to hide files in Thunar/Nautilus that are hidden in Windows
 dirs=( \
+  "$WIN_HOME" \
   "$(xdg-user-dir DESKTOP)" \
-  "$(xdg-user-dir DOWNLOAD)" \
   "$(xdg-user-dir DOCUMENTS)" \
+  "$(xdg-user-dir DOWNLOAD)" \
   "$(xdg-user-dir MUSIC)" \
   "$(xdg-user-dir PICTURES)" \
   "$(xdg-user-dir VIDEOS)" \
