@@ -60,26 +60,7 @@ set winaltkeys=no
 " Easier pasting in terminal
 tmap <S-Insert> <C-W>"+
 
-" Toggle window menu (F9)
-function ToggleWindowMenu()
-  if (&winaltkeys == 'yes')
-    set winaltkeys=no   "turn off menu keys
-    set guioptions -=m  "turn off menubar
-    set guioptions -=T  "turn off icon toolbar
-  else
-    set winaltkeys=yes  "turn on menu keys
-    set guioptions +=m  "turn on menubar
-    set guioptions +=T  "turn on icon toolbar
-  endif
-endfunction
-map <silent> <F9> :call ToggleWindowMenu()<CR>
-
-" Restore window positions
-" (this needs to be sourced before
-" the following two functions)
-source $VIMFILES/vimrc.d/restore_position.vim
-
-" Set window to certain size (F10)
+" Set window to certain size (F9)
 function! SetScreenSize()
   if has('gui_win32')
     if !exists("s:fullscr")
@@ -94,7 +75,26 @@ function! SetScreenSize()
   set lines=35 columns=90
   WCenter
 endfunction
-nmap <silent> <F10> :call SetScreenSize()<CR>
+nmap <silent> <F9> :call SetScreenSize()<CR>
+
+" Toggle window menu (F10)
+function ToggleWindowMenu()
+  if (&winaltkeys == 'yes')
+    set winaltkeys=no   "turn off menu keys
+    set guioptions -=m  "turn off menubar
+    set guioptions -=T  "turn off icon toolbar
+  else
+    set winaltkeys=yes  "turn on menu keys
+    set guioptions +=m  "turn on menubar
+    set guioptions +=T  "turn on icon toolbar
+  endif
+endfunction
+map <silent> <F10> :call ToggleWindowMenu()<CR>
+
+" Restore window positions
+" (this needs to be sourced before
+" the following two functions)
+source $VIMFILES/vimrc.d/restore_position.vim
 
 " Fullscreen (F11/Alt-Enter)
 function! ToggleFullScreen()
