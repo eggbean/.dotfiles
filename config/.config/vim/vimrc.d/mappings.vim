@@ -76,6 +76,15 @@ endif
 " Y to yank to end of line, like nvim
 nmap Y y$
 
+" Change and move tabs with same keys
+" as my barbar.nvim config in neovim
+if !has('nvim')
+  nnoremap , :tabprevious<CR>
+  nnoremap . :tabnext<CR>
+  nnoremap < :-tabmove<CR>
+  nnoremap > :+tabmove<CR>
+endif
+
 " Reselect pasted text
 nnoremap gp `[v`]
 
