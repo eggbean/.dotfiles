@@ -131,9 +131,11 @@ call plug#end()
   omap ia <Plug>SidewaysArgumentTextobjI
   xmap ia <Plug>SidewaysArgumentTextobjI
 " vim-oscyank
-  nmap <leader>y <Plug>OSCYankOperator
-  nmap <leader>yy <leader>c_
-  vmap <leader>y <Plug>OSCYankVisual
+  if !empty($SSH_CONNECTION)
+    nnoremap <C-Insert> <Plug>OSCYankOperator
+    nnoremap <C-Insert><C-Insert> <leader>c_
+    vnoremap <C-Insert> <Plug>OSCYankVisual
+  endif
 " markdown-preview
   let g:mkdp_echo_preview_url = 1
   let g:mkdp_theme = 'light'
