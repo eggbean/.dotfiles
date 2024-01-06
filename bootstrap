@@ -65,6 +65,25 @@ git -C ~/.dotfiles remote update
     unset stash
   }
 
+# Stow binaries
+if [[ $UID -ne 0 ]] && [[ $EUID -ne 0 ]] && [[ ! $ID == android ]]; then
+  gum spin --spinner.width=1 --title "Stowing binaries" -- \
+    sudo ~/.dotfiles/bin/scripts/stow-bin.sh && \
+    echo "Binaries stowed" || \
+    { red_echo "Failed: stow-bin.sh" >&2; return 1; }
+else
+  gum spin --spinner.width=1 --title "Stowing binaries" -- \
+    sh -c "~/.dotfiles/bin/scripts/stow-bin.sh --nosudo" && \
+    echo "Binaries stowed" || \
+    { red_echo "Failed: stow-bin.sh" >&2; return 1; }
+fi
+
+# Stow dotfiles
+gum spin --spinner.width=1 --title "Stowing dotfiles" -- \
+  sh -c ~/.dotfiles/bin/scripts/stow-dotfiles.sh && \
+  echo "Dotfiles stowed" || \
+  { red_echo "Failed: stow-dotfiles.sh" >&2; return 1; }
+
 # Don't do this stuff on Android ----------------------------------------------
 if [[ $ID != android ]]; then
 
@@ -231,25 +250,6 @@ if [[ $ZSH_VERSION ]]; then
   antidote load ~/.dotfiles/config/.includes/zsh_plugins.txt
   antidote update | grep -Ev "(^antidote: checking for updates|^$)"
 fi
-
-# Stow binaries
-if [[ $UID -ne 0 ]] && [[ $EUID -ne 0 ]] && [[ ! $ID == android ]]; then
-  gum spin --spinner.width=1 --title "Stowing binaries" -- \
-    sudo ~/.dotfiles/bin/scripts/stow-bin.sh && \
-    echo "Binaries stowed" || \
-    { red_echo "Failed: stow-bin.sh" >&2; return 1; }
-else
-  gum spin --spinner.width=1 --title "Stowing binaries" -- \
-    sh -c "~/.dotfiles/bin/scripts/stow-bin.sh --nosudo" && \
-    echo "Binaries stowed" || \
-    { red_echo "Failed: stow-bin.sh" >&2; return 1; }
-fi
-
-# Stow dotfiles
-gum spin --spinner.width=1 --title "Stowing dotfiles" -- \
-  sh -c ~/.dotfiles/bin/scripts/stow-dotfiles.sh && \
-  echo "Dotfiles stowed" || \
-  { red_echo "Failed: stow-dotfiles.sh" >&2; return 1; }
 
 # Check if repository is encryption locked
 git config -f ~/.dotfiles/.git/config --get filter.git-crypt.smudge >/dev/null || \
