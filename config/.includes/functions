@@ -26,7 +26,7 @@ mosh() {
     bastet) command mosh bastet.jinkosystems.co.uk ;;
          *) command mosh bastet.jinkosystems.co.uk -- \
               bash -c "printf '%s\n\n' 'Bouncing via bastion...' && \
-              sga-ssh $@" ;;
+              sga-ssh ${@}.jinkosystems.co.uk" ;;
   esac
   [[ $TMUX ]] && tmux set automatic-rename "on" >/dev/null
 }
