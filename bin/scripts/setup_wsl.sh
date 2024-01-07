@@ -20,7 +20,7 @@ WIN_HOME="$(wslpath "$WIN_HOME_RAW")"
 # Using the PuTTY ssh agent with WSL through wsl2-ssh-pageant.exe
 if [[ ! -L $HOME/.ssh/wsl2-ssh-pageant.exe ]]; then
   ln -s "$WIN_HOME"/winfiles/bin/wsl2-ssh-pageant.exe "$HOME"/.ssh/wsl2-ssh-pageant.exe
-  chmod +x "$HOME"/.ssh/wsl2-ssh-pageant.exe
+  chmod +x "$WIN_HOME"/winfiles/bin/wsl2-ssh-pageant.exe
 fi
 
 # Get native Windows notifications from Linux with wsl-notify-send.exe
@@ -81,7 +81,8 @@ cat <<-EOF | sudo tee /etc/hosts > /dev/null
 	ff02::2 ip6-allrouters
 EOF
 
-# Configure dnsmasq
+# Configure dnsmasq for conditional forwarding
+# to my domain's private DNS server
 cat <<-EOF | sudo tee /etc/dnsmasq.d/split-dns > /dev/null
 	no-dhcp-interface=lo
 	interface=lo
@@ -139,11 +140,14 @@ get_user_shell_dir() {
     DESKTOP)
       win_path=$(powershell.exe -Command "[Environment]::GetFolderPath('Desktop')" | tr -d '\r')
       ;;
-    DOCUMENTS)
-      win_path=$(powershell.exe -Command "[Environment]::GetFolderPath('MyDocuments')" | tr -d '\r')
-      ;;
     DOWNLOAD)   # See https://stackoverflow.com/a/57950443/140872
       win_path=$(powershell.exe -Command "(New-Object -ComObject Shell.Application).NameSpace('shell:Downloads').Self.Path" | tr -d '\r')
+      ;;
+    PUBLICSHARE)
+      win_path=$(powershell.exe -Command "[Environment]::GetFolderPath('CommonDocuments')" | tr -d '\r')
+      ;;
+    DOCUMENTS)
+      win_path=$(powershell.exe -Command "[Environment]::GetFolderPath('MyDocuments')" | tr -d '\r')
       ;;
     MUSIC)
       win_path=$(powershell.exe -Command "[Environment]::GetFolderPath('MyMusic')" | tr -d '\r')
@@ -162,16 +166,19 @@ get_user_shell_dir() {
   echo "$(wslpath "$win_path")"
 }
 
-# Set some xdg-user-dirs to NTFS locations
+# Set xdg-user-dirs to NTFS locations (apart from Templates)
 xdg-user-dirs-update \
   --dummy-output ~/.dotfiles/config/.config/user-dirs.dirs \
   --set DESKTOP "$(get_user_shell_dir DESKTOP)"
 xdg-user-dirs-update \
   --dummy-output ~/.dotfiles/config/.config/user-dirs.dirs \
-  --set DOCUMENTS "$(get_user_shell_dir DOCUMENTS)"
+  --set DOWNLOAD "$(get_user_shell_dir DOWNLOAD)"
 xdg-user-dirs-update \
   --dummy-output ~/.dotfiles/config/.config/user-dirs.dirs \
-  --set DOWNLOAD "$(get_user_shell_dir DOWNLOAD)"
+  --set PUBLICSHARE "$(get_user_shell_dir PUBLICSHARE)"
+xdg-user-dirs-update \
+  --dummy-output ~/.dotfiles/config/.config/user-dirs.dirs \
+  --set DOCUMENTS "$(get_user_shell_dir DOCUMENTS)"
 xdg-user-dirs-update \
   --dummy-output ~/.dotfiles/config/.config/user-dirs.dirs \
   --set MUSIC "$(get_user_shell_dir MUSIC)"
@@ -181,6 +188,7 @@ xdg-user-dirs-update \
 xdg-user-dirs-update \
   --dummy-output ~/.dotfiles/config/.config/user-dirs.dirs \
   --set VIDEOS "$(get_user_shell_dir VIDEOS)"
+xdg-user-dirs-gtk-update
 # Make git ignore these changes
 git -C ~/.dotfiles update-index --skip-worktree ~/.dotfiles/config/.config/user-dirs.dirs
 
@@ -189,8 +197,9 @@ git -C ~/.dotfiles update-index --skip-worktree ~/.dotfiles/config/.config/user-
 dirs=( \
   "$WIN_HOME" \
   "$(xdg-user-dir DESKTOP)" \
-  "$(xdg-user-dir DOCUMENTS)" \
   "$(xdg-user-dir DOWNLOAD)" \
+  "$(xdg-user-dir PUBLICSHARE)" \
+  "$(xdg-user-dir DOCUMENTS)" \
   "$(xdg-user-dir MUSIC)" \
   "$(xdg-user-dir PICTURES)" \
   "$(xdg-user-dir VIDEOS)" \
