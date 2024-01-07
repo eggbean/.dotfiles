@@ -55,6 +55,7 @@
 [color "status"]
 	untracked = blue
 [delta]
+	tabs = 4
 	features = decorations
 	navigate = true
 	line-numbers = true
