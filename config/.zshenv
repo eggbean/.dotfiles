@@ -11,6 +11,14 @@ if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; t
   source "${ZDOTDIR:-$HOME}/.zprofile"
 fi
 
+# Determine if mosh connection
+if [[ $(who am i | grep "$(tty | cut -d"/" -f3-4)") =~ mosh ]]; then export MOSH_CONNECTION=true; fi
+
+# Golang
+if [[ -d /usr/local/go/bin ]]; then
+  export PATH=$PATH:/usr/local/go/bin
+fi
+
 # pnpm
 if command -v pnpm >/dev/null 2>&1; then
   export PNPM_HOME="$HOME/.local/share/pnpm"

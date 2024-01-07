@@ -36,9 +36,12 @@ if [ -d "$HOME/.local/bin" ]; then
   PATH="$HOME/.local/bin:$PATH"
 fi
 
+# Determine if mosh connection
+if [[ $(who am i | grep "$(tty | cut -d"/" -f3-4)") =~ mosh ]]; then export MOSH_CONNECTION=true; fi
+
 # Golang
 if [ -d "/usr/local/go/bin" ]; then
-  PATH=$PATH:/usr/local/go/bin
+  export PATH=$PATH:/usr/local/go/bin
 fi
 
 # pnpm
