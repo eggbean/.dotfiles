@@ -28,6 +28,7 @@ nixpkgs=(
   nixpkgs.nix-bash-completions
   nixpkgs.nix-zsh-completions
   nixpkgs.oci-cli
+  nixpkgs.oscclip
   nixpkgs.pastel
   nixpkgs.rclone
   nixpkgs.ripgrep
