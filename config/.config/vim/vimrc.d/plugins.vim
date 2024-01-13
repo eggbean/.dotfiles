@@ -67,7 +67,7 @@ elseif has('win32') | call plug#begin() | endif
     Plug 'eggbean/resize-font.gvim'
     Plug 'AndrewRadev/typewriter.vim'
     if has('win32')
-      Plug 'kkoenig/wimproved.vim'
+      Plug 'vim-scripts/wimproved.vim'
     endif
   endif
   if !has('gui_running') && has('python3')
