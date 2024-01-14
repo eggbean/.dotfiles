@@ -26,11 +26,24 @@ fi
 
 # Use git for Windows on NTFS partitions
 # as git for Linux is very slow
+# (also override $LESS to print and exit with git stash)
 git() {
-  if [[ $(pwd -P) == /mnt/[a-z]/* ]]; then
-    git.exe "$@"
+  local DELTA_PAGER
+  if [[ $1 == stash ]]; then
+    DELTA_PAGER='less -F'
   else
-    command git "$@"
+    DELTA_PAGER='less -MRQx4FX#10'
+  fi
+
+  # Check if the current directory is on an NTFS partition
+  if [[ $(pwd -P) == /mnt/[a-z]/* ]]; then
+    # Use Windows git.exe for NTFS partitions
+    # Apply DELTA_PAGER if set
+    DELTA_PAGER="$DELTA_PAGER" git.exe "$@"
+  else
+    # Use the standard git command for other cases
+    # Apply DELTA_PAGER if set
+    DELTA_PAGER="$DELTA_PAGER" command git "$@"
   fi
 }
 

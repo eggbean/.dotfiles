@@ -48,7 +48,7 @@
 	; log = LESS= less -Rq+g
 	; whatchanged = LESS= less -Rq+g
 	; diff = LESS= less -RSqx4+g
-	stash = false
+	; stash = false
 	branch = false
 [color]
 	ui = true

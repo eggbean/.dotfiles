@@ -42,6 +42,15 @@ docker() {
   fi
 }
 
+# Override $LESS to print and exit with git stash
+git() {
+  if [[ $1 == stash ]]; then
+    DELTA_PAGER='less -F' command git "$@"
+  else
+    command git "$@"
+  fi
+}
+
 # Use cat to display web page source and change tabs to 4 spaces
 cat() {
   if [[ $1 == *://* ]]; then
