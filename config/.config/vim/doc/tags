@@ -3,6 +3,13 @@
 :PlugDiff	plug.txt	/*:PlugDiff*
 :PlugInstall	plug.txt	/*:PlugInstall*
 :PlugStatus	plug.txt	/*:PlugStatus*
+PaperColor-Theme	PaperColor.txt	/*PaperColor-Theme*
+PaperColor-Theme-configuration	PaperColor.txt	/*PaperColor-Theme-configuration*
+PaperColor-Theme-credits	PaperColor.txt	/*PaperColor-Theme-credits*
+PaperColor-Theme-intro	PaperColor.txt	/*PaperColor-Theme-intro*
+PaperColor-Theme-setup	PaperColor.txt	/*PaperColor-Theme-setup*
+PaperColor.txt	PaperColor.txt	/*PaperColor.txt*
+g:PaperColor_Theme_Options	PaperColor.txt	/*g:PaperColor_Theme_Options*
 g:fzf_install	plug.txt	/*g:fzf_install*
 g:gruvbox_bold	gruvbox8.txt	/*g:gruvbox_bold*
 g:gruvbox_filetype_hi_groups	gruvbox8.txt	/*g:gruvbox_filetype_hi_groups*
