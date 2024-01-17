@@ -5,9 +5,9 @@ if filereadable(expand('$VIMFILES/vimrc.d/guifont.gvim'))
   source $VIMFILES/vimrc.d/guifont.gvim
 else
   if has('gui_gtk2') || has('gui_gtk3')
-    set guifont=Iosevka\ Term\ 12
+    set guifont=IosevkaTerm\ Nerd\ Font\ Mono\ 12
   elseif has('gui_win32')
-    set guifont=Iosevka_NF:h12
+    set guifont=IosevkaTerm_NFM:h12
   endif
 endif
 

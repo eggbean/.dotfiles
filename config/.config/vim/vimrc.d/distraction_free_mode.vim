@@ -36,11 +36,11 @@ function! ToggleDistractionFreeMode()
     set linebreak | syntax off
     if has('gui_gtk2') || has('gui_gtk3')
       let l:gf_size_current = matchstr(&guifont, '\( \)\@<=\d\+$')
-      let l:gf_font_setting = "Iosevka Term Medium " . l:gf_size_current
+      let l:gf_font_setting = "IosevkaTerm Nerd Font Mono Medium " . l:gf_size_current
       let &guifont = l:gf_font_setting
     elseif has('gui_win32')
       let l:gf_size_current = matchstr(&guifont, '\(:h\)\@<=\d\+$')
-      let l:gf_font_setting = "Iosevka_NF:h" . l:gf_size_current . ":W500"
+      let l:gf_font_setting = "IosevkaTerm_NFM_Medium:h" . l:gf_size_current . ":W500"
       let &guifont = l:gf_font_setting
     endif
     map j gj
@@ -57,20 +57,7 @@ function! ToggleDistractionFreeMode()
     endfor
     set nolinebreak | syntax on
     execute 'colorscheme ' . g:current_colorscheme
-    if has('gui_gtk2') || has('gui_gtk3')
-      let l:current_size = matchstr(&guifont, '\d\+$')
-      let &guifont = substitute(g:gf_orig, '\s*\d\+$', '', '')
-      let &guifont .= ' ' . l:current_size
-    elseif has('gui_win32')
-      let l:gf_size = matchstr(&guifont, '\(:h\)\@<=\d\+')
-      let l:gf_weight = matchstr(g:gf_orig, ':\(W\d\+\)\?$')
-      if empty(l:gf_weight)
-        let &guifont = substitute(&guifont, ':\(W\d\+\)\?$', '', '')
-      else
-        let &guifont = substitute(&guifont, '\(:W\d\+\)\?$', ':'.l:gf_weight, '')
-      endif
-      let &guifont = substitute(&guifont, '\(:h\d\+\)\?$', ':h' . l:gf_size, '')
-    endif
+    let &guifont = g:gf_orig
     unmap j
     unmap k
     cnoremap q q
