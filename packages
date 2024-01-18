@@ -81,8 +81,8 @@ if grep -qi microsoft /proc/version; then
     socat
     xdg-user-dirs
   )
-  # Debian-based (with graphical desktop)
-  [[ $ID =~ ^(debian|ubuntu)$ ]] && packages+=(
+  # Debian-based (ie. Pengwin)
+  [[ $ID =~ debian ]] && packages+=(
     alacritty
     nsxiv
     qutebrowser
