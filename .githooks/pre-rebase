@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Stop ignoring htop config for rebasing
+git update-index --no-assume-unchanged config/.config/htop/htoprc
+
+# Stop ignoring copyq config file for rebasing
+git update-index --no-assume-unchanged config/.config/copyq/copyq.ini
+
+# Stop ignoring xnview config for rebasing
+git update-index --no-assume-unchanged config/.config/xnviewmp/xnview.ini
+git update-index --no-assume-unchanged config/.config/xnviewmp/default.bar
+git update-index --no-assume-unchanged config/.config/xnviewmp/default.keys
+
+# Stash any changes
+git stash -m "Pre-rebase stash"

@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Unstash pre-rebase stash
+stash_message="Pre-rebase stash"
+stash_id=$(git stash list | grep "$stash_message" | cut -d: -f1)
+if [[ -n $stash_id ]]; then
+  git stash pop "$stash_id"
+fi
+
 # htop changes its configuration file with view changes, so ignore
 git update-index --assume-unchanged config/.config/htop/htoprc
 
@@ -10,10 +17,3 @@ git update-index --assume-unchanged config/.config/copyq/copyq.ini
 git update-index --assume-unchanged config/.config/xnviewmp/xnview.ini
 git update-index --assume-unchanged config/.config/xnviewmp/default.bar
 git update-index --assume-unchanged config/.config/xnviewmp/default.keys
-
-# Set file permissions for OCI CLI config
-find config/.oci -type f -exec chmod 600 {} \;
-
-# Set file permissions for GPG keys
-find config/.gnupg -type d -exec chmod 700 {} \;
-find config/.gnupg -type f -exec chmod 600 {} \;
