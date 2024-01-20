@@ -46,8 +46,8 @@ cmd_fullscreen F11
 cmd_geoHack 
 cmd_googleEarthApp 
 cmd_googleMap 
-cmd_historyNext 
-cmd_historyPrev 
+cmd_historyNext Alt+Right
+cmd_historyPrev Alt+Left
 cmd_import 
 cmd_importClipboard Ctrl+Shift+V
 cmd_infoShow 
@@ -157,7 +157,7 @@ cmd_twainScanInto
 cmd_twainSource 
 cmd_untag 
 cmd_untagAll 
-cmd_upFolder Backspace
+cmd_upFolder Alt+Up
 cmd_updateDB 
 cmd_updateFiles 
 cmd_useAlpha Ctrl+H
