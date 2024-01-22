@@ -1,6 +1,43 @@
 ## Host specific stuff for WSL clients
 # vim: filetype=bash
 
+# Aliases
+alias mklink=' . mklink.sh'
+alias qutebrowser='/mnt/c/Program\ Files/qutebrowser/qutebrowser.exe'
+alias arp='arp.exe'
+alias clip='clip.exe'
+alias copyq='copyq.exe'
+
+# Set WIN_HOME environment variable
+WIN_HOME_RAW="$(cmd.exe /c "<nul set /p=%UserProfile%" 2>/dev/null)"
+export WIN_HOME="$(wslpath "$WIN_HOME_RAW")"
+
+# Android Debug Bridge (ADB)
+export ADB_VENDOR_KEY="$XDG_CONFIG_HOME"/android
+export ANDROID_AVD_HOME="$XDG_DATA_HOME"/android/
+export ANDROID_SDK_HOME="$XDG_CONFIG_HOME"/android
+export ANDROID_EMULATOR_HOME="$XDG_DATA_HOME"/android/
+
+# GPG Agent
+eval $(gpg-agent --daemon 2>/dev/null)
+export GPG_AGENT_INFO
+# export SSH_AUTH_SOCK
+export GPG_TTY=$(tty)
+
+# Vagrant
+export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
+PATH="$PATH:/mnt/c/Program Files/Oracle/VirtualBox"
+
+# Add winfiles\bin to path
+PATH="$PATH:$WIN_HOME/winfiles/bin"
+export PATH
+
+# Set qutebrowser as default browser if installed
+if [ -x "/mnt/c/Program Files/qutebrowser/qutebrowser.exe" ]; then
+  export BROWSER="/mnt/c/Program Files/qutebrowser/qutebrowser.exe"
+  export GH_BROWSER="/mnt/c/Program\ Files/qutebrowser/qutebrowser.exe"
+fi
+
 # Desktop notifications
 notify-send() {
   wsl-notify-send.exe --appId "Windows Subsystem for Linux" \
@@ -11,19 +48,6 @@ notify-send() {
 cdwin() {
   cd "$(wslpath -u "$@")"
 }
-
-# Aliases
-alias mklink=' . mklink.sh'
-alias qutebrowser='/mnt/c/Program\ Files/qutebrowser/qutebrowser.exe'
-alias arp='arp.exe'
-alias clip='clip.exe'
-alias copyq='copyq.exe'
-
-# Set qutebrowser as default browser if installed
-if [ -x "/mnt/c/Program Files/qutebrowser/qutebrowser.exe" ]; then
-  export BROWSER="/mnt/c/Program Files/qutebrowser/qutebrowser.exe"
-  export GH_BROWSER="/mnt/c/Program\ Files/qutebrowser/qutebrowser.exe"
-fi
 
 # Use git for Windows on NTFS partitions
 # as git for Linux is very slow
@@ -66,27 +90,3 @@ if ! ss -a | grep -q "$SSH_AUTH_SOCK"; then
   fi
   unset wsl2_ssh_pageant_bin
 fi
-
-# Set WIN_HOME environment variable
-WIN_HOME_RAW="$(cmd.exe /c "<nul set /p=%UserProfile%" 2>/dev/null)"
-export WIN_HOME="$(wslpath "$WIN_HOME_RAW")"
-
-# Add winfiles\bin to path
-PATH="$PATH:$WIN_HOME/winfiles/bin"
-export PATH
-
-# Vagrant
-export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
-PATH="$PATH:/mnt/c/Program Files/Oracle/VirtualBox"
-
-# Android Debug Bridge (ADB)
-export ADB_VENDOR_KEY="$XDG_CONFIG_HOME"/android
-export ANDROID_AVD_HOME="$XDG_DATA_HOME"/android/
-export ANDROID_SDK_HOME="$XDG_CONFIG_HOME"/android
-export ANDROID_EMULATOR_HOME="$XDG_DATA_HOME"/android/
-
-# GPG Agent
-eval $(gpg-agent --daemon 2>/dev/null)
-export GPG_AGENT_INFO
-# export SSH_AUTH_SOCK
-export GPG_TTY=$(tty)
