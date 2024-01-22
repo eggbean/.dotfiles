@@ -1,8 +1,7 @@
 # .dotfiles
 My dotfiles and a lot more. Used with GNU Stow to make the symlinks.
 
-### Software configurations for these software projects:
-
+### Software configurations include:
 <img align="left" width="46px" src="https://simpleicons.org/icons/github.svg" /> 
 <img align="left" width="46px" src="https://simpleicons.org/icons/githubactions.svg" /> 
 <img align="left" width="46px" src="https://simpleicons.org/icons/gnubash.svg" />
