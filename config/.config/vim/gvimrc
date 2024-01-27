@@ -16,11 +16,13 @@ function! MyHighlights() abort
   highlight clear SignColumn
   set guicursor=n-v-c:block-Cursor
   set guicursor+=i:ver20-iCursor
-  highlight Cursor guifg=white guibg=red
-  highlight iCursor guifg=black guibg=steelblue
+  highlight Cursor guibg=red guifg=white
+  highlight iCursor guibg=steelblue guifg=black
   highlight Normal guibg=#eeeeee
   highlight StatusLine guibg=#b2b2b2 guifg=#eeeeee
   highlight StatusLineNC guibg=#d0d0d0 guifg=#eeeeee
+  highlight TabLine guibg=#b2b2b2 guifg=#ffffff
+  highlight TabLineFill guibg=#d0d0d0 guifg=#ffffff
   highlight Terminal guifg='#282c34'
   highlight Terminal guibg='#e2e2e2'
   highlight StatusLineTerm ctermbg=24 ctermfg=254 guibg=#eeeeee guifg=#b2b2b2
