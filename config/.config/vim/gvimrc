@@ -4,7 +4,7 @@
 if filereadable(expand('$VIMFILES/vimrc.d/guifont.gvim'))
   source $VIMFILES/vimrc.d/guifont.gvim
 else
-  if has('gui_gtk2') || has('gui_gtk3')
+  if has('gui_gtk')
     set guifont=IosevkaTerm\ Nerd\ Font\ Mono\ 12
   elseif has('gui_win32')
     set guifont=IosevkaTerm_NFM:h12
@@ -100,7 +100,7 @@ source $VIMFILES/vimrc.d/restore_position.vim
 
 " Fullscreen (F11/Alt-Enter)
 function! ToggleFullScreen()
-  if has('gui_gtk2') || has('gui_gtk3')
+  if has('gui_gtk')
   " requires wmctrl installed
     call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")
   elseif has('gui_win32')

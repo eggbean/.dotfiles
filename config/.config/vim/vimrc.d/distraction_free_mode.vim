@@ -34,7 +34,7 @@ function! ToggleDistractionFreeMode()
     highlight Cursor guifg=white guibg=gray55
     highlight iCursor guifg=white guibg=gray55
     set linebreak | syntax off
-    if has('gui_gtk2') || has('gui_gtk3')
+    if has('gui_gtk')
       let l:gf_size_current = matchstr(&guifont, '\( \)\@<=\d\+$')
       let l:gf_font_setting = "IosevkaTerm Nerd Font Mono Medium " . l:gf_size_current
       let &guifont = l:gf_font_setting
