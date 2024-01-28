@@ -19,8 +19,8 @@ nnoremap <silent> <F6> :execute "set signcolumn=" . (&signcolumn == "auto" ? "ye
 vnoremap <silent> <F6> :execute "set signcolumn=" . (&signcolumn == "auto" ? "yes" : "auto")<CR>
 
 " Toggle spell-checking (F7)
-nnoremap <silent> <F7> :set spell!<CR>
-vnoremap <silent> <F7> :set spell!<CR>
+nnoremap <silent> <F7> :set spell!<CR>:echo 'Spell checking ' . (&spell ? 'enabled' : 'disabled')<CR>
+vnoremap <silent> <F7> :<C-U>set spell!<CR>:echo 'Spell checking ' . (&spell ? 'enabled' : 'disabled')<CR>
 
 " Toggle Netrw (F8)
 let g:NetrwIsOpen=0
