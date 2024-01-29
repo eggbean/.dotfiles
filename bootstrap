@@ -232,6 +232,20 @@ if [[ $ID != android ]]; then
     ~/.dotfiles/bin/scripts/kernel-update-check.sh
   fi
 
+  # Get current SSH key from Dashlane vault and add to ssh-agent
+  # on (non-WSL) client machines (hostname starts with h)
+  if [[ $(hostname -s) =~ ^(h.+)$ ]]; then
+    if ! grep -qi microsoft /proc/version; then
+      if [[ ! -O ~/.ssh/id_ed25519 ]]; then
+        dcli sync
+        dcli note id_ed25519.pem > ~/.ssh/id_ed25519
+        dcli logout
+        chmod 600 ~/.ssh/id_ed25519
+        ssh-add
+      fi
+    fi
+  fi
+
 fi
 ## End of Android exclusion ---------------------------------------------------
 
