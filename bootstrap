@@ -130,7 +130,7 @@ if [[ $ID != android ]]; then
       source $XDG_STATE_HOME/nix/profile/etc/profile.d/nix.sh || \
       { red_echo "Failed: nix package manager installation" >&2; return 1; }
   fi
-  nix-channel --add https://nixos.org/channels/nixos-23.05 stbpkgs
+  nix-channel --add https://nixos.org/channels/nixos-23.11 stbpkgs
   nix-channel --update
   { gum spin --spinner.width=1 --title "Nix garbage collecting" --show-output -- \
     nix-collect-garbage --delete-old && \
