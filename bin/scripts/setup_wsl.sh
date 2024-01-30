@@ -99,6 +99,11 @@ if ! systemctl is-active --quiet dnsmasq.service; then
   sudo systemctl start dnsmasq.service
 fi
 
+# Exit script if not Pengwin
+if ! grep -qi 'Pengwin' /etc/os-release; then
+  exit 0
+fi
+
 # Set gtk3 settings for xfce4
 cat <<-'EOF' > ~/.dotfiles/config/.config/gtk-3.0/settings.ini
 	[Settings]
