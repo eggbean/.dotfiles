@@ -17,10 +17,12 @@ fi
 WIN_HOME_RAW="$(cmd.exe /c "<nul set /p=%USERPROFILE%" 2>/dev/null)"
 WIN_HOME="$(wslpath "$WIN_HOME_RAW")"
 
-# Using the PuTTY ssh agent with WSL through wsl2-ssh-pageant.exe
-if [[ ! -L $HOME/.ssh/wsl2-ssh-pageant.exe ]]; then
-  ln -s "$WIN_HOME"/winfiles/bin/wsl2-ssh-pageant.exe "$HOME"/.ssh/wsl2-ssh-pageant.exe
-  chmod +x "$WIN_HOME"/winfiles/bin/wsl2-ssh-pageant.exe
+# Use Windows OpenSSH from WSL
+if ! command -v wsl-enable-ssh-agent >/dev/null; then
+  git -C /tmp clone https://github.com/arquivolta/wsl-use-windows-openssh
+  pushd /tmp/wsl-use-windows-openssh
+  sudo make install && popd && \
+    rm -rf /tmp/wsl-use-windows-openssh
 fi
 
 # Get native Windows notifications from Linux with wsl-notify-send.exe
