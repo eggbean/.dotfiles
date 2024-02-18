@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Ignore additional GnuPG public keyrings
+git update-index --assume-unchanged config/.gnupg/pubring.kbx
+
 # htop changes its configuration file with view changes, so ignore
 git update-index --assume-unchanged config/.config/htop/htoprc
 
