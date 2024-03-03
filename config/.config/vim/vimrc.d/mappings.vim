@@ -64,12 +64,12 @@ elseif has('win32')
   vnoremap <M-S-k> :m '<-2<CR>gv=gv
 endif
 
-" Change and move tabs in vim/gvim like in nvim with barbar
+" Change and move tabs in vim/gvim like in browsers and tmux
 if !has('nvim')
-  nnoremap <M-,> :tabprevious<CR>
-  nnoremap <M-.> :tabnext<CR>
-  nnoremap <M-<> :tabmove -1<CR>
-  nnoremap <M->> :tabmove +1<CR>
+  nnoremap <silent> <C-PageUp>     :if tabpagenr() > 1 \| tabprevious \| endif<CR>
+  nnoremap <silent> <C-PageDown>   :if tabpagenr() < tabpagenr('$') \| tabnext \| endif<CR>
+  nnoremap <silent> <C-S-PageUp>   :if tabpagenr() > 1 \| tabmove -1 \| endif<CR>
+  nnoremap <silent> <C-S-PageDown> :if tabpagenr() < tabpagenr('$') \| tabmove +1 \| endif<CR>
 endif
 
 " Enable Alt-. readline shortcut in cmd/clink terminal
