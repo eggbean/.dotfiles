@@ -7,6 +7,7 @@ alias qutebrowser='/mnt/c/Program\ Files/qutebrowser/qutebrowser.exe'
 alias arp='arp.exe'
 alias clip='clip.exe'
 alias copyq='copyq.exe'
+alias screenoff='nircmd.exe monitor async_off'
 
 # Set WIN_HOME environment variable
 WIN_HOME_RAW="$(cmd.exe /c "<nul set /p=%UserProfile%" 2>/dev/null)"
