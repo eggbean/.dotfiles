@@ -1,8 +1,9 @@
 *.lock
 *.log
 copyq-bak.conf
-copyq-commands.ini.bak
-copyq-commands.ini.new.bak
+copyq-commands.ini.*
+copyq-monitor.ini
+copyq/items/**
 copyq_geometry.ini*
 copyq_no_session.ini
 copyq_tab_*
