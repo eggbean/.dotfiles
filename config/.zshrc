@@ -7,7 +7,7 @@ PROMPT='%n@%m:%1~%# '
 HISTSIZE=10000
 SAVEHIST=10000
 HISTFILE="$XDG_CACHE_HOME/zsh/zsh_history"
-setopt HIST_IGNORE_ALL_DUPS EXTENDED_HISTORY SHARE_HISTORY HIST_IGNORE_SPACE
+setopt HIST_IGNORE_ALL_DUPS EXTENDED_HISTORY SHARE_HISTORY HIST_IGNORE_SPACE EXTENDED_GLOB
 
 # Don't include non-alphanumeric characters in words (like bash)
 autoload -U select-word-style
