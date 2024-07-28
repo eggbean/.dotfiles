@@ -8,6 +8,7 @@ alias arp='arp.exe'
 alias clip='clip.exe'
 alias copyq='copyq.exe'
 alias screenoff='nircmd.exe monitor async_off'
+alias battery='batteryinfoview.exe'
 
 # Set WIN_HOME environment variable
 WIN_HOME_RAW="$(cmd.exe /c "<nul set /p=%UserProfile%" 2>/dev/null)"
