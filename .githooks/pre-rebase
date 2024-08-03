@@ -7,6 +7,11 @@ if [[ $(pwd) =~ ^$HOME/.dotfiles/* && "$last_arg" != "HEAD~"* && $MSYSTEM != MIN
   exit 1
 fi
 
+# Skip hook if the action is a merge
+if [ "$GIT_REFLOG_ACTION" == "pull --no-ff" ]; then
+  exit 0
+fi
+
 # Stop ignoring htop config for rebasing
 git update-index --no-assume-unchanged config/.config/htop/htoprc
 
