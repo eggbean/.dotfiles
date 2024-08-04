@@ -93,6 +93,9 @@ if !has('nvim')
   nnoremap > :+tabmove<CR>
 endif
 
+" Home key moves cursor to first character (same as ^)
+nnoremap <expr> <Home> col('.') - 1 == match(getline('.'), '\S') ? '0' : '^'
+
 " Reselect pasted text
 nnoremap gp `[v`]
 
