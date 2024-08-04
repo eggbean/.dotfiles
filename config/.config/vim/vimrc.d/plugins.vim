@@ -30,7 +30,6 @@ elseif has('win32') | call plug#begin() | endif
     Plug 'eggbean/vim-toggle-bool', { 'branch': 'boolean' }
     Plug 'EinfachToll/DidYouMean'
     Plug 'dstein64/vim-startuptime'
-    Plug 'github/copilot.vim'
     " EVALUATING ...
     " Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
     Plug 'ctrlpvim/ctrlp.vim'
