@@ -1,10 +1,12 @@
+# Git config - Linux
+
 [user]
 	name = eggbean
 	email = 815311+eggbean@users.noreply.github.com
 [core]
-	editor = vi
+	editor = vim
 	pager = delta
-	hooksPath = .githooks/
+	hooksPath = .githooks
 [init]
 	defaultBranch = master
 [branch]
@@ -21,7 +23,7 @@
 [merge]
 	conflictStyle = diff3
 	renameLimit = 9999
-	tool = nvimdiff
+	tool = vimdiff
 [mergetool]
 	prompt = true
 [rebase]
@@ -30,13 +32,14 @@
 	whitespace = fix
 [rerere]
 	enabled = true
+	autoUpdate = true
 [status]
 	showUntrackedFiles = all
 	showStash = true
 [diff]
 	algorithm = histogram
 	submodule = log
-	tool = nvimdiff
+	tool = vimdiff
 [difftool]
 	prompt = false
 [column]
@@ -89,8 +92,7 @@
 	dontignore = update-index --no-assume-unchanged
 	ignored = !git ls-files -v | grep "^[[:lower:]]"
 	append = commit --amend --no-edit
-	please = push --force-with-lease
 	staged = diff --cached
 	divergence = diff master origin/master
 	localhist = "reflog --abbrev-commit --pretty=format:'%Cblue%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset'"
-	vdiff = ! "f () { git difftool --tool=nvimdiff -- \"$@\"; }; f"
+	vdiff = ! "f () { git difftool --tool=vimdiff -- \"$@\"; }; f"
