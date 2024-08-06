@@ -47,6 +47,18 @@ vnoremap <silent> <F8> :call ToggleNetrw()<CR>
 nmap oo o<ESC>k
 nmap OO O<ESC>j
 
+" Toggle paste mode with <leader>p
+function! TogglePaste()
+  if &paste
+    set nopaste
+    echo "Paste mode disabled"
+  else
+    set paste
+    echo "Paste mode enabled"
+  endif
+endfunction
+nnoremap <leader>p :call TogglePaste()<CR>
+
 " Move lines with Alt+Shift+j/k
 if has('unix')
   nnoremap J :m .+1<CR>==
