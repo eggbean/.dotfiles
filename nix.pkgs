@@ -38,6 +38,7 @@ nixpkgs=(
   nixpkgs.steampipe
   nixpkgs.terragrunt
   nixpkgs.tidy-viewer
+  nixpkgs.tlrc
   nixpkgs.tmux
   nixpkgs.tre
   nixpkgs.wdiff
