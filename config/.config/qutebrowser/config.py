@@ -348,3 +348,6 @@ if sys.platform == "win32":
 if sys.platform == "win32":
     c.fonts.web.family.fixed = 'Consolas Regular'
     c.fonts.default_family = 'Consolas Regular'
+
+# Show scrollbar only when searching
+c.scrolling.bar = 'when-searching'
