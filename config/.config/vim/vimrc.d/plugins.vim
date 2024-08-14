@@ -57,8 +57,9 @@ elseif has('win32') | call plug#begin() | endif
     endif
     if !has('nvim')
       Plug 'machakann/vim-highlightedyank'
-      Plug 'dracula/vim', { 'as': 'dracula' }
+      Plug 'sainnhe/sonokai'
       Plug 'itchyny/lightline.vim'
+      Plug 'dracula/vim', { 'as': 'dracula' }
     endif
   endif
   if has('gui_running')
