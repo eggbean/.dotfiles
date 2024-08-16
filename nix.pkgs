@@ -13,6 +13,7 @@ nixpkgs=(
   nixpkgs.du-dust
   nixpkgs.eza
   nixpkgs.fd
+  nixpkgs.geoipupdate
   nixpkgs.gh
   nixpkgs.glibcLocales
   nixpkgs.glow

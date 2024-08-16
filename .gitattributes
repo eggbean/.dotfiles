@@ -9,6 +9,7 @@ config/.config/gcloud/access_tokens.db filter=git-crypt diff=git-crypt
 config/.config/gcloud/credentials.db filter=git-crypt diff=git-crypt
 config/.config/gcloud/legacy_credentials/gomez404@gmail.com/.boto filter=git-crypt diff=git-crypt
 config/.config/gcloud/legacy_credentials/gomez404@gmail.com/adc.json filter=git-crypt diff=git-crypt
+config/.config/geoipupdate/GeoIP.conf filter=git-crypt diff=git-crypt
 config/.config/gh/hosts.yml filter=git-crypt diff=git-crypt
 config/.config/hub filter=git-crypt diff=git-crypt
 config/.config/rclone/rclone.conf filter=git-crypt diff=git-crypt
