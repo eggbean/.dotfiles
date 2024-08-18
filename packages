@@ -29,6 +29,7 @@ packages+=(
 # Debian-based only (apt)
 [[ $ID =~ ^(debian|ubuntu|pop|raspbian)$ ]] && packages+=(
   dnsutils
+  libxml2-utils
   wbritish
   wget2
   xz-utils
@@ -39,6 +40,7 @@ packages+=(
   bind-utils
   whois
   words
+  xmlstarlet
   xz
 )
 
