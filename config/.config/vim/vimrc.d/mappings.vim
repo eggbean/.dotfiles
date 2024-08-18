@@ -42,23 +42,6 @@ endfunction
 nnoremap <silent> <F8> :call ToggleNetrw()<CR>
 vnoremap <silent> <F8> :call ToggleNetrw()<CR>
 
-" Insert empty lines without leaving Normal Mode
-" Set timeoutlen to around 600 for this to work without too much delay
-nmap oo o<ESC>k
-nmap OO O<ESC>j
-
-" Toggle paste mode with <leader>p
-function! TogglePaste()
-  if &paste
-    set nopaste
-    echo "Paste mode disabled"
-  else
-    set paste
-    echo "Paste mode enabled"
-  endif
-endfunction
-nnoremap <leader>p :call TogglePaste()<CR>
-
 " Move lines with Alt+Shift+j/k
 if has('unix')
   nnoremap J :m .+1<CR>==
@@ -84,18 +67,6 @@ if !has('nvim')
   nnoremap <silent> <C-S-PageDown> :if tabpagenr() < tabpagenr('$') \| tabmove +1 \| endif<CR>
 endif
 
-" Enable Alt-. readline shortcut in cmd/clink terminal
-if has('win32')
-  tmap <expr> ® SendToTerm("\<Esc>.")
-  func SendToTerm(what)
-    call term_sendkeys('', a:what)
-    return ''
-  endfunc
-endif
-
-" Y to yank to end of line, like nvim
-nmap Y y$
-
 " Change and move tabs with same keys
 " as my barbar.nvim config in neovim
 if !has('nvim')
@@ -105,15 +76,51 @@ if !has('nvim')
   nnoremap > :+tabmove<CR>
 endif
 
+" Enable Alt-. readline shortcut in cmd/clink shell
+if has('win32')
+  tmap <expr> ® SendToTerm("\<Esc>.")
+  func SendToTerm(what)
+    call term_sendkeys('', a:what)
+    return ''
+  endfunc
+endif
+
 " Home key moves cursor to first character (same as ^)
 nnoremap <expr> <Home> col('.') - 1 == match(getline('.'), '\S') ? '0' : '^'
+inoremap <expr> <Home> col('.') - 1 == match(getline('.'), '\S') ? '<C-o>0' : '<C-o>^'
+vnoremap <expr> <Home> col('.') - 1 == match(getline('.'), '\S') ? '0' : '^'
+
+" Y to yank to end of line, like nvim
+nmap Y y$
+
+" Insert empty lines without leaving Normal Mode
+" Set timeoutlen to around 600 for this to work without too much delay
+nmap oo o<ESC>k
+nmap OO O<ESC>j
+
+" Toggle paste mode with <leader>p
+function! TogglePaste()
+  if &paste
+    set nopaste
+    echo "Paste mode disabled"
+  else
+    set paste
+    echo "Paste mode enabled"
+  endif
+endfunction
+nnoremap <leader>p :call TogglePaste()<CR>
+
+" Delete to black hole register
+" (without changing unnamed register)
+nnoremap <leader>d "_d
+vnoremap <leader>d "_d
+
+" Paste over highlighted text without
+" changing unnamed register
+vnoremap <leader>p "_dP
 
 " Reselect pasted text
 nnoremap gp `[v`]
-
-" Open files using xdg-open
-nnoremap gX :silent :execute
-  \ "!xdg-open" expand('%:p:h') . "/" . expand("<cfile>") " &"<CR>
 
 " Exit terminal mode with ESC
 tnoremap <ESC> <C-\><C-n>
