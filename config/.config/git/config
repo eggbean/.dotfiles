@@ -44,7 +44,6 @@
 	prompt = false
 [column]
 	ui = auto
-	status = dense
 [interactive]
 	diffFilter = delta --color-only --features=interactive
 [pager]
