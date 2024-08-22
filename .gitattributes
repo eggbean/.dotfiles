@@ -11,7 +11,6 @@ config/.config/gcloud/legacy_credentials/gomez404@gmail.com/.boto filter=git-cry
 config/.config/gcloud/legacy_credentials/gomez404@gmail.com/adc.json filter=git-crypt diff=git-crypt
 config/.config/geoipupdate/GeoIP.conf filter=git-crypt diff=git-crypt
 config/.config/gh/hosts.yml filter=git-crypt diff=git-crypt
-config/.config/hub filter=git-crypt diff=git-crypt
 config/.config/rclone/rclone.conf filter=git-crypt diff=git-crypt
 config/.config/vim/spell/en.utf-8.add filter=git-crypt diff=git-crypt
 config/.hue.json filter=git-crypt diff=git-crypt
