@@ -351,3 +351,6 @@ if sys.platform == "win32":
 
 # Show scrollbar only when searching
 c.scrolling.bar = 'when-searching'
+
+# Cycle through simple CSS stylesheets with the hash key
+config.bind('#', 'config-cycle content.user_stylesheets styles/light.css styles/solarized-light.css styles/solarized-dark.css ""')
