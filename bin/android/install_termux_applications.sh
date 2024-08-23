@@ -34,7 +34,6 @@ yes | pkg install \
   python \
   rclone \
   ripgrep \
-  skate \
   starship \
   stow \
   tar \
