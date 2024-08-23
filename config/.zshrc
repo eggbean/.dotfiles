@@ -69,6 +69,13 @@ for direction (up down) {
 autoload -U edit-command-line && zle -N edit-command-line
 bindkey '^x^e' edit-command-line
 
+# Enable syntax highlighting extensions (brackets and patterns)
+ZSH_HIGHLIGHT_HIGHLIGHTERS+=(brackets pattern)
+
+# Highlight patterns
+typeset -A ZSH_HIGHLIGHT_PATTERNS
+ZSH_HIGHLIGHT_PATTERNS+=('rm -rf \*' 'fg=white,bold,bg=red')
+
 # Remove path/file underlining (zsh-syntax-highlighting plugin)
 (( ${+ZSH_HIGHLIGHT_STYLES} )) || typeset -A ZSH_HIGHLIGHT_STYLES
 ZSH_HIGHLIGHT_STYLES[path]=none
