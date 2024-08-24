@@ -303,9 +303,6 @@ c.colors.tabs.selected.even.bg = '#626262'
 # Type: Dict
 c.bindings.key_mappings = {'<Ctrl+6>': '<Ctrl+^>', '<Ctrl+Enter>': '<Ctrl+Return>', '<Ctrl+i>': '<Tab>', '<Ctrl+j>': '<Return>', '<Ctrl+m>': '<Return>', '<Ctrl+[>': '<Escape>', '<Enter>': '<Return>', '<Shift+Enter>': '<Return>', '<Shift+Return>': '<Return>', '<Alt+Return>': '<F11>'}
 
-# Use Ctrl+[ to leave passthrough mode
-config.bind('<Ctrl+[>', 'mode-leave', mode='passthrough')
-
 # Navigation in passthrough mode
 config.bind('<Alt+Left>', 'back', mode='passthrough')
 config.bind('<Alt+Right>', 'forward', mode='passthrough')
@@ -322,6 +319,16 @@ config.bind('<F10>', 'config-cycle window.hide_decoration false true')
 config.bind('gh', 'home')
 config.bind('<Ctrl+q>', 'tab-focus stack-prev')
 config.bind('<Ctrl+Shift+q>', 'tab-focus stack-next')
+
+# Use Ctrl+[ instead of Escape
+config.bind('<Ctrl+[>', 'mode-leave', mode='caret')
+config.bind('<Ctrl+[>', 'mode-leave', mode='command')
+config.bind('<Ctrl+[>', 'mode-leave', mode='hint')
+config.bind('<Ctrl+[>', 'mode-leave', mode='insert')
+config.bind('<Ctrl+[>', 'mode-leave', mode='passthrough')
+config.bind('<Ctrl+[>', 'mode-leave', mode='prompt')
+config.bind('<Ctrl+[>', 'mode-leave', mode='register')
+config.bind('<Ctrl+[>', 'mode-leave', mode='yesno')
 
 # Use Ctrl+c instead of Escape
 config.bind('<Ctrl+c>', 'mode-leave', mode='caret')
