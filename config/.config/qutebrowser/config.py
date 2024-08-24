@@ -330,15 +330,14 @@ config.bind('<Ctrl+c>', 'mode-leave', mode='prompt')
 config.bind('<Ctrl+c>', 'mode-leave', mode='register')
 config.bind('<Ctrl+c>', 'mode-leave', mode='yesno')
 
-# Use Alt+Shift+semicolon instead of Escape
-config.bind('<Alt+Shift+:>', 'mode-leave', mode='caret')
-config.bind('<Alt+Shift+:>', 'mode-leave', mode='command')
-config.bind('<Alt+Shift+:>', 'mode-leave', mode='hint')
-config.bind('<Alt+Shift+:>', 'mode-leave', mode='insert')
-config.bind('<Alt+Shift+:>', 'mode-leave', mode='passthrough')
-config.bind('<Alt+Shift+:>', 'mode-leave', mode='prompt')
-config.bind('<Alt+Shift+:>', 'mode-leave', mode='register')
-config.bind('<Alt+Shift+:>', 'mode-leave', mode='yesno')
+# Use Alt+Shift+semicolon to escape and then enter command mode
+config.bind('<Alt+Shift+:>', 'mode-leave ;; mode-enter command', mode='caret')
+config.bind('<Alt+Shift+:>', 'mode-leave ;; mode-enter command', mode='hint')
+config.bind('<Alt+Shift+:>', 'mode-leave ;; mode-enter command', mode='insert')
+config.bind('<Alt+Shift+:>', 'mode-leave ;; mode-enter command', mode='passthrough')
+config.bind('<Alt+Shift+:>', 'mode-leave ;; mode-enter command', mode='prompt')
+config.bind('<Alt+Shift+:>', 'mode-leave ;; mode-enter command', mode='register')
+config.bind('<Alt+Shift+:>', 'mode-leave ;; mode-enter command', mode='yesno')
 
 # Use Shift-Insert to paste on Windows
 if sys.platform == "win32":
