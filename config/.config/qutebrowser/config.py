@@ -288,6 +288,14 @@ c.colors.tabs.selected.odd.bg = '#626262'
 # Type: QtColor
 c.colors.tabs.selected.even.bg = '#626262'
 
+# Monospace font
+if sys.platform == "win32":
+    c.fonts.web.family.fixed = 'Consolas Regular'
+    c.fonts.default_family = 'Consolas Regular'
+
+# Show scrollbar only when searching
+c.scrolling.bar = 'when-searching'
+
 # Map keys to other keys, so that they are equivalent in all modes. When
 # the key used as dictionary-key is pressed, the binding for the key
 # used as dictionary-value is invoked instead. This is useful for global
@@ -302,6 +310,16 @@ c.colors.tabs.selected.even.bg = '#626262'
 # `bindings.commands`), the mapping is ignored.
 # Type: Dict
 c.bindings.key_mappings = {'<Ctrl+6>': '<Ctrl+^>', '<Ctrl+Enter>': '<Ctrl+Return>', '<Ctrl+i>': '<Tab>', '<Ctrl+j>': '<Return>', '<Ctrl+m>': '<Return>', '<Ctrl+[>': '<Escape>', '<Enter>': '<Return>', '<Shift+Enter>': '<Return>', '<Shift+Return>': '<Return>', '<Alt+Return>': '<F11>'}
+
+# Use Shift-Insert to paste on Windows, like on Linux
+if sys.platform == "win32":
+    config.bind('<Shift+Ins>', 'insert-text -- {clipboard}', mode='insert')
+
+# Remap zoom keys to be more convenient
+config.bind('-', 'zoom-out')
+config.bind('=', 'zoom-in')
+config.bind('_', 'zoom')
+config.bind('+', 'zoom')
 
 # Navigation in passthrough mode
 config.bind('<Alt+Left>', 'back', mode='passthrough')
@@ -345,18 +363,6 @@ config.bind('<Alt+Shift+:>', 'mode-leave ;; mode-enter command', mode='passthrou
 config.bind('<Alt+Shift+:>', 'mode-leave ;; mode-enter command', mode='prompt')
 config.bind('<Alt+Shift+:>', 'mode-leave ;; mode-enter command', mode='register')
 config.bind('<Alt+Shift+:>', 'mode-leave ;; mode-enter command', mode='yesno')
-
-# Use Shift-Insert to paste on Windows
-if sys.platform == "win32":
-    config.bind('<Shift+Ins>', 'insert-text -- {clipboard}', mode='insert')
-
-# Monospace font
-if sys.platform == "win32":
-    c.fonts.web.family.fixed = 'Consolas Regular'
-    c.fonts.default_family = 'Consolas Regular'
-
-# Show scrollbar only when searching
-c.scrolling.bar = 'when-searching'
 
 # Cycle through simple CSS stylesheets with the hash key
 config.bind('#', 'config-cycle content.user_stylesheets styles/light.css styles/solarized-light.css styles/solarized-dark.css ""')
