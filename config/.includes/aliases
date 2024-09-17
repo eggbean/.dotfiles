@@ -53,6 +53,12 @@ if command -v nvim >/dev/null; then
   alias vimdiff='nvim -d'
 fi
 
+# Use vim-X11 (vimx) on RHEL-based systems for clipboard support
+eval "$(source /etc/os-release 2>/dev/null && typeset -p ID)"
+if [[ $ID =~ ^(rhel|fedora.*|amzn|ol|rocky)$ ]]; then
+  alias vim='vimx'
+fi
+
 # Use fzfp wrapper in tmux instead of fzf
 if [[ $TMUX ]]; then alias fzf='fzfp-tmux --width=50% --height=60%'; fi
 

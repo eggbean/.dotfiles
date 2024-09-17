@@ -64,3 +64,9 @@ else
   export EDITOR='vim'
   export VISUAL='vim'
 fi
+
+# Use vim-X11 (vimx) for git on RHEL-based systems for clipboard support
+eval "$(source /etc/os-release 2>/dev/null && typeset -p ID)"
+if [[ $ID =~ ^(rhel|fedora.*|amzn|ol|rocky)$ ]]; then
+  export GIT_EDITOR='vimx'
+fi

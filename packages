@@ -38,6 +38,7 @@ packages+=(
 # RHEL-related only (rpm)
 [[ $ID =~ ^(rhel|fedora.*|amzn|ol|rocky)$ ]] && packages+=(
   bind-utils
+  vim-X11
   whois
   words
   xmlstarlet
