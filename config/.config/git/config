@@ -88,7 +88,7 @@
 [alias]
 	alias = ! git config -l | grep ^alias | cut -c 7- | sort
 	ignore = update-index --assume-unchanged
-	dontignore = update-index --no-assume-unchanged
+	unignore = update-index --no-assume-unchanged
 	ignored = !git ls-files -v | grep "^[[:lower:]]"
 	append = commit --amend --no-edit
 	staged = diff --cached
