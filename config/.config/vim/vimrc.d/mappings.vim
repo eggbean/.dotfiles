@@ -122,6 +122,9 @@ vnoremap <leader>p "_dP
 " Reselect pasted text
 nnoremap gp `[v`]
 
+" Clear highlighted search term on space
+noremap <silent> <Space> :nohls<CR>
+
 " Exit terminal mode with ESC
 tnoremap <ESC> <C-\><C-n>
 
