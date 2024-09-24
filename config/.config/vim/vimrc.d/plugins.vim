@@ -74,6 +74,9 @@ elseif has('win32') | call plug#begin() | endif
     Plug 'SirVer/ultisnips'
     Plug 'ron89/thesaurus_query.vim'
   endif
+  " Source git-ignored file for
+  " testing and temporary plugins
+  source $VIMFILES/vimrc.d/plugins-testing.vim
 call plug#end()
 
 " PLUGIN CONFIGURATION
