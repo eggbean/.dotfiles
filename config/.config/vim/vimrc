@@ -3,6 +3,9 @@
 " Modularised configuration
 " shared between Linux, Windows, Android, vim, gvim and nvim.
 
+" Source standard defaults
+source $VIMRUNTIME/defaults.vim
+
 " Set $VIMFILES variable
 if has('unix')
   let $VIMFILES = $HOME . '/.config/vim'
