@@ -17,6 +17,8 @@
 [push]
 	default = upstream
 	useForceIfIncludes = true
+[fetch]
+	showForcedUpdates = true
 [pull]
 	ff = only
 	rebase = true
