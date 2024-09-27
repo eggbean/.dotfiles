@@ -2,7 +2,6 @@
 # vim: filetype=bash
 
 nixpkgs=(
-  nixpkgs.agebox
   nixpkgs.ansible
   nixpkgs.bat
   nixpkgs.broot
