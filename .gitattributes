@@ -1,3 +1,8 @@
+# These files are to be always checked out
+# using LF locally, even on Windows
+config/.gnupg/*.conf eol=lf
+
+# Git-Crypt
 .gitattributes !filter !diff
 *.env filter=git-crypt diff=git-crypt
 *.key filter=git-crypt diff=git-crypt
