@@ -84,6 +84,10 @@ if !empty(&viminfo)
   endif
 endif
 
+" Set path variables
+" for gf to know
+let $PSScriptRoot='.'
+
 " Set dictionary and regenerate spl files on startup
 set thesaurus=$VIMFILES/spell/mthesaur.txt
 let g:tq_mthesaur_file = $VIMFILES . '/spell/mthesaur.txt'
