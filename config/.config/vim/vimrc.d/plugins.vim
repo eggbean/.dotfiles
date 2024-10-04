@@ -2,7 +2,7 @@
 
 if has('unix') | call plug#begin('$XDG_DATA_HOME/vim/plugged')
 elseif has('win32') | call plug#begin() | endif
-  Plug 'tpope/vim-rsi'
+  Plug 'eggbean/vim-rsi'
   Plug 'tpope/vim-commentary'
   Plug 'azabiong/vim-highlighter'
   Plug 'ntpeters/vim-better-whitespace'
