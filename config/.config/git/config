@@ -94,6 +94,6 @@
 	ignored = !git ls-files -v | grep "^[[:lower:]]"
 	append = commit --amend --no-edit
 	staged = diff --cached
-	divergence = diff master origin/master
+	divergence = diff origin/master master
 	localhist = "reflog --abbrev-commit --pretty=format:'%Cblue%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset'"
 	vdiff = ! "f () { git difftool --tool=vimdiff -- \"$@\"; }; f"
