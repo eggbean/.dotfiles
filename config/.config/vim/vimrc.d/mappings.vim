@@ -110,6 +110,32 @@ function! TogglePaste()
 endfunction
 nnoremap <leader>p :call TogglePaste()<CR>
 
+" Toggle wrap in all split windows <leader>w
+function! ToggleWrapInCurrentTab()
+  let curwin = winnr()
+  let wrap_enabled = 0
+  let wrap_disabled = 0
+  for w in range(1, winnr('$'))
+    execute w . 'wincmd w'
+    if &wrap
+      set nowrap
+      let wrap_disabled += 1
+    else
+      set wrap
+      let wrap_enabled += 1
+    endif
+  endfor
+  execute curwin . 'wincmd w'
+  if wrap_enabled > 0 && wrap_disabled > 0
+    echo "Wrap toggled"
+  elseif wrap_enabled > 0
+    echo "Wrap mode enabled"
+  else
+    echo "Wrap mode disabled"
+  endif
+endfunction
+nnoremap <leader>w :call ToggleWrapInCurrentTab()<CR>
+
 " Delete to black hole register
 " (without changing unnamed register)
 nnoremap <leader>d "_d
