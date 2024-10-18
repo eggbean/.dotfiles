@@ -1,0 +1,10 @@
+snippet admincheck "Ensure the script is run with administrative privileges" b
+# Ensure the script is run with administrative privileges
+$currentUser = [Security.Principal.WindowsIdentity]::GetCurrent()
+$principal = New-Object Security.Principal.WindowsPrincipal($currentUser)
+$isAdmin = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+if (-Not $isAdmin) {
+    Write-Error "This script needs to be run as Administrator."
+    exit 1
+}
+endsnippet
