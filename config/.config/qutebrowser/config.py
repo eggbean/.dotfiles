@@ -355,14 +355,5 @@ config.bind('<Ctrl+c>', 'mode-leave', mode='prompt')
 config.bind('<Ctrl+c>', 'mode-leave', mode='register')
 config.bind('<Ctrl+c>', 'mode-leave', mode='yesno')
 
-# Use Alt+Shift+semicolon to escape and then enter command mode
-config.bind('<Alt+Shift+:>', 'mode-leave ;; mode-enter command', mode='caret')
-config.bind('<Alt+Shift+:>', 'mode-leave ;; mode-enter command', mode='hint')
-config.bind('<Alt+Shift+:>', 'mode-leave ;; mode-enter command', mode='insert')
-config.bind('<Alt+Shift+:>', 'mode-leave ;; mode-enter command', mode='passthrough')
-config.bind('<Alt+Shift+:>', 'mode-leave ;; mode-enter command', mode='prompt')
-config.bind('<Alt+Shift+:>', 'mode-leave ;; mode-enter command', mode='register')
-config.bind('<Alt+Shift+:>', 'mode-leave ;; mode-enter command', mode='yesno')
-
 # Cycle through simple CSS stylesheets with the hash key
 config.bind('#', 'config-cycle content.user_stylesheets styles/light.css styles/solarized-light.css styles/solarized-dark.css ""')
