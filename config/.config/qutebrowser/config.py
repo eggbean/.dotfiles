@@ -101,8 +101,17 @@ config.set('content.headers.accept_language', '', 'https://matchmaker.krunker.io
 # between 5.12 and 5.14 (inclusive), changing the value exposed to
 # JavaScript requires a restart.
 # Type: FormatString
-config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}) AppleWebKit/{webkit_version} (KHTML, like Gecko) {upstream_browser_key}/{upstream_browser_version} Safari/{webkit_version}', 'https://accounts.google.com/*')
-config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}) AppleWebKit/{webkit_version} (KHTML, like Gecko) {upstream_browser_key}/{upstream_browser_version} Safari/{webkit_version}', 'https://github.com/*')
+config.set(
+    'content.headers.user_agent',
+    'Mozilla/5.0 ({os_info}) AppleWebKit/{webkit_version} (KHTML, like Gecko) {upstream_browser_key}/{upstream_browser_version} Safari/{webkit_version}',
+    'https://accounts.google.com/*'
+)
+
+config.set(
+    'content.headers.user_agent',
+    'Mozilla/5.0 ({os_info}) AppleWebKit/{webkit_version} (KHTML, like Gecko) {upstream_browser_key}/{upstream_browser_version} Safari/{webkit_version}',
+    'https://github.com/*'
+)
 
 # Which method of blocking ads should be used.  Support for Adblock Plus
 # (ABP) syntax blocklists using Brave's Rust library requires the
@@ -261,7 +270,14 @@ c.url.default_page = 'https://www.google.com/'
 # the search engine name to the search term, e.g. `:open google
 # qutebrowser`.
 # Type: Dict
-c.url.searchengines = {'DEFAULT': 'https://google.com/?q={}', '=': 'https://www.wolframalpha.com/input/?i={}', 'gh': 'https://github.com/search?q={}', 'reddit': 'https://www.reddit.com/search/?q={}', 'so': 'https://stackoverflow.com/search?q={}', 'yt': 'https://www.youtube.com/results?search_query={}'}
+c.url.searchengines = {
+    'DEFAULT': 'https://google.com/?q={}',
+    '=': 'https://www.wolframalpha.com/input/?i={}',
+    'gh': 'https://github.com/search?q={}',
+    'reddit': 'https://www.reddit.com/search/?q={}',
+    'so': 'https://stackoverflow.com/search?q={}',
+    'yt': 'https://www.youtube.com/results?search_query={}'
+}
 
 # Page(s) to open at the start.
 # Type: List of FuzzyUrl, or FuzzyUrl
@@ -309,7 +325,21 @@ c.scrolling.bar = 'when-searching'
 # key. Note that when a key is bound (via `bindings.default` or
 # `bindings.commands`), the mapping is ignored.
 # Type: Dict
-c.bindings.key_mappings = {'<Ctrl+6>': '<Ctrl+^>', '<Ctrl+Enter>': '<Ctrl+Return>', '<Ctrl+i>': '<Tab>', '<Ctrl+j>': '<Return>', '<Ctrl+m>': '<Return>', '<Ctrl+[>': '<Escape>', '<Enter>': '<Return>', '<Shift+Enter>': '<Return>', '<Shift+Return>': '<Return>', '<Alt+Return>': '<F11>'}
+c.bindings.key_mappings = {
+    '<Ctrl+6>': '<Ctrl+^>',
+    '<Ctrl+Enter>': '<Ctrl+Return>',
+    '<Ctrl+i>': '<Tab>',
+    '<Ctrl+j>': '<Return>',
+    '<Ctrl+m>': '<Return>',
+    '<Ctrl+[>': '<Escape>',
+    '<Enter>': '<Return>',
+    '<Shift+Enter>': '<Return>',
+    '<Shift+Return>': '<Return>',
+    '<Alt+Return>': '<F11>'
+}
+
+# Cycle through simple CSS stylesheets with the hash key (useful on raw code web pages)
+config.bind('#', 'config-cycle content.user_stylesheets styles/light.css styles/solarized-light.css styles/solarized-dark.css ""')
 
 # Use Shift-Insert to paste on Windows, like on Linux
 if sys.platform == "win32":
@@ -354,6 +384,3 @@ config.bind('<Ctrl+c>', 'mode-leave', mode='hint')
 config.bind('<Ctrl+c>', 'mode-leave', mode='prompt')
 config.bind('<Ctrl+c>', 'mode-leave', mode='register')
 config.bind('<Ctrl+c>', 'mode-leave', mode='yesno')
-
-# Cycle through simple CSS stylesheets with the hash key
-config.bind('#', 'config-cycle content.user_stylesheets styles/light.css styles/solarized-light.css styles/solarized-dark.css ""')
