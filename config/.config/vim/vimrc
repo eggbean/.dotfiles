@@ -36,3 +36,12 @@ endif
 if filereadable(expand('$VIMFILES/vimrc.d/colorscheme.vim'))
   source $VIMFILES/vimrc.d/colorscheme.vim
 endif
+
+" Set a blue colour scheme if I'm
+" using PowerShell for some variety
+if $MYSHELL ==# 'powershell'
+  colorscheme blue-mood
+  let g:lightline = {
+      \ 'colorscheme': 'blue_mood',
+      \ }
+endif

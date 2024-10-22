@@ -37,6 +37,9 @@ elseif has('win32') | call plug#begin() | endif
     " Plug 'neoclide/coc.nvim', { 'branch': 'release' }
     " Plug 'mattn/emmet-vim'
     " Plug 'pearofducks/ansible-vim'
+    if has('win32')
+      Plug 'lmintmate/blue-mood-vim'
+    endif
     if !has('win32')
       Plug 'eggbean/vim-tmux', { 'branch': 'missing-commands' }
       Plug 'christoomey/vim-tmux-navigator'
