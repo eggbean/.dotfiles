@@ -15,6 +15,7 @@
 [commit]
 	cleanup = scissors
 [push]
+	autoSetupRemote = current
 	default = upstream
 	useForceIfIncludes = true
 [fetch]
