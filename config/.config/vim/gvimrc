@@ -27,9 +27,24 @@ function! MyHighlights() abort
   highlight Terminal guibg='#e2e2e2'
   highlight StatusLineTerm ctermbg=24 ctermfg=254 guibg=#eeeeee guifg=#b2b2b2
   highlight StatusLineTermNC ctermbg=252 ctermfg=238 guibg=#eeeeee guifg=#d0d0d0
-  if exists('g:terminal_ansi_colors')
-    unlet g:terminal_ansi_colors
-  endif
+  let g:terminal_ansi_colors = [
+        \ '#fdf6e3',
+        \ '#dc322f',
+        \ '#859900',
+        \ '#b58900',
+        \ '#268bd2',
+        \ '#6c71c4',
+        \ '#2aa198',
+        \ '#586e75',
+        \ '#839496',
+        \ '#cb4b16',
+        \ '#b4c342',
+        \ '#93a1a1',
+        \ '#657b83',
+        \ '#073642',
+        \ '#d33682',
+        \ '#002b36'
+        \ ]
 endfunction
 
 augroup MyColors
@@ -58,6 +73,12 @@ set guioptions -=r
 set guioptions -=m
 set guioptions -=T
 set winaltkeys=no
+
+" Set LS_COLORS for light terminal background
+let s:dir_colors_file = expand("~/.dotfiles/config/.includes/dir_colors_gvim")
+let s:ls_colors_output = system('dircolors -c ' . shellescape(s:dir_colors_file))
+let s:ls_colors_value = substitute(s:ls_colors_output, '^setenv\s\+LS_COLORS\s\+', '', '')
+let $LS_COLORS = s:ls_colors_value
 
 " Easier pasting in terminal
 tmap <S-Insert> <C-W>"+
