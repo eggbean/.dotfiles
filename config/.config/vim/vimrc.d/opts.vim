@@ -1,44 +1,64 @@
 " VIM OPTIONS
 "
+" Essential VIM settings for cross-platform consistency
 " Some options are explicitly set to harmonise between different
 " versions/platforms/gvim/vim and especially nvim.
 
 syntax on
 scriptencoding utf-8
+
+" Tabs and indentation
 set tabstop=4
 set shiftwidth=4
-set shiftround
 set softtabstop=4
-set autoindent
 set expandtab
-set list
-set nosmartindent
-set backspace=eol,start
-set smarttab
+set autoindent
+set shiftround
+set smartindent
+
+" Visual and navigation settings
 set numberwidth=4
 set hlsearch
 set ignorecase
 set smartcase
-set autochdir
-set splitright
-set splitbelow
-set lazyredraw
 set scrolloff=3
 set sidescroll=1
 set sidescrolloff=5
-set nostartofline
-set cdpath=,.,~/,~/.config/vim
-set formatoptions=jtcroqln
-set autoread
-set nowrapscan
-set history=1000
-set belloff=all
+set list
+set listchars=tab:··,extends:>,precedes:<,nbsp:+
 set title
+set lazyredraw
+set nowrapscan
+set nostartofline
+
+" Formatting and editing behavior
+set formatoptions=jtcroqln
+set shortmess=filnxtToOF
+
+" Split and window management
+set splitright
+set splitbelow
+set cdpath=.,~/,~/.config/vim
+set wildmenu
+set wildmode=list:longest,full
+if has('nvim') || v:version > 802
+  set wildoptions+=pum
+endif
+
+" Backup and undo settings
+set hidden
+set backup
+set writebackup
+set backupcopy=yes
+set undofile
+set swapfile
+
+" Other options
+set timeoutlen=600
+set wildoptions=tagfile
 set tags=./tags;,tags
 set tabpagemax=10
 set switchbuf=uselast
-set showcmd
-set shortmess=filnxtToOF
 set viewoptions+=options
 set sessionoptions+=options
 set path=.,,
@@ -53,24 +73,9 @@ set complete=.,w,b,u,t,i,k
 set define=
 set display=lastline
 set fillchars=
-set listchars=tab:··,extends:>,precedes:<,nbsp:+
 set mouse=a
 set mousemodel=popup
-set hidden
-set backup
-set writebackup
-set backupcopy=yes
-set swapfile
-set undofile
-set noshowmode
-set laststatus=2
-set timeoutlen=600
-set wildmenu wildmode=list:longest,full
-set wildoptions=tagfile
-if has('nvim') || v:version > 802
-  set wildoptions+=pum
-endif
-
+set belloff=all
 if has('termguicolors')
   set termguicolors
 endif
