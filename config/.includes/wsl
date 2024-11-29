@@ -51,31 +51,23 @@ cdwin() {
   cd "$(wslpath -u "$@")"
 }
 
-# Use git for Windows on NTFS partitions
-# as git for Linux is very slow
-# (also override $LESS to print and exit with git stash)
+# Use Windows git.exe on NTFS partitions for better performance.
+# Override $LESS for `git stash` to print and exit automatically.
 git() {
-  if [[ $1 == stash ]]; then
-    local DELTA_PAGER='less -F'
-  fi
-
-  # Check if the current directory is on an NTFS partition
+  # Set DELTA_PAGER for `git stash`
+  [[ $1 == stash ]] && local DELTA_PAGER='less -F'
+  # Determine which git command to use based on the file system
+  local git_command
   if [[ $(pwd -P) == /mnt/[a-z]/* ]]; then
-    # Use Windows git.exe for NTFS partitions
-    # Apply DELTA_PAGER if set
-    if [[ -n $DELTA_PAGER ]]; then
-      DELTA_PAGER="$DELTA_PAGER" git.exe "$@"
-    else
-      git.exe "$@"
-    fi
+    git_command="git.exe" # Use Windows git.exe on NTFS
   else
-    # Use the standard git command for other cases
-    # Apply DELTA_PAGER if set
-    if [[ -n $DELTA_PAGER ]]; then
-      DELTA_PAGER="$DELTA_PAGER" command git "$@"
-    else
-      command git "$@"
-    fi
+    git_command="command git" # Use standard git elsewhere
+  fi
+  # Apply DELTA_PAGER if set, otherwise run the git command directly
+  if [[ -n $DELTA_PAGER ]]; then
+    DELTA_PAGER="$DELTA_PAGER" $git_command "$@"
+  else
+    $git_command "$@"
   fi
 }
 
