@@ -1,5 +1,5 @@
 # .dotfiles
-My dotfiles and a lot more. Used with GNU Stow to make the symlinks.
+My dotfiles and a lot more. Used with GNU Stow to make the symlinks. The bootstrap scipt sets everything up or updates.
 
 ### Software configurations include:
 <img align="left" width="46px" src="https://simpleicons.org/icons/github.svg" /> 
